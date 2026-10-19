@@ -208,3 +208,19 @@ export function SectionHeading({ title, lead, action }: { title: string; lead?: 
     </div>
   );
 }
+
+/* ---------------- Textarea ---------------- */
+/** Multi-line text field with the same surface, border and error treatment as Input. Pair it with Field for the label. */
+export function Textarea({ invalid, className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
+  return (
+    <textarea
+      aria-invalid={invalid || undefined}
+      className={cx(
+        "block w-full min-h-36 resize-y rounded-[var(--radius-field)] border bg-white px-4 py-3 text-ink-900 placeholder:text-ink-500/70",
+        invalid ? "border-danger" : "border-sand-300 focus:border-lagoon-600",
+        className,
+      )}
+      {...props}
+    />
+  );
+}

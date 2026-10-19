@@ -26,11 +26,16 @@ export function formatMoney(amountMinor: number, currency: string, locale: Local
 /** Time in the viewer's zone with the zone named, e.g. "6:00 PM Riyadh (GMT+3)". Rule P6. */
 export function formatTimeInZone(instant: Date, timeZone: string, locale: Locale): string {
   const time = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" }).format(instant);
+  return `${time} ${zoneLabel(instant, timeZone)}`;
+}
+
+/** "Riyadh (GMT+3)": the city from the IANA id plus the offset at that instant. */
+function zoneLabel(instant: Date, timeZone: string): string {
   const zoneName = new Intl.DateTimeFormat("en-US", { timeZone, timeZoneName: "shortOffset" })
     .formatToParts(instant)
     .find((p) => p.type === "timeZoneName")?.value ?? "";
   const city = timeZone.split("/").pop()?.replace(/_/g, " ") ?? timeZone;
-  return `${time} ${city} (${zoneName})`;
+  return `${city} (${zoneName})`;
 }
 
 /** Gregorian date, Western digits. Hijri display is optional and secondary (rule N3). */
@@ -41,4 +46,28 @@ export function formatDate(instant: Date, timeZone: string, locale: Locale): str
 export function formatHijri(instant: Date, timeZone: string, locale: Locale): string {
   const base = locale === "ar" ? "ar-SA-u-ca-islamic-umalqura-nu-latn" : "en-US-u-ca-islamic-umalqura";
   return new Intl.DateTimeFormat(base, { timeZone, day: "numeric", month: "long", year: "numeric" }).format(instant);
+}
+
+/**
+ * A time range in one zone with the zone named once (rule P6): { range: "9:00 AM – 9:00 PM", zone: "Riyadh (GMT+3)" }.
+ * Two parts so the caller renders the range in the page direction and the Latin zone as its own LTR run (rule R3);
+ * forcing the whole Arabic range LTR scrambles the ص / م markers.
+ */
+export function formatTimeRangeInZone(start: Date, end: Date, timeZone: string, locale: Locale): { range: string; zone: string } {
+  const range = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" }).formatRange(start, end);
+  return { range, zone: zoneLabel(start, timeZone) };
+}
+
+/** The instant at which the wall clock in `timeZone` reads `hour`:00 on the calendar day `ref` falls on there. */
+export function instantAtHourInZone(hour: number, timeZone: string, ref: Date = new Date()): Date {
+  const wall = (d: Date) => {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone, hourCycle: "h23", year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric",
+    }).formatToParts(d);
+    const get = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+    return Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"));
+  };
+  const day = new Date(wall(ref));
+  const guess = Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), hour);
+  return new Date(guess - (wall(new Date(guess)) - guess));
 }
