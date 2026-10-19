@@ -276,3 +276,57 @@ export function verifiedAlternatives(d: SampleDoctor, limit = 2): { scope: "spec
   if (seesSameAges.length) return { scope: "ages", doctors: seesSameAges.slice(0, limit) };
   return { scope: "any", doctors: others.slice(0, limit) };
 }
+
+/* ---------------- Membership and billing (screen 33) ---------------- */
+// Imported here rather than at the top so parallel screen branches that append to this file do not collide.
+import membershipsJson from "@/data/sample/memberships.json";
+
+/** The membership states the portal shows. `cancelled`: cancelled in the Stripe portal, running to the end of the paid period. */
+export type MembershipStatus = "none" | "active" | "past_due" | "cancelled";
+export type BillingInterval = "month" | "year";
+
+/** A row as data/sample/memberships.json stores it. No prices: those come from config/business.ts. */
+type SampleMembershipRow = {
+  id: string;
+  doctorId: string;
+  status: MembershipStatus;
+  interval: BillingInterval | null;
+  currentPeriodEndUtc: string | null;
+  paymentFailedAtUtc: string | null;
+  cancelledAtUtc: string | null;
+  timeZone: string;
+};
+
+/**
+ * A membership with its instants shifted by sampleInstant. `currentPeriodEnd` is the next renewal (active), the renewal that
+ * failed (past_due) or the last day of access (cancelled). `timeZone` is the doctor's own, for display.
+ */
+export type SampleMembership = {
+  id: string;
+  doctorId: string;
+  status: MembershipStatus;
+  interval: BillingInterval | null;
+  currentPeriodEnd: Date | null;
+  paymentFailedAt: Date | null;
+  cancelledAt: Date | null;
+  timeZone: string;
+};
+
+const sampleMembershipRows = membershipsJson as unknown as SampleMembershipRow[];
+
+/** The sample membership in one state (the prototype's ?state= switch). Production reads the signed-in professional's row. */
+export function sampleMembership(status: MembershipStatus): SampleMembership | undefined {
+  const row = sampleMembershipRows.find((m) => m.status === status);
+  if (!row) return undefined;
+  const at = (iso: string | null) => (iso ? sampleInstant(iso) : null);
+  return {
+    id: row.id,
+    doctorId: row.doctorId,
+    status: row.status,
+    interval: row.interval,
+    currentPeriodEnd: at(row.currentPeriodEndUtc),
+    paymentFailedAt: at(row.paymentFailedAtUtc),
+    cancelledAt: at(row.cancelledAtUtc),
+    timeZone: row.timeZone,
+  };
+}

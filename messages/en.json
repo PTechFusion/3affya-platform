@@ -1644,5 +1644,68 @@
         "error": "We could not send that just now. Please try again."
       }
     }
+  },
+  "membership": {
+    "metaTitle": "Membership and billing",
+    "metaDescription": "Your 3affya plan, when it renews and what it costs. Cards, invoices and plan changes are handled on Stripe's secure billing page.",
+    "title": "Membership and billing",
+    "lead": "Your plan and when it renews. Stripe handles payments, cards and invoices on its own secure pages.",
+    "loading": "Loading your membership",
+    "perYear": "per year",
+    "opening": "Opening Stripe…",
+    "error": "We could not open Stripe. Try again in a moment, or write to {email}.",
+    "current": {
+      "label": "Your plan",
+      "status": {
+        "active": "Active",
+        "past_due": "Payment due",
+        "cancelled": "Cancelled"
+      },
+      "renewsOn": "Renews on",
+      "nextPayment": "Next payment",
+      "amountDue": "Amount due",
+      "dueSince": "Due since",
+      "endsOn": "Ends on",
+      "none": "Patients can find and read your profile, but cannot book you yet.",
+      "cancelledOutcome": "It will not renew. Patients can book you until then. After that, booking stops, and your profile, verified badge and practice card stay up on the free Claimed plan.",
+      "zone": "Dates in your time zone:"
+    },
+    "pastDue": {
+      "title": "Your last payment did not go through",
+      "body": "Patients can still book you for {days, plural, one {{daysLabel} more day} other {{daysLabel} more days}}, until {day}, <nowrap>{time}</nowrap>. After that, booking pauses until the payment goes through. Your profile, verified badge and practice card stay up.",
+      "action": "Update card",
+      "hint": "Opens your card details on Stripe's secure billing page. Stripe also retries the card on its own."
+    },
+    "billing": {
+      "title": "Billing",
+      "body": "Switch between monthly and yearly, update your card, download invoices or cancel, all on Stripe's secure billing page.",
+      "manage": "Manage billing",
+      "hint": "Opens Stripe. You come back here when you are done.",
+      "cancelNote": "If you cancel, patients can book you until the end of the period you have paid for. Nothing renews after that.",
+      "renew": "Renew membership",
+      "renewBody": "Changed your mind? Renew before {date} and nothing changes for your patients. Your invoices are on the same billing page."
+    },
+    "choose": {
+      "title": "Become a Member",
+      "legend": "Pay monthly or yearly",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "monthlyPrice": "{price} per month",
+      "yearlyPrice": "{price} per year, {saving} less than paying monthly",
+      "yearlyPricePlain": "{price} per year",
+      "summaryMonth": "You pay {price} today, then {price} every month until you cancel.",
+      "summaryYear": "You pay {price} today, then {price} every year until you cancel.",
+      "subscribe": "Subscribe",
+      "hint": "Opens Stripe Checkout to pay by card. Your membership starts as soon as Stripe confirms the payment."
+    },
+    "stub": {
+      "checkout": "Prototype: Stripe Checkout opens here. Nothing was charged.",
+      "portal": "Prototype: Stripe's billing page opens here. Nothing was changed."
+    },
+    "plans": {
+      "title": "Compare plans",
+      "lead": "Each plan includes everything in the one before it.",
+      "yours": "Your plan"
+    }
   }
 }
