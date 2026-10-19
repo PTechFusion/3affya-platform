@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Button } from "@/components/ui";
+import { LinkButton } from "@/components/ui";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -31,7 +31,12 @@ export function SiteNav() {
             <GlobeIcon />
             {other === "ar" ? tc("arabic") : tc("english")}
           </Link>
-          <Button className="hidden sm:inline-flex">{tc("findDoctor")}</Button>
+          {/* Wrapped so `hidden` is not fought by the button's own display utility. */}
+          <div className="hidden sm:block">
+            <LinkButton href="/search" className="whitespace-nowrap">
+              {tc("findDoctor")}
+            </LinkButton>
+          </div>
         </div>
       </div>
     </header>
