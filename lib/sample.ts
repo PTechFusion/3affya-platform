@@ -470,6 +470,12 @@ export function inboxStatus(i: SampleIntroduction, now: Date = new Date()): Inbo
 export const sampleProfessional = { id: "doc_002", timeZone: "America/Chicago" } as const;
 export const sampleProfessionalId = sampleProfessional.id;
 
+/**
+ * The prototype's signed-in patient (screens 18 to 28): Noura in Riyadh, the patient behind share sh_001 and introduction
+ * int_002. Her bookings are the rows in data/sample/bookings.json whose patientFirstName is hers. Production reads the session.
+ */
+export const samplePatient = { firstNameEn: "Noura", firstNameAr: "نورة", gender: "f", country: "SA", timeZone: "Asia/Riyadh" } as const;
+
 type SampleSummaryRow = Omit<SummaryData, "generatedAt"> & {
   recordSetId: string;
   patient: { firstNameEn: string; firstNameAr: string; gender: "f" | "m" };
