@@ -304,5 +304,152 @@
     "popular": "Popular specialties",
     "contactLead": "Still stuck?",
     "contactLink": "Contact us"
+  },
+  "forProfessionals": {
+    "metaTitle": "For doctors: claim your 3affya profile",
+    "metaDescription": "Your 3affya profile is already built from public US records. Claim it free, get your credentials verified and take bookings from Arabic-speaking patients in the Gulf.",
+    "eyebrow": "For US doctors who speak Arabic",
+    "title": "Your profile is already built. Claim it free.",
+    "subtitle": "Gulf patients are looking for US-trained doctors who speak Arabic. Find your profile, check it and go live when you are ready.",
+    "findTitle": "Find your profile",
+    "searchLabel": "Find your profile by name or NPI",
+    "searchPlaceholder": "Your name or {digits}-digit NPI",
+    "searchSubmit": "Find",
+    "noSuggestions": "No profile matches yet. Press Find to search every listing.",
+    "searchHint": "Claiming is free. No card needed.",
+    "notListedLead": "Not listed?",
+    "notListedLink": "Start a new profile",
+    "exampleCard": "Example card",
+    "cardCaption": "Your practice card: the same card patients see in search, on your profile, and as an image you can share.",
+    "statsLabel": "What patients respond to",
+    "stats": {
+      "photoTitle": "About {n}x the views",
+      "photoBody": "Profiles with a photo are viewed about twice as often. Add yours when you claim.",
+      "speedTitle": "Booked within {hours} hours",
+      "speedBody": "Half of new patients book within {hours} hours of searching, so publish live times.",
+      "languageTitle": "In Arabic and English",
+      "languageBody": "Your profile shows in both languages, so every patient reads it in their own.",
+      "source": "Sources: Doximity analysis of {profiles} profiles; Zocdoc patient access data."
+    },
+    "stepsTitle": "How claiming works",
+    "stepsLead": "Three steps. Claiming and verification are free.",
+    "free": "Free",
+    "steps": {
+      "claim": {
+        "title": "Claim",
+        "body": "Find your profile and confirm it is you with your NPI and a {digits}-digit code sent to your email."
+      },
+      "verify": {
+        "title": "Verify",
+        "body": "Upload your state licence and board certificate. We check each with the body that issued it, show patients the date, and check again every {months, plural, one {month} other {{monthsLabel} months}}."
+      },
+      "live": {
+        "title": "Go live",
+        "body": "Choose a membership, set your first-visit fee and weekly times. Patients can then book you directly."
+      }
+    },
+    "need": {
+      "title": "Only five things are required",
+      "npi": "Your NPI number",
+      "licence": "A current US state licence",
+      "board": "Your board status (certified or eligible)",
+      "specialty": "Your specialty",
+      "photo": "A professional photo",
+      "later": "Bio, languages, expertise tags and the rest can wait. Your profile opens already filled in from public records."
+    },
+    "before": {
+      "title": "Before you claim",
+      "scrutiny": "Patients treat a claimed profile as current and read it closely. Keep your fee and times up to date. You can edit everything, any time.",
+      "remove": "Not you, or want your listing taken down? Open the profile and choose This is not me. We act within {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}}."
+    },
+    "plans": {
+      "title": "Membership",
+      "lead": "Claiming is free. Choose a membership when you want patients to book you.",
+      "caption": "Membership plans compared",
+      "featureColumn": "What you get",
+      "priceRow": "Price",
+      "recommended": "Recommended",
+      "fromJanuary": "From January",
+      "everythingIn": "Everything in {plan}, plus:",
+      "included": "Included",
+      "notIncluded": "Not included",
+      "perMonth": "per month",
+      "choose": "Choose {plan}",
+      "opensJanuary": "Opens in January",
+      "claimed": {
+        "name": "Claimed",
+        "price": "Free",
+        "period": "No card needed",
+        "tagline": "Take charge of your listing."
+      },
+      "member": {
+        "name": "Member",
+        "tagline": "Take bookings from patients in the Gulf.",
+        "yearly": "or {price} a year, {saving} less than monthly",
+        "yearlyPlain": "or {price} a year"
+      },
+      "featured": {
+        "name": "Featured",
+        "tagline": "Be the first card patients see.",
+        "breakdown": "Member {member} plus featured banner {banner}"
+      },
+      "feeNote": "In every plan, 3affya keeps {pct} of the first visit only. Care after that is between you and your patient.",
+      "priceNote": "The price you see is the price you pay. Cancel any time from your billing page.",
+      "placeholderNote": "Prototype: prices are placeholders until final prices are confirmed.",
+      "loading": "Loading plans"
+    },
+    "features": {
+      "profile": "Your claimed profile, edited in Arabic and English",
+      "badge": "Credentials verified badge, with the date",
+      "card": "Practice card to download and share",
+      "search": "Listed in patient search",
+      "booking": "Online booking from your live times",
+      "payouts": "Paid first visits, paid out through Stripe",
+      "summaries": "Patient record summaries before the visit",
+      "carousel": "Your card in the home page carousel, labelled Sponsored",
+      "first": "Shown first in matching search results, labelled Sponsored"
+    },
+    "faqTitle": "Questions from doctors",
+    "faqLink": "All questions",
+    "faq": {
+      "free": {
+        "q": "Is claiming really free?",
+        "a": "Yes. Claiming, verification and your practice card are free. You pay only if you choose a membership to take bookings."
+      },
+      "why": {
+        "q": "Why is there already a profile with my name?",
+        "a": "We list Arabic-speaking US clinicians from public US registries (NPPES and CMS) so patients can find them. Until you claim it, the page is labelled unclaimed and shows no fee, no times and no booking."
+      },
+      "need": {
+        "q": "What do I need to get verified?",
+        "a": "Your NPI, a current state licence, your board status, your specialty and a professional photo. We check the licence and board with the bodies that issued them and show patients the date."
+      },
+      "fee": {
+        "q": "What does 3affya take from a visit?",
+        "a": "{pct} of the first visit only, in every plan. Care after that is arranged between you and your patient."
+      },
+      "lapse": {
+        "q": "What if a membership payment fails?",
+        "a": "Your profile stays live for {days, plural, one {{daysLabel} day} other {{daysLabel} days}} while you update your card in the billing portal. After that, booking pauses until the payment goes through."
+      },
+      "remove": {
+        "q": "Can I have my listing removed instead?",
+        "a": "Yes. Open your profile, choose This is not me, then Remove me. We act within {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} and the page stops showing."
+      },
+      "reviews": {
+        "q": "Will patients review me?",
+        "a": "Not at launch. Patients do read claimed profiles closely, so keep your fee, times and details current."
+      }
+    },
+    "cta": {
+      "title": "Your card is already made",
+      "body": "Find your profile, check it and claim it. It is free.",
+      "action": "Find your profile"
+    },
+    "empty": {
+      "title": "We could not find your profile",
+      "body": "Check the spelling, or search by your NPI. If you are not listed yet, you can start a profile from scratch.",
+      "action": "Start a new profile"
+    }
   }
 }
