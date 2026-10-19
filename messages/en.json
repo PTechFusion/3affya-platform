@@ -1212,5 +1212,32 @@
         }
       }
     }
+  },
+  "specialties": {
+    "metaTitle": "Specialties: find a US-trained, Arabic-speaking doctor | 3affya",
+    "metaDescription": "Browse medical specialties, from family medicine to cancer care, and see verified US-trained doctors who speak Arabic. Counts include verified doctors only.",
+    "title": "Specialties",
+    "lead": "Pick a specialty to see verified doctors.",
+    "searchLabel": "Search for a specialty or condition",
+    "searchPlaceholder": "Specialty or condition",
+    "curatedTitle": "Popular specialties",
+    "countsNote": "Counts include verified doctors only.",
+    "doctorCount": "{count, plural, one {{countLabel} doctor} other {{countLabel} doctors}}",
+    "openForBooking": "Open for booking",
+    "noDoctorsYet": "No verified doctors yet",
+    "seeAll": "See all {count, plural, one {{countLabel} specialty} other {{countLabel} specialties}}",
+    "seeAllLead": "A to Z, grouped by body system",
+    "otherSystem": "Other specialties",
+    "empty": {
+      "title": "No verified doctors in {specialty} yet",
+      "body": "We list a doctor only after we check their US licence and board certification. Tell us what you need and we will help you find the right doctor.",
+      "action": "Ask us to find a doctor"
+    },
+    "cta": {
+      "title": "Not sure which specialty?",
+      "body": "Tell our assistant what is bothering you and it suggests one to three specialties. It does not diagnose.",
+      "action": "Ask our assistant"
+    },
+    "loading": "Loading specialties"
   }
 }
