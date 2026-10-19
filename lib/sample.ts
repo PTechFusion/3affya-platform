@@ -276,3 +276,42 @@ export function verifiedAlternatives(d: SampleDoctor, limit = 2): { scope: "spec
   if (seesSameAges.length) return { scope: "ages", doctors: seesSameAges.slice(0, limit) };
   return { scope: "any", doctors: others.slice(0, limit) };
 }
+
+/* ---------------- Payouts setup (screen 35) ---------------- */
+// Imports for this block sit here so the file stays append-only for parallel screens; ES imports are hoisted.
+import payoutsJson from "@/data/sample/payouts.json";
+import type { PayoutAccount, PayoutRecordStatus, PayoutStatus } from "@/lib/payouts";
+
+type SamplePayoutRow = Omit<PayoutAccount, "nextPayout" | "recentPayouts"> & {
+  sample: PayoutStatus;
+  doctorId: string;
+  doctorTimeZone: string;
+  nextPayout: { arrivalUtc: string; amountCents: number; currency: string } | null;
+  recentPayouts: Array<{ id: string; arrivalUtc: string; amountCents: number; currency: string; status: PayoutRecordStatus }>;
+};
+
+/** The signed-in doctor's connected account (prototype: doc_002) in one sample state, plus the doctor's own time zone. */
+export type SamplePayoutAccount = PayoutAccount & { doctorId: string; doctorTimeZone: string };
+
+const samplePayoutRows = payoutsJson as unknown as SamplePayoutRow[];
+
+/** One row per state (data/sample/payouts.json). Payout dates go through sampleInstant so the next payout stays ahead. */
+export function samplePayoutAccount(sample: PayoutStatus): SamplePayoutAccount | undefined {
+  const row = samplePayoutRows.find((r) => r.sample === sample);
+  if (!row) return undefined;
+  const { sample: _sample, nextPayout, recentPayouts, ...account } = row;
+  void _sample;
+  return {
+    ...account,
+    nextPayout: nextPayout
+      ? { arrivesAt: sampleInstant(nextPayout.arrivalUtc), amountCents: nextPayout.amountCents, currency: nextPayout.currency }
+      : null,
+    recentPayouts: recentPayouts.map((p) => ({
+      id: p.id,
+      arrivesAt: sampleInstant(p.arrivalUtc),
+      amountCents: p.amountCents,
+      currency: p.currency,
+      status: p.status,
+    })),
+  };
+}
