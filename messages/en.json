@@ -1975,5 +1975,115 @@
       "lead": "Each plan includes everything in the one before it.",
       "yours": "Your plan"
     }
+  },
+  "inbox": {
+    "metaTitle": "Inbox",
+    "metaDescription": "Your bookings and introduction requests, with each time in your zone and the patient's.",
+    "title": "Inbox",
+    "lead": "Bookings and introduction requests from patients. Times are in your time zone.",
+    "loading": "Loading your inbox",
+    "next": {
+      "title": "Next visit",
+      "patientTime": "Patient's time: {day} · <nowrap>{time}</nowrap>",
+      "details": "Details"
+    },
+    "sections": {
+      "requests": "New requests",
+      "upcoming": "Upcoming visits",
+      "past": "Past visits"
+    },
+    "status": {
+      "request": "New request",
+      "upcoming": "Confirmed",
+      "awaitingDone": "Not marked done",
+      "done": "Done"
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "ageGroup": {
+      "baby": "Baby",
+      "child": "Child",
+      "teen": "Teenager",
+      "adult": "Adult"
+    },
+    "bookedBy": {
+      "self": "The patient",
+      "parent": "A parent"
+    },
+    "join": "Join",
+    "joinLabel": "Join the visit with {name}",
+    "empty": {
+      "title": "No bookings or requests yet",
+      "body": "When a patient books a time or sends an introduction request from your profile, it appears here. Patients can book once your profile is published and you have open times.",
+      "action": "Set your open times"
+    },
+    "detail": {
+      "breadcrumb": "You are here",
+      "loading": "Loading the booking",
+      "booked": "Booked {date} at <nowrap>{time}</nowrap>",
+      "requested": "Request sent {date} at <nowrap>{time}</nowrap>",
+      "whenTitle": "When",
+      "yourTime": "Your time",
+      "patientTime": "Patient's time",
+      "joinTitle": "How to join",
+      "joinButton": "Join the video visit",
+      "joinPhoneButton": "Join the call",
+      "joinBody": "This is your meeting link. The patient has the same link in their confirmation.",
+      "joinPending": "The patient gets your meeting link once you accept and they pay for the visit.",
+      "joinEnded": "This visit has ended.",
+      "reasonTitle": "Reason for the visit",
+      "reasonSource": "In the patient's words, from the intake questions.",
+      "ageGroup": "Age group",
+      "bookedBy": "Booked by",
+      "visitType": "Visit type",
+      "preparedTitle": "What the patient prepared",
+      "prepared": {
+        "records": "Uploaded past records",
+        "medicines": "Listed current medicines",
+        "questions": "Wrote down questions for you",
+        "deviceTest": "Tested camera and microphone"
+      },
+      "preparedNone": "Nothing marked yet.",
+      "summaryTitle": "Shared records summary",
+      "summaryAi": "AI-generated",
+      "summaryNotReviewed": "Not yet reviewed",
+      "summaryReviewed": "Reviewed by you on {date}",
+      "summaryBody": "Written by AI from the records the patient uploaded. Check it against the source pages before you rely on it.",
+      "summaryShared": "Shared {date}",
+      "summaryExpires": "Access ends {date}",
+      "summaryWho": "Only you can open it. The patient can withdraw access at any time.",
+      "summaryOpen": "Open the summary",
+      "summaryNone": "The patient has not shared a records summary.",
+      "doneOn": "Marked done on {date}.",
+      "notFound": {
+        "title": "This booking is not in your inbox",
+        "body": "It may have been cancelled, or the link belongs to another professional's inbox.",
+        "action": "Back to inbox"
+      }
+    },
+    "actions": {
+      "requestTitle": "Answer the request",
+      "requestHint": "This time is not booked until you accept and the patient pays.",
+      "changeTitle": "Need another time?",
+      "changeHint": "The patient picks a new time from your open times. The current time stays booked until they do.",
+      "doneTitle": "After the visit",
+      "doneHint": "Mark the visit done once you have seen the patient.",
+      "accept": "Accept this time",
+      "propose": "Propose another time",
+      "markDone": "Mark as done",
+      "working": "Saving",
+      "result": {
+        "accept": "Accepted. The patient gets a link to pay and confirm this time.",
+        "propose": "Sent. The patient picks another time from your open times.",
+        "markDone": "Marked as done."
+      },
+      "error": {
+        "notFound": "This booking is no longer in your inbox. Reload the page.",
+        "state": "This booking changed since the page loaded. Reload the page to see it.",
+        "unavailable": "That did not go through. Try again in a minute."
+      }
+    }
   }
 }

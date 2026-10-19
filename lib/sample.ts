@@ -415,3 +415,83 @@ export function sampleMembership(status: MembershipStatus): SampleMembership | u
     timeZone: row.timeZone,
   };
 }
+/* ---------------- Introduction inbox (screen 32) ---------------- */
+// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+import introductionsJson from "@/data/sample/introductions.json";
+
+/** Stored status. "confirmed" is a paid booking; once its time has passed it reads as awaiting done (see inboxStatus). */
+export type IntroductionStatus = "request" | "confirmed" | "done";
+export type IntroductionAgeGroup = "baby" | "child" | "teen" | "adult";
+export type IntroductionPrepared = "records" | "medicines" | "questions" | "deviceTest";
+
+type IntroductionRow = {
+  id: string;
+  doctorId: string;
+  status: IntroductionStatus;
+  patientFirstNameEn: string;
+  patientFirstNameAr: string;
+  ageGroup: IntroductionAgeGroup;
+  bookedBy: "self" | "parent";
+  visitType: "video" | "phone";
+  startsAtUtc: string;
+  receivedAtUtc: string;
+  patientTimeZone: string;
+  doctorTimeZone: string;
+  concernEn: string;
+  concernAr: string;
+  prepared: IntroductionPrepared[];
+  joinUrl: string | null;
+  sharedSummary: { id: string; sharedAtUtc: string; expiresAtUtc: string; reviewedAtUtc: string | null } | null;
+  doneAtUtc: string | null;
+};
+
+/** A booking or an introduction request as the professional's inbox reads it. Every instant goes through sampleInstant. */
+export type SampleIntroduction = Omit<IntroductionRow, "startsAtUtc" | "receivedAtUtc" | "sharedSummary" | "doneAtUtc"> & {
+  /** The booked time; for a request, the time the patient asked for. */
+  startsAt: Date;
+  receivedAt: Date;
+  /** The records summary the patient shared with this professional; screen 36 opens it at /professional/shared/[id]. */
+  sharedSummary: { id: string; sharedAt: Date; expiresAt: Date; reviewedAt: Date | null } | null;
+  doneAt: Date | null;
+};
+
+/** What the inbox shows: a request to answer, an upcoming visit, a past visit not yet marked done, or a done visit. */
+export type InboxStatus = "request" | "upcoming" | "awaitingDone" | "done";
+
+const introductionRows = introductionsJson as unknown as IntroductionRow[];
+
+function toIntroduction(r: IntroductionRow): SampleIntroduction {
+  const { startsAtUtc, receivedAtUtc, sharedSummary, doneAtUtc, ...rest } = r;
+  return {
+    ...rest,
+    startsAt: sampleInstant(startsAtUtc),
+    receivedAt: sampleInstant(receivedAtUtc),
+    sharedSummary: sharedSummary
+      ? {
+          id: sharedSummary.id,
+          sharedAt: sampleInstant(sharedSummary.sharedAtUtc),
+          expiresAt: sampleInstant(sharedSummary.expiresAtUtc),
+          reviewedAt: sharedSummary.reviewedAtUtc ? sampleInstant(sharedSummary.reviewedAtUtc) : null,
+        }
+      : null,
+    doneAt: doneAtUtc ? sampleInstant(doneAtUtc) : null,
+  };
+}
+
+/** Every booking and introduction request for one professional, earliest visit first. */
+export function introductionsFor(doctorId: string): SampleIntroduction[] {
+  return introductionRows
+    .filter((r) => r.doctorId === doctorId)
+    .map(toIntroduction)
+    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+}
+
+export function introductionById(id: string): SampleIntroduction | undefined {
+  const row = introductionRows.find((r) => r.id === id);
+  return row ? toIntroduction(row) : undefined;
+}
+
+export function inboxStatus(i: SampleIntroduction, now: Date = new Date()): InboxStatus {
+  if (i.status === "request" || i.status === "done") return i.status;
+  return i.startsAt.getTime() > now.getTime() ? "upcoming" : "awaitingDone";
+}
