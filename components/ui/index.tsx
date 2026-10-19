@@ -217,5 +217,18 @@ export function SearchIcon({ className = "size-5" }: { className?: string }) {
       <circle cx="8.5" cy="8.5" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.8" />
       <path d="M13 13l4.25 4.25" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
+/* ---------------- Textarea ---------------- */
+/** Multi-line text field with the same surface, border and error treatment as Input. Pair it with Field for the label. */
+export function Textarea({ invalid, className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
+  return (
+    <textarea
+      aria-invalid={invalid || undefined}
+      className={cx(
+        "block w-full min-h-36 resize-y rounded-[var(--radius-field)] border bg-white px-4 py-3 text-ink-900 placeholder:text-ink-500/70",
+        invalid ? "border-danger" : "border-sand-300 focus:border-lagoon-600",
+        className,
+      )}
+      {...props}
+    />
   );
 }

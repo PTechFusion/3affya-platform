@@ -623,5 +623,70 @@
     "moreAction": "Contact us",
     "lastReviewed": "Last reviewed {date}",
     "loading": "Loading questions"
+  },
+  "contact": {
+    "metaTitle": "Contact 3affya",
+    "metaDescription": "Message 3affya on WhatsApp, or send us an email and we reply {reply}.",
+    "title": "Contact us",
+    "lead": "WhatsApp is the quickest way to reach us. Prefer email? Use the form and we will reply to your inbox.",
+    "reply": "{days, plural, one {within one working day} other {within {count} working days}}",
+    "whatsapp": {
+      "title": "Chat on WhatsApp",
+      "speed": "Quickest reply, during working hours",
+      "previewLabel": "Your first message is typed for you:",
+      "greeting": "Hello 3affya, I have a question about your service.",
+      "button": "Open WhatsApp",
+      "number": "Our number:",
+      "privacy": "Please do not send medical details or reports on WhatsApp. Your doctor will ask for them in the visit."
+    },
+    "form": {
+      "title": "Send us an email",
+      "lead": "Three short fields. We reply {reply}.",
+      "name": "Your name",
+      "email": "Email address",
+      "emailHint": "We use it only to reply to you.",
+      "message": "Your message",
+      "messageHint": "Leave out medical details. Your doctor will ask for them in the visit.",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "retry": "Try sending again",
+      "failedTitle": "Your message was not sent",
+      "failedBody": "Something went wrong on our side. Your text is still here. Try again in a minute, or message us on WhatsApp instead.",
+      "failedWhatsApp": "Message us on WhatsApp"
+    },
+    "errors": {
+      "nameMissing": "Enter your name so we know who to reply to.",
+      "nameTooLong": "Shorten your name to {nameMax} characters or fewer.",
+      "emailMissing": "Enter your email address so we can reply.",
+      "emailTooLong": "Shorten your email address to {emailMax} characters or fewer.",
+      "emailSpace": "Remove the space from your email address.",
+      "emailNoAt": "Add the @ sign, as in name@example.com.",
+      "emailManyAt": "Use only one @ sign in your email address.",
+      "emailNoLocal": "Add the part before the @, as in name@example.com.",
+      "emailNoDomain": "Add the part after the @, as in name@example.com.",
+      "emailNoDot": "Check the part after the @. It needs a dot, as in example.com.",
+      "messageMissing": "Write your message so we know how to help.",
+      "messageTooShort": "Add a little more detail. Write at least {min} characters.",
+      "messageTooLong": "Shorten your message to {max} characters or fewer. It has {count} now."
+    },
+    "sent": {
+      "title": "Message sent. Thank you.",
+      "body": "We will reply to <email>{address}</email> {reply}.",
+      "bodyNoEmail": "We will reply by email {reply}.",
+      "spam": "If you do not see our reply, check your spam or junk folder."
+    },
+    "visit": {
+      "title": "Address and hours",
+      "hours": "Working hours",
+      "days": "Sunday to Thursday",
+      "closed": "Closed on Friday and Saturday.",
+      "address": "Address",
+      "afterHours": "Messages that arrive after hours are answered on the next working day."
+    },
+    "demo": {
+      "name": "Sara Ahmed",
+      "message": "Hello, can I book a first visit for my mother? She lives in Kuwait.",
+      "shortMessage": "Hi"
+    }
   }
 }

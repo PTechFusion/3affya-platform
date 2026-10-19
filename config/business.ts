@@ -18,6 +18,9 @@ export const business = {
   intakeMaxTurns: 20,
   defaultTimeZone: "Asia/Riyadh",
   supportWhatsApp: "", // set in env for production
+  supportOpenHour: 9, // support desk hours, local to defaultTimeZone, Sunday to Thursday (default until Dr Ayman confirms)
+  supportCloseHour: 21,
+  supportReplyWorkingDays: 1, // reply promise on the contact form (default until Dr Ayman confirms)
   emergencyNumbers: {
     SA: "997", AE: "998", KW: "112", QA: "999", OM: "9999", BH: "999", US: "911",
   } as Record<string, string>,
