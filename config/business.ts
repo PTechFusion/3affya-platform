@@ -6,6 +6,10 @@ export const business = {
   firstVisitPlatformFeePct: 20, // (default until Q8)
   cardProcessingPct: 2.9,
   cardProcessingFixedCents: 30,
+  // Search filters (screen 5, task 2.1). Price bands are on the all-in first-visit total (rule C5), in minor units; the
+  // availability windows are in hours, 72 first (rule S7: half of new patients book within 72 hours).
+  searchPriceBandsCents: [20000, 25000, 30000] as readonly number[],
+  searchAvailableWithinHours: [72, 720] as readonly number[],
   slotHoldMinutes: 10,
   fullRefundCutoffHours: 24, // (default until Q8) full refund when the patient cancels more than this many hours before the visit, none after
   recordsBlockGb: 1,

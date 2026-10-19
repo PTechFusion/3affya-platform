@@ -5,6 +5,7 @@ import specialtiesJson from "@/data/sample/specialties.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
 import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
 import { business } from "@/config/business";
+import { feeLines } from "@/lib/fees";
 
 export type SampleDoctor = {
   id: string;
@@ -75,7 +76,8 @@ export function toDoctorCardData(d: SampleDoctor, locale: Locale, timeZone: stri
     tags: d.tags,
     trainingLines: d.training,
     yearsInPractice: d.yearsInPractice ?? undefined,
-    feeLabel: d.feeUsdCents != null ? formatMoney(d.feeUsdCents, business.currencyPresentment, locale) : undefined,
+    // Rule C5: the card shows the all-in first-visit total the patient pays, never the doctor fee with fees added later.
+    feeLabel: d.feeUsdCents != null ? formatMoney(feeLines(d.feeUsdCents).totalCents, business.currencyPresentment, locale) : undefined,
     nextAvailableLabel: next ? `${formatDate(next, timeZone, locale)} · ${formatTimeInZone(next, timeZone, locale)}` : undefined,
     verifiedOnLabel: d.verifiedOn ? formatDate(new Date(`${d.verifiedOn}T00:00:00Z`), timeZone, locale) : undefined,
     boardCertified: d.boardCertified,

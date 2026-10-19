@@ -184,10 +184,12 @@ export function Surface({ className, children }: { className?: string; children:
 
 /* ---------------- Chip ---------------- */
 /** Tappable pill for quick picks (specialty chips, quick replies). Wrap in a Link or button for the action. */
-export function Chip({ tone = "sand", children }: { tone?: "sand" | "water"; children: ReactNode }) {
+export function Chip({ tone = "sand", children }: { tone?: "sand" | "water" | "lagoon"; children: ReactNode }) {
   const tones = {
     sand: "bg-sand-100 text-sea-800 hover:bg-sand-200",
     water: "bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25",
+    // Selected or applied values (applied-filter chips, rule S12): reads as chosen on sand and white surfaces.
+    lagoon: "bg-lagoon-100 text-lagoon-900 ring-1 ring-lagoon-600/40 hover:bg-white",
   };
   return (
     <span className={cx("inline-flex min-h-10 items-center rounded-[var(--radius-tag)] px-4 py-1.5 text-sm font-medium transition-colors", tones[tone])}>
@@ -261,5 +263,51 @@ export function CtaBand({ title, body, action }: { title: string; body?: string;
       </div>
       {action}
     </div>
+  );
+}
+
+/* ---------------- Close icon ---------------- */
+/** Cross for removable chips and close controls: symmetric, never mirrored. */
+export function CloseIcon({ className = "size-3.5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={className}>
+      <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/* ---------------- Breadcrumbs ---------------- */
+/**
+ * One-line trail (rule S15): ancestors as links, the current page last and unlinked. On phone only the parent level shows,
+ * as a back link. Pass the items from the top (Home) down; the last item is the current page.
+ */
+export function Breadcrumbs({ label, items }: { label: string; items: Array<{ label: string; href?: string }> }) {
+  const parent = items.slice(0, -1).reverse().find((item) => item.href);
+  return (
+    <nav aria-label={label} className="text-sm">
+      <ol className="hidden flex-wrap items-center gap-1.5 text-ink-700 sm:flex">
+        {items.map((item, i) => (
+          <li key={`${i}-${item.label}`} className="flex items-center gap-1.5">
+            {i > 0 ? <ChevronNext className="size-3.5 text-ink-500" /> : null}
+            {item.href && i < items.length - 1 ? (
+              <Link href={item.href} className="font-semibold text-sea-700 hover:underline">
+                {item.label}
+              </Link>
+            ) : (
+              <span aria-current="page">{item.label}</span>
+            )}
+          </li>
+        ))}
+      </ol>
+      {parent?.href ? (
+        <Link href={parent.href} className="inline-flex min-h-8 items-center gap-1 font-semibold text-sea-700 hover:underline sm:hidden">
+          {/* Back chevron: the flipped wrapper plus ChevronNext's own RTL mirror point it toward the start in both directions. */}
+          <span className="inline-flex -scale-x-100">
+            <ChevronNext className="size-3.5" />
+          </span>
+          {parent.label}
+        </Link>
+      ) : null}
+    </nav>
   );
 }
