@@ -538,3 +538,56 @@ export function Toast({
     </div>
   );
 }
+/* ---------------- Slot option ---------------- */
+/**
+ * One open time to choose (the slot picker, rules W2, P6): a native radio in the SlotLink frame, 48 px, so arrow keys move
+ * between the times of one day and the group's legend names the day. `label` is the whole slot in words (day, time and zone)
+ * for screen readers. `note` is a short line under the time, e.g. the doctor's own time on the chosen slot; `highlight` tints
+ * an unchosen option to draw the eye (the earliest time). A disabled option reads as gone: struck through on sand.
+ */
+export function SlotOption({
+  time,
+  note,
+  highlight,
+  label,
+  className,
+  ...props
+}: Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> & { time: string; note?: ReactNode; highlight?: boolean; label?: string }) {
+  return (
+    <label
+      className={cx(
+        "flex min-h-12 cursor-pointer flex-col items-center justify-center rounded-[var(--radius-field)] border px-2 py-1.5 text-center transition-colors",
+        "has-checked:border-sea-700 has-checked:bg-sea-700 has-checked:text-white",
+        "has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-lagoon-500",
+        "has-disabled:cursor-not-allowed has-disabled:border-sand-300 has-disabled:bg-sand-100 has-disabled:text-ink-500 has-disabled:line-through",
+        highlight ? "border-lagoon-600 bg-lagoon-100 text-lagoon-900 hover:bg-white" : "border-sea-700 bg-white text-sea-800 hover:bg-sea-100",
+        className,
+      )}
+    >
+      <input type="radio" aria-label={label} className="sr-only" {...props} />
+      <span className="tabular text-[15px] font-semibold">{time}</span>
+      {note ? <span className="text-xs font-medium leading-tight">{note}</span> : null}
+    </label>
+  );
+}
+
+/* ---------------- Clock and lock icons ---------------- */
+/** Clock beside a time-zone line: never mirrored in RTL (rule R2). */
+export function ClockIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={className} style={{ transform: "none" }}>
+      <circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** Padlock for a security cue (rule P3: one or two cues inside the payment box). Symmetric, never mirrored. */
+export function LockIcon({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={className}>
+      <rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M5.5 7V5a2.5 2.5 0 015 0v2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}

@@ -54,3 +54,19 @@ export const business = {
     SA: ["fri", "sat"], KW: ["fri", "sat"], QA: ["fri", "sat"], OM: ["fri", "sat"], BH: ["fri", "sat"], AE: ["sat", "sun"], US: ["sat", "sun"],
   } as Record<string, string[]>,
 } as const;
+
+/* ---------------- Booking: slot picker and checkout (screens 19 and 20, task 3.2) ---------------- */
+// Appended block. The hold length is business.slotHoldMinutes and the lead time business.leadTimeHoursDefault, above.
+export const bookingRules = {
+  /** The age groups asked before the hold (rule P8), with their bounds in whole years; null is no upper bound. A doctor who
+   *  sees "children" sees every group below `adultFromYears`; one who sees "adults" sees from it up. */
+  ageGroups: [
+    { id: "baby", fromYears: 0, toYears: 1 },
+    { id: "child", fromYears: 2, toYears: 12 },
+    { id: "teen", fromYears: 13, toYears: 17 },
+    { id: "adult", fromYears: 18, toYears: null },
+  ] as ReadonlyArray<{ id: "baby" | "child" | "teen" | "adult"; fromYears: number; toYears: number | null }>,
+  adultFromYears: 18,
+  /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
+  holdWarnMinutes: 2,
+} as const;
