@@ -209,82 +209,6 @@
     "send": "Send",
     "prototypeNote": "Prototype: the assistant goes live in milestone 3. The layout and the pinned safety block are final."
   },
-  "aiTools": {
-    "metaTitle": "AI tools, coming soon | 3affya",
-    "metaDescription": "Simple AI helpers for your medical papers and visits, coming soon. Every result is labelled as AI and is never a diagnosis.",
-    "badge": "Coming soon",
-    "title": "AI tools for your care",
-    "intent": "Simple helpers for your medical papers and visits. We are building them now.",
-    "listLabel": "Tools we are building",
-    "inRecordsSummary": "Included in the records summary at launch",
-    "tools": {
-      "translator": {
-        "name": "Document translator",
-        "line": "Translates your medical papers between Arabic and English."
-      },
-      "prep": {
-        "name": "Visit preparation",
-        "line": "Gathers your questions, medicines and history before a visit."
-      },
-      "explainer": {
-        "name": "Instruction explainer",
-        "line": "Explains your doctor's instructions in plain words."
-      },
-      "organiser": {
-        "name": "Visit and task organiser",
-        "line": "Keeps your visits, tests and follow-ups in one list."
-      },
-      "sharing": {
-        "name": "Sharing assistant",
-        "line": "Helps you choose what to share, with whom, and for how long."
-      },
-      "search": {
-        "name": "Guided doctor search",
-        "line": "Finds doctors from what you tell it, in your own words."
-      },
-      "medicines": {
-        "name": "Medicine comparison",
-        "line": "Matches your medicines to their US names. It never advises a change."
-      },
-      "letters": {
-        "name": "English email helper",
-        "line": "Writes English emails to US clinics, explains them in Arabic, and sends only when you approve."
-      },
-      "gaps": {
-        "name": "Missing record checker",
-        "line": "Spots missing pages and pages that are hard to read."
-      },
-      "duplicates": {
-        "name": "Duplicate organiser",
-        "line": "Groups repeated and updated copies so each record shows once."
-      }
-    },
-    "safety": {
-      "title": "AI results are always labelled",
-      "body": "Every result says it was made by AI and shows whether a doctor has reviewed it. It is not a diagnosis and does not replace your visit. You can always ask a person."
-    },
-    "notify": {
-      "title": "Get an email when each tool launches",
-      "body": "One short email per new tool. Nothing else.",
-      "label": "Email address",
-      "hint": "We use it only for launch emails. Stop them any time.",
-      "placeholder": "name@example.com",
-      "submit": "Tell me when these launch",
-      "sending": "Sending…",
-      "sentTitle": "You are on the list",
-      "sentBody": "We will email you when a tool goes live. Nothing else.",
-      "prototypeNote": "Prototype: this preview does not save your email yet.",
-      "error": {
-        "empty": "Enter your email address.",
-        "spaces": "Remove the spaces from your email address.",
-        "noAt": "Add an @ to your email, like name@example.com.",
-        "noName": "Add your name before the @, like name@example.com.",
-        "noDomain": "Add the part after the @, like name@example.com.",
-        "noDot": "Check the part after the @. It needs a dot, like example.com.",
-        "unavailable": "We could not save your email just now. Please try again in a minute."
-      }
-    }
-  },
   "languages": {
     "ar": "Arabic",
     "en": "English",
@@ -381,6 +305,82 @@
     "contactLead": "Still stuck?",
     "contactLink": "Contact us"
   },
+  "aiTools": {
+    "metaTitle": "AI tools, coming soon | 3affya",
+    "metaDescription": "Simple AI helpers for your medical papers and visits, coming soon. Every result is labelled as AI and is never a diagnosis.",
+    "badge": "Coming soon",
+    "title": "AI tools for your care",
+    "intent": "Simple helpers for your medical papers and visits. We are building them now.",
+    "listLabel": "Tools we are building",
+    "inRecordsSummary": "Included in the records summary at launch",
+    "tools": {
+      "translator": {
+        "name": "Document translator",
+        "line": "Translates your medical papers between Arabic and English."
+      },
+      "prep": {
+        "name": "Visit preparation",
+        "line": "Gathers your questions, medicines and history before a visit."
+      },
+      "explainer": {
+        "name": "Instruction explainer",
+        "line": "Explains your doctor's instructions in plain words."
+      },
+      "organiser": {
+        "name": "Visit and task organiser",
+        "line": "Keeps your visits, tests and follow-ups in one list."
+      },
+      "sharing": {
+        "name": "Sharing assistant",
+        "line": "Helps you choose what to share, with whom, and for how long."
+      },
+      "search": {
+        "name": "Guided doctor search",
+        "line": "Finds doctors from what you tell it, in your own words."
+      },
+      "medicines": {
+        "name": "Medicine comparison",
+        "line": "Matches your medicines to their US names. It never advises a change."
+      },
+      "letters": {
+        "name": "English email helper",
+        "line": "Writes English emails to US clinics, explains them in Arabic, and sends only when you approve."
+      },
+      "gaps": {
+        "name": "Missing record checker",
+        "line": "Spots missing pages and pages that are hard to read."
+      },
+      "duplicates": {
+        "name": "Duplicate organiser",
+        "line": "Groups repeated and updated copies so each record shows once."
+      }
+    },
+    "safety": {
+      "title": "AI results are always labelled",
+      "body": "Every result says it was made by AI and shows whether a doctor has reviewed it. It is not a diagnosis and does not replace your visit. You can always ask a person."
+    },
+    "notify": {
+      "title": "Get an email when each tool launches",
+      "body": "One short email per new tool. Nothing else.",
+      "label": "Email address",
+      "hint": "We use it only for launch emails. Stop them any time.",
+      "placeholder": "name@example.com",
+      "submit": "Tell me when these launch",
+      "sending": "Sending…",
+      "sentTitle": "You are on the list",
+      "sentBody": "We will email you when a tool goes live. Nothing else.",
+      "prototypeNote": "Prototype: this preview does not save your email yet.",
+      "error": {
+        "empty": "Enter your email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com.",
+        "noName": "Add your name before the @, like name@example.com.",
+        "noDomain": "Add the part after the @, like name@example.com.",
+        "noDot": "Check the part after the @. It needs a dot, like example.com.",
+        "unavailable": "We could not save your email just now. Please try again in a minute."
+      }
+    }
+  },
   "about": {
     "metaTitle": "About 3affya",
     "metaDescription": "Who runs 3affya, how we check every doctor's US licence and board certification, and how to reach us.",
@@ -419,5 +419,79 @@
     "contactEmail": "Or email",
     "lastReviewed": "Last reviewed",
     "loading": "Loading page"
+  },
+  "whyUs": {
+    "metaTitle": "Why US training matters | 3affya",
+    "metaDescription": "What US training and US board certification mean, how 3affya checks every doctor, and what a first visit costs you.",
+    "title": "US-trained doctors: why it matters",
+    "answer": "A US-trained doctor spent years training in US hospitals, with hard exams and checks at every step. Every verified doctor on 3affya holds a US state licence that we checked ourselves. Many are also US board certified: they passed a national exam in their specialty after training. You can see them by video, in Arabic, from home.",
+    "checkDoctor": "Check a doctor",
+    "checkDoctorHint": "Every verified profile shows the licence, the board and the date we checked.",
+    "opensNewSite": "(opens another website)",
+    "loading": "Loading the page",
+    "training": {
+      "title": "US training: what it means",
+      "lead": "Every doctor in the US follows the same long path. Each step has its own exam or check.",
+      "step1Title": "Medical school",
+      "step1Body": "Medical studies, in the US or abroad. Doctors who studied abroad must pass the same US exams.",
+      "step2Title": "Residency",
+      "step2Body": "Three to seven years of work in a US hospital, in one specialty, under senior doctors.",
+      "step3Title": "State licence",
+      "step3Body": "A US state checks the doctor's exams and record before they may treat patients.",
+      "step4Title": "Board certification",
+      "step4Body": "US board certified means the doctor passed a national exam in their specialty after residency, on top of the licence every doctor needs. It is not required to practise, so it shows extra effort.",
+      "verifyLabel": "Board certification: check it yourself",
+      "verifySource": "On Certification Matters, run by the American Board of Medical Specialties"
+    },
+    "verify": {
+      "title": "Verification: how we check",
+      "lead": "Before a doctor gets the verified badge, our team checks four things.",
+      "licenceTitle": "Licence",
+      "licenceBody": "We look up the US state licence in the state medical board's own register.",
+      "boardTitle": "Board",
+      "boardBody": "We confirm US board certification with the board, when the doctor holds one.",
+      "identityTitle": "Identity",
+      "identityBody": "We match the doctor's US provider number (NPI) in the federal register.",
+      "dateTitle": "Date",
+      "dateBody": "Each profile shows the day we checked. We check again every {months} {count, plural, one {month} other {months}}.",
+      "verifyLabel": "Licence: check it yourself",
+      "verifySource": "On DocInfo, run by the Federation of State Medical Boards"
+    },
+    "cost": {
+      "title": "Cost: what you pay",
+      "lead": "You pay for the visit, not for the trip.",
+      "travelTitle": "No travel",
+      "travelBody": "No flight, hotel or visa. You see the doctor by video from home.",
+      "priceTitle": "One price",
+      "priceBody": "Each doctor sets one price for the first visit. First visits start from {price}.",
+      "priceBodyUnknown": "Each doctor sets one price for the first visit, shown on the profile.",
+      "totalTitle": "No surprises",
+      "totalBody": "You see the full total before you pay. Nothing is charged until you book.",
+      "feesLabel": "Fees: how they work",
+      "feesSource": "Every fee, listed on our fees page"
+    },
+    "bridge": {
+      "title": "US care, without the trip",
+      "body": "The United States is the top destination for Saudi patients who travel abroad for care. 3affya brings US-trained doctors to you instead.",
+      "source": "Source: International Medical Travel Journal (IMTJ), GCC medical travel."
+    },
+    "legal": {
+      "title": "How the visit works legally",
+      "body": "Your doctor holds a US licence and talks with you from the United States, by video. The visit is a consultation and a second opinion. Your local doctor stays in charge of your care in your country.",
+      "canTitle": "What the visit can do",
+      "can1": "Explain your condition in plain words",
+      "can2": "Review your records and test results",
+      "can3": "Suggest next steps to take with your local doctor",
+      "cannotTitle": "What it cannot do",
+      "cannot1": "Examine you in person",
+      "cannot2": "Replace your local doctor",
+      "cannot3": "Handle an emergency. Call {number}.",
+      "link": "How it works, step by step"
+    },
+    "closing": {
+      "title": "See the checks for yourself",
+      "body": "Search by specialty or name, then open any verified profile."
+    },
+    "lastReviewed": "Last reviewed {date}"
   }
 }
