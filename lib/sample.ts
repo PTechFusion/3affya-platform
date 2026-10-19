@@ -2,6 +2,7 @@
 // so the swap to generated types is one file.
 import doctorsJson from "@/data/sample/doctors.json";
 import specialtiesJson from "@/data/sample/specialties.json";
+import bodySystemsJson from "@/data/sample/body-systems.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
 import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
 import { business } from "@/config/business";
@@ -80,4 +81,40 @@ export function toDoctorCardData(d: SampleDoctor, locale: Locale, timeZone: stri
     verifiedOnLabel: d.verifiedOn ? formatDate(new Date(`${d.verifiedOn}T00:00:00Z`), timeZone, locale) : undefined,
     boardCertified: d.boardCertified,
   };
+}
+
+/* ---------------- Screen 4, specialty directory ---------------- */
+
+/** A body system that groups specialties in the directory's full list (screen 4). `specialties` holds slugs in display order. */
+export type SampleBodySystem = { id: string; nameEn: string; nameAr: string; specialties: string[] };
+export type SpecialtySystemGroup = { system: SampleBodySystem | null; specialties: SampleSpecialty[] };
+
+export const sampleBodySystems = bodySystemsJson as SampleBodySystem[];
+
+/** Every specialty grouped by body system, systems in data order. A specialty no system lists goes in a last group with system null. */
+export function specialtiesBySystem(): SpecialtySystemGroup[] {
+  const bySlug = new Map(sampleSpecialties.map((s) => [s.slug, s]));
+  const placed = new Set<string>();
+  const groups = sampleBodySystems
+    .map((system) => ({
+      system,
+      specialties: system.specialties.flatMap((slug) => {
+        const s = bySlug.get(slug);
+        if (!s || placed.has(slug)) return [];
+        placed.add(slug);
+        return [s];
+      }),
+    }))
+    .filter((g) => g.specialties.length > 0);
+  const rest = sampleSpecialties.filter((s) => !placed.has(s.slug));
+  return rest.length ? [...groups, { system: null, specialties: rest }] : groups;
+}
+
+// Prototype only: the 8 verified sample doctors cover 7 of the 24 sample groups, so a group with no verified sample doctor borrows the
+// sample portrait (every sample photo is the same placeholder). With Supabase this is a verified doctor's photo, or none.
+const SAMPLE_PORTRAIT = sampleDoctors.find((d) => d.photoUrl)?.photoUrl ?? undefined;
+
+/** The face on a specialty tile (screen 4 hook): the photo of a verified doctor in that specialty. */
+export function specialtyPhotoUrl(slug: string): string | undefined {
+  return verifiedDoctors().find((d) => d.specialty === slug && d.photoUrl)?.photoUrl ?? SAMPLE_PORTRAIT;
 }

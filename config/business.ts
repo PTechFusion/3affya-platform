@@ -22,6 +22,7 @@ export const business = {
   inviteRateLimitPerIpPerHour: 10,
   otpDigits: 6,
   verifiedReverifyMonths: 12,
+  specialtyCountShowMin: 5, // (default until Dr Ayman confirms) a specialty shows its verified-doctor count from this many up (rule H6); fewer reads "Open for booking"
   intakeMaxTurns: 20,
   defaultTimeZone: "Asia/Riyadh",
   supportWhatsApp: "", // set in env for production
