@@ -2555,5 +2555,70 @@
       "action": "Find your profile"
     },
     "loading": "Loading your profile"
+  },
+  "signIn": {
+    "metaTitle": "Sign in | 3affya",
+    "metaDescription": "Sign in to 3affya, or create your account, with a code we email you. No password needed.",
+    "loading": "Opening sign-in",
+    "title": "Sign in or create an account",
+    "lead": {
+      "account": "See your bookings, receipts and records. You do not need an account to <link>browse doctors</link>.",
+      "booking": "Your booking is waiting. Once you are in, you go straight back to it.",
+      "upload": "Next, you can upload your records and get your one-page summary."
+    },
+    "email": {
+      "label": "Your email",
+      "why": "Why we ask: we email you a {digits}-digit code to sign in, so there is no password. Your booking confirmations and receipts go here too.",
+      "sending": "Sending…",
+      "error": {
+        "empty": "Enter your email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com",
+        "manyAt": "Use only one @ in your email address.",
+        "noName": "Add your name before the @, like name@example.com",
+        "noDomain": "Add the part after the @, like name@example.com",
+        "noDot": "Check the part after the @. It needs a dot, like example.com",
+        "limited": "We send up to {count, plural, one {one code} other {{countLabel} codes}} an hour to one email. You can ask for a new code at {time}.",
+        "unavailable": "We could not send the code just now. Please try again in a minute."
+      }
+    },
+    "terms": "By continuing, you agree to our <terms>Terms</terms> and <privacy>Privacy policy</privacy>.",
+    "code": {
+      "title": "Enter your code",
+      "sentTo": "We sent a {digits}-digit code to:",
+      "valid": "It works for {minutes, plural, one {one minute} other {{minutesLabel} minutes}}. Not there? Check your spam folder.",
+      "resent": "We sent a new code. Use the latest one.",
+      "label": "{digits}-digit code",
+      "hint": "Type or paste it. Spaces and dashes are fine.",
+      "submit": "Sign in",
+      "checking": "Checking…",
+      "resend": "Send a new code",
+      "resendIn": "You can send a new code in <n>{time}</n>",
+      "change": "Use a different email",
+      "error": {
+        "empty": "Enter the {digits}-digit code from the email.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "wrong": "That code does not match. Check the latest email, or send a new code.",
+        "expired": "That code has expired. Send a new code.",
+        "limited": "Too many wrong codes, so this one has stopped working. You can ask for a new code at {time}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "inbox": {
+      "gmail": "Open Gmail",
+      "outlook": "Open Outlook",
+      "yahoo": "Open Yahoo Mail",
+      "icloud": "Open iCloud Mail",
+      "newTab": "opens in a new tab"
+    },
+    "prototypeNote": "Prototype: no email is sent yet. Any {digits} digits work; {wrong} shows the wrong-code message.",
+    "done": {
+      "title": "You are signed in",
+      "account": "Opening your bookings…",
+      "booking": "Taking you back to your booking…",
+      "upload": "Opening your records…"
+    },
+    "contactLead": "Trouble signing in?",
+    "contactLink": "Contact us"
   }
 }

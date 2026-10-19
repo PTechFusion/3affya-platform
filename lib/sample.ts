@@ -593,3 +593,8 @@ const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
 export function builderRowFor(id: string): SampleBuilderRow | undefined {
   return sampleBuilderRows.find((r) => r.id === id);
 }
+
+/* ---------------- Patient sign-in (screen 18) ---------------- */
+
+/** The address the sign-in code step shows when it is opened by URL (?step=code). Synthetic, on the reserved example.com domain. */
+export const signInSampleEmail = "noura@example.com";
