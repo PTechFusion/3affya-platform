@@ -12,6 +12,7 @@ import { Badge, CheckIcon, ChevronNext, LinkButton } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { formatDate, formatMoney, formatNumber, type Locale } from "@/lib/format";
 import { lowestVerifiedFeeCents } from "@/lib/sample";
+import { feeLines } from "@/lib/fees";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
 import { WhyUsSkeleton } from "./WhyUsSkeleton";
@@ -46,7 +47,7 @@ export default async function WhyUsTraining({ params, searchParams }: Props) {
   const tcard = await getTranslations("card");
 
   const lowestFee = lowestVerifiedFeeCents();
-  const fromPrice = lowestFee != null ? formatMoney(lowestFee, business.currencyPresentment, loc) : undefined;
+  const fromPrice = lowestFee != null ? formatMoney(feeLines(lowestFee).totalCents, business.currencyPresentment, loc) : undefined; // all-in, rule C5
   const months = business.verifiedReverifyMonths;
   const reviewed = formatDate(new Date(`${REVIEWED_ON}T00:00:00Z`), "UTC", loc);
   const steps = ["1", "2", "3", "4"] as const;

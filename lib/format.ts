@@ -24,6 +24,12 @@ export function formatMoney(amountMinor: number, currency: string, locale: Local
   }).format(amount);
 }
 
+/** Percentage with the sign placed per rule N2: "20%" in English, "٪20" in Arabic (sign before the digits, no space). */
+export function formatPercent(pct: number, locale: Locale, maximumFractionDigits = 1): string {
+  const n = formatNumber(pct, locale, { maximumFractionDigits });
+  return locale === "ar" ? `\u066A${n}` : `${n}%`;
+}
+
 /** Time in the viewer's zone with the zone named, e.g. "6:00 PM Riyadh (GMT+3)". Rule P6. */
 export function formatTimeInZone(instant: Date, timeZone: string, locale: Locale): string {
   const time = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" }).format(instant);

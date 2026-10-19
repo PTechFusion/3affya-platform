@@ -171,7 +171,7 @@
     "boardBody": "A doctor who passed a national specialty exam after residency, on top of the licence every doctor needs.",
     "price": "First visit from {price}",
     "priceUnknown": "One clear price",
-    "priceBody": "Each doctor sets one price. You see it before you book."
+    "priceBody": "All fees included. You see the total before you book."
   },
   "footer": {
     "patients": "Patients",
@@ -385,10 +385,10 @@
     "metaTitle": "About 3affya",
     "metaDescription": "Who runs 3affya, how we check every doctor's US licence and board certification, and how to reach us.",
     "title": "About 3affya",
-    "intro1": "3affya connects patients in the Gulf with doctors who trained in the United States and speak Arabic. You find a doctor, see one clear price and book a first video visit in your own language.",
+    "intro1": "3affya connects patients in the Gulf with doctors who trained in the United States and speak Arabic. You find a doctor, see one clear price and book a first visit in your own language.",
     "intro2": "We are not a clinic. Each doctor is licensed in the US and is responsible for the care they give you. 3affya checks their papers, takes the booking and payment, and helps you get your medical records ready before the visit.",
     "jumpToVerification": "How we check every doctor",
-    "founderName": "Dr Ayman Salem",
+    "founderName": "Dr Ayman",
     "founderRole": "Founder of 3affya",
     "founderPending": "Photo and short biography: added before launch.",
     "verifyTitle": "How we check every doctor",

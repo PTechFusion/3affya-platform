@@ -8,7 +8,7 @@ import { ChevronNext } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { business } from "@/config/business";
 import { feeLines } from "@/lib/fees";
-import { formatMoney, formatNumber, type Locale } from "@/lib/format";
+import { formatMoney, formatNumber, type Locale, formatPercent } from "@/lib/format";
 import { durationLabel, legalMetadata, loadLegalDoc } from "@/lib/legal";
 import { lowestVerifiedFeeCents } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
@@ -29,8 +29,8 @@ export default async function FeesPage({ params, searchParams }: Props) {
   const currency = business.currencyPresentment;
   const money = (cents: number) => formatMoney(cents, currency, loc);
   const values = {
-    platformPct: formatNumber(business.firstVisitPlatformFeePct / 100, loc, { style: "percent" }),
-    cardPct: formatNumber(business.cardProcessingPct / 100, loc, { style: "percent", maximumFractionDigits: 1 }),
+    platformPct: formatPercent(business.firstVisitPlatformFeePct, loc),
+    cardPct: formatPercent(business.cardProcessingPct, loc),
     cardFixed: money(business.cardProcessingFixedCents),
     holdMinutes: await durationLabel(locale, "minutes", business.slotHoldMinutes),
     currency,

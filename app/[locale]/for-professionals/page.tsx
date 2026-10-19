@@ -11,7 +11,7 @@ import { SearchBox, type SearchSuggestion } from "@/components/brand/SearchBox";
 import { DoctorCard } from "@/components/brand/DoctorCard";
 import { Badge, Button, CheckIcon, ChevronDown, ChevronNext, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
-import { formatMoney, formatNumber, type Locale } from "@/lib/format";
+import { formatMoney, formatNumber, type Locale, formatPercent } from "@/lib/format";
 import { sampleDoctors, toDoctorCardData } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
@@ -56,7 +56,7 @@ export default async function ForProfessionals({ params, searchParams }: Props) 
   const tl = await getTranslations("languages");
   const num = (v: number) => formatNumber(v, loc);
   const money = (cents: number) => formatMoney(cents, business.membershipCurrency, loc);
-  const pct = formatNumber(business.firstVisitPlatformFeePct / 100, loc, { style: "percent" });
+  const pct = formatPercent(business.firstVisitPlatformFeePct, loc);
 
   // Find your profile: every listing, matched on both scripts and the NPI; the row says the specialty and the claim state.
   const suggestions: SearchSuggestion[] = sampleDoctors.map((d) => ({
@@ -152,6 +152,7 @@ export default async function ForProfessionals({ params, searchParams }: Props) 
               <div id="find-profile" className="scroll-mt-28">
                 <h2 className="mb-2 text-lg font-bold text-white">{t("findTitle")}</h2>
                 <SearchBox
+                  action="/for-professionals"
                   suggestions={suggestions}
                   initialQuery={query}
                   initialOpen={q.length > 0 && !notFound}

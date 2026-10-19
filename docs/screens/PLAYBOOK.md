@@ -73,6 +73,7 @@ render navigation, so a portal screen is just its `page.tsx` (+ `loading.tsx`) u
 
 ```bash
 git checkout dev && git pull && git checkout -b screen/NN-slug
+npm ci                                          # in a fresh worktree; a symlinked node_modules breaks Turbopack
 # build the route(s) ...
 npm run check                                   # lint (logical CSS), types, i18n parity
 npm run build && PORT=31NN npm run start &      # NN = your screen number, so parallel agents do not collide
@@ -97,8 +98,14 @@ Commit as `M<milestone>.<task> <screen name>` (one task id, from the brief heade
   page renders twice.
 - **Logical CSS only.** `ms- me- ps- pe- start- end- text-start text-end`. Lint fails the build otherwise. Directional icons
   use `ChevronNext` (mirrors in RTL); checkmarks, search, clocks and photos never mirror.
-- **Numbers, money, dates, times** only through `lib/format.ts` (Western digits in both locales, zone named). Never inline a
-  price, fee or period: `config/business.ts`.
+- **Numbers, money, dates, times** only through `lib/format.ts` (Western digits in both locales, zone named; `formatPercent`
+  for percentages, `formatTimeRangeInZone` for hours). Never inline a price, fee or period: `config/business.ts`
+  (`supportEmail`, `fullRefundCutoffHours`, membership prices, support hours all live there). The three fee lines come from
+  `lib/fees.ts feeLines()` and render with `components/brand/FeeBreakdown`. Rule C5: any "from" or card price is the all-in
+  `totalCents`, never the doctor fee alone.
+- **Reuse before you build:** `Disclosure` (accordion row), `CtaBand` (closing band), `SearchIcon`, `Textarea`, `Chip`,
+  `SectionHeading`, `LinkButton` in `components/ui`; `TrustStrip` (`layout="stack"` for sidebars), `SearchBox` (`labels`,
+  `action`, `initialOpen`), `LegalPage`, `FeeBreakdown`, `MissingPage`, `PortalShell` in `components/brand`.
 - **Viewer context** (country for the emergency number, time zone) comes from `lib/viewer.ts` (`?country=`, `?tz=`).
 - **Data** only from `lib/sample.ts`. If your screen needs sample rows that do not exist (bookings, receipts, invites, audit
   rows), add a small synthetic JSON under `data/sample/` plus a typed accessor in `lib/sample.ts`. Synthetic only; never a
@@ -156,7 +163,17 @@ And across the wave: shared primitives added twice under different names, diverg
 tables, forms), and copy that contradicts another screen. Verdict per screen: **merge**, or **return** with a numbered fix
 list. Returned screens get one more build pass, then come back to the reviewer with the next wave.
 
-## 9. Waves
+## 9. Consolidation backlog (do when touching these pages; new screens must not add to it)
+
+- Home, 03, 12, 13, 16 hand-roll `<details>` accordions: move to `Disclosure` (home done).
+- 02, 03, 12 hand-roll the closing CTA band: move to `CtaBand` (home done).
+- Last-reviewed date is implemented four ways (02, 13, 14 constants; 16 `lib/legal.ts`): one `lib/reviewed.ts` map and a
+  `ReviewedOn` line.
+- Verifier URLs (ABMS Certification Matters, FSMB DocInfo) duplicated in 02 and 14: `config/verifiers.ts`.
+- Two email validators (11 `_parts/email.ts`, 15 `validation.ts`): one shared module before sign-in (18) is built.
+- 03 renders its three fee lines in its own `<dl>`: switch to `FeeBreakdown`.
+
+## 10. Waves
 
 | Wave | Screens | Needs |
 |---|---|---|

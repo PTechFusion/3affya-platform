@@ -34,7 +34,7 @@
     "status": "cancelled",
     "feeUsdCents": 22000,
     "platformFeeUsdCents": 4400,
-    "cardProcessingUsdCents": 768,
+    "cardProcessingUsdCents": 796,
     "patientTimeZone": "Asia/Riyadh",
     "doctorTimeZone": "America/Los_Angeles"
   }

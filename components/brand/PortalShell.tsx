@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { LanguageSwitch } from "@/components/brand/SiteNav";
+import { LanguageSwitch } from "@/components/brand/LanguageSwitch";
 import { PortalNav, type PortalNavItem } from "@/components/brand/PortalNav";
 import { devRoleSwitchEnabled, portals, type Portal } from "@/lib/dev-role";
 
@@ -39,7 +39,7 @@ export function PortalShell({ portal, items, children }: { portal: Portal; items
             </Link>
           </div>
           <div className="flex items-center gap-1">
-            <LanguageSwitch href={home} />
+            <LanguageSwitch />
             <Link href="/" className="hidden min-h-11 items-center rounded-[var(--radius-field)] px-3 text-[15px] font-semibold text-ink-700 hover:bg-sand-100 sm:inline-flex">
               {t("signOut")}
             </Link>

@@ -10,7 +10,7 @@ import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { Badge, ChevronDown, ChevronNext, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
-import { formatMoney, formatNumber, type Locale } from "@/lib/format";
+import { formatMoney, formatNumber, type Locale, formatPercent } from "@/lib/format";
 import { feeLines } from "@/lib/fees";
 import { lowestVerifiedFeeCents } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
@@ -45,7 +45,7 @@ export default async function HowItWorks({ params, searchParams }: Props) {
   const tc = await getTranslations("common");
 
   const money = (minor: number) => formatMoney(minor, business.currencyPresentment, loc);
-  const percent = (pct: number) => formatNumber(pct / 100, loc, { style: "percent", maximumFractionDigits: 1 });
+  const percent = (pct: number) => formatPercent(pct, loc);
   const num = (n: number) => formatNumber(n, loc);
 
   // Worked example from the lowest published first-visit fee, so it matches "from" prices elsewhere on the site.
@@ -128,7 +128,7 @@ export default async function HowItWorks({ params, searchParams }: Props) {
                         </div>
                       ))}
                       <div className="flex items-baseline justify-between gap-4 pt-3 text-lg font-bold text-sea-900">
-                        <dt>{t("fees.totalCents")}</dt>
+                        <dt>{t("fees.total")}</dt>
                         <dd className="tabular">{money(fees.totalCents)}</dd>
                       </div>
                     </dl>

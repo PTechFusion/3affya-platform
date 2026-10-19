@@ -25,6 +25,7 @@ export const business = {
   intakeMaxTurns: 20,
   defaultTimeZone: "Asia/Riyadh",
   supportWhatsApp: "", // set in env for production
+  supportEmail: "hello@3affya.com",
   supportOpenHour: 9, // support desk hours, local to defaultTimeZone, Sunday to Thursday (default until Dr Ayman confirms)
   supportCloseHour: 21,
   supportReplyWorkingDays: 1, // reply promise on the contact form (default until Dr Ayman confirms)

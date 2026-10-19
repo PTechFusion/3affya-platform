@@ -217,6 +217,9 @@ export function SearchIcon({ className = "size-5" }: { className?: string }) {
       <circle cx="8.5" cy="8.5" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.8" />
       <path d="M13 13l4.25 4.25" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
+  );
+}
+
 /* ---------------- Textarea ---------------- */
 /** Multi-line text field with the same surface, border and error treatment as Input. Pair it with Field for the label. */
 export function Textarea({ invalid, className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { invalid?: boolean }) {
@@ -230,5 +233,33 @@ export function Textarea({ invalid, className, ...props }: React.TextareaHTMLAtt
       )}
       {...props}
     />
+  );
+}
+
+/* ---------------- Disclosure ---------------- */
+/** One accordion row: <details> with the summary line and a chevron that turns when open. Use for FAQs and "what to prepare" lists (rule X5). */
+export function Disclosure({ id, summary, open, children }: { id?: string; summary: ReactNode; open?: boolean; children: ReactNode }) {
+  return (
+    <details id={id} open={open} className="group py-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink-900 [&::-webkit-details-marker]:hidden">
+        {summary}
+        <ChevronDown className="size-4 shrink-0 text-sea-700 transition-transform group-open:rotate-180" />
+      </summary>
+      <div className="mt-2 text-ink-700">{children}</div>
+    </details>
+  );
+}
+
+/* ---------------- CTA band ---------------- */
+/** Closing call-to-action band on deep sea, so a page never ends on a false floor (rule H11). */
+export function CtaBand({ title, body, action }: { title: string; body?: string; action: ReactNode }) {
+  return (
+    <div className="flex flex-col items-start gap-4 rounded-[var(--radius-card)] bg-sea-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div>
+        <h2 className="text-2xl font-bold">{title}</h2>
+        {body ? <p className="mt-1 text-white/85">{body}</p> : null}
+      </div>
+      {action}
+    </div>
   );
 }

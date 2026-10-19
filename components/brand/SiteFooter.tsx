@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { business } from "@/config/business";
 
 export function SiteFooter({ emergencyNumber }: { emergencyNumber: string }) {
   const t = useTranslations("footer");
@@ -46,8 +47,8 @@ export function SiteFooter({ emergencyNumber }: { emergencyNumber: string }) {
             <p>{t("entity")}</p>
             <p>{t("address")}</p>
             <p>
-              <a href="mailto:hello@3affya.com" className="ltr-run font-semibold text-sea-700 underline-offset-2 hover:underline">
-                hello@3affya.com
+              <a href={`mailto:${business.supportEmail}`} className="ltr-run font-semibold text-sea-700 underline-offset-2 hover:underline">
+                {business.supportEmail}
               </a>
             </p>
           </address>

@@ -15,7 +15,7 @@ import Loading from "./loading";
 
 // Date this page's copy was last reviewed (rule X4). A calendar date, so it is formatted in UTC and never shifts with the viewer.
 const REVIEWED_ON = "2026-10-19";
-const CONTACT_EMAIL = "hello@3affya.com";
+const CONTACT_EMAIL = business.supportEmail;
 
 // Public verifiers run by US medical bodies (rule X3). Site names are proper nouns and stay in Latin script in both locales.
 const VERIFIERS = [

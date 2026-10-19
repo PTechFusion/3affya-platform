@@ -1,6 +1,7 @@
 // Screen 16: the one template for the four legal pages (privacy, terms, fees, refunds). Draft flag, title, effective and
 // last-reviewed dates (rule X4), a four-line plain summary box (the hook), then numbered sections. The in-page contents list
 // is sticky beside the text on desktop and a closed disclosure under the summary on phone. Text arrives already translated.
+import { business } from "@/config/business";
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -157,8 +158,8 @@ export function LegalContactLinks() {
       <LinkButton href="/contact" variant="secondary">
         {t("contactLink")}
       </LinkButton>
-      <a href="mailto:hello@3affya.com" className="ltr-run font-semibold text-sea-700 underline-offset-2 hover:underline">
-        hello@3affya.com
+      <a href={`mailto:${business.supportEmail}`} className="ltr-run font-semibold text-sea-700 underline-offset-2 hover:underline">
+        {business.supportEmail}
       </a>
     </div>
   );
