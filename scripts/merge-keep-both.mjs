@@ -22,7 +22,16 @@ for (const file of process.argv.slice(2)) {
   if (!/^<<<<<<< /m.test(src)) { console.log(`${file}: no conflict markers`); continue; }
   const base = stage(1, file), ours = stage(2, file), theirs = stage(3, file);
   let out, how;
-  if (base !== null && ours !== null && theirs !== null && ours.startsWith(base) && theirs.startsWith(base)) {
+  const asJson = (t) => { try { return JSON.parse(t); } catch { return undefined; } };
+  const jb = file.endsWith(".json") ? asJson(base) : undefined, jo = asJson(ours), jt = asJson(theirs);
+  if (Array.isArray(jb) && Array.isArray(jo) && Array.isArray(jt)) {
+    // A JSON array of rows (data/sample/*.json): every row of ours, then every row theirs added that ours does not have (by id).
+    const key = (r) => (r && typeof r === "object" && "id" in r ? `id:${r.id}` : JSON.stringify(r));
+    const baseKeys = new Set(jb.map(key)), ourKeys = new Set(jo.map(key));
+    const added = jt.filter((r) => !baseKeys.has(key(r)) && !ourKeys.has(key(r)));
+    out = JSON.stringify([...jo, ...added], null, 2) + "\n";
+    how = `kept ours and appended ${added.length} row(s) theirs added (JSON array by id)`;
+  } else if (base !== null && ours !== null && theirs !== null && ours.startsWith(base) && theirs.startsWith(base)) {
     out = ours + theirs.slice(base.length);
     how = "appended theirs after ours (exact, from index stages)";
   } else {
