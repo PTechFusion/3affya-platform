@@ -3,6 +3,7 @@
 import doctorsJson from "@/data/sample/doctors.json";
 import specialtiesJson from "@/data/sample/specialties.json";
 import bodySystemsJson from "@/data/sample/body-systems.json";
+import invitesJson from "@/data/sample/invites.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
 import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
 import { business } from "@/config/business";
@@ -117,4 +118,33 @@ const SAMPLE_PORTRAIT = sampleDoctors.find((d) => d.photoUrl)?.photoUrl ?? undef
 /** The face on a specialty tile (screen 4 hook): the photo of a verified doctor in that specialty. */
 export function specialtyPhotoUrl(slug: string): string | undefined {
   return verifiedDoctors().find((d) => d.specialty === slug && d.photoUrl)?.photoUrl ?? SAMPLE_PORTRAIT;
+}
+
+/* ---------------- Claim invites (screen 9) ---------------- */
+
+/** An invite as the prototype stores it. Production stores a hash of the token, never the token itself (task 2.3). */
+export type SampleInvite = {
+  id: string;
+  token: string;
+  doctorId: string;
+  email: string;
+  sentAtUtc: string;
+  expiresAtUtc: string;
+  usedAtUtc: string | null;
+};
+
+export type InviteStatus = "valid" | "expired" | "used";
+
+export const sampleInvites = invitesJson as SampleInvite[];
+
+/** Looks a token up and derives its status at `now`. Undefined means forged: no such token, or its doctor row is gone. */
+export function inviteByToken(
+  token: string,
+  now: Date = new Date(),
+): { invite: SampleInvite; doctor: SampleDoctor; status: InviteStatus } | undefined {
+  const invite = sampleInvites.find((i) => i.token === token);
+  const doctor = invite ? sampleDoctors.find((d) => d.id === invite.doctorId) : undefined;
+  if (!invite || !doctor) return undefined;
+  const status: InviteStatus = invite.usedAtUtc ? "used" : new Date(invite.expiresAtUtc) <= now ? "expired" : "valid";
+  return { invite, doctor, status };
 }
