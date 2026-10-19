@@ -219,5 +219,90 @@
       "Levantine": "Levantine",
       "Moroccan": "Moroccan"
     }
+  },
+  "portal": {
+    "sections": "Sections",
+    "more": "More",
+    "signOut": "Sign out",
+    "viewingAs": "Prototype, viewing as:",
+    "patient": {
+      "title": "My account",
+      "lead": "Your visits, receipts and records in one place.",
+      "nav": {
+        "bookings": "Bookings",
+        "receipts": "Receipts",
+        "records": "Records",
+        "sharing": "Sharing",
+        "settings": "Settings"
+      },
+      "hint": {
+        "bookings": "Upcoming and past visits with the join link.",
+        "receipts": "Itemised receipts for every payment.",
+        "records": "Upload files and read your one-page summary.",
+        "sharing": "Who can see your summary, and until when.",
+        "settings": "Language, time zone, account."
+      }
+    },
+    "professional": {
+      "title": "Practice",
+      "lead": "Your profile, availability and bookings.",
+      "nav": {
+        "builder": "Profile",
+        "availability": "Availability",
+        "card": "ID card",
+        "inbox": "Inbox",
+        "membership": "Membership",
+        "payouts": "Payouts",
+        "shared": "Shared summaries"
+      },
+      "hint": {
+        "builder": "Edit your profile and see the card update live.",
+        "availability": "Weekly hours, exceptions and your time zone.",
+        "card": "View and download your practice ID card.",
+        "inbox": "Bookings and introduction requests.",
+        "membership": "Plan, invoices and billing.",
+        "payouts": "Connect your Stripe account and see payouts.",
+        "shared": "Summaries patients shared with you."
+      }
+    },
+    "admin": {
+      "title": "Admin",
+      "lead": "Review, listings, money and the audit trail.",
+      "nav": {
+        "review": "Review queue",
+        "listings": "Listings",
+        "specialties": "Specialties",
+        "removals": "Removal requests",
+        "members": "Members",
+        "payments": "Payments",
+        "aiJobs": "AI jobs",
+        "outreach": "Outreach",
+        "audit": "Audit log"
+      },
+      "hint": {
+        "review": "Approve or reject credential claims.",
+        "listings": "Every professional, claimed or not.",
+        "specialties": "Edit the 104 specialty groups.",
+        "removals": "This is me and remove me requests.",
+        "members": "Memberships and subscriptions.",
+        "payments": "Payments, refunds and payouts.",
+        "aiJobs": "Records pipeline jobs and costs.",
+        "outreach": "Invite tokens and their status.",
+        "audit": "Who did what, and when."
+      }
+    }
+  },
+  "missing": {
+    "missing": {
+      "title": "We could not find that page",
+      "body": "The link may be old or mistyped. Search for a doctor or pick a specialty below."
+    },
+    "removed": {
+      "title": "This profile was removed",
+      "body": "The doctor asked for this listing to be taken down, so it is no longer available. You can search for another doctor in the same specialty."
+    },
+    "popular": "Popular specialties",
+    "contactLead": "Still stuck?",
+    "contactLink": "Contact us"
   }
 }

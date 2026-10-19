@@ -1,4 +1,4 @@
-// Home loading state (rule L1): the static frame renders for real, the doctor strip is a content-shaped skeleton with labels.
+// Home loading state (rule L1), scoped to the (home) group so other routes keep their own frames and notFound() still returns 404: the static frame renders for real, the doctor strip is a content-shaped skeleton with labels.
 import { useTranslations } from "next-intl";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { WaterHero } from "@/components/brand/WaterHero";

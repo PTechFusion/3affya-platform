@@ -7,8 +7,6 @@ import { LinkButton } from "@/components/ui";
 export function SiteNav() {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
-  const locale = useLocale();
-  const other = locale === "ar" ? "en" : "ar";
   return (
     <header className="sticky top-0 z-20 border-b border-sand-400/60 bg-sand-50/95 shadow-[var(--shadow-nav)] backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6">
@@ -22,15 +20,7 @@ export function SiteNav() {
           <Link href="/" className="hover:text-sea-700">{t("forProfessionals")}</Link>
         </nav>
         <div className="flex items-center gap-2">
-          <Link
-            href="/"
-            locale={other}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-field)] px-3 text-[15px] font-semibold text-sea-800 hover:bg-sand-100"
-            lang={other}
-          >
-            <GlobeIcon />
-            {other === "ar" ? tc("arabic") : tc("english")}
-          </Link>
+          <LanguageSwitch />
           {/* Wrapped so `hidden` is not fought by the button's own display utility. */}
           <div className="hidden sm:block">
             <LinkButton href="/search" className="whitespace-nowrap">
@@ -40,6 +30,24 @@ export function SiteNav() {
         </div>
       </div>
     </header>
+  );
+}
+
+/** Language switch in its own script with a globe, never a flag (rule H10). Shared by the public nav and the portal shells. */
+export function LanguageSwitch({ href = "/" }: { href?: string }) {
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const other = locale === "ar" ? "en" : "ar";
+  return (
+    <Link
+      href={href}
+      locale={other}
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-field)] px-3 text-[15px] font-semibold text-sea-800 hover:bg-sand-100"
+      lang={other}
+    >
+      <GlobeIcon />
+      {other === "ar" ? tc("arabic") : tc("english")}
+    </Link>
   );
 }
 
