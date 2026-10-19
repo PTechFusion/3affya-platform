@@ -1,0 +1,25 @@
+{
+  "schedules": [
+    {
+      "doctorId": "doc_002",
+      "timeZone": "America/Chicago",
+      "slotMinutes": 30,
+      "leadTimeHours": 2,
+      "acceptingNewPatients": true,
+      "rules": [
+        { "id": "r_001", "startsAtUtc": "2026-10-04T16:00:00Z", "endsAtUtc": "2026-10-04T19:00:00Z" },
+        { "id": "r_002", "startsAtUtc": "2026-10-05T14:00:00Z", "endsAtUtc": "2026-10-05T17:00:00Z" },
+        { "id": "r_003", "startsAtUtc": "2026-10-06T14:00:00Z", "endsAtUtc": "2026-10-06T17:00:00Z" },
+        { "id": "r_004", "startsAtUtc": "2026-10-06T18:00:00Z", "endsAtUtc": "2026-10-06T20:00:00Z" },
+        { "id": "r_005", "startsAtUtc": "2026-10-07T14:00:00Z", "endsAtUtc": "2026-10-07T17:00:00Z" },
+        { "id": "r_006", "startsAtUtc": "2026-10-08T13:00:00Z", "endsAtUtc": "2026-10-08T16:00:00Z" },
+        { "id": "r_007", "startsAtUtc": "2026-10-10T14:00:00Z", "endsAtUtc": "2026-10-10T16:00:00Z" }
+      ],
+      "exceptions": [
+        { "id": "x_001", "kind": "off", "startsAtUtc": "2026-11-12T06:00:00Z", "endsAtUtc": "2026-11-13T06:00:00Z" },
+        { "id": "x_002", "kind": "extra", "startsAtUtc": "2026-11-13T15:00:00Z", "endsAtUtc": "2026-11-13T18:00:00Z" }
+      ]
+    }
+  ],
+  "addedException": { "doctorId": "doc_002", "id": "x_003", "kind": "off", "startsAtUtc": "2026-11-15T06:00:00Z", "endsAtUtc": "2026-11-16T06:00:00Z" }
+}

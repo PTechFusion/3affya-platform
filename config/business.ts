@@ -11,6 +11,14 @@ export const business = {
   searchPriceBandsCents: [20000, 25000, 30000] as readonly number[],
   searchAvailableWithinHours: [72, 720] as readonly number[],
   slotHoldMinutes: 10,
+  // Availability (screen 30, task 2.6). Slot length is the first-visit length the doctor offers, 30 minutes by default; lead
+  // time is the minimum notice before a patient can book, 2 hours by default (rule P8); the horizon is how far ahead exceptions
+  // can be set and patients can book.
+  slotLengthMinutesDefault: 30,
+  slotLengthMinutesOptions: [15, 20, 30, 45, 60] as readonly number[],
+  leadTimeHoursDefault: 2,
+  leadTimeHoursOptions: [1, 2, 4, 12, 24, 48] as readonly number[],
+  bookingHorizonDays: 90, // (default until Dr Ayman confirms)
   fullRefundCutoffHours: 24, // (default until Q8) full refund when the patient cancels more than this many hours before the visit, none after
   recordsBlockGb: 1,
   recordsBlockPriceCents: 999,

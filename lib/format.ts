@@ -99,3 +99,15 @@ export function formatTime(instant: Date, timeZone: string, locale: Locale): str
 export function formatZone(instant: Date, timeZone: string): string {
   return zoneLabel(instant, timeZone);
 }
+
+/**
+ * Clock times only, e.g. "9:00 AM – 12:00 PM", safe in client components and for ranges that end at midnight. Built from two
+ * formatTime calls, not formatRange: formatRange prints both dates once the ends fall on different days, and its spacing
+ * differs between Node and Chromium (U+2009 and U+202F against plain spaces), which fails hydration. Each time stays on one
+ * line; the line may break after the dash. Name the zone once beside the group with formatZone (rule P6). With timeZone "UTC"
+ * and lib/slots wallClockInstant it labels a wall-clock rule rather than an instant.
+ */
+export function formatClockRange(start: Date, end: Date, timeZone: string, locale: Locale): string {
+  const one = (instant: Date) => formatTime(instant, timeZone, locale).replace(/\s/g, " ");
+  return `${one(start)} – ${one(end)}`;
+}
