@@ -7,15 +7,18 @@ import invitesJson from "@/data/sample/invites.json";
 import profilesJson from "@/data/sample/profiles.json";
 import availabilityJson from "@/data/sample/availability.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
-import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
+import type { Locale } from "@/lib/format";
 import { business } from "@/config/business";
-import { feeLines } from "@/lib/fees";
 import { addDays, zonedInstant, zonedParts, type StoredException, type StoredRule } from "@/lib/slots";
 import builderJson from "@/data/sample/builder.json";
 import usStatesJson from "@/data/sample/us-states.json";
-import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
-import type { Locale } from "@/lib/format";
 import { sampleInstant, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
+import payoutsJson from "@/data/sample/payouts.json";
+import type { PayoutAccount, PayoutRecordStatus, PayoutStatus } from "@/lib/payouts";
+import membershipsJson from "@/data/sample/memberships.json";
+import introductionsJson from "@/data/sample/introductions.json";
+import summariesJson from "@/data/sample/summaries.json";
+import type { SummaryData } from "@/components/brand/SummaryViewer";
 
 // The card mapping and the sample clock live in lib/card-data.ts (no JSON imports, so client components can use them);
 // pages keep importing them from here.
@@ -295,9 +298,6 @@ export function sampleAddedException(doctorId: string): StoredException | undefi
   return row && owner === doctorId ? shiftException(x, row.timeZone) : undefined;
 }
 /* ---------------- Payouts setup (screen 35) ---------------- */
-// Imports for this block sit here so the file stays append-only for parallel screens; ES imports are hoisted.
-import payoutsJson from "@/data/sample/payouts.json";
-import type { PayoutAccount, PayoutRecordStatus, PayoutStatus } from "@/lib/payouts";
 
 type SamplePayoutRow = Omit<PayoutAccount, "nextPayout" | "recentPayouts"> & {
   sample: PayoutStatus;
@@ -333,8 +333,6 @@ export function samplePayoutAccount(sample: PayoutStatus): SamplePayoutAccount |
   };
 }
 /* ---------------- Membership and billing (screen 33) ---------------- */
-// Imported here rather than at the top so parallel screen branches that append to this file do not collide.
-import membershipsJson from "@/data/sample/memberships.json";
 
 /** The membership states the portal shows. `cancelled`: cancelled in the Stripe portal, running to the end of the paid period. */
 export type MembershipStatus = "none" | "active" | "past_due" | "cancelled";
@@ -387,7 +385,6 @@ export function sampleMembership(status: MembershipStatus): SampleMembership | u
 }
 /* ---------------- Introduction inbox (screen 32) ---------------- */
 // Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
-import introductionsJson from "@/data/sample/introductions.json";
 
 /** Stored status. "confirmed" is a paid booking; once its time has passed it reads as awaiting done (see inboxStatus). */
 export type IntroductionStatus = "request" | "confirmed" | "done";
@@ -411,12 +408,13 @@ type IntroductionRow = {
   concernAr: string;
   prepared: IntroductionPrepared[];
   joinUrl: string | null;
-  sharedSummary: { id: string; sharedAtUtc: string; expiresAtUtc: string; reviewedAtUtc: string | null } | null;
+  /** The share (screen 36) the patient made for this professional; its dates and review state live on the share. */
+  sharedSummaryId: string | null;
   doneAtUtc: string | null;
 };
 
 /** A booking or an introduction request as the professional's inbox reads it. Every instant goes through sampleInstant. */
-export type SampleIntroduction = Omit<IntroductionRow, "startsAtUtc" | "receivedAtUtc" | "sharedSummary" | "doneAtUtc"> & {
+export type SampleIntroduction = Omit<IntroductionRow, "startsAtUtc" | "receivedAtUtc" | "sharedSummaryId" | "doneAtUtc"> & {
   /** The booked time; for a request, the time the patient asked for. */
   startsAt: Date;
   receivedAt: Date;
@@ -431,18 +429,15 @@ export type InboxStatus = "request" | "upcoming" | "awaitingDone" | "done";
 const introductionRows = introductionsJson as unknown as IntroductionRow[];
 
 function toIntroduction(r: IntroductionRow): SampleIntroduction {
-  const { startsAtUtc, receivedAtUtc, sharedSummary, doneAtUtc, ...rest } = r;
+  const { startsAtUtc, receivedAtUtc, sharedSummaryId, doneAtUtc, ...rest } = r;
+  // One source of truth: the share row (screen 36) carries the dates and the review; an ended share reads as none.
+  const share = sharedSummaryId ? shareFor(sharedSummaryId, r.doctorId) : undefined;
   return {
     ...rest,
     startsAt: sampleInstant(startsAtUtc),
     receivedAt: sampleInstant(receivedAtUtc),
-    sharedSummary: sharedSummary
-      ? {
-          id: sharedSummary.id,
-          sharedAt: sampleInstant(sharedSummary.sharedAtUtc),
-          expiresAt: sampleInstant(sharedSummary.expiresAtUtc),
-          reviewedAt: sharedSummary.reviewedAtUtc ? sampleInstant(sharedSummary.reviewedAtUtc) : null,
-        }
+    sharedSummary: share
+      ? { id: share.id, sharedAt: share.sharedAt, expiresAt: share.expiresAt, reviewedAt: share.summary.review?.at ?? null }
       : null,
     doneAt: doneAtUtc ? sampleInstant(doneAtUtc) : null,
   };
@@ -466,12 +461,14 @@ export function inboxStatus(i: SampleIntroduction, now: Date = new Date()): Inbo
   return i.startsAt.getTime() > now.getTime() ? "upcoming" : "awaitingDone";
 }
 /* ---------------- Records summaries and shares (screen 36; the summary body is screen 26's too) ---------------- */
-// Imported here rather than at the top so this block stays an append (wave-3 branches touch this file in parallel).
-import summariesJson from "@/data/sample/summaries.json";
-import type { SummaryData } from "@/components/brand/SummaryViewer";
 
-/** The prototype's signed-in professional (screens 29 to 36). Production reads the session. */
-export const sampleProfessionalId = "doc_002";
+/**
+ * The prototype's signed-in professional (screens 30 to 36): Dr Omar Khalil in Chicago. Production reads the session and the
+ * doctor's own zone from the availability settings. Dates the doctor reads about their own work show in this zone unless the
+ * page is opened with ?tz=. The builder (29) is the exception: it opens on doc_013, the registry pre-fill that /claim hands over.
+ */
+export const sampleProfessional = { id: "doc_002", timeZone: "America/Chicago" } as const;
+export const sampleProfessionalId = sampleProfessional.id;
 
 type SampleSummaryRow = Omit<SummaryData, "generatedAt"> & {
   recordSetId: string;

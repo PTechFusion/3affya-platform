@@ -8,11 +8,11 @@ import type { ReactNode } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Badge, Surface, type BadgeTone } from "@/components/ui";
 import { formatDate, formatMoney, formatNumber, formatSlotDay, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
-import { sampleMembership, type BillingInterval, type MembershipStatus } from "@/lib/sample";
+import { sampleMembership, sampleProfessional, type BillingInterval, type MembershipStatus } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
 import type { PlanId } from "@/app/[locale]/for-professionals/plans";
-import { PlanTable } from "./_parts/PlanTable";
+import { PlanTable } from "@/components/brand/PlanTable";
 import { PortalButton } from "./_parts/PortalButton";
 import { SubscribeForm, type IntervalOption } from "./_parts/SubscribeForm";
 import Loading from "./loading";
@@ -26,7 +26,7 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<Record
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "membership" });
-  return { title: t("metaTitle"), description: t("metaDescription") };
+  return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false, follow: false } };
 }
 
 export default async function MembershipPage({ params, searchParams }: Props) {
@@ -42,7 +42,7 @@ export default async function MembershipPage({ params, searchParams }: Props) {
   const requested = typeof sp.state === "string" ? STATES[sp.state] : undefined;
   const membership = sampleMembership(requested ?? "none");
   const status: MembershipStatus = membership?.status ?? "none";
-  const timeZone = typeof sp.tz === "string" ? viewerFrom(sp).timeZone : (membership?.timeZone ?? business.defaultTimeZone);
+  const timeZone = typeof sp.tz === "string" ? viewerFrom(sp).timeZone : (membership?.timeZone ?? sampleProfessional.timeZone);
   const now = new Date();
 
   const money = (cents: number) => formatMoney(cents, business.membershipCurrency, loc);

@@ -77,7 +77,7 @@
     "unclaimedHint": "From public US records. Not yet confirmed by the doctor.",
     "pending": "Credentials pending verification",
     "verified": "Credentials verified",
-    "verifiedOn": "Verified on {date}",
+    "verifiedOn": "Credentials verified on {date}",
     "boardCertified": "US board certified",
     "boardCertifiedHint": "A doctor who passed a national specialty exam after residency, on top of the licence every doctor needs.",
     "languages": "Languages",

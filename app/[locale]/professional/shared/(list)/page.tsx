@@ -9,7 +9,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Badge, ChevronNext, EmptyState, LinkButton, Surface } from "@/components/ui";
 import { business } from "@/config/business";
 import { formatDate, formatNumber, type Locale } from "@/lib/format";
-import { sampleProfessionalId, sharesFor } from "@/lib/sample";
+import { sampleProfessional, sampleProfessionalId, sharesFor } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import { SharedListSkeleton } from "../_parts/SharedListSkeleton";
 import { daysLeft, shareStatusTone } from "../_parts/status";
@@ -19,7 +19,7 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<Record
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "shared" });
-  return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false } };
+  return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false, follow: false } };
 }
 
 export default async function SharedSummariesPage({ params, searchParams }: Props) {
@@ -29,7 +29,8 @@ export default async function SharedSummariesPage({ params, searchParams }: Prop
   const sp = await searchParams;
   if (sp.state === "loading") return <SharedListSkeleton />;
 
-  const { timeZone } = viewerFrom(sp);
+  // The doctor reads these dates about their own work: their zone, unless ?tz= says otherwise.
+  const timeZone = typeof sp.tz === "string" ? viewerFrom(sp).timeZone : sampleProfessional.timeZone;
   const t = await getTranslations("shared");
   const ts = await getTranslations("summary");
   const counted = (n: number) => ({ count: n, label: formatNumber(n, loc) });

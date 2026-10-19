@@ -178,11 +178,9 @@ export function PreviewPanel({
       ) : null}
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="text-sm font-semibold text-ink-700">
-            {t("language")}
-          </span>
           <SegmentedControl<Locale>
-            label={t("language")}
+            legend={t("language")}
+            name="builder-preview-lang"
             value={previewLocale}
             onChange={onPreviewLocale}
             options={[
@@ -193,9 +191,9 @@ export function PreviewPanel({
         </div>
         {showMode ? (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span className="text-sm font-semibold text-ink-700">{t("mode")}</span>
             <SegmentedControl<PreviewMode>
-              label={t("mode")}
+              legend={t("mode")}
+              name="builder-preview-mode"
               value={mode}
               onChange={onMode}
               options={[

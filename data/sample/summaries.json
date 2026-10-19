@@ -3,7 +3,7 @@
     {
       "id": "sum_001",
       "recordSetId": "rs_001",
-      "patient": { "firstNameEn": "Layla", "firstNameAr": "ليلى", "gender": "f" },
+      "patient": { "firstNameEn": "Noura", "firstNameAr": "نورة", "gender": "f" },
       "generatedAtUtc": "2026-11-07T18:20:00Z",
       "reviewedBy": null,
       "documents": [
@@ -119,7 +119,7 @@
     {
       "id": "sum_003",
       "recordSetId": "rs_003",
-      "patient": { "firstNameEn": "Noura", "firstNameAr": "نورة", "gender": "f" },
+      "patient": { "firstNameEn": "Faisal", "firstNameAr": "فيصل", "gender": "m" },
       "generatedAtUtc": "2026-10-13T16:45:00Z",
       "reviewedBy": { "professionalId": "doc_002", "reviewedAtUtc": "2026-10-16T19:30:00Z" },
       "documents": [

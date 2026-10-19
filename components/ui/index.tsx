@@ -395,7 +395,7 @@ export function SegmentedControl<V extends string>({
   return (
     <fieldset className="min-w-0">
       <legend className="mb-1.5 text-sm font-semibold text-ink-700">{legend}</legend>
-      <div className="inline-flex max-w-full rounded-[var(--radius-tag)] border border-sand-300 bg-white p-1">
+      <div className="inline-flex max-w-full flex-wrap rounded-[var(--radius-tag)] border border-sand-300 bg-white p-1">
         {options.map((o) => (
           <label
             key={o.value}
@@ -535,46 +535,6 @@ export function Toast({
       <IconButton tone="onDark" label={dismissLabel} onClick={onDismiss}>
         <CloseIcon />
       </IconButton>
-    </div>
-  );
-}
-/* ---------------- Segmented control ---------------- */
-/**
- * Two to four mutually exclusive options in one pill row, for switching a view rather than submitting a form (a preview
- * language, a preview state). Each option is a 40 px button with aria-pressed; `label` names the group for screen readers
- * (show a visible label beside it). Pass `lang` on an option written in another script, e.g. العربية / English (rule H10).
- */
-export function SegmentedControl<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: Array<{ value: T; label: string; lang?: string }>;
-  onChange: (value: T) => void;
-}) {
-  return (
-    <div role="group" aria-label={label} className="inline-flex max-w-full flex-wrap gap-1 rounded-[var(--radius-tag)] bg-sand-200/70 p-1">
-      {options.map((option) => {
-        const active = option.value === value;
-        return (
-          <button
-            key={option.value}
-            type="button"
-            lang={option.lang}
-            aria-pressed={active}
-            onClick={() => onChange(option.value)}
-            className={cx(
-              "min-h-10 rounded-[var(--radius-tag)] px-4 text-sm font-semibold transition-colors",
-              active ? "bg-white text-sea-900 shadow-[var(--shadow-nav)]" : "text-ink-700 hover:text-sea-900 hover:underline underline-offset-4",
-            )}
-          >
-            {option.label}
-          </button>
-        );
-      })}
     </div>
   );
 }

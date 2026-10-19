@@ -35,10 +35,10 @@ export function formatTimeInZone(instant: Date, timeZone: string, locale: Locale
   const time = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" })
     .format(instant)
     .replace(/ /g, " "); // "6:00 م" never splits from its marker
-  // The zone never breaks across lines (no-break spaces). In Arabic it is also wrapped in a left-to-right isolate
+  // The zone never breaks across lines (zoneLabel uses no-break spaces). In Arabic it is also wrapped in a left-to-right isolate
   // (U+2066 ... U+2069, rule R3); without it the closing parenthesis of "(GMT+3)" joins the right-to-left run and is drawn
   // mirrored at the far end of the line.
-  const zone = zoneLabel(instant, timeZone).replace(/ /g, " ");
+  const zone = zoneLabel(instant, timeZone);
   return `${time} ${locale === "ar" ? `⁦${zone}⁩` : zone}`;
 }
 
@@ -47,8 +47,10 @@ function zoneLabel(instant: Date, timeZone: string): string {
   const zoneName = new Intl.DateTimeFormat("en-US", { timeZone, timeZoneName: "shortOffset" })
     .formatToParts(instant)
     .find((p) => p.type === "timeZoneName")?.value ?? "";
-  const city = timeZone.split("/").pop()?.replace(/_/g, " ") ?? timeZone;
-  return `${city} (${zoneName})`;
+  const city = timeZone.split("/").pop()?.replace(/_/g, "\u00A0") ?? timeZone;
+  // A real minus sign (U+2212) for negative offsets: browsers may break a line after a hyphen-minus, which split "GMT-" from "5)".
+  // No-break spaces keep "Los Angeles (GMT−8)" on one line wherever it is used.
+  return `${city}\u00A0(${zoneName.replace("-", "\u2212")})`;
 }
 
 /** Gregorian date, Western digits. Hijri display is optional and secondary (rule N3). */

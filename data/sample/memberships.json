@@ -1,42 +1,42 @@
 [
   {
     "id": "mem_none",
-    "doctorId": "doc_003",
+    "doctorId": "doc_002",
     "status": "none",
     "interval": null,
     "currentPeriodEndUtc": null,
     "paymentFailedAtUtc": null,
     "cancelledAtUtc": null,
-    "timeZone": "America/Detroit"
+    "timeZone": "America/Chicago"
   },
   {
     "id": "mem_active",
-    "doctorId": "doc_003",
+    "doctorId": "doc_002",
     "status": "active",
     "interval": "month",
     "currentPeriodEndUtc": "2026-11-28T14:00:00Z",
     "paymentFailedAtUtc": null,
     "cancelledAtUtc": null,
-    "timeZone": "America/Detroit"
+    "timeZone": "America/Chicago"
   },
   {
     "id": "mem_past_due",
-    "doctorId": "doc_003",
+    "doctorId": "doc_002",
     "status": "past_due",
     "interval": "month",
     "currentPeriodEndUtc": "2026-11-07T00:00:00Z",
     "paymentFailedAtUtc": "2026-11-07T00:00:00Z",
     "cancelledAtUtc": null,
-    "timeZone": "America/Detroit"
+    "timeZone": "America/Chicago"
   },
   {
     "id": "mem_cancelled",
-    "doctorId": "doc_003",
+    "doctorId": "doc_002",
     "status": "cancelled",
     "interval": "year",
     "currentPeriodEndUtc": "2026-11-21T14:00:00Z",
     "paymentFailedAtUtc": null,
     "cancelledAtUtc": "2026-11-05T16:20:00Z",
-    "timeZone": "America/Detroit"
+    "timeZone": "America/Chicago"
   }
 ]

@@ -16,7 +16,7 @@
     "concernAr": "انسداد في الأنف وشخير عالٍ منذ نحو سنة، ويقول معلموه إنه يبدو متعباً في الصف.",
     "prepared": ["medicines", "questions", "deviceTest"],
     "joinUrl": "https://meet.example.com/omar-khalil",
-    "sharedSummary": null,
+    "sharedSummaryId": null,
     "doneAtUtc": null
   },
   {
@@ -36,12 +36,7 @@
     "concernAr": "التهابات الأذن تتكرر، أربع مرات منذ بداية السنة. ذكر طبيب الأطفال أنابيب الأذن ونريد رأياً ثانياً.",
     "prepared": ["records", "questions"],
     "joinUrl": "https://meet.example.com/omar-khalil",
-    "sharedSummary": {
-      "id": "sh_001",
-      "sharedAtUtc": "2026-11-08T18:40:00Z",
-      "expiresAtUtc": "2026-12-08T18:40:00Z",
-      "reviewedAtUtc": null
-    },
+    "sharedSummaryId": "sh_001",
     "doneAtUtc": null
   },
   {
@@ -61,7 +56,7 @@
     "concernAr": "بحة في الصوت منذ نحو ثلاثة أشهر. يغني في جوقة المدرسة وتزداد البحة بعد التدريب.",
     "prepared": ["questions"],
     "joinUrl": null,
-    "sharedSummary": null,
+    "sharedSummaryId": null,
     "doneAtUtc": null
   },
   {
@@ -81,12 +76,7 @@
     "concernAr": "تورم في اللوزتين عدة مرات في السنة، مع شخير وتوقف في التنفس أثناء النوم.",
     "prepared": ["records", "medicines"],
     "joinUrl": "https://meet.example.com/omar-khalil",
-    "sharedSummary": {
-      "id": "sh_002",
-      "sharedAtUtc": "2026-11-06T09:15:00Z",
-      "expiresAtUtc": "2026-12-06T09:15:00Z",
-      "reviewedAtUtc": "2026-11-08T15:20:00Z"
-    },
+    "sharedSummaryId": "sh_003",
     "doneAtUtc": null
   },
   {
@@ -106,7 +96,7 @@
     "concernAr": "طنين في الأذن اليسرى منذ حفلة موسيقية قبل أسبوعين.",
     "prepared": ["questions"],
     "joinUrl": "https://meet.example.com/omar-khalil",
-    "sharedSummary": null,
+    "sharedSummaryId": null,
     "doneAtUtc": "2026-11-03T18:45:00Z"
   }
 ]

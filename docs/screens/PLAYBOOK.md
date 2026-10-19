@@ -92,7 +92,8 @@ Commit as `M<milestone>.<task> <screen name>` (one task id, from the brief heade
 - **Shared components only.** Build from `components/ui` and `components/brand`. Need a new primitive? Add it to
   `components/ui/index.tsx` at the end, generic (no page-specific copy or data), and name it in your report with one line of
   why. Never restyle a primitive inside a page; never add a colour, radius or font size that is not a token.
-- **One `DoctorCard`.** Never fork it. `toDoctorCardData` in `lib/sample.ts` is the only mapping.
+- **One `DoctorCard`.** Never fork it. `toDoctorCardData` in `lib/card-data.ts` (re-exported from `lib/sample.ts`; no JSON
+  imports, so client components may use it) is the only mapping.
 - **Links vs buttons.** Navigation is `<Link>` or `LinkButton`; actions are `<Button>`. Never nest interactive elements
   (`<a>` in `<a>`, `<button>` in `<button>`, `<Button>` inside `<Link>`): it is invalid HTML, React fails hydration and the
   page renders twice.
@@ -174,6 +175,17 @@ list. Returned screens get one more build pass, then come back to the reviewer w
   `ReviewedOn` line.
 - Verifier URLs (ABMS Certification Matters, FSMB DocInfo) duplicated in 02 and 14: `config/verifiers.ts`.
 - 03 renders its three fee lines in its own `<dl>`: switch to `FeeBreakdown`.
+- 12 renders its own plan table: switch to `components/brand/PlanTable` (add `recommended` and per-plan `action` props). Before
+  1.11 if time allows, otherwise when 12 is next touched.
+- `DoctorCard` hides the visit-types row when none are set; rule C1 wants "not stated" (`card.notStated`) instead.
+- Zone labels are rendered three ways (`ltr-run`, `ltr-run` + `dir`, `<bdi dir="ltr">`): settle on `ltr-run`. 33 and 36 each
+  define `DAY_MS`: move to `lib/format.ts` when a third user appears.
+- 30: US city names appear in Latin inside Arabic copy ("Chicago"); add a `zones.*` map for the doctor time zones.
+
+Professional portal facts (wave 3): the signed-in doctor is `sampleProfessional` (doc_002, Chicago) on every portal page and
+dates about the doctor's own work show in that zone unless `?tz=` is set. The builder (29) deliberately opens on doc_013, the
+registry pre-fill that `/claim/[token]` hands over; `?doctor=doc_002` is the editing state. Card previews stay in the patient's
+zone. Do not "fix" either.
 
 ## 10. Waves
 

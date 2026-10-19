@@ -21,6 +21,7 @@ import {
   upcomingSlots,
   usStates,
   type SampleDoctor,
+  sampleProfessional,
 } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import { BuilderSkeleton } from "./_parts/BuilderSkeleton";
@@ -82,7 +83,10 @@ export default async function BuilderPage({ params, searchParams }: Props) {
   const ctx = { npi: doctor.npi, hasAvailability, thisYear };
   const firstMissing = REQUIRED_ITEMS.find((k) => missingFor(k, draft, ctx));
   const registryKeys = (["name", "specialty", "npi", "languages"] as ChecklistKey[]).filter((k) => !missingFor(k, draft, ctx));
-  const date = (iso: string | null | undefined) => (iso ? formatDate(sampleInstant(iso), viewer.timeZone, loc) : undefined);
+  // Review dates are about the doctor's own work, so they show in the doctor's zone (?tz= overrides); the card preview below
+  // keeps the patient's zone, because the card is what a Gulf patient sees.
+  const ownZone = typeof sp.tz === "string" ? viewer.timeZone : sampleProfessional.timeZone;
+  const date = (iso: string | null | undefined) => (iso ? formatDate(sampleInstant(iso), ownZone, loc) : undefined);
   const rejectedFile = stage === "rejected" && row?.rejection ? row.files.find((f) => f.id === row.rejection?.fileId) : undefined;
   const preview = str(sp.preview);
   const step = initialStep(str(sp.step), stage, firstMissing ? ITEM_STEP[firstMissing] : undefined);

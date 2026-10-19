@@ -12,7 +12,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs, CheckIcon, LinkButton, Surface } from "@/components/ui";
 import { SummaryViewer } from "@/components/brand/SummaryViewer";
 import { formatDate, type Locale } from "@/lib/format";
-import { doctorById, sampleProfessionalId, shareFor } from "@/lib/sample";
+import { doctorById, sampleProfessional, sampleProfessionalId, shareFor } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import { MarkReviewed } from "./_parts/MarkReviewed";
 import { ViewerSkeleton } from "./_parts/ViewerSkeleton";
@@ -23,7 +23,7 @@ type Props = { params: Promise<{ locale: string; id: string }>; searchParams: Pr
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "shared.viewer" });
-  return { title: t("metaTitle"), robots: { index: false } };
+  return { title: t("metaTitle"), robots: { index: false, follow: false } };
 }
 
 export default async function SharedSummaryPage({ params, searchParams }: Props) {
@@ -35,7 +35,8 @@ export default async function SharedSummaryPage({ params, searchParams }: Props)
 
   const share = shareFor(id, sampleProfessionalId);
   if (!share) notFound(); // layout.tsx already answered 404; this narrows the type
-  const { timeZone } = viewerFrom(sp);
+  // The doctor reads these dates about their own work: their zone, unless ?tz= says otherwise.
+  const timeZone = typeof sp.tz === "string" ? viewerFrom(sp).timeZone : sampleProfessional.timeZone;
   const t = await getTranslations("shared");
   const tp = await getTranslations("portal");
   const ts = await getTranslations("summary");

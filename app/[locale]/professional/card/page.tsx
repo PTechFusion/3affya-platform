@@ -29,7 +29,7 @@ const SIGNED_IN_DOCTOR = "doc_002";
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "idCard" });
-  return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false } };
+  return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false, follow: false } };
 }
 
 /** A calendar date (YYYY-MM-DD) plus whole months, as an instant at UTC midnight; format it in UTC so no zone moves the day. */
