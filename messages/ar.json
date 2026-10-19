@@ -1644,5 +1644,104 @@
         "error": "تعذّر الإرسال الآن. حاول مرة أخرى."
       }
     }
+  },
+  "shared": {
+    "metaTitle": "الملخصات المشاركة | عافية",
+    "metaDescription": "ملخصات السجلات التي شاركها المرضى معك، وموعد انتهاء كل مشاركة.",
+    "title": "الملخصات المشاركة",
+    "lead": "ملخصات سجلات اختار المرضى مشاركتها معك. تنتهي المشاركة بعد {days} من إنشائها، أو قبل ذلك إذا أوقفها المريض.",
+    "days": "{count, plural, one {يوم واحد} two {يومين} few {{label} أيام} many {{label} يومًا} other {{label} يوم}}",
+    "rowAi": "ملخص بالذكاء الاصطناعي · {files} · {pages}",
+    "sharedOn": "تاريخ المشاركة",
+    "expiresOn": "تاريخ الانتهاء",
+    "daysLeft": "{count, plural, =0 {تنتهي اليوم} one {يبقى يوم واحد} two {يبقى يومان} few {تبقى {label} أيام} many {يبقى {label} يومًا} other {يبقى {label} يوم}}",
+    "open": "فتح",
+    "openLabel": "فتح ملخص {name}",
+    "status": {
+      "new": "جديد",
+      "viewed": "تم الاطلاع",
+      "reviewed": "تمت مراجعته منك"
+    },
+    "loading": "جارٍ تحميل الملخصات المشاركة",
+    "empty": {
+      "title": "لا توجد ملخصات مشاركة بعد",
+      "body": "عندما يشارك مريض ملخص سجلاته معك، يظهر هنا حتى تنتهي المشاركة.",
+      "action": "اذهب إلى الوارد"
+    },
+    "viewer": {
+      "metaTitle": "ملخص مشارك | عافية",
+      "breadcrumb": "مسار التنقل",
+      "title": "ملخص {name}",
+      "shareLine": "تمت مشاركته معك في {shared}. لا يمكن لأحد غيرك فتحه، وذلك حتى {expires}.",
+      "endsNote": "{gender, select, f {إذا أوقفت {name} المشاركة أو حذفت السجلات} other {إذا أوقف {name} المشاركة أو حذف السجلات}}، يختفي هذا الملخص من قائمتك. انقل ما تحتاجه إلى ملاحظات الزيارة.",
+      "markReviewed": "تأكيد المراجعة",
+      "marking": "جارٍ الحفظ",
+      "markHint": "يُرجى تأكيد المراجعة فقط بعد مطابقة الملخص مع صفحات المصدر. {gender, select, f {سترى} other {سيرى}} {name} عندها أعلى الملخص: «{reviewed}».",
+      "markedTitle": "تم تأكيد المراجعة",
+      "markedBody": "{gender, select, f {سترى} other {سيرى}} {name} أعلى الملخص: «{reviewed}».",
+      "prototypeNote": "نموذج أولي: لا يُحفظ أي شيء بعد.",
+      "markError": "تعذر تأكيد المراجعة. أعد تحميل الصفحة وحاول مرة أخرى.",
+      "alreadyReviewed": "تم تأكيد مراجعة هذا الملخص من قبل.",
+      "openNotes": "فتح في ملاحظات الزيارة",
+      "reviewedByYou": "تم تأكيد مراجعتك لهذا الملخص في {date}.",
+      "reviewTitle": "مراجعتك"
+    }
+  },
+  "summary": {
+    "aiLabel": "ملخص بالذكاء الاصطناعي",
+    "reviewedBy": "{gender, select, f {راجعته} other {راجعه}} {name}",
+    "notReviewed": "لم يراجعه طبيب بعد",
+    "aiWritten": "{audience, select, professional {أعدّه الذكاء الاصطناعي في {date} من مستندات {name}: {files}، {pages}.} other {أعدّه الذكاء الاصطناعي في {date} من مستنداتك: {files}، {pages}.}}",
+    "reviewedOn": "راجعه طبيب في {date}.",
+    "aiCheck": "قد يحتوي على أخطاء، لذا راجع كل بند مقابل صفحة المصدر قبل الاعتماد عليه.",
+    "files": "{count, plural, one {ملف واحد} two {ملفان} few {{label} ملفات} many {{label} ملفًا} other {{label} ملف}}",
+    "pages": "{count, plural, one {صفحة واحدة} two {صفحتان} few {{label} صفحات} many {{label} صفحة} other {{label} صفحة}}",
+    "checkFirst": "راجع أولًا:",
+    "flagCount": "{count, plural, one {بند واحد عليه ملاحظة} two {بندان عليهما ملاحظة} few {{label} بنود عليها ملاحظة} many {{label} بندًا عليها ملاحظة} other {{label} بند عليها ملاحظة}}",
+    "unreadableCount": "{count, plural, one {صفحة واحدة غير مقروءة} two {صفحتان غير مقروءتين} few {{label} صفحات غير مقروءة} many {{label} صفحة غير مقروءة} other {{label} صفحة غير مقروءة}}",
+    "allClear": "لا توجد ملاحظات، وقُرئت كل الصفحات.",
+    "notDiagnosis": "{audience, select, professional {هذا ليس تشخيصًا. يذكر فقط ما ورد في المستندات: ما لا تدعمه المستندات حُذف أو وُضعت عليه ملاحظة أدناه.} other {هذا ليس تشخيصًا ولا يغني عن زيارتك. يذكر فقط ما ورد في مستنداتك: ما لا تدعمه المستندات حُذف أو وُضعت عليه ملاحظة أدناه.}}",
+    "sections": {
+      "conditions": "الحالات المذكورة في المستندات",
+      "procedures": "الإجراءات",
+      "medications": "الأدوية",
+      "allergies": "الحساسية",
+      "results": "أحدث النتائج",
+      "flags": "بنود عليها ملاحظات",
+      "unreadable": "صفحات غير مقروءة",
+      "sources": "المستندات المصدر"
+    },
+    "notFound": "لم يرد شيء في هذه المستندات.",
+    "flagsEmpty": "لا توجد ملاحظات.",
+    "unreadableEmpty": "قُرئت كل الصفحات.",
+    "noted": "ورد بتاريخ {date}",
+    "done": "أُجري بتاريخ {date}",
+    "taken": "تاريخ الفحص: {date}",
+    "dated": "بتاريخ {date}",
+    "reaction": "رد الفعل التحسسي: {reaction}",
+    "source": "{count, plural, one {المصدر:} other {المصادر:}}",
+    "sourceRef": "{doc}، صفحة {page}",
+    "listSeparator": "، ",
+    "refSeparator": "؛ ",
+    "frequency": {
+      "onceDaily": "مرة واحدة يوميًا",
+      "twiceDaily": "مرتين يوميًا",
+      "threeTimesDaily": "ثلاث مرات يوميًا",
+      "asNeeded": "عند الحاجة"
+    },
+    "labRange": "المعدل حسب المختبر",
+    "below": "أقل من المعدل",
+    "above": "أعلى من المعدل",
+    "flagKind": {
+      "missing": "مستند ناقص",
+      "conflict": "تعارض بين المستندات"
+    },
+    "unreadableLabel": "غير مقروءة",
+    "unreadableReason": {
+      "blurry": "الصورة غير واضحة. لم يؤخذ أي شيء من هذه الصفحة.",
+      "handwritten": "تعذرت قراءة خط اليد. لم يؤخذ أي شيء من هذه الصفحة.",
+      "cutOff": "جزء من الصفحة مقطوع. لم يؤخذ أي شيء من هذه الصفحة."
+    },
+    "loading": "جارٍ تحميل الملخص"
   }
 }

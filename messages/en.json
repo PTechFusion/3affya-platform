@@ -1644,5 +1644,104 @@
         "error": "We could not send that just now. Please try again."
       }
     }
+  },
+  "shared": {
+    "metaTitle": "Shared summaries | 3affya",
+    "metaDescription": "Records summaries patients shared with you, and when each share ends.",
+    "title": "Shared summaries",
+    "lead": "Summaries of their records that patients chose to share with you. A share ends {days} after it was made, or sooner if the patient stops it.",
+    "days": "{count, plural, one {{label} day} other {{label} days}}",
+    "rowAi": "AI-generated summary · {files} · {pages}",
+    "sharedOn": "Shared on",
+    "expiresOn": "Expires on",
+    "daysLeft": "{count, plural, =0 {Ends today} one {{label} day left} other {{label} days left}}",
+    "open": "Open",
+    "openLabel": "Open {name}'s summary",
+    "status": {
+      "new": "New",
+      "viewed": "Viewed",
+      "reviewed": "Reviewed by you"
+    },
+    "loading": "Loading shared summaries",
+    "empty": {
+      "title": "No shared summaries yet",
+      "body": "When a patient shares the summary of their records with you, it shows here until the share ends.",
+      "action": "Go to your inbox"
+    },
+    "viewer": {
+      "metaTitle": "Shared summary | 3affya",
+      "breadcrumb": "Breadcrumb",
+      "title": "{name}'s summary",
+      "shareLine": "Shared with you on {shared}. Only you can open it, until {expires}.",
+      "endsNote": "If {name} stops sharing or deletes the records, this summary leaves your list. Copy what you need into your visit notes.",
+      "markReviewed": "Mark as reviewed",
+      "marking": "Saving",
+      "markHint": "Mark it reviewed only after checking it against the source pages. {name} will then see “{reviewed}” at the top of the summary.",
+      "markedTitle": "Marked as reviewed",
+      "markedBody": "{name} will see “{reviewed}” at the top of the summary.",
+      "prototypeNote": "Prototype: nothing is saved yet.",
+      "markError": "This summary could not be marked as reviewed. Reload the page and try again.",
+      "alreadyReviewed": "This summary is already marked as reviewed.",
+      "openNotes": "Open in visit notes",
+      "reviewedByYou": "You marked this summary as reviewed on {date}.",
+      "reviewTitle": "Your review"
+    }
+  },
+  "summary": {
+    "aiLabel": "AI-generated summary",
+    "reviewedBy": "Reviewed by {name}",
+    "notReviewed": "Not yet reviewed by a doctor",
+    "aiWritten": "{audience, select, professional {Written by AI on {date} from {name}'s documents: {files}, {pages}.} other {Written by AI on {date} from your documents: {files}, {pages}.}}",
+    "reviewedOn": "A doctor reviewed it on {date}.",
+    "aiCheck": "It can contain mistakes, so check each item against its source page before relying on it.",
+    "files": "{count, plural, one {{label} file} other {{label} files}}",
+    "pages": "{count, plural, one {{label} page} other {{label} pages}}",
+    "checkFirst": "Check first:",
+    "flagCount": "{count, plural, one {{label} flagged item} other {{label} flagged items}}",
+    "unreadableCount": "{count, plural, one {{label} unreadable page} other {{label} unreadable pages}}",
+    "allClear": "Nothing flagged, and every page could be read.",
+    "notDiagnosis": "{audience, select, professional {Not a diagnosis. It lists only what the documents say: anything they do not support is left out or flagged below.} other {This is not a diagnosis and does not replace your visit. It lists only what your documents say: anything they do not support is left out or flagged below.}}",
+    "sections": {
+      "conditions": "Conditions in the documents",
+      "procedures": "Procedures",
+      "medications": "Medications",
+      "allergies": "Allergies",
+      "results": "Recent results",
+      "flags": "Flagged items",
+      "unreadable": "Unreadable pages",
+      "sources": "Source documents"
+    },
+    "notFound": "Not found in these documents.",
+    "flagsEmpty": "Nothing flagged.",
+    "unreadableEmpty": "Every page could be read.",
+    "noted": "Noted {date}",
+    "done": "Done {date}",
+    "taken": "Test date: {date}",
+    "dated": "Dated {date}",
+    "reaction": "Reaction: {reaction}",
+    "source": "{count, plural, one {Source:} other {Sources:}}",
+    "sourceRef": "{doc}, page {page}",
+    "listSeparator": ", ",
+    "refSeparator": "; ",
+    "frequency": {
+      "onceDaily": "once a day",
+      "twiceDaily": "twice a day",
+      "threeTimesDaily": "three times a day",
+      "asNeeded": "when needed"
+    },
+    "labRange": "Lab range",
+    "below": "Below range",
+    "above": "Above range",
+    "flagKind": {
+      "missing": "Missing document",
+      "conflict": "Documents disagree"
+    },
+    "unreadableLabel": "Unreadable",
+    "unreadableReason": {
+      "blurry": "Too blurry to read. Nothing was taken from this page.",
+      "handwritten": "The handwriting could not be read. Nothing was taken from this page.",
+      "cutOff": "Part of the page is cut off. Nothing was taken from this page."
+    },
+    "loading": "Loading the summary"
   }
 }

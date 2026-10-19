@@ -276,3 +276,92 @@ export function verifiedAlternatives(d: SampleDoctor, limit = 2): { scope: "spec
   if (seesSameAges.length) return { scope: "ages", doctors: seesSameAges.slice(0, limit) };
   return { scope: "any", doctors: others.slice(0, limit) };
 }
+
+/* ---------------- Records summaries and shares (screen 36; the summary body is screen 26's too) ---------------- */
+// Imported here rather than at the top so this block stays an append (wave-3 branches touch this file in parallel).
+import summariesJson from "@/data/sample/summaries.json";
+import type { SummaryData } from "@/components/brand/SummaryViewer";
+
+/** The prototype's signed-in professional (screens 29 to 36). Production reads the session. */
+export const sampleProfessionalId = "doc_002";
+
+type SampleSummaryRow = Omit<SummaryData, "generatedAt"> & {
+  recordSetId: string;
+  patient: { firstNameEn: string; firstNameAr: string; gender: "f" | "m" };
+  generatedAtUtc: string;
+  reviewedBy: { professionalId: string; reviewedAtUtc: string } | null;
+};
+type SampleShareRow = { id: string; summaryId: string; professionalId: string; sharedAtUtc: string; viewedAtUtc: string | null };
+
+const summaryRows = (summariesJson as unknown as { summaries: SampleSummaryRow[] }).summaries;
+const shareRows = (summariesJson as unknown as { shares: SampleShareRow[] }).shares;
+
+/** A summary as both viewers read it, instants shifted with sampleInstant. `review` is the licensed reviewer (rules T4, Q6). */
+export type SampleSummary = {
+  recordSetId: string;
+  patient: SampleSummaryRow["patient"];
+  data: SummaryData;
+  review: { professionalId: string; at: Date } | null;
+};
+
+function toSampleSummary(row: SampleSummaryRow): SampleSummary {
+  const { recordSetId, patient, generatedAtUtc, reviewedBy, ...rest } = row;
+  return {
+    recordSetId,
+    patient,
+    data: { ...rest, generatedAt: sampleInstant(generatedAtUtc) },
+    review: reviewedBy ? { professionalId: reviewedBy.professionalId, at: sampleInstant(reviewedBy.reviewedAtUtc) } : null,
+  };
+}
+
+/** The patient's summary for one record set (screen 26). */
+export function summaryForRecordSet(recordSetId: string): SampleSummary | undefined {
+  const row = summaryRows.find((s) => s.recordSetId === recordSetId);
+  return row ? toSampleSummary(row) : undefined;
+}
+
+/** New until the professional opens it, viewed once opened, reviewed once that professional marked the summary reviewed. */
+export type ShareStatus = "new" | "viewed" | "reviewed";
+
+export type SampleShare = {
+  id: string;
+  professionalId: string;
+  summary: SampleSummary;
+  sharedAt: Date;
+  /** Every share ends shareDefaultDays after it was made (the patient's own choice of end date comes with screen 27). */
+  expiresAt: Date;
+  status: ShareStatus;
+};
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+function toSampleShare(row: SampleShareRow): SampleShare | undefined {
+  const summaryRow = summaryRows.find((s) => s.id === row.summaryId);
+  if (!summaryRow) return undefined;
+  const summary = toSampleSummary(summaryRow);
+  const sharedAt = sampleInstant(row.sharedAtUtc);
+  const status: ShareStatus =
+    summary.review?.professionalId === row.professionalId ? "reviewed" : row.viewedAtUtc ? "viewed" : "new";
+  return {
+    id: row.id,
+    professionalId: row.professionalId,
+    summary,
+    sharedAt,
+    expiresAt: new Date(sharedAt.getTime() + business.shareDefaultDays * DAY_MS),
+    status,
+  };
+}
+
+/** The shares a professional can open now, newest first. Ended shares are gone from the list (task 3.10). */
+export function sharesFor(professionalId: string, now: Date = new Date()): SampleShare[] {
+  return shareRows
+    .filter((r) => r.professionalId === professionalId)
+    .map(toSampleShare)
+    .filter((s): s is SampleShare => !!s && s.expiresAt > now)
+    .sort((a, b) => b.sharedAt.getTime() - a.sharedAt.getTime());
+}
+
+/** One share, only for the professional it was made for and only before it ends; anything else is refused (undefined). */
+export function shareFor(id: string, professionalId: string, now: Date = new Date()): SampleShare | undefined {
+  return sharesFor(professionalId, now).find((s) => s.id === id);
+}
