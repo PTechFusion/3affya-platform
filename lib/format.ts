@@ -18,7 +18,8 @@ export function formatMoney(amountMinor: number, currency: string, locale: Local
     style: "currency",
     currency,
     currencyDisplay: "code",
-    minimumFractionDigits: fraction === 3 ? 3 : 0,
+    // Whole amounts drop the decimals (USD 150); any other amount shows them all (USD 0.30, not USD 0.3).
+    minimumFractionDigits: fraction === 3 ? 3 : Number.isInteger(amount) ? 0 : 2,
     maximumFractionDigits: fraction,
   }).format(amount);
 }

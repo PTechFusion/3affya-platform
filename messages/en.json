@@ -304,5 +304,297 @@
     "popular": "Popular specialties",
     "contactLead": "Still stuck?",
     "contactLink": "Contact us"
+  },
+  "legal": {
+    "draftBadge": "Draft for legal review",
+    "draftNote": "Placeholder text for 3affya's lawyer to review. It will change before launch.",
+    "effective": "Effective date:",
+    "effectiveDraft": "not yet in force",
+    "lastReviewed": "Last reviewed:",
+    "summaryTitle": "In short",
+    "contents": "On this page",
+    "noteLabel": "To decide before launch",
+    "questionsTitle": "Questions about this page?",
+    "questionsBody": "Write to us. A person reads every message and replies in Arabic or English.",
+    "contactLink": "Contact us",
+    "relatedTitle": "Other policies",
+    "units": {
+      "hours": "{count, plural, one {{n} hour} other {{n} hours}}",
+      "minutes": "{count, plural, one {{n} minute} other {{n} minutes}}",
+      "days": "{count, plural, one {{n} day} other {{n} days}}"
+    },
+    "privacy": {
+      "metaTitle": "Privacy notice | 3affya",
+      "metaDescription": "How 3affya collects, uses and protects your information and health records, and the choices you have. Draft for legal review.",
+      "title": "Privacy notice",
+      "summary": {
+        "1": "We collect only what we need to book your visit and, if you ask, to summarise your records.",
+        "2": "Your records go only to the doctor you choose, and you can stop sharing at any time.",
+        "3": "We do not sell your information or use your health details for advertising.",
+        "4": "You can delete your uploads or your account; some payment records are kept as the law requires."
+      },
+      "sections": {
+        "who": {
+          "title": "Who we are",
+          "p1": "3affya is an online service that helps patients in the Gulf find and book US-trained, Arabic-speaking doctors. It is run by a US company that is being registered now. Its legal name and address will appear here before launch.",
+          "p2": "This notice explains what information we collect, why we collect it, who can see it and the choices you have.",
+          "note": "Counsel: confirm the operating entity and its address, and whether 3affya is a HIPAA covered entity, a business associate or neither (overview open question 5). The wording of this notice depends on that answer."
+        },
+        "collect": {
+          "title": "What we collect",
+          "li1": "Account details: your name, phone number or email, country, language and time zone.",
+          "li2": "Booking details: the doctor, the time, the reason for the visit and who the visit is for.",
+          "li3": "Payment details: our payment provider handles your card. We see the amount and the last four digits, never the full card number.",
+          "li4": "Records you upload: reports, scans and photos of documents, and the summary made from them.",
+          "li5": "Technical details: your device type and the pages you visit, used to keep the service working and safe."
+        },
+        "use": {
+          "title": "How we use it",
+          "li1": "To book and confirm your visit and send you the details.",
+          "li2": "To take payment and issue receipts and refunds.",
+          "li3": "To summarise your records, only after you agree to that separately.",
+          "li4": "To reply when you contact us.",
+          "li5": "To keep the service safe, for example to stop fraud.",
+          "p1": "We do not sell your information. We do not use your health details for advertising, and we never send health details in marketing messages."
+        },
+        "ai": {
+          "title": "AI and your records",
+          "p1": "If you ask for a records summary, an AI model reads the pages you upload and writes a summary and a timeline. We ask for this consent on its own, before anything is processed.",
+          "p2": "Every summary is marked as made by AI, links each item to the page it came from and is not a diagnosis. You can always ask a person instead.",
+          "note": "Counsel: confirm where AI processing takes place and that the AI vendor's terms fit the answer to open question 5 (rule T3)."
+        },
+        "share": {
+          "title": "Who can see it",
+          "li1": "The doctor you book, and any doctor you choose to share a summary with. A share lasts {shareDays} unless you pick another end date, and you can stop it at any time.",
+          "li2": "Companies that host the platform, take payments and send email for us. They may use your information only to do that work.",
+          "li3": "Authorities, only when the law requires it.",
+          "p1": "Our team opens your records only when you ask for help, and every access is logged."
+        },
+        "where": {
+          "title": "Where your information is stored",
+          "p1": "We are confirming where information about patients in each Gulf country must be stored. Before launch, this section will name the storage locations and any transfer outside your country.",
+          "note": "Counsel: UAE health data may not be stored or processed outside the UAE without health-authority approval (rule Q3). Saudi transfers abroad need adequacy, standard clauses or a derogation under the PDPL (rule Q4). Decide the storage location or approval route for each country, then the wording here."
+        },
+        "keep": {
+          "title": "How long we keep it",
+          "p1": "Your uploaded records and summaries stay in your account until you delete them.",
+          "p2": "Booking and payment records are kept for as long as tax and accounting rules require, even after you close your account.",
+          "p3": "Backups are encrypted and replaced on a rolling schedule.",
+          "note": "Dr Ayman: choose the default after a visit, keep until the patient deletes or delete after a set period (overview open question 13). Counsel: confirm the required retention periods in each country; UAE rules set a long retention period for provider records (rules Q3, T8)."
+        },
+        "choices": {
+          "title": "Your choices",
+          "li1": "See and download your records and summaries at any time.",
+          "li2": "Delete your uploads. This removes the files, the summary and every share link. We keep only a note that a deletion happened.",
+          "li3": "Withdraw your consent to AI processing. Summaries already made stay until you delete them.",
+          "li4": "Close your account from Settings.",
+          "note": "Counsel: list the rights that apply in each country (for example access, correction, deletion and objection) and how fast we must answer."
+        },
+        "security": {
+          "title": "How we protect it",
+          "p1": "Your information is encrypted when it is stored and when it travels. Records sit in private storage, and download links stop working after a few minutes. We log every access to records, and we keep health details out of error reports."
+        },
+        "relatives": {
+          "title": "Visits for a relative",
+          "p1": "You can book for a child or another relative. If you do, you confirm that you are allowed to share their information and to agree on their behalf.",
+          "note": "Counsel: confirm the age of consent and the guardian rules in each country."
+        },
+        "changes": {
+          "title": "Changes to this notice",
+          "p1": "If we change this notice, we update the dates at the top. Before an important change takes effect, we tell you by email."
+        },
+        "complaints": {
+          "title": "Questions and complaints",
+          "p1": "To ask about your information or to make a complaint, contact us. A person replies, in Arabic or English.",
+          "p2": "You can also complain to the data protection authority in your country. Before launch, this section will name the authority for each country we serve.",
+          "note": "Counsel: name the privacy contact (or data protection officer) and the authority for each country we serve. Rule T9 needs a complaints contact on this page."
+        }
+      }
+    },
+    "terms": {
+      "metaTitle": "Terms of use | 3affya",
+      "metaDescription": "The terms for using 3affya as a patient: what the service does, what a visit can and cannot do, booking, payment and AI tools. Draft for legal review.",
+      "title": "Terms of use",
+      "summary": {
+        "1": "3affya helps you find and book a US-licensed doctor; the doctor, not 3affya, gives medical advice.",
+        "2": "A visit is a consultation and second opinion by video or phone. It is not emergency care.",
+        "3": "You pay the full price shown before you book, and nothing is added later.",
+        "4": "You can cancel under the refund rules, and you can close your account at any time."
+      },
+      "sections": {
+        "about": {
+          "title": "About these terms",
+          "p1": "These terms apply when you use 3affya as a patient: to browse, book, pay or upload records. By creating an account or booking a visit, you agree to them.",
+          "p2": "Doctors who list on 3affya agree to separate terms for professionals.",
+          "note": "Counsel: confirm the contracting entity, and whether doctors need their own agreement at launch."
+        },
+        "service": {
+          "title": "What 3affya does",
+          "li1": "Lists US-trained doctors and shows the licence and board certification we checked.",
+          "li2": "Lets you book a time, pay and share your records with the doctor you choose.",
+          "li3": "Offers optional tools, such as a records summary written by AI.",
+          "p1": "3affya is not a hospital or clinic and does not give medical advice. Each doctor is responsible for the care they give."
+        },
+        "visits": {
+          "title": "What a visit can and cannot do",
+          "p1": "Your doctor is licensed in the United States and consults you from there. The visit is a first consultation and a second opinion: the doctor explains your condition, reviews your records and recommends next steps.",
+          "p2": "A visit does not replace your local doctor. Whether the doctor can prescribe for you depends on the rules in your country; the doctor will tell you.",
+          "p3": "3affya is not for emergencies. If this is urgent, call {emergency}.",
+          "note": "Counsel: settle the cross-border framing. Saudi rules let a practitioner outside the Kingdom treat a patient there only under a KSA-based practitioner's supervision, with video and signed consent (rule Q1). In the UAE the patient's location sets the regulator, and diagnosis from abroad is restricted (rule Q2). Kuwait, Qatar, Oman and Bahrain are a research gap (rule Q5). The answer also decides whether phone stays a visit type."
+        },
+        "account": {
+          "title": "Your account",
+          "li1": "Give true details, and keep your sign-in codes private.",
+          "li2": "You must be an adult to hold an account. You can book for a child or relative you are allowed to act for.",
+          "li3": "You can close your account at any time from Settings.",
+          "note": "Counsel: confirm the minimum age in each country."
+        },
+        "booking": {
+          "title": "Booking and payment",
+          "p1": "The price is shown before you book. It is made of three lines: the doctor's fee, the platform fee and card processing. You pay the full amount when you book.",
+          "p2": "We hold your chosen time for {holdMinutes} while you pay. If payment does not finish in that time, the time is released for others."
+        },
+        "cancel": {
+          "title": "Cancelling a visit",
+          "p1": "You can cancel from your bookings page. Whether you get money back depends on how early you cancel."
+        },
+        "ai": {
+          "title": "AI tools",
+          "p1": "AI tools, such as the records summary and the assistant that suggests a specialty, give information, not a diagnosis. Each result is marked as made by AI, and you can always ask a person.",
+          "p2": "Check anything important with your doctor."
+        },
+        "fairUse": {
+          "title": "Fair use",
+          "li1": "Do not upload someone else's records without their permission.",
+          "li2": "Do not misuse the service, try to break it or copy doctors' profiles.",
+          "li3": "Treat doctors and our team with respect."
+        },
+        "liability": {
+          "title": "Our responsibility",
+          "p1": "We work to keep 3affya accurate and available, but we cannot promise it will always be free of errors or interruptions. The limits of our responsibility will be set out here once our lawyers confirm them.",
+          "note": "Counsel: draft the limitation of liability, the doctor's independent responsibility and any indemnities. Nothing in this section is final."
+        },
+        "law": {
+          "title": "Governing law and disputes",
+          "p1": "This section will name the law that governs these terms and how disputes are settled.",
+          "note": "Counsel: choose the governing law, the venue and any arbitration clause, and check consumer-protection rules in each Gulf country we serve."
+        },
+        "changes": {
+          "title": "Changes to these terms",
+          "p1": "If we change these terms, we update the dates at the top. Before an important change takes effect, we tell you by email."
+        }
+      },
+      "links": {
+        "fees": "How fees are worked out",
+        "refunds": "Read the refund rules"
+      }
+    },
+    "fees": {
+      "metaTitle": "Fees | 3affya",
+      "metaDescription": "What a first visit and a records summary cost on 3affya, how the three price lines add up, and when you pay. Draft for legal review.",
+      "title": "Fees",
+      "summary": {
+        "1": "Each doctor sets one price for a first visit, shown before you book.",
+        "2": "The total is three lines: the doctor's fee, a {platformPct} platform fee and card processing.",
+        "3": "You pay the full total when you book. Nothing is added afterwards.",
+        "4": "After you pay, the breakdown stays in your account under Receipts."
+      },
+      "sections": {
+        "lines": {
+          "title": "The three lines",
+          "p1": "Every first-visit price has three lines, and they always add up to the total you pay:",
+          "li1": "Doctor's fee: set by the doctor and shown on their profile.",
+          "li2": "Platform fee: {platformPct} of the doctor's fee. It pays for 3affya: checking licences, booking, records and support.",
+          "li3": "Card processing: {cardPct} of the doctor's fee and the platform fee together, plus {cardFixed}, rounded up to the next cent. This is what the card networks and our payment provider charge.",
+          "note": "Dr Ayman: the platform fee is a default until you confirm it (overview open question 8), and who absorbs the Stripe Connect fees is open (question 12). Counsel: confirm that the card processing line may be passed to patients in each country we serve."
+        },
+        "when": {
+          "title": "When you pay",
+          "p1": "You pay the full total when you book, by card, Apple Pay or Google Pay. We take the whole amount at once; we do not hold it and charge later.",
+          "p2": "We keep your chosen time for {holdMinutes} while you pay.",
+          "p3": "Some local debit cards, such as mada cards in Saudi Arabia, may be declined. Apple Pay, or a Visa or Mastercard card, usually works."
+        },
+        "currency": {
+          "title": "Currency",
+          "p1": "Prices are shown in {currency}. If your card uses another currency, your bank converts the amount and may add its own fee."
+        },
+        "records": {
+          "title": "Records summary",
+          "p1": "A records summary costs {blockPrice} for each {blockSize} of accepted files, rounded up to whole blocks.",
+          "p2": "You see the price before you pay, and nothing is processed until payment goes through. If we cannot finish the summary, you are not charged for it."
+        },
+        "estimate": {
+          "title": "Your written breakdown",
+          "p1": "After you pay, the three lines, the total and the date are saved in your account under Receipts. You can view or download them at any time, and they stay even if the visit is cancelled.",
+          "note": "Counsel: rule P15 cites the US No Surprises Act good-faith estimate for self-pay patients. Confirm whether it applies to these cross-border visits and what the estimate must contain."
+        },
+        "doctors": {
+          "title": "Fees for doctors",
+          "p1": "Doctors pay a membership to be listed on 3affya. Prices will be published on the page for doctors once they are set.",
+          "note": "Dr Ayman: membership and banner prices are open (overview open question 8)."
+        }
+      },
+      "example": {
+        "caption": "Example: a first visit priced at {fee}",
+        "doctorFee": "Doctor's fee",
+        "doctorFeeDetail": "Set by the doctor",
+        "platformFee": "Platform fee",
+        "platformFeeDetail": "{platformPct} of the doctor's fee",
+        "cardProcessing": "Card processing",
+        "cardProcessingDetail": "{cardPct} plus {cardFixed}",
+        "total": "Total you pay"
+      },
+      "links": {
+        "doctors": "See the page for doctors"
+      }
+    },
+    "refunds": {
+      "metaTitle": "Cancellations and refunds | 3affya",
+      "metaDescription": "When you get money back if you or the doctor cancel, and how refunds are paid. Draft for legal review.",
+      "title": "Cancellations and refunds",
+      "summary": {
+        "1": "Cancel more than {cutoff} before your visit and you get a full refund.",
+        "2": "Cancel later than that, or miss the visit, and there is no refund.",
+        "3": "If the doctor cancels or does not join, you get a full refund.",
+        "4": "Refunds go back to the card or wallet you paid with."
+      },
+      "sections": {
+        "you": {
+          "title": "If you cancel",
+          "li1": "More than {cutoff} before the visit starts: a full refund of the total, all three lines.",
+          "li2": "{cutoff} or less before the visit, or if you do not join: no refund.",
+          "p1": "The cut-off is counted back from the start time shown on your booking.",
+          "note": "Dr Ayman: this is the default rule until the refund policy is confirmed (overview open question 8). Counsel: check it against consumer-protection rules in each country we serve, including whether the card processing line must also be refunded."
+        },
+        "doctor": {
+          "title": "If the doctor cancels or does not join",
+          "p1": "You get a full refund of the total. If you want, we help you book another doctor in the same specialty."
+        },
+        "problem": {
+          "title": "If something goes wrong on our side",
+          "p1": "If the visit cannot take place because of a problem with 3affya, you get a full refund of the total."
+        },
+        "change": {
+          "title": "Changing the time",
+          "p1": "To move a visit, cancel it and book a new time. The refund rules above apply to the visit you cancel.",
+          "note": "Dr Ayman: decide whether a patient may move a visit once without losing the fee."
+        },
+        "how": {
+          "title": "How refunds are paid",
+          "li1": "You paid in full when you booked, so money back is always a refund to the same card or wallet. We cannot send it to another card or pay it in cash.",
+          "li2": "Your bank decides how long the refund takes to appear on your statement.",
+          "li3": "We email you when the refund is issued, and your receipt shows a refund line."
+        },
+        "records": {
+          "title": "Records summary",
+          "p1": "If we cannot finish your summary, you are not charged. If a finished summary looks wrong, contact us and a person will check it.",
+          "note": "Dr Ayman: confirm whether a finished summary can be refunded."
+        },
+        "ask": {
+          "title": "Asking for a refund",
+          "p1": "If you think you should have money back, contact us with your booking reference. A person reviews every request and replies in Arabic or English."
+        }
+      }
+    }
   }
 }
