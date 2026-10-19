@@ -11,6 +11,12 @@ export const business = {
   recordsBlockPriceCents: 999,
   shareDefaultDays: 30, // (default until Q13)
   membershipGraceDays: 7, // (default until Q8)
+  // Memberships and the banner add-on (task 3.5), shown on /for-professionals and in the portal. Doctors pay in USD.
+  membershipCurrency: "USD" as const,
+  membershipMonthlyCents: 4900, // (default until Q8)
+  membershipYearlyCents: 49000, // (default until Q8)
+  bannerMonthlyCents: 999, // (default until Q8; USD 9.99 per month as earlier mentioned)
+  membershipPricesConfirmed: false as boolean, // (default until Q8) while false, pages say the prices are placeholders
   removalSlaHours: 48,
   inviteRateLimitPerIpPerHour: 10,
   otpDigits: 6,
