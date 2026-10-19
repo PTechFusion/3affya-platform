@@ -47,9 +47,27 @@ type Props = {
   action?: { href: string; label?: string };
   /** Row only: a qualifier after the price label, e.g. that the price includes every fee (rule C5). */
   priceNote?: string;
+  /** The practice ID card image (screen 31): the 3affya wordmark on both faces, no Book and no next-available line (a saved
+   *  image would keep showing a time that has passed). Pair it with `side`. */
+  idCard?: boolean;
+  /** Text stamped across both faces, e.g. Unverified on an ID card until the credentials are approved (rules C8, A2). */
+  watermark?: string;
 };
 
-export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHref, bookable = true, href, action, priceNote }: Props) {
+export function DoctorCard({
+  doctor,
+  state,
+  size = "full",
+  side,
+  onBook,
+  bookHref,
+  bookable = true,
+  href,
+  action,
+  priceNote,
+  idCard = false,
+  watermark,
+}: Props) {
   const t = useTranslations("card");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -60,6 +78,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
   const specialty = locale === "ar" ? doctor.specialtyAr : doctor.specialtyEn;
   const city = locale === "ar" ? doctor.cityAr : doctor.cityEn;
   const mini = size === "mini";
+  const canBook = bookable && !idCard; // an image has no buttons
 
   const stateBadge =
     state === "verified" ? (
@@ -109,10 +128,12 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
 
   const Front = (
     <div
+      data-card-face="front"
       className={[
         "flex h-full flex-col rounded-[var(--radius-card)] border-b-[10px] border-lagoon-600 text-ink-900 shadow-[var(--shadow-card)]",
         mini ? "p-3" : "p-5 sm:p-6",
         side === "front" ? "flex-1" : "",
+        watermark ? "relative isolate overflow-hidden" : "",
       ].join(" ")}
       style={{ background: "linear-gradient(135deg, #EFEBE2, #DBD3BF 60%, #C6BEAC)" }}
     >
@@ -147,13 +168,20 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
           </span>
         ) : null}
         {flipControl}
+        {idCard ? <CardWordmark /> : null}
       </div>
+      {watermark ? <Watermark text={watermark} face="front" /> : null}
     </div>
   );
 
   const Back = (
     <div
-      className={["flex h-full flex-col rounded-[var(--radius-card)] text-white shadow-[var(--shadow-card)]", mini ? "p-3" : "p-5 sm:p-6"].join(" ")}
+      data-card-face="back"
+      className={[
+        "flex h-full flex-col rounded-[var(--radius-card)] text-white shadow-[var(--shadow-card)]",
+        mini ? "p-3" : "p-5 sm:p-6",
+        watermark ? "relative isolate overflow-hidden" : "",
+      ].join(" ")}
       style={{ background: "linear-gradient(135deg, #065E78, #08708E 45%, #0194BE 80%, #02B3CA)" }}
     >
       <div className="flex items-start justify-between gap-2">
@@ -163,8 +191,12 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
       <dl className={["mt-1.5 grid gap-x-4 gap-y-1", mini ? "text-xs" : "text-[13px]", "grid-cols-[auto_1fr]"].join(" ")}>
         <dt className="text-white/75">{t("languages")}</dt>
         <dd>{doctor.languages}</dd>
-        <dt className="text-white/75">{t("visitTypes")}</dt>
-        <dd>{doctor.visitTypes.map((v) => t(v)).join(" · ")}</dd>
+        {doctor.visitTypes.length ? (
+          <>
+            <dt className="text-white/75">{t("visitTypes")}</dt>
+            <dd>{doctor.visitTypes.map((v) => t(v)).join(" · ")}</dd>
+          </>
+        ) : null}
         <dt className="text-white/75">{t("ages")}</dt>
         <dd>{t(doctor.ages)}</dd>
         {state !== "unclaimed" && doctor.trainingLines.length ? (
@@ -201,13 +233,13 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
           ) : (
             <p className="text-xs text-white/75">{state === "unclaimed" ? t("unclaimedHint") : t("noAvailability")}</p>
           )}
-          {state === "verified" ? (
+          {state === "verified" && !idCard ? (
             <p className="text-xs text-white/85">
               {t("nextAvailable")}: <span className="tabular">{doctor.nextAvailableLabel ?? t("noAvailability")}</span>
             </p>
           ) : null}
         </div>
-        {state === "verified" && !mini && bookable && bookHref ? (
+        {state === "verified" && !mini && canBook && bookHref ? (
           <LinkButton
             href={bookHref}
             variant="secondary"
@@ -216,7 +248,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
           >
             {tc("book")}
           </LinkButton>
-        ) : state === "verified" && !mini && bookable ? (
+        ) : state === "verified" && !mini && canBook ? (
           <Button
             variant="secondary"
             className="border-white bg-white text-lagoon-900"
@@ -228,7 +260,9 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
             {tc("book")}
           </Button>
         ) : null}
+        {idCard ? <CardWordmark plate /> : null}
       </div>
+      {watermark ? <Watermark text={watermark} face="back" /> : null}
     </div>
   );
 
@@ -255,6 +289,33 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHre
         </div>
       </div>
     </div>
+  );
+}
+
+/** The 3affya wordmark on the ID card faces, at the reading-end corner. Never mirrored (rule R2). On the lagoon back it sits on
+ *  a sand plate, as the on-dark logo does. */
+function CardWordmark({ plate }: { plate?: boolean }) {
+  return (
+    <span className={["ms-auto inline-flex shrink-0", plate ? "rounded-[var(--radius-field)] bg-sand-50 px-2.5 py-1.5" : ""].join(" ")}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/brand/3affya_wordmark_transparent.png" alt="3affya" width={1479} height={492} className={plate ? "h-6 w-auto" : "h-7 w-auto"} />
+    </span>
+  );
+}
+
+/** A stamp across a face (e.g. Unverified). Decorative for screen readers: the state badge on the front already says it. */
+function Watermark({ text, face }: { text: string; face: "front" | "back" }) {
+  return (
+    <span aria-hidden="true" className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      <span
+        className={[
+          "-rotate-12 whitespace-nowrap rounded-[var(--radius-field)] border-4 border-current px-5 py-1 text-4xl font-bold",
+          face === "front" ? "text-danger/45" : "text-white/45",
+        ].join(" ")}
+      >
+        {text}
+      </span>
+    </span>
   );
 }
 

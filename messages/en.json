@@ -1644,5 +1644,38 @@
         "error": "We could not send that just now. Please try again."
       }
     }
+  },
+  "idCard": {
+    "metaTitle": "Practice ID card",
+    "metaDescription": "See your practice ID card, front and back, in Arabic or English, and download it to share or print.",
+    "title": "Practice ID card",
+    "lead": "The card patients see on 3affya, ready to share or print.",
+    "loading": "Loading your card",
+    "side": "Side",
+    "sides": {
+      "front": "Front",
+      "back": "Back"
+    },
+    "language": "Card language",
+    "watermark": "Unverified",
+    "download": {
+      "title": "Download",
+      "hint": "Print quality, at three times screen size, in the card language you picked.",
+      "front": "Download front",
+      "back": "Download back",
+      "both": "Download both sides",
+      "working": "Preparing your file",
+      "saved": "Saved:",
+      "error": "We could not make the file. Try again, or try another browser."
+    },
+    "verify": {
+      "title": "Verification",
+      "verifiedOn": "Credentials verified on {date}",
+      "verifiedBody": "Your card shows this date. We check your licence and board certificate again every {months, plural, one {month} other {{monthsLabel} months}}; the next check is due by {due}.",
+      "board": "Board certification",
+      "checkOn": "Patients can check it on",
+      "pendingBody": "Your card carries an Unverified stamp until our team approves your credentials. Patients cannot book you until then.",
+      "pendingAction": "Review your credentials"
+    }
   }
 }
