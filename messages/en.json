@@ -2555,5 +2555,112 @@
       "action": "Find your profile"
     },
     "loading": "Loading your profile"
+  },
+  "receipts": {
+    "metaTitle": "Receipts | 3affya",
+    "metaDescription": "Itemised receipts for every visit you paid for, with any refund.",
+    "title": "Receipts",
+    "lead": "Every payment line by line, with any refund.",
+    "loading": "Loading your receipts",
+    "currencyNote": "Amounts in {currency}, the currency you were charged in.",
+    "columns": {
+      "paidOn": "Paid on",
+      "doctor": "Doctor",
+      "total": "Total",
+      "status": "Status"
+    },
+    "row": {
+      "paid": "Paid {date}"
+    },
+    "status": {
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "partlyRefunded": "Partly refunded",
+      "refundPending": "Refund on its way"
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "brand": {
+      "visa": "Visa",
+      "mastercard": "Mastercard"
+    },
+    "wallet": {
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    },
+    "empty": {
+      "title": "No receipts yet",
+      "body": "A receipt appears here each time you pay for a visit.",
+      "action": "Find a doctor"
+    },
+    "detail": {
+      "breadcrumb": "Breadcrumb",
+      "crumb": "Receipt {number}",
+      "title": "Receipt",
+      "loading": "Loading the receipt",
+      "totalPaid": "Total paid",
+      "paidOn": "Paid",
+      "method": "Paid with",
+      "number": "Receipt number",
+      "card": "{brand} ending {last4}",
+      "lines": {
+        "caption": "What the total is made of",
+        "doctorFee": "Doctor's fee",
+        "doctorFeeDetail": "Set by the doctor",
+        "platformFee": "Platform fee",
+        "platformFeeDetail": "{pct} of the doctor's fee, first visit only",
+        "cardProcessing": "Card processing",
+        "cardProcessingDetail": "Card networks and our payment provider",
+        "total": "Total paid"
+      },
+      "estimate": "These are the three lines you saw and accepted before you paid. They stay here as your written estimate.",
+      "feesLink": "How the price is made",
+      "refund": {
+        "title": "Refund",
+        "line": "Refund",
+        "issued": "To {method} · issued {date}",
+        "pending": "To {method} · started {date}, on its way to you",
+        "net": "Paid after refunds",
+        "bank": "Your bank decides when the refund shows on your statement.",
+        "rulesLink": "Cancellation and refund rules",
+        "reason": {
+          "patientEarly": "You cancelled more than {cutoff} before the visit, so the whole total comes back: all three lines.",
+          "patientLate": "You cancelled {cutoff} or less before the visit, so there is no refund.",
+          "doctor": "The doctor cancelled, so the whole total comes back: all three lines.",
+          "platform": "The visit could not take place because of a problem on our side, so the whole total comes back: all three lines."
+        }
+      },
+      "download": {
+        "button": "Download receipt (PDF)",
+        "pending": "Opening the receipt…",
+        "hint": "Opens your receipt on Stripe, our payment provider. Save or print it as a PDF from there.",
+        "error": {
+          "preview": "This preview is not connected to Stripe yet. On the live site, this button opens your receipt on Stripe.",
+          "unavailable": "Stripe did not answer. Please try again in a minute.",
+          "notAllowed": "Please sign in again to open this receipt."
+        }
+      },
+      "visit": {
+        "title": "Your visit",
+        "yourTime": "Your time",
+        "doctorTime": "Doctor's time",
+        "status": {
+          "upcoming": "Upcoming",
+          "done": "Done",
+          "cancelled": "Cancelled"
+        },
+        "cancelledOn": "Cancelled {date}",
+        "refundBy": "Cancel before <nowrap>{day}</nowrap> <nowrap>{time}</nowrap> for a full refund.",
+        "change": "Change or cancel",
+        "view": "View booking"
+      },
+      "notFound": {
+        "title": "We cannot find this receipt",
+        "body": "The link may be incomplete, or the receipt belongs to another account.",
+        "action": "See all receipts"
+      }
+    }
   }
 }

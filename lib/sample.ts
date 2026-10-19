@@ -593,3 +593,109 @@ const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
 export function builderRowFor(id: string): SampleBuilderRow | undefined {
   return sampleBuilderRows.find((r) => r.id === id);
 }
+/* ---------------- Receipts (screen 23) ---------------- */
+// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way). Local names
+// carry a receipt prefix so another screen's own import of bookings.json cannot collide with this one.
+import receiptBookingsJson from "@/data/sample/bookings.json";
+import receiptsJson from "@/data/sample/receipts.json";
+import { refundFor, type CancelledBy, type RefundReason } from "@/lib/refunds";
+
+type ReceiptBookingRow = {
+  id: string;
+  doctorId: string;
+  startsAtUtc: string;
+  visitType: "video" | "phone";
+  status: "upcoming" | "done" | "cancelled";
+  feeUsdCents: number;
+  platformFeeUsdCents: number;
+  cardProcessingUsdCents: number;
+  doctorTimeZone: string;
+};
+
+export type ReceiptCardBrand = "visa" | "mastercard";
+export type ReceiptWallet = "applePay" | "googlePay";
+export type ReceiptRefundStatus = "pending" | "succeeded";
+
+/** Payment facts per booking (data/sample/receipts.json), as the payment_intent.succeeded and charge.refunded webhooks store them. */
+type ReceiptRow = {
+  bookingId: string;
+  receiptNumber: string;
+  currency: string;
+  paidAtUtc: string;
+  paymentMethod: { wallet: ReceiptWallet | null; brand: ReceiptCardBrand; last4: string };
+  cancellation: { atUtc: string; by: CancelledBy } | null;
+  refund: { id: string; createdAtUtc: string; status: ReceiptRefundStatus } | null;
+};
+
+/**
+ * One receipt: a paid booking with its three lines as charged (the booking row, never recomputed from today's fee), how it was
+ * paid, and any cancellation and refund. Instants go through sampleInstant. The refund amount follows the refund rule in
+ * lib/refunds.ts; production reads the amount Stripe refunded from the stored refund row.
+ */
+export type SampleReceipt = {
+  id: string;
+  receiptNumber: string;
+  doctorId: string;
+  visitType: "video" | "phone";
+  visitStatus: "upcoming" | "done" | "cancelled";
+  startsAt: Date;
+  doctorTimeZone: string;
+  paidAt: Date;
+  currency: string;
+  doctorFeeCents: number;
+  platformFeeCents: number;
+  cardProcessingCents: number;
+  totalCents: number;
+  paymentMethod: ReceiptRow["paymentMethod"];
+  cancellation: { at: Date; by: CancelledBy; reason: RefundReason } | null;
+  refunds: Array<{ id: string; at: Date; status: ReceiptRefundStatus; amountCents: number }>;
+};
+
+const receiptBookingRows = receiptBookingsJson as unknown as ReceiptBookingRow[];
+const receiptRows = receiptsJson as unknown as ReceiptRow[];
+
+function toReceipt(r: ReceiptRow): SampleReceipt | undefined {
+  const b = receiptBookingRows.find((row) => row.id === r.bookingId);
+  if (!b) return undefined;
+  const startsAt = sampleInstant(b.startsAtUtc);
+  const totalCents = b.feeUsdCents + b.platformFeeUsdCents + b.cardProcessingUsdCents;
+  const cancelledAt = r.cancellation ? sampleInstant(r.cancellation.atUtc) : null;
+  const due = r.cancellation && cancelledAt ? refundFor(totalCents, startsAt, cancelledAt, r.cancellation.by) : null;
+  return {
+    id: b.id,
+    receiptNumber: r.receiptNumber,
+    doctorId: b.doctorId,
+    visitType: b.visitType,
+    visitStatus: b.status,
+    startsAt,
+    doctorTimeZone: b.doctorTimeZone,
+    paidAt: sampleInstant(r.paidAtUtc),
+    currency: r.currency,
+    doctorFeeCents: b.feeUsdCents,
+    platformFeeCents: b.platformFeeUsdCents,
+    cardProcessingCents: b.cardProcessingUsdCents,
+    totalCents,
+    paymentMethod: r.paymentMethod,
+    cancellation: r.cancellation && cancelledAt && due ? { at: cancelledAt, by: r.cancellation.by, reason: due.reason } : null,
+    refunds:
+      r.refund && due && due.amountCents > 0
+        ? [{ id: r.refund.id, at: sampleInstant(r.refund.createdAtUtc), status: r.refund.status, amountCents: due.amountCents }]
+        : [],
+  };
+}
+
+/**
+ * The signed-in patient's receipts (samplePatient), newest payment first. Every sample booking is hers; the first name stored on
+ * the booking rows predates samplePatient and is not read here. Production reads the session's bookings under RLS.
+ */
+export function patientReceipts(): SampleReceipt[] {
+  return receiptRows
+    .map(toReceipt)
+    .filter((r): r is SampleReceipt => !!r)
+    .sort((a, b) => b.paidAt.getTime() - a.paidAt.getTime());
+}
+
+/** One receipt by booking id, only if it is the signed-in patient's; anything else is undefined (the not-found state). */
+export function patientReceiptById(id: string): SampleReceipt | undefined {
+  return patientReceipts().find((r) => r.id === id);
+}
