@@ -1,0 +1,36 @@
+[
+  {
+    "id": "doc_002",
+    "licenceState": "IL",
+    "licenceNumber": "036-118942",
+    "boardStatus": "certified",
+    "boardName": null,
+    "videoLink": "https://meet.example.com/dr-omar-khalil",
+    "files": [
+      { "id": "f_002_1", "name": "Illinois-medical-licence-2026.pdf", "kind": "licence", "sizeBytes": 842113, "uploadedAtUtc": "2026-11-02T14:12:00Z" },
+      { "id": "f_002_2", "name": "ABOto-board-certificate.pdf", "kind": "board", "sizeBytes": 1203550, "uploadedAtUtc": "2026-11-02T14:13:00Z" }
+    ],
+    "submittedAtUtc": "2026-11-03T09:00:00Z",
+    "decidedAtUtc": "2026-11-04T11:00:00Z",
+    "rejection": null
+  },
+  {
+    "id": "doc_009",
+    "licenceState": "MI",
+    "licenceNumber": "4301098765",
+    "boardStatus": "certified",
+    "boardName": "American Board of Family Medicine",
+    "videoLink": "",
+    "files": [
+      { "id": "f_009_1", "name": "Michigan-licence-photo.jpg", "kind": "licence", "sizeBytes": 2480112, "uploadedAtUtc": "2026-11-06T09:00:00Z" },
+      { "id": "f_009_2", "name": "ABFM-certificate-sports-medicine.pdf", "kind": "board", "sizeBytes": 918340, "uploadedAtUtc": "2026-11-06T09:02:00Z" }
+    ],
+    "submittedAtUtc": "2026-11-06T09:30:00Z",
+    "decidedAtUtc": "2026-11-08T12:00:00Z",
+    "rejection": {
+      "fileId": "f_009_1",
+      "reasonEn": "The licence file is a photo of a screen and the licence number is cut off. Upload the licence certificate, or a screenshot of the Michigan board lookup that shows the full number and the expiry date.",
+      "reasonAr": "ملف الترخيص صورة لشاشة، ورقم الترخيص غير ظاهر بالكامل. ارفع شهادة الترخيص، أو لقطة من صفحة البحث في مجلس ميشيغان تُظهر الرقم كاملاً وتاريخ الانتهاء."
+    }
+  }
+]

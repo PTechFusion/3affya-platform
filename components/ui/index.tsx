@@ -172,12 +172,14 @@ export function EmptyState({ title, body, action }: { title: string; body: strin
 }
 
 /* ---------------- Coach mark ---------------- */
-export function CoachMark({ title, body }: { title: string; body: string }) {
+/** `action` (optional) sits at the end of the mark, e.g. a dismiss button for a first-use hint. */
+export function CoachMark({ title, body, action }: { title: string; body: string; action?: ReactNode }) {
   return (
     <div role="note" className="relative max-w-xs rounded-2xl bg-sea-900 px-4 py-3 text-white shadow-[var(--shadow-card)]">
       <span aria-hidden="true" className="absolute -top-2 start-6 size-4 rotate-45 bg-sea-900" />
       <p className="font-semibold">{title}</p>
       <p className="text-sm text-white/85">{body}</p>
+      {action ? <div className="mt-2.5 flex justify-end">{action}</div> : null}
     </div>
   );
 }
@@ -471,6 +473,36 @@ export function ToastRegion({ children }: { children?: ReactNode }) {
     </div>
   );
 }
+/* ---------------- Check card ---------------- */
+/**
+ * The checkbox twin of RadioCard: one of several choices that can all be on (languages spoken, visit types offered). Group
+ * them in a <fieldset> with a <legend>; `children` renders under the title while the box is checked (e.g. a follow-up select).
+ */
+export function CheckCard({
+  title,
+  description,
+  className,
+  children,
+  ...props
+}: Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "title" | "children"> & { title: string; description?: string; children?: ReactNode }) {
+  return (
+    <div
+      className={cx(
+        "rounded-[var(--radius-field)] border border-sand-300 bg-white transition-colors hover:border-lagoon-600 has-checked:border-sea-700 has-checked:bg-sea-100",
+        className,
+      )}
+    >
+      <label className="flex min-h-12 cursor-pointer items-start gap-2.5 p-3">
+        <input type="checkbox" className="mt-1 size-5 shrink-0 accent-sea-700" {...props} />
+        <span className="flex min-w-0 flex-col">
+          <span className="font-semibold text-ink-900">{title}</span>
+          {description ? <span className="text-sm text-ink-700">{description}</span> : null}
+        </span>
+      </label>
+      {props.checked && children ? <div className="px-3 pb-3">{children}</div> : null}
+    </div>
+  );
+}
 
 export function Toast({
   id,
@@ -503,6 +535,46 @@ export function Toast({
       <IconButton tone="onDark" label={dismissLabel} onClick={onDismiss}>
         <CloseIcon />
       </IconButton>
+    </div>
+  );
+}
+/* ---------------- Segmented control ---------------- */
+/**
+ * Two to four mutually exclusive options in one pill row, for switching a view rather than submitting a form (a preview
+ * language, a preview state). Each option is a 40 px button with aria-pressed; `label` names the group for screen readers
+ * (show a visible label beside it). Pass `lang` on an option written in another script, e.g. العربية / English (rule H10).
+ */
+export function SegmentedControl<T extends string>({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: T;
+  options: Array<{ value: T; label: string; lang?: string }>;
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div role="group" aria-label={label} className="inline-flex max-w-full flex-wrap gap-1 rounded-[var(--radius-tag)] bg-sand-200/70 p-1">
+      {options.map((option) => {
+        const active = option.value === value;
+        return (
+          <button
+            key={option.value}
+            type="button"
+            lang={option.lang}
+            aria-pressed={active}
+            onClick={() => onChange(option.value)}
+            className={cx(
+              "min-h-10 rounded-[var(--radius-tag)] px-4 text-sm font-semibold transition-colors",
+              active ? "bg-white text-sea-900 shadow-[var(--shadow-nav)]" : "text-ink-700 hover:text-sea-900 hover:underline underline-offset-4",
+            )}
+          >
+            {option.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
