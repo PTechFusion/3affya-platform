@@ -11,12 +11,15 @@ import { emergencyNumberFor } from "@/lib/viewer";
 
 const CHIPS = ["family-medicine", "pediatrics", "dermatology", "cardiology"];
 
-export function MissingPage({ variant, country = "SA" }: { variant: "missing" | "removed"; country?: string }) {
+/** `specialtySlug`: on the 410 of a removed profile, the doctor's own specialty leads the chips so "another doctor in the same
+ *  specialty" is one tap away (rule S6). */
+export function MissingPage({ variant, country = "SA", specialtySlug }: { variant: "missing" | "removed"; country?: string; specialtySlug?: string }) {
   const t = useTranslations("missing");
   const locale = useLocale();
   const name = (s: { nameEn: string; nameAr: string }) => (locale === "ar" ? s.nameAr : s.nameEn);
   const suggestions: SearchSuggestion[] = sampleSpecialties.map((s) => ({ kind: "specialty", label: name(s), href: `/search?specialty=${s.slug}` }));
-  const chips = CHIPS.map((slug) => sampleSpecialties.find((s) => s.slug === slug)).filter((s) => s !== undefined);
+  const slugs = specialtySlug ? [specialtySlug, ...CHIPS.filter((s) => s !== specialtySlug)].slice(0, CHIPS.length) : CHIPS;
+  const chips = slugs.map((slug) => sampleSpecialties.find((s) => s.slug === slug)).filter((s) => s !== undefined);
   return (
     <>
       <SiteNav />

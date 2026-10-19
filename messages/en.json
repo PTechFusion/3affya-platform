@@ -1448,5 +1448,126 @@
       "notYouBody": "Tell us, and a person on our team will look into it.",
       "report": "Tell us it was not you"
     }
+  },
+  "profile": {
+    "metaTitle": "{name}, {specialty} | 3affya",
+    "metaDescription": "{name}, {specialty} in {city}. US-trained and verified by 3affya. See training, languages, the all-in first-visit price and the next open times.",
+    "metaDescriptionRegistry": "{name}, {specialty} in {city}. Listed from public US records and not yet confirmed by the doctor.",
+    "metaTitleRemoved": "Profile removed | 3affya",
+    "loading": "Loading the doctor's profile",
+    "breadcrumb": "Breadcrumb",
+    "noReviews": "No reviews yet. Training and years in practice are shown instead.",
+    "yearsInPractice": "{years, plural, one {{yearsLabel} year in practice} other {{yearsLabel} years in practice}}",
+    "booking": {
+      "title": "Book a first visit",
+      "priceLabel": "First visit, all-in",
+      "priceUnknown": "Price not published yet",
+      "accepting": "Accepting new patients",
+      "slotLabel": "Book {day} at {time}, {zone}",
+      "includes": "Includes the doctor's fee, the 3affya fee and card processing.",
+      "feesLink": "How the price adds up",
+      "cancellation": "Cancel more than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} before the visit for a full refund.",
+      "refundsLink": "Refund policy",
+      "noTimesBody": "{name} has not opened times on 3affya yet.",
+      "notOpenTitle": "Online booking is not open yet",
+      "notOpenBody": "{name} is finishing account setup. Booking opens here when it is done.",
+      "otherDoctors": "See other {specialty} doctors"
+    },
+    "credentials": {
+      "title": "Credentials and training",
+      "verifiedOn": "Credentials verified on {date}",
+      "verifiedBody": "On this date 3affya checked the doctor's medical licence, board certificate and identity. We check again every {months, plural, one {month} other {{monthsLabel} months}}.",
+      "board": "Board certification",
+      "licence": "Medical licence",
+      "licenceValue": "{state}, United States",
+      "checkOn": "Check it yourself on",
+      "training": "Training",
+      "school": "Medical school",
+      "graduated": "Graduated {year}",
+      "experience": "Experience"
+    },
+    "visits": {
+      "title": "Fees and visit types",
+      "samePrice": "The same price for video and phone.",
+      "bestFor": {
+        "video": "Best when the doctor needs to see something, like a rash, a wound or how you move.",
+        "phone": "Best for talking through results and questions, or when video is hard to use."
+      }
+    },
+    "availability": {
+      "title": "Availability",
+      "lead": "Open times in your time zone:",
+      "seeAll": "See all times",
+      "emptyBody": "When {name} opens times, they will show here.",
+      "notOpenBody": "Times will show here once online booking opens."
+    },
+    "about": {
+      "title": "About {name}"
+    },
+    "registry": {
+      "unclaimedLabel": "Unclaimed profile.",
+      "unclaimedBody": "Details from public US records, not yet confirmed by the doctor.",
+      "pendingLabel": "Credentials pending verification.",
+      "pendingBody": "The doctor has claimed this profile and 3affya is checking the credentials. Booking opens once they are verified.",
+      "sourceLine": "Source: {source} · <nowrap>updated {date}</nowrap>",
+      "source": {
+        "cms": "CMS Doctors and Clinicians file"
+      },
+      "factsTitle": "From public records",
+      "factsNote": "Facts only. 3affya adds no rating or score.",
+      "school": "Medical school",
+      "year": "Graduation year",
+      "group": "Group practice",
+      "hospital": "Hospital",
+      "notListed": "Not listed",
+      "claim": {
+        "eyebrow": "Are you {name}?",
+        "title": "Claim this profile, free",
+        "body": "Your card is already made from public records. Claiming is free, and you can change it any time.",
+        "notMe": "This is not me, or remove this page",
+        "canAdd": "After you claim, you can add:",
+        "items": {
+          "photo": "Your photo",
+          "fee": "Your first-visit fee",
+          "times": "The times you are free",
+          "bio": "A short bio in Arabic and English",
+          "tags": "Your areas of expertise"
+        }
+      },
+      "pendingClaim": {
+        "title": "Your profile is in review",
+        "body": "We are checking your licence and board certificate. You can keep editing your profile while you wait.",
+        "cta": "Open your profile builder"
+      },
+      "removal": {
+        "title": "Removal requested",
+        "body": "Someone asked us to take this page down. We check every request; once it is confirmed, the page comes down within {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}}.",
+        "claimTitle": "Did you not ask for this?",
+        "claimBody": "If this is your profile and you want to keep it, claim it instead. A person on our team reviews every removal request."
+      },
+      "alternatives": {
+        "title": "Find a verified doctor in {specialty}",
+        "lead": "These doctors are verified and take bookings on 3affya.",
+        "relaxed": {
+          "children": "No verified {specialty} doctor yet. These verified doctors also see children.",
+          "adults": "No verified {specialty} doctor yet. These verified doctors also see adults.",
+          "allAges": "No verified {specialty} doctor yet. These verified doctors see patients of all ages.",
+          "any": "No verified {specialty} doctor yet. These doctors are verified and take bookings."
+        },
+        "seeAll": "See all {specialty} doctors",
+        "searchAll": "Search all doctors",
+        "viewProfileOf": "View the profile of {name}"
+      },
+      "invite": {
+        "title": "Want {name} on 3affya?",
+        "body": "Ask us to invite them. It takes one tap and we do not ask for your details.",
+        "cta": "Invite this doctor",
+        "sending": "Sending…",
+        "sentTitle": "Thank you. We will invite {name}.",
+        "sentBody": "If they join and pass verification, this page will show their price and times.",
+        "prototypeNote": "Prototype: no invite is sent yet.",
+        "error": "We could not send that just now. Please try again."
+      }
+    }
   }
 }

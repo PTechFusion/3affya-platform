@@ -78,3 +78,18 @@ export function instantAtHourInZone(hour: number, timeZone: string, ref: Date = 
   const guess = Date.UTC(day.getUTCFullYear(), day.getUTCMonth(), day.getUTCDate(), hour);
   return new Date(guess - (wall(new Date(guess)) - guess));
 }
+
+/** Weekday and date without the year, e.g. "Sun, Nov 15": the day line of a slot (profile preview, slot picker). */
+export function formatSlotDay(instant: Date, timeZone: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(tag(locale), { timeZone, weekday: "short", day: "numeric", month: "short" }).format(instant);
+}
+
+/** Clock time only, e.g. "6:00 PM". Use it where the zone is named once for the group with formatZone (rule P6). */
+export function formatTime(instant: Date, timeZone: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" }).format(instant);
+}
+
+/** The zone named, e.g. "Riyadh (GMT+3)", at that instant (rule P6). Latin: render it as its own LTR run (rule R3). */
+export function formatZone(instant: Date, timeZone: string): string {
+  return zoneLabel(instant, timeZone);
+}
