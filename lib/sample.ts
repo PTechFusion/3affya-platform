@@ -593,3 +593,28 @@ const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
 export function builderRowFor(id: string): SampleBuilderRow | undefined {
   return sampleBuilderRows.find((r) => r.id === id);
 }
+
+/* ---------------- Patient settings (screen 28) ---------------- */
+// Appended block (wave 4). The signed-in patient's settings (data/sample/patient-settings.json): her name in both scripts, the
+// reserved example.com email, an optional phone, her zone and calendar choice, which optional emails are on, whether she has
+// uploads, and when the ?state=deletionRequested preview asked for her account to be deleted (shifted with sampleInstant, so
+// the deletion date always lies ahead). Production reads the profiles row through the session; the page language is the URL.
+import patientSettingsJson from "@/data/sample/patient-settings.json";
+
+export type PatientEmailKey = "summaryReady" | "shareOpened" | "news";
+export type SamplePatientSettings = {
+  nameAr: string;
+  nameEn: string;
+  email: string;
+  phone: string;
+  timeZone: string;
+  hijri: boolean;
+  emails: Record<PatientEmailKey, boolean>;
+  hasUploads: boolean;
+  deletionRequestedAt: Date;
+};
+
+export function samplePatientSettings(): SamplePatientSettings {
+  const { deletionRequestedAtUtc, ...rest } = patientSettingsJson;
+  return { ...rest, deletionRequestedAt: sampleInstant(deletionRequestedAtUtc) };
+}
