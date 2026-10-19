@@ -593,3 +593,72 @@ const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
 export function builderRowFor(id: string): SampleBuilderRow | undefined {
   return sampleBuilderRows.find((r) => r.id === id);
 }
+/* ---------------- Patient bookings (screen 21, booking confirmation) ---------------- */
+// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+import bookingsJson from "@/data/sample/bookings.json";
+import bookingVisitsJson from "@/data/sample/booking-visits.json";
+import type { FeeLines } from "@/lib/fees";
+
+/** Stored status: a paid visit still to come, a visit that took place, or a cancelled booking. */
+export type PatientBookingStatus = "upcoming" | "done" | "cancelled";
+
+type PatientBookingRow = {
+  id: string;
+  doctorId: string;
+  patientFirstName: string;
+  startsAtUtc: string;
+  visitType: "video" | "phone";
+  status: PatientBookingStatus;
+  feeUsdCents: number;
+  platformFeeUsdCents: number;
+  cardProcessingUsdCents: number;
+  patientTimeZone: string;
+  doctorTimeZone: string;
+};
+
+/** What a booking row does not carry (data/sample/booking-visits.json): the visit length, the doctor's meeting link for a video
+ *  visit (phone visits have none: the doctor rings the patient), and when a cancelled booking was cancelled. */
+type PatientBookingVisitRow = { bookingId: string; durationMinutes: number; joinUrl: string | null; cancelledAtUtc: string | null };
+
+/** A patient's booking with every instant shifted by sampleInstant. `paid` is what the payment charged, line by line (rule P1). */
+export type PatientBooking = {
+  id: string;
+  doctorId: string;
+  status: PatientBookingStatus;
+  visitType: "video" | "phone";
+  startsAt: Date;
+  endsAt: Date;
+  durationMinutes: number;
+  patientTimeZone: string;
+  doctorTimeZone: string;
+  paid: FeeLines;
+  joinUrl: string | null;
+  cancelledAt: Date | null;
+};
+
+const patientBookingRows = bookingsJson as unknown as PatientBookingRow[];
+const patientBookingVisitRows = bookingVisitsJson as unknown as PatientBookingVisitRow[];
+
+/** One booking by id. Production reads it through RLS, so only the signed-in patient's own bookings resolve. */
+export function patientBookingById(id: string): PatientBooking | undefined {
+  const row = patientBookingRows.find((b) => b.id === id);
+  if (!row) return undefined;
+  const visit = patientBookingVisitRows.find((v) => v.bookingId === id);
+  const durationMinutes = visit?.durationMinutes ?? business.slotLengthMinutesDefault;
+  const startsAt = sampleInstant(row.startsAtUtc);
+  const { feeUsdCents: doctorFeeCents, platformFeeUsdCents: platformFeeCents, cardProcessingUsdCents: cardProcessingCents } = row;
+  return {
+    id: row.id,
+    doctorId: row.doctorId,
+    status: row.status,
+    visitType: row.visitType,
+    startsAt,
+    endsAt: new Date(startsAt.getTime() + durationMinutes * 60_000),
+    durationMinutes,
+    patientTimeZone: row.patientTimeZone,
+    doctorTimeZone: row.doctorTimeZone,
+    paid: { doctorFeeCents, platformFeeCents, cardProcessingCents, totalCents: doctorFeeCents + platformFeeCents + cardProcessingCents },
+    joinUrl: row.visitType === "video" ? (visit?.joinUrl ?? null) : null,
+    cancelledAt: visit?.cancelledAtUtc ? sampleInstant(visit.cancelledAtUtc) : null,
+  };
+}

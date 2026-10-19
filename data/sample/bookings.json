@@ -37,5 +37,18 @@
     "cardProcessingUsdCents": 796,
     "patientTimeZone": "Asia/Riyadh",
     "doctorTimeZone": "America/Los_Angeles"
+  },
+  {
+    "id": "bk_211",
+    "doctorId": "doc_003",
+    "patientFirstName": "Maryam",
+    "startsAtUtc": "2026-11-20T17:00:00Z",
+    "visitType": "phone",
+    "status": "upcoming",
+    "feeUsdCents": 22000,
+    "platformFeeUsdCents": 4400,
+    "cardProcessingUsdCents": 796,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Detroit"
   }
 ]
