@@ -54,3 +54,20 @@ export const business = {
     SA: ["fri", "sat"], KW: ["fri", "sat"], QA: ["fri", "sat"], OM: ["fri", "sat"], BH: ["fri", "sat"], AE: ["sat", "sun"], US: ["sat", "sun"],
   } as Record<string, string[]>,
 } as const;
+
+/* ---------------- Records upload and processing (screens 24 and 25, tasks 3.7 and 3.8) ---------------- */
+// The per-GB price is business.recordsBlockGb and business.recordsBlockPriceCents above. Sizes are SI units (1 GB is 1,000 MB),
+// as phones show them.
+export const recordsLimits = {
+  maxFileMb: 50, // per file (task 3.7)
+  maxSetGb: 2, // per record set (task 3.7)
+  // Wall-clock estimate on the progress page (rules L1, T11): seconds per page with extraction running four pages at a time,
+  // plus the dedupe, summary, flag, store and notify tail. (default until the M1 extraction spike measures latency)
+  estimateSecondsPerPage: 6,
+  estimateTailSeconds: 90,
+  // Where records are stored and where the AI reads them, for the line beside the AI consent (rule T3). Storage stays null
+  // until the production server is chosen (overview Q4) and UAE residency is settled (rule Q3); the page then says the country
+  // is confirmed before launch. The AI country is the Anthropic API's (ADR-3; a Bedrock fallback region must match).
+  storageCountry: null as "US" | "AE" | "SA" | null, // (default until Q3 and overview Q4)
+  aiCountry: "US" as "US" | "AE" | "SA",
+} as const;

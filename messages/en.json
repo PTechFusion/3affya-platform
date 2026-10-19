@@ -2555,5 +2555,301 @@
       "action": "Find your profile"
     },
     "loading": "Loading your profile"
+  },
+  "records": {
+    "metaTitle": "Records | 3affya",
+    "metaDescription": "Upload reports, scanned documents and phone photos, see the price first, and get a one-page summary of your records.",
+    "title": "Records",
+    "lead": "Add your reports, scanned documents and phone photos. We read every page and write a one-page summary, each item linked to the page it came from.",
+    "loading": "Loading your records",
+    "upload": {
+      "title": "Add files",
+      "camera": "Take a photo",
+      "choose": "Choose files",
+      "chooseMore": "Add more files",
+      "drag": "or drag files here",
+      "dropNow": "Drop the files to add them",
+      "formats": "PDF, Word, JPG or PNG. Up to {fileMb} MB a file and {setGb} GB a set.",
+      "photoTip": "Photos: one page per photo, flat and in good light.",
+      "prototype": "Prototype: files you choose stay on this device. Nothing is uploaded."
+    },
+    "file": {
+      "listTitle": "Files in this set",
+      "tally": {
+        "accepted": "{count, plural, one {{label} ready} other {{label} ready}}",
+        "checking": "{count, plural, one {{label} being checked} other {{label} being checked}}",
+        "rejected": "{count, plural, one {{label} not accepted} other {{label} not accepted}}"
+      },
+      "sep": " · ",
+      "listSep": ", ",
+      "kind": {
+        "pdf": "PDF",
+        "docx": "Word",
+        "jpg": "Photo",
+        "png": "Image",
+        "other": "File"
+      },
+      "size": "{size} MB",
+      "pages": "{count, plural, one {{label} page} other {{label} pages}}",
+      "pagesLater": "pages counted after upload",
+      "status": {
+        "checking": "Checking",
+        "accepted": "Ready",
+        "rejected": "Not accepted"
+      },
+      "reason": {
+        "type": "This type of file cannot be read. Save it as a PDF, or take a photo of each page.",
+        "archive": "ZIP and other compressed files cannot be read. Open it and add the files inside.",
+        "tooLarge": "This file is {size} MB, over the {fileMb} MB limit. Split it into smaller PDFs, or photograph the pages you need.",
+        "setFull": "This file would take the set over {setGb} GB. Add it to a new set after you pay for this one.",
+        "empty": "This file is empty or could not be opened. Check that it opens on your device, then add it again.",
+        "encrypted": "This PDF is locked with a password. Save a copy without the password, then add that copy.",
+        "duplicate": "This file is already in the list, so it was not added twice."
+      },
+      "remove": "Remove {name}",
+      "removed": "{name} removed",
+      "undo": "Undo",
+      "dismiss": "Close"
+    },
+    "quote": {
+      "title": "Your price",
+      "files": "Files",
+      "pages": "Pages",
+      "size": "Size",
+      "total": "Total",
+      "updating": "Updating while files are checked…",
+      "blocks": "{count, plural, one {{label} block of {gb} GB at {price}} other {{label} blocks of {gb} GB at {price} each}}",
+      "rule": "{price} for each {gb} GB started, all fees included. The price depends on size, not pages.",
+      "room": "You can add {size} MB more for this price.",
+      "wordPages": "Pages in Word files are counted after upload.",
+      "rejected": "{count, plural, one {{label} file was not accepted and is not in the price.} other {{label} files were not accepted and are not in the price.}}",
+      "none": "Your price appears here as files are checked: {price} for each {gb} GB started, all fees included. Nothing is read until you pay.",
+      "noneAccepted": "No file has been accepted yet, so there is nothing to pay. Add files that fit the limits."
+    },
+    "consent": {
+      "legend": "Before we read your files",
+      "lead": "Two separate choices. We need both before anything is read.",
+      "privacy": "I have read how 3affya keeps my records private",
+      "privacyHint": "Who can open your files, how long they are kept and how to delete them.",
+      "privacyLink": "Read the privacy notice (opens in a new tab)",
+      "errorPrivacy": "Tick this box to go on. It confirms you have seen how your records are kept.",
+      "ai": "I agree that an AI model reads these files to write my summary",
+      "aiHint": "Claude, an AI model made by Anthropic, reads each page. It does not diagnose and does not replace your visit.",
+      "whereTitle": "Where your files are",
+      "whereStored": "Stored on 3affya's private, encrypted server in {country}.",
+      "whereStoredPending": "Stored on 3affya's private, encrypted server. Its country is named here before launch.",
+      "whereRead": "Read by the AI in {country}.",
+      "whereOpened": "Opened only by you, and by a doctor you choose to share with.",
+      "country": {
+        "US": "the United States",
+        "AE": "the United Arab Emirates",
+        "SA": "Saudi Arabia"
+      },
+      "errorAi": "Tick this box so the AI can read your files. Without it we cannot write a summary."
+    },
+    "pay": {
+      "button": "Pay {price}",
+      "buttonNoFiles": "Pay",
+      "pending": "Opening secure payment…",
+      "hint": "You pay on Stripe's secure page. Nothing is read until the payment goes through. If we cannot finish, you pay nothing.",
+      "wait": "Wait until every file is checked.",
+      "noFiles": "Add at least one file that fits the limits.",
+      "paying": "Opening Stripe's secure payment page…",
+      "payingBody": "Pay {price} there. You then come back to a page that shows each step as we read your files.",
+      "stub": "Prototype: Stripe's payment page opens here. Nothing was charged.",
+      "stubNext": "See the progress page after paying",
+      "error": {
+        "consentMissing": "Tick both boxes above, then pay.",
+        "noFiles": "Add at least one file that fits the limits, then pay.",
+        "unavailable": "We could not open the payment page. Try again in a minute, or write to {email}.",
+        "notAllowed": "Sign in again to pay. Your files stay in the list."
+      }
+    },
+    "sets": {
+      "title": "Your record sets",
+      "lead": "Each set you pay for gets its own summary.",
+      "uploaded": "Uploaded {date}",
+      "status": {
+        "queued": "Waiting to start",
+        "processing": "Reading",
+        "failed": "Could not finish",
+        "done": "Summary ready",
+        "cancelled": "Stopped"
+      },
+      "counts": "{files} · {pages}",
+      "files": "{count, plural, one {{label} file} other {{label} files}}",
+      "pages": "{count, plural, one {{label} page} other {{label} pages}}",
+      "detail": {
+        "processing": "{done} of {total} pages done",
+        "queued": "Paid. Reading starts in a moment.",
+        "failed": "One file needs uploading again. You have not been charged.",
+        "done": "Every page was read.",
+        "doneUnreadable": "{count, plural, one {{label} page could not be read.} other {{label} pages could not be read.}}",
+        "cancelled": "Stopped before the summary. You have not been charged."
+      },
+      "openSummary": "Open summary",
+      "openProgress": "See progress",
+      "empty": {
+        "title": "No record sets yet",
+        "body": "Sets you pay for appear here with their progress, then their summary. Start by adding your files above.",
+        "action": "Add your first files"
+      }
+    }
+  },
+  "recordSet": {
+    "metaTitle": "Records progress | 3affya",
+    "metaDescription": "Each step as we read your files: pages done, the price and the time left.",
+    "loading": "Loading the progress of this set",
+    "breadcrumbs": "Where you are",
+    "crumb": "Set uploaded {date}",
+    "lead": "Uploaded {date} · {files}, {pages}",
+    "title": {
+      "queued": "Waiting to start",
+      "processing": "Reading your records",
+      "failed": "We could not finish this set",
+      "done": "Your summary is ready",
+      "cancelled": "You stopped this set"
+    },
+    "status": {
+      "queued": "{pages} to read",
+      "processing": "{done} of {total} pages done",
+      "failed": "Stopped at page {page} of {total}",
+      "cancelled": "Stopped after {done} of {total} pages",
+      "done": "All {total} pages done"
+    },
+    "estimate": {
+      "underMinute": "Less than a minute left",
+      "left": "{count, plural, one {About {label} minute left} other {About {label} minutes left}}",
+      "total": "{count, plural, one {About {label} minute once it starts} other {About {label} minutes once it starts}}"
+    },
+    "progressLabel": "Pages done",
+    "pageRef": "page {page} ({file})",
+    "unreadable": {
+      "soFar": "{count, plural, one {Page {pages} could not be read so far.} other {Pages {pages} could not be read so far.}}",
+      "done": "{count, plural, one {{label} page could not be read: {pages}. Nothing was taken from it.} other {{label} pages could not be read: {pages}. Nothing was taken from them.}}",
+      "see": "See why"
+    },
+    "steps": {
+      "label": "Steps",
+      "state": "{state, select, done {, done} current {, in progress} waiting {, not started} failed {, stopped by a problem} stopped {, stopped} other {}}",
+      "validate": {
+        "title": "Checking files"
+      },
+      "quote": {
+        "title": "Setting the price"
+      },
+      "pay": {
+        "title": "Payment",
+        "paid": "Paid {date}"
+      },
+      "extract": {
+        "title": "Reading each page",
+        "queued": "{pages}, starting in a moment",
+        "reading": "Reading page {page} of {total}",
+        "failed": "Stopped at page {page} of {total}",
+        "stopped": "Stopped after {done} of {total}",
+        "done": "{pages} read",
+        "doneUnreadable": "{pages} done, {count, plural, one {{label} could not be read} other {{label} could not be read}}"
+      },
+      "dedupe": {
+        "title": "Joining repeated reports"
+      },
+      "summarise": {
+        "title": "Writing your summary and timeline"
+      },
+      "flag": {
+        "title": "Marking what is missing or unclear"
+      },
+      "store": {
+        "title": "Saving it securely"
+      },
+      "notify": {
+        "title": "Telling you it is ready"
+      }
+    },
+    "done": {
+      "open": "Open your summary",
+      "finished": "Finished {date}, {time}"
+    },
+    "failed": {
+      "title": "What went wrong",
+      "reason": {
+        "damaged": "Page {page} of this file is damaged, so we could not read it after three tries.",
+        "unavailable": "Our reading service did not answer after three tries."
+      },
+      "fix": {
+        "damaged": "Upload that file again. We start again from that page, with the same quote.",
+        "unavailable": "Try again in a few minutes. We start again from where we stopped, with the same quote."
+      },
+      "upload": "Upload this file again",
+      "retry": "Try again",
+      "stub": "Prototype: the set starts again here, from the page that failed, with the same quote. Nothing new is charged.",
+      "error": "We could not start again. Try in a minute, or write to {email}."
+    },
+    "facts": {
+      "price": "Price",
+      "priceValue": {
+        "queued": "{price}, fixed",
+        "processing": "{price}, fixed",
+        "failed": "{price}, not taken",
+        "done": "{price}, paid",
+        "cancelled": "{price}, not taken"
+      },
+      "note": {
+        "queued": "Taken only when your summary is ready. If we cannot finish, you pay nothing.",
+        "processing": "Taken only when your summary is ready. If we cannot finish, you pay nothing.",
+        "failed": "Trying again uses the same quote. You have not been charged.",
+        "done": "The receipt is in Receipts.",
+        "cancelled": "You have not been charged."
+      }
+    },
+    "cancel": {
+      "button": "Cancel",
+      "title": "Stop reading this set?",
+      "body": "The pages read so far are thrown away and you are not charged. To get a summary later, you add the files again.",
+      "stop": "Stop reading",
+      "stopping": "Stopping…",
+      "keep": "Keep reading",
+      "error": "We could not stop it. Try again, or write to {email}."
+    },
+    "cancelled": {
+      "back": "Back to records"
+    },
+    "get": {
+      "title": "What you will get",
+      "titleDone": "What is in your summary",
+      "overview": "A one-page overview: conditions, medicines, allergies and recent results.",
+      "timeline": "A dated timeline, with every item linked to the page it came from.",
+      "gaps": "A list of anything missing, conflicting or unreadable, so nothing is guessed.",
+      "note": "Written by AI from your documents only. It is not a diagnosis and does not replace your visit."
+    },
+    "files": {
+      "title": "Files and pages",
+      "lead": "Each dot is one page, numbered across the whole set.",
+      "legend": "What the dots mean",
+      "status": {
+        "read": "Read",
+        "reading": "Reading now",
+        "waiting": "Waiting",
+        "unreadable": "Could not be read",
+        "failed": "Damaged",
+        "notRead": "Not read"
+      },
+      "pagesOf": "Pages of {file}",
+      "pageState": "Page {page}: {state}",
+      "ref": "Page {page}",
+      "refInFile": "Page {page} (page {filePage} of this file)",
+      "failedNote": "This page is damaged. Upload the file again to finish the set.",
+      "unreadable": {
+        "blurry": "Too blurry to read, so nothing was taken from it.",
+        "handwritten": "The handwriting could not be read, so nothing was taken from it.",
+        "cutOff": "Part of the page is cut off, so nothing was taken from it."
+      },
+      "fix": {
+        "blurry": "Retake the photo in good light, holding the phone still, and add it to a new set.",
+        "handwritten": "If you can, ask the clinic for a typed copy and add it to a new set.",
+        "cutOff": "Retake the photo with the whole page in view and add it to a new set."
+      }
+    }
   }
 }
