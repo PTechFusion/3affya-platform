@@ -593,3 +593,82 @@ const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
 export function builderRowFor(id: string): SampleBuilderRow | undefined {
   return sampleBuilderRows.find((r) => r.id === id);
 }
+/* ---------------- Patient bookings (screen 22; screens 21 and 23 read the same rows) ---------------- */
+// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+import bookingsJson from "@/data/sample/bookings.json";
+
+/** A booking as data/sample/bookings.json stores it: UTC instants, money in minor units, the three lines as charged. */
+type PatientBookingRow = {
+  id: string;
+  doctorId: string;
+  patientFirstName: string;
+  startsAtUtc: string;
+  visitType: "video" | "phone";
+  /** "upcoming" is paid and booked; "cancelled" was cancelled with no refund; "refunded" was cancelled and paid back in full. */
+  status: "upcoming" | "done" | "cancelled" | "refunded";
+  feeUsdCents: number;
+  platformFeeUsdCents: number;
+  cardProcessingUsdCents: number;
+  patientTimeZone: string;
+  doctorTimeZone: string;
+  joinUrl?: string | null;
+  bookedAtUtc?: string;
+  cancelledAtUtc?: string | null;
+  cancelledBy?: "patient" | "doctor" | null;
+};
+
+/** What the patient sees. A paid visit stays upcoming (and joinable) until its slot has ended, then reads as done. */
+export type PatientBookingStatus = "upcoming" | "done" | "cancelled" | "refunded";
+
+/** A booking as the patient portal reads it. Every instant goes through sampleInstant, so upcoming visits stay ahead. */
+export type PatientBooking = {
+  id: string;
+  doctor: SampleDoctor;
+  startsAt: Date;
+  visitType: "video" | "phone";
+  status: PatientBookingStatus;
+  /** What the patient paid: the three stored lines summed (rule P1), never recomputed from today's rates. */
+  totalCents: number;
+  doctorTimeZone: string;
+  /** The doctor's own meeting link (handoff: no hosted video). */
+  joinUrl: string | null;
+  bookedAt: Date | null;
+  cancelledAt: Date | null;
+  cancelledBy: "patient" | "doctor" | null;
+};
+
+const patientBookingRows = bookingsJson as unknown as PatientBookingRow[];
+
+function toPatientBooking(r: PatientBookingRow, doctor: SampleDoctor, now: Date): PatientBooking {
+  const startsAt = sampleInstant(r.startsAtUtc);
+  // Prototype: the default slot length stands in for the doctor's own (availability settings) until task 3.3.
+  const endsAt = startsAt.getTime() + business.slotLengthMinutesDefault * 60_000;
+  const status: PatientBookingStatus = r.status === "upcoming" && endsAt <= now.getTime() ? "done" : r.status;
+  return {
+    id: r.id,
+    doctor,
+    startsAt,
+    visitType: r.visitType,
+    status,
+    totalCents: r.feeUsdCents + r.platformFeeUsdCents + r.cardProcessingUsdCents,
+    doctorTimeZone: r.doctorTimeZone,
+    joinUrl: r.joinUrl ?? null,
+    bookedAt: r.bookedAtUtc ? sampleInstant(r.bookedAtUtc) : null,
+    cancelledAt: r.cancelledAtUtc ? sampleInstant(r.cancelledAtUtc) : null,
+    cancelledBy: r.cancelledBy ?? null,
+  };
+}
+
+/**
+ * Every booking of one patient, earliest visit first. The prototype matches the patient's first name (samplePatient is Noura,
+ * rows bk_004 to bk_009); production reads the signed-in patient's rows through RLS.
+ */
+export function bookingsForPatient(firstNameEn: string, now: Date = new Date()): PatientBooking[] {
+  return patientBookingRows
+    .filter((r) => r.patientFirstName === firstNameEn)
+    .flatMap((r) => {
+      const doctor = sampleDoctors.find((d) => d.id === r.doctorId);
+      return doctor ? [toPatientBooking(r, doctor, now)] : [];
+    })
+    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+}
