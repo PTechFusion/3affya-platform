@@ -263,3 +263,29 @@ export function CtaBand({ title, body, action }: { title: string; body?: string;
     </div>
   );
 }
+
+/* ---------------- Slot link ---------------- */
+/** One open time as a 48 px link into the slot picker (rules W2, P6): an optional day line over the time. Name the zone once
+ *  beside the group and pass `label` (day, time and zone in words) so a screen reader hears the whole slot. */
+export function SlotLink({
+  href,
+  time,
+  day,
+  label,
+}: {
+  href: React.ComponentProps<typeof Link>["href"];
+  time: string;
+  day?: string;
+  label?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      className="flex min-h-12 flex-col items-center justify-center rounded-[var(--radius-field)] border border-sea-700 bg-white px-2 py-1.5 text-center text-sea-800 transition-colors hover:bg-sea-100"
+    >
+      {day ? <span className="text-xs font-medium text-ink-700">{day}</span> : null}
+      <span className="tabular text-[15px] font-semibold">{time}</span>
+    </Link>
+  );
+}

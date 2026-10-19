@@ -3,7 +3,7 @@
 // Front: beach sand, name and identity. Back: lagoon, the details. Same card for every doctor (Dr Ayman, 17 Oct).
 import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Badge, Button, CheckIcon } from "@/components/ui";
+import { Badge, Button, CheckIcon, LinkButton } from "@/components/ui";
 
 export type DoctorCardState = "unclaimed" | "pending" | "verified";
 
@@ -34,9 +34,13 @@ type Props = {
   /** Force a side (used by the ID card renderer and the brand page). */
   side?: "front" | "back";
   onBook?: () => void;
+  /** Book on the back face as a link to this path (navigation is a link, not a button). Takes precedence over onBook. */
+  bookHref?: string;
+  /** False hides Book: the doctor cannot take bookings now (no published times, payouts not ready). */
+  bookable?: boolean;
 };
 
-export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props) {
+export function DoctorCard({ doctor, state, size = "full", side, onBook, bookHref, bookable = true }: Props) {
   const t = useTranslations("card");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -81,6 +85,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
       className={[
         "flex h-full flex-col rounded-[var(--radius-card)] border-b-[10px] border-lagoon-600 text-ink-900 shadow-[var(--shadow-card)]",
         mini ? "p-3" : "p-5 sm:p-6",
+        side === "front" ? "flex-1" : "",
       ].join(" ")}
       style={{ background: "linear-gradient(135deg, #EFEBE2, #DBD3BF 60%, #C6BEAC)" }}
     >
@@ -138,7 +143,9 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
         {state !== "unclaimed" && doctor.trainingLines.length ? (
           <>
             <dt className="text-white/75">{t("training")}</dt>
-            <dd>{doctor.trainingLines.join(" · ")}</dd>
+            {/* The back has a fixed flip height: training is held to two lines and the tags to one row so the fee, the next
+                time and Book never spill out of the card. The profile page lists both in full. */}
+            <dd className="line-clamp-2">{doctor.trainingLines.join(" · ")}</dd>
           </>
         ) : null}
         {doctor.yearsInPractice ? (
@@ -149,7 +156,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
         ) : null}
       </dl>
       {doctor.tags.length ? (
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex max-h-7 flex-wrap gap-1.5 overflow-hidden">
           {doctor.tags.slice(0, mini ? 3 : 6).map((tag) => (
             <span key={tag} className="rounded-[var(--radius-tag)] bg-white/15 px-2.5 py-0.5 text-[12.5px] font-medium">
               {tag}
@@ -173,7 +180,16 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
             </p>
           ) : null}
         </div>
-        {state === "verified" && !mini ? (
+        {state === "verified" && !mini && bookable && bookHref ? (
+          <LinkButton
+            href={bookHref}
+            variant="secondary"
+            className="border-white bg-white text-lagoon-900"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {tc("book")}
+          </LinkButton>
+        ) : state === "verified" && !mini && bookable ? (
           <Button
             variant="secondary"
             className="border-white bg-white text-lagoon-900"
@@ -196,7 +212,12 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
         className="w-full text-start"
         style={{ transformStyle: "preserve-3d", transition: "transform .55s cubic-bezier(.2,.8,.2,1)", transform: showBack ? "rotateY(180deg)" : "none" }}
       >
-        <div className={mini ? "h-40" : "h-[356px]"} style={{ backfaceVisibility: "hidden" }}>
+        {/* A card forced to its front never flips, so it may grow with its content (a long Arabic name, the two badges on a
+            second line) instead of spilling out of the fixed flip height. */}
+        <div
+          className={side === "front" ? ["flex flex-col", mini ? "min-h-40" : "min-h-[356px]"].join(" ") : mini ? "h-40" : "h-[356px]"}
+          style={{ backfaceVisibility: "hidden" }}
+        >
           {Front}
         </div>
         <div
