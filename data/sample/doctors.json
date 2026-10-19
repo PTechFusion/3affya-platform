@@ -1,0 +1,835 @@
+[
+  {
+    "id": "doc_001",
+    "npi": "1116263684",
+    "state": "verified",
+    "gender": "f",
+    "nameEn": "Dr Sara Haddad",
+    "nameAr": "د. سارة حداد",
+    "specialty": "sports-medicine",
+    "specialtyEn": "Sports medicine",
+    "specialtyAr": "الطب الرياضي",
+    "cityEn": "Cleveland, Ohio",
+    "cityAr": "كليفلاند، أوهايو",
+    "medicalSchool": "Wayne State University",
+    "graduationYear": 2001,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Levantine"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "adults",
+    "tags": [
+      "Anxiety",
+      "Kidney stones",
+      "Back pain",
+      "Asthma"
+    ],
+    "training": [
+      "Harvard Medical School, residency",
+      "Johns Hopkins, fellowship"
+    ],
+    "yearsInPractice": 10,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 18000,
+    "nextAvailableUtc": null,
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_002",
+    "npi": "1332987959",
+    "state": "verified",
+    "gender": "m",
+    "nameEn": "Dr Omar Khalil",
+    "nameAr": "د. عمر خليل",
+    "specialty": "ent",
+    "specialtyEn": "Ear, nose and throat",
+    "specialtyAr": "الأنف والأذن والحنجرة",
+    "cityEn": "Chicago, Illinois",
+    "cityAr": "شيكاغو، إلينوي",
+    "medicalSchool": "Columbia University",
+    "graduationYear": 2009,
+    "hospitalAffiliation": "Cleveland Clinic",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Gulf"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "children",
+    "tags": [
+      "Kidney stones",
+      "Thyroid",
+      "Fertility",
+      "Back pain",
+      "Diabetes"
+    ],
+    "training": [
+      "Case Western Reserve, residency",
+      "Baylor College of Medicine, fellowship"
+    ],
+    "yearsInPractice": 14,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 25000,
+    "nextAvailableUtc": "2026-11-15T18:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_003",
+    "npi": "1714132651",
+    "state": "verified",
+    "gender": "f",
+    "nameEn": "Dr Layla Mansour",
+    "nameAr": "د. ليلى منصور",
+    "specialty": "family-medicine",
+    "specialtyEn": "Family medicine",
+    "specialtyAr": "طب الأسرة",
+    "cityEn": "Dearborn, Michigan",
+    "cityAr": "ديربورن، ميشيغان",
+    "medicalSchool": "Wayne State University",
+    "graduationYear": 2016,
+    "hospitalAffiliation": "Henry Ford Health",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Moroccan"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "allAges",
+    "tags": [
+      "Epilepsy",
+      "Anxiety"
+    ],
+    "training": [
+      "Johns Hopkins, residency"
+    ],
+    "yearsInPractice": 8,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 22000,
+    "nextAvailableUtc": "2026-11-10T15:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_004",
+    "npi": "1227686402",
+    "state": "verified",
+    "gender": "m",
+    "nameEn": "Dr Karim Saleh",
+    "nameAr": "د. كريم صالح",
+    "specialty": "pulmonology",
+    "specialtyEn": "Pulmonology",
+    "specialtyAr": "أمراض الصدر",
+    "cityEn": "Cleveland, Ohio",
+    "cityAr": "كليفلاند، أوهايو",
+    "medicalSchool": "Baylor College of Medicine",
+    "graduationYear": 2015,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Levantine"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "children",
+    "tags": [
+      "Thyroid",
+      "Fertility",
+      "Hypertension",
+      "Asthma",
+      "Diabetes",
+      "Migraine"
+    ],
+    "training": [
+      "Columbia University, residency"
+    ],
+    "yearsInPractice": 9,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 25000,
+    "nextAvailableUtc": "2026-11-16T16:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_005",
+    "npi": "1382794826",
+    "state": "verified",
+    "gender": "f",
+    "nameEn": "Dr Nour Farah",
+    "nameAr": "د. نور فرح",
+    "specialty": "hematology",
+    "specialtyEn": "Hematology",
+    "specialtyAr": "أمراض الدم",
+    "cityEn": "New York, New York",
+    "cityAr": "نيويورك",
+    "medicalSchool": "Northwestern University",
+    "graduationYear": 1997,
+    "hospitalAffiliation": "Northwestern Memorial",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Gulf"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "adults",
+    "tags": [
+      "Back pain",
+      "Anxiety",
+      "Fertility",
+      "Eczema",
+      "Epilepsy"
+    ],
+    "training": [
+      "Columbia University, residency"
+    ],
+    "yearsInPractice": 28,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 15000,
+    "nextAvailableUtc": "2026-11-23T15:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_006",
+    "npi": "1463899760",
+    "state": "verified",
+    "gender": "m",
+    "nameEn": "Dr Tariq Nasser",
+    "nameAr": "د. طارق ناصر",
+    "specialty": "family-medicine",
+    "specialtyEn": "Family medicine",
+    "specialtyAr": "طب الأسرة",
+    "cityEn": "New York, New York",
+    "cityAr": "نيويورك",
+    "medicalSchool": "Baylor College of Medicine",
+    "graduationYear": 2009,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Gulf"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video"
+    ],
+    "ages": "allAges",
+    "tags": [
+      "Kidney stones",
+      "Asthma",
+      "Second opinions",
+      "Migraine",
+      "Thyroid",
+      "Diabetes"
+    ],
+    "training": [
+      "Case Western Reserve, residency",
+      "Case Western Reserve, fellowship"
+    ],
+    "yearsInPractice": 25,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 18000,
+    "nextAvailableUtc": "2026-11-10T17:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_007",
+    "npi": "1122819771",
+    "state": "verified",
+    "gender": "f",
+    "nameEn": "Dr Huda Aziz",
+    "nameAr": "د. هدى عزيز",
+    "specialty": "infectious-disease",
+    "specialtyEn": "Infectious disease",
+    "specialtyAr": "الأمراض المعدية",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "Case Western Reserve",
+    "graduationYear": 2004,
+    "hospitalAffiliation": "Cleveland Clinic",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Iraqi"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "children",
+    "tags": [
+      "Thyroid",
+      "Second opinions",
+      "Eczema",
+      "Asthma",
+      "Kidney stones",
+      "Back pain"
+    ],
+    "training": [
+      "Case Western Reserve, residency",
+      "Columbia University, fellowship"
+    ],
+    "yearsInPractice": 15,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 22000,
+    "nextAvailableUtc": null,
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_008",
+    "npi": "1834152557",
+    "state": "verified",
+    "gender": "m",
+    "nameEn": "Dr Samir Rahman",
+    "nameAr": "د. سمير رحمن",
+    "specialty": "neurosurgery",
+    "specialtyEn": "Neurosurgery",
+    "specialtyAr": "جراحة الأعصاب",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "Northwestern University",
+    "graduationYear": 2005,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Egyptian"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video",
+      "phone"
+    ],
+    "ages": "adults",
+    "tags": [
+      "Second opinions",
+      "Asthma",
+      "Back pain",
+      "Epilepsy"
+    ],
+    "training": [
+      "Wayne State University, residency",
+      "Case Western Reserve, fellowship"
+    ],
+    "yearsInPractice": 27,
+    "boardCertified": true,
+    "verifiedOn": "2026-10-30",
+    "feeUsdCents": 15000,
+    "nextAvailableUtc": "2026-11-15T13:00:00Z",
+    "bioEn": "Board certified physician trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_009",
+    "npi": "1798181698",
+    "state": "pending",
+    "gender": "f",
+    "nameEn": "Dr Rania Hamdan",
+    "nameAr": "د. رانيا حمدان",
+    "specialty": "sports-medicine",
+    "specialtyEn": "Sports medicine",
+    "specialtyAr": "الطب الرياضي",
+    "cityEn": "Dearborn, Michigan",
+    "cityAr": "ديربورن، ميشيغان",
+    "medicalSchool": "UCLA",
+    "graduationYear": 2014,
+    "hospitalAffiliation": "Cedars-Sinai",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Gulf"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [
+      "Wayne State University, residency"
+    ],
+    "yearsInPractice": 12,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_010",
+    "npi": "1297124299",
+    "state": "pending",
+    "gender": "m",
+    "nameEn": "Dr Fadi Baroudi",
+    "nameAr": "د. فادي بارودي",
+    "specialty": "neurosurgery",
+    "specialtyEn": "Neurosurgery",
+    "specialtyAr": "جراحة الأعصاب",
+    "cityEn": "Dearborn, Michigan",
+    "cityAr": "ديربورن، ميشيغان",
+    "medicalSchool": "Columbia University",
+    "graduationYear": 2006,
+    "hospitalAffiliation": "Cleveland Clinic",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Levantine"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "children",
+    "tags": [],
+    "training": [
+      "Case Western Reserve, residency",
+      "Harvard Medical School, fellowship"
+    ],
+    "yearsInPractice": 15,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_011",
+    "npi": "1471895072",
+    "state": "pending",
+    "gender": "f",
+    "nameEn": "Dr Dina Haddad",
+    "nameAr": "د. دينا حداد",
+    "specialty": "ophthalmology",
+    "specialtyEn": "Ophthalmology",
+    "specialtyAr": "طب العيون",
+    "cityEn": "New York, New York",
+    "cityAr": "نيويورك",
+    "medicalSchool": "Harvard Medical School",
+    "graduationYear": 2005,
+    "hospitalAffiliation": "Cedars-Sinai",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Moroccan"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "allAges",
+    "tags": [],
+    "training": [
+      "Baylor College of Medicine, residency",
+      "Northwestern University, fellowship"
+    ],
+    "yearsInPractice": 12,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_012",
+    "npi": "1993932567",
+    "state": "pending",
+    "gender": "m",
+    "nameEn": "Dr Yousef Khalil",
+    "nameAr": "د. يوسف خليل",
+    "specialty": "ent",
+    "specialtyEn": "Ear, nose and throat",
+    "specialtyAr": "الأنف والأذن والحنجرة",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "Harvard Medical School",
+    "graduationYear": 2013,
+    "hospitalAffiliation": "Cleveland Clinic",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Egyptian"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [
+      "Johns Hopkins, residency",
+      "Columbia University, fellowship"
+    ],
+    "yearsInPractice": 23,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_013",
+    "npi": "1173087050",
+    "state": "unclaimed",
+    "gender": "f",
+    "nameEn": "Dr Maha Mansour",
+    "nameAr": "د. مها منصور",
+    "specialty": "pediatrics",
+    "specialtyEn": "Pediatrics",
+    "specialtyAr": "طب الأطفال",
+    "cityEn": "Dearborn, Michigan",
+    "cityAr": "ديربورن، ميشيغان",
+    "medicalSchool": "Columbia University",
+    "graduationYear": 1999,
+    "hospitalAffiliation": "Henry Ford Health",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "children",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_014",
+    "npi": "1962164928",
+    "state": "unclaimed",
+    "gender": "m",
+    "nameEn": "Dr Ziad Saleh",
+    "nameAr": "د. زياد صالح",
+    "specialty": "cardiology",
+    "specialtyEn": "Cardiology",
+    "specialtyAr": "أمراض القلب",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "UCLA",
+    "graduationYear": 2009,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_015",
+    "npi": "1900257920",
+    "state": "unclaimed",
+    "gender": "f",
+    "nameEn": "Dr Lina Farah",
+    "nameAr": "د. لينا فرح",
+    "specialty": "ent",
+    "specialtyEn": "Ear, nose and throat",
+    "specialtyAr": "الأنف والأذن والحنجرة",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "Wayne State University",
+    "graduationYear": 2001,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "allAges",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_016",
+    "npi": "1121308474",
+    "state": "unclaimed",
+    "gender": "m",
+    "nameEn": "Dr Bassam Nasser",
+    "nameAr": "د. بسام ناصر",
+    "specialty": "infectious-disease",
+    "specialtyEn": "Infectious disease",
+    "specialtyAr": "الأمراض المعدية",
+    "cityEn": "Los Angeles, California",
+    "cityAr": "لوس أنجلوس، كاليفورنيا",
+    "medicalSchool": "Harvard Medical School",
+    "graduationYear": 1997,
+    "hospitalAffiliation": "NYU Langone",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_017",
+    "npi": "1371092793",
+    "state": "unclaimed",
+    "gender": "f",
+    "nameEn": "Dr Amal Aziz",
+    "nameAr": "د. أمل عزيز",
+    "specialty": "gastroenterology",
+    "specialtyEn": "Gastroenterology",
+    "specialtyAr": "الجهاز الهضمي",
+    "cityEn": "Dearborn, Michigan",
+    "cityAr": "ديربورن، ميشيغان",
+    "medicalSchool": "Johns Hopkins",
+    "graduationYear": 1997,
+    "hospitalAffiliation": "Northwestern Memorial",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_018",
+    "npi": "1674062150",
+    "state": "unclaimed",
+    "gender": "m",
+    "nameEn": "Dr Hassan Rahman",
+    "nameAr": "د. حسن رحمن",
+    "specialty": "endocrinology",
+    "specialtyEn": "Endocrinology",
+    "specialtyAr": "الغدد الصماء",
+    "cityEn": "Los Angeles, California",
+    "cityAr": "لوس أنجلوس، كاليفورنيا",
+    "medicalSchool": "Wayne State University",
+    "graduationYear": 2001,
+    "hospitalAffiliation": "Henry Ford Health",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "allAges",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_019",
+    "npi": "1623450577",
+    "state": "unclaimed",
+    "gender": "f",
+    "nameEn": "Dr Salma Hamdan",
+    "nameAr": "د. سلمى حمدان",
+    "specialty": "neurology",
+    "specialtyEn": "Neurology",
+    "specialtyAr": "طب الأعصاب",
+    "cityEn": "Chicago, Illinois",
+    "cityAr": "شيكاغو، إلينوي",
+    "medicalSchool": "Harvard Medical School",
+    "graduationYear": 1997,
+    "hospitalAffiliation": "Northwestern Memorial",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  },
+  {
+    "id": "doc_020",
+    "npi": "1666147749",
+    "state": "unclaimed",
+    "gender": "m",
+    "nameEn": "Dr Nabil Baroudi",
+    "nameAr": "د. نبيل بارودي",
+    "specialty": "hematology",
+    "specialtyEn": "Hematology",
+    "specialtyAr": "أمراض الدم",
+    "cityEn": "New York, New York",
+    "cityAr": "نيويورك",
+    "medicalSchool": "Harvard Medical School",
+    "graduationYear": 1997,
+    "hospitalAffiliation": "Cedars-Sinai",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "allAges",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
+  }
+]

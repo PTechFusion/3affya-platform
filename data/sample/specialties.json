@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "neurology",
+    "nameEn": "Neurology",
+    "nameAr": "طب الأعصاب",
+    "doctorCount": 3
+  },
+  {
+    "slug": "cardiology",
+    "nameEn": "Cardiology",
+    "nameAr": "أمراض القلب",
+    "doctorCount": 9
+  },
+  {
+    "slug": "dermatology",
+    "nameEn": "Dermatology",
+    "nameAr": "الأمراض الجلدية",
+    "doctorCount": 8
+  },
+  {
+    "slug": "endocrinology",
+    "nameEn": "Endocrinology",
+    "nameAr": "الغدد الصماء",
+    "doctorCount": 2
+  },
+  {
+    "slug": "gastroenterology",
+    "nameEn": "Gastroenterology",
+    "nameAr": "الجهاز الهضمي",
+    "doctorCount": 5
+  },
+  {
+    "slug": "oncology",
+    "nameEn": "Oncology",
+    "nameAr": "الأورام",
+    "doctorCount": 9
+  },
+  {
+    "slug": "orthopedics",
+    "nameEn": "Orthopedic surgery",
+    "nameAr": "جراحة العظام",
+    "doctorCount": 7
+  },
+  {
+    "slug": "pediatrics",
+    "nameEn": "Pediatrics",
+    "nameAr": "طب الأطفال",
+    "doctorCount": 9
+  },
+  {
+    "slug": "psychiatry",
+    "nameEn": "Psychiatry",
+    "nameAr": "الطب النفسي",
+    "doctorCount": 1
+  },
+  {
+    "slug": "obgyn",
+    "nameEn": "Obstetrics and gynecology",
+    "nameAr": "النساء والتوليد",
+    "doctorCount": 9
+  },
+  {
+    "slug": "urology",
+    "nameEn": "Urology",
+    "nameAr": "المسالك البولية",
+    "doctorCount": 0
+  },
+  {
+    "slug": "rheumatology",
+    "nameEn": "Rheumatology",
+    "nameAr": "الروماتيزم",
+    "doctorCount": 7
+  },
+  {
+    "slug": "nephrology",
+    "nameEn": "Nephrology",
+    "nameAr": "أمراض الكلى",
+    "doctorCount": 4
+  },
+  {
+    "slug": "pulmonology",
+    "nameEn": "Pulmonology",
+    "nameAr": "أمراض الصدر",
+    "doctorCount": 8
+  },
+  {
+    "slug": "ophthalmology",
+    "nameEn": "Ophthalmology",
+    "nameAr": "طب العيون",
+    "doctorCount": 3
+  },
+  {
+    "slug": "ent",
+    "nameEn": "Ear, nose and throat",
+    "nameAr": "الأنف والأذن والحنجرة",
+    "doctorCount": 3
+  },
+  {
+    "slug": "internal-medicine",
+    "nameEn": "Internal medicine",
+    "nameAr": "الطب الباطني",
+    "doctorCount": 7
+  },
+  {
+    "slug": "family-medicine",
+    "nameEn": "Family medicine",
+    "nameAr": "طب الأسرة",
+    "doctorCount": 8
+  },
+  {
+    "slug": "neurosurgery",
+    "nameEn": "Neurosurgery",
+    "nameAr": "جراحة الأعصاب",
+    "doctorCount": 8
+  },
+  {
+    "slug": "hematology",
+    "nameEn": "Hematology",
+    "nameAr": "أمراض الدم",
+    "doctorCount": 7
+  },
+  {
+    "slug": "allergy",
+    "nameEn": "Allergy and immunology",
+    "nameAr": "الحساسية والمناعة",
+    "doctorCount": 6
+  },
+  {
+    "slug": "infectious-disease",
+    "nameEn": "Infectious disease",
+    "nameAr": "الأمراض المعدية",
+    "doctorCount": 2
+  },
+  {
+    "slug": "pain",
+    "nameEn": "Pain medicine",
+    "nameAr": "طب الألم",
+    "doctorCount": 3
+  },
+  {
+    "slug": "sports-medicine",
+    "nameEn": "Sports medicine",
+    "nameAr": "الطب الرياضي",
+    "doctorCount": 2
+  }
+]

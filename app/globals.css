@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* Readex Pro, self-hosted (SIL OFL, see public/fonts/OFL-ReadexPro.txt). One family for both scripts. */
+@font-face {
+  font-family: "Readex Pro";
+  src: url("/fonts/ReadexPro-Variable.ttf") format("truetype-variations");
+  font-weight: 160 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ------------------------------------------------------------------
+   3affya design tokens. Theme draft 3, approved by Dr Ayman 17 Oct 2026.
+   Source of truth for colour, type and radius. Tailwind 4 reads these
+   as utilities: bg-sea-700, text-ink-900, border-sand-200, text-gold-500 ...
+   Do not add ad hoc colours or sizes in components.
+   ------------------------------------------------------------------ */
+@theme {
+  --font-sans: "Readex Pro", "Segoe UI", Tahoma, Arial, sans-serif;
+
+  /* Deep sea: primary action, headings on light */
+  --color-sea-900: #062f52;
+  --color-sea-800: #08467a;
+  --color-sea-700: #0b5a9c;
+  --color-sea-500: #2a7fc0;
+  --color-sea-100: #dcebf7;
+
+  /* Lagoon: the water in the logo's y; hero, card backs, focus */
+  --color-lagoon-900: #065e78;
+  --color-lagoon-800: #08708e;
+  --color-lagoon-600: #0194be;
+  --color-lagoon-500: #02b3ca;
+  --color-lagoon-300: #7ee3f2;
+  --color-lagoon-100: #ddf6fa;
+
+  /* Gold: meaning only (verified, featured, ID card trim) */
+  --color-gold-700: #82590a;
+  --color-gold-500: #c8901e;
+  --color-gold-300: #f0ce6a;
+  --color-gold-100: #f8ebc4;
+
+  /* Beach sand: surfaces, card fronts */
+  --color-sand-50: #f8f6f1;
+  --color-sand-100: #efebe2;
+  --color-sand-200: #e2dcce;
+  --color-sand-300: #dbd3bf;
+  --color-sand-400: #c6beac;
+
+  /* Ink: text */
+  --color-ink-900: #14202e;
+  --color-ink-700: #34404e;
+  --color-ink-500: #5e6a77;
+  --color-night: #0a1622;
+
+  /* Sky: information */
+  --color-sky-500: #48a8d8;
+  --color-sky-100: #e3f2fa;
+
+  --color-success: #1f8a5b;
+  --color-warning: #b7791f;
+  --color-danger: #c4423a;
+
+  --radius-card: 22px;
+  --radius-field: 12px;
+  --radius-tag: 999px;
+
+  --shadow-card: 0 18px 44px rgba(6, 47, 82, 0.18);
+  --shadow-nav: 0 6px 24px rgba(6, 47, 82, 0.12);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    scroll-padding-block-start: 96px;
+  }
+  body {
+    background: var(--color-sand-50);
+    color: var(--color-ink-900);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  /* Arabic: larger body, more leading, never letter-spaced, never italic (rules R5, R6) */
+  html[lang="ar"] body {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  [lang="ar"], [lang="ar"] * {
+    letter-spacing: 0 !important;
+    font-style: normal;
+  }
+  /* Inputs at 16px or larger so iOS Safari does not zoom (rule F8) */
+  input, select, textarea, button {
+    font: inherit;
+    font-size: max(16px, 1em);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-lagoon-500);
+    outline-offset: 2px;
+  }
+  /* Digits, codes, phone numbers and URLs never flip (rule R3) */
+  .ltr-run { direction: ltr; unicode-bidi: isolate; display: inline-block; text-align: start; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .skeleton {
+    background: linear-gradient(90deg, var(--color-sand-100) 25%, var(--color-sand-200) 50%, var(--color-sand-100) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 8px;
+  }
+  @keyframes shimmer { from { background-position: 200% 0 } to { background-position: -200% 0 } }
+  @media (prefers-reduced-motion: reduce) { .skeleton { animation: none } }
+}

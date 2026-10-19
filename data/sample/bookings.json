@@ -1,0 +1,41 @@
+[
+  {
+    "id": "bk_001",
+    "doctorId": "doc_001",
+    "patientFirstName": "Maryam",
+    "startsAtUtc": "2026-11-14T15:00:00Z",
+    "visitType": "video",
+    "status": "upcoming",
+    "feeUsdCents": 18000,
+    "platformFeeUsdCents": 3600,
+    "cardProcessingUsdCents": 657,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Chicago"
+  },
+  {
+    "id": "bk_002",
+    "doctorId": "doc_003",
+    "patientFirstName": "Maryam",
+    "startsAtUtc": "2026-10-02T16:30:00Z",
+    "visitType": "phone",
+    "status": "done",
+    "feeUsdCents": 15000,
+    "platformFeeUsdCents": 3000,
+    "cardProcessingUsdCents": 552,
+    "patientTimeZone": "Asia/Dubai",
+    "doctorTimeZone": "America/Detroit"
+  },
+  {
+    "id": "bk_003",
+    "doctorId": "doc_005",
+    "patientFirstName": "Maryam",
+    "startsAtUtc": "2026-10-20T13:00:00Z",
+    "visitType": "video",
+    "status": "cancelled",
+    "feeUsdCents": 22000,
+    "platformFeeUsdCents": 4400,
+    "cardProcessingUsdCents": 768,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Los_Angeles"
+  }
+]
