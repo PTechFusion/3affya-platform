@@ -54,3 +54,8 @@ export const business = {
     SA: ["fri", "sat"], KW: ["fri", "sat"], QA: ["fri", "sat"], OM: ["fri", "sat"], BH: ["fri", "sat"], AE: ["sat", "sun"], US: ["sat", "sun"],
   } as Record<string, string[]>,
 } as const;
+
+/* ---------------- Sharing and consent (screen 27, task 3.10) ---------------- */
+// Appended block. How long a patient can share their records summary with one doctor, in days, shortest first. The preselected
+// choice is business.shareDefaultDays, which must be one of these. (default until Q13)
+export const shareLengthDaysOptions = [7, 14, 30] as readonly number[];
