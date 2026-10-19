@@ -415,3 +415,94 @@ export function SegmentedControl<V extends string>({
     </fieldset>
   );
 }
+
+/* ---------------- Slot time ---------------- */
+/** One open time shown but not offered as a link (a doctor's preview of the patient view, summaries): the SlotLink frame
+ *  without the link. Name the zone once beside the group (rule P6). */
+export function SlotTime({ time, day }: { time: string; day?: string }) {
+  return (
+    <span className="flex min-h-12 flex-col items-center justify-center rounded-[var(--radius-field)] border border-sea-700 bg-white px-2 py-1.5 text-center text-sea-800">
+      {day ? <span className="text-xs font-medium text-ink-700">{day}</span> : null}
+      <span className="tabular text-[15px] font-semibold">{time}</span>
+    </span>
+  );
+}
+
+/* ---------------- Icon button ---------------- */
+/** A square icon-only button, 44 px (rule W2), for remove and close controls. `label` is its accessible name and tooltip. */
+export function IconButton({
+  label,
+  tone = "default",
+  className,
+  children,
+  ...props
+}: Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "aria-label"> & { label: string; tone?: "default" | "onDark" }) {
+  const tones = {
+    default: "text-ink-700 hover:bg-sand-200 hover:text-ink-900",
+    onDark: "text-white/85 hover:bg-white/15 hover:text-white",
+  };
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      className={cx(
+        "inline-flex size-11 shrink-0 items-center justify-center rounded-[var(--radius-field)] transition-colors disabled:cursor-not-allowed disabled:opacity-45",
+        tones[tone],
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+/* ---------------- Toast ---------------- */
+/**
+ * Undo bar (rule B10: undo instead of a confirmation): one line saying what just changed, one action, a close control. It sits
+ * at the bottom of the screen, above the portal's phone bar. Keep ToastRegion mounted and put the Toast inside it, so screen
+ * readers hear each new message.
+ */
+export function ToastRegion({ children }: { children?: ReactNode }) {
+  return (
+    <div role="status" aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-20 z-30 flex justify-center px-4 lg:bottom-6">
+      {children}
+    </div>
+  );
+}
+
+export function Toast({
+  id,
+  message,
+  actionLabel,
+  onAction,
+  dismissLabel,
+  onDismiss,
+}: {
+  /** Lets the page move focus to the bar's buttons, e.g. to Close after Undo removes the Undo button. */
+  id?: string;
+  message: string;
+  actionLabel?: string;
+  onAction?: () => void;
+  dismissLabel: string;
+  onDismiss: () => void;
+}) {
+  return (
+    <div id={id} className="pointer-events-auto flex w-full max-w-md items-center gap-2 rounded-[var(--radius-field)] bg-sea-900 py-1.5 ps-4 pe-1.5 text-white shadow-[var(--shadow-card)]">
+      <p className="min-w-0 flex-1 text-sm">{message}</p>
+      {actionLabel && onAction ? (
+        <button
+          type="button"
+          onClick={onAction}
+          className="inline-flex min-h-11 shrink-0 items-center rounded-[var(--radius-field)] px-3 text-[15px] font-semibold text-lagoon-300 transition-colors hover:bg-white/10"
+        >
+          {actionLabel}
+        </button>
+      ) : null}
+      <IconButton tone="onDark" label={dismissLabel} onClick={onDismiss}>
+        <CloseIcon />
+      </IconButton>
+    </div>
+  );
+}

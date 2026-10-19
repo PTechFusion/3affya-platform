@@ -1677,5 +1677,144 @@
       "pendingBody": "Your card carries an Unverified stamp until our team approves your credentials. Patients cannot book you until then.",
       "pendingAction": "Review your credentials"
     }
+  },
+  "availability": {
+    "metaTitle": "Availability",
+    "metaDescription": "Your weekly hours, days off and extra hours in your own time zone, with a preview of the times a patient in the Gulf sees.",
+    "title": "Availability",
+    "lead": "Your weekly hours, on your own clock. Patients see every time in theirs.",
+    "loading": "Loading your hours",
+    "accepting": {
+      "on": "Accepting new patients",
+      "off": "Not accepting new patients yet",
+      "offHint": "This turns on when you save your first weekly hours.",
+      "turnedOn": "You are now accepting new patients. They can book the times you set."
+    },
+    "status": {
+      "saving": "Saving…",
+      "saved": "All changes saved",
+      "failed": "Not saved. Your changes are still here.",
+      "retry": "Try again"
+    },
+    "settings": {
+      "timeZone": "Your time zone",
+      "slotLength": "Slot length",
+      "minutes": "{minutes, plural, one {{minutesLabel} minute} other {{minutesLabel} minutes}}"
+    },
+    "grid": {
+      "title": "Weekly hours",
+      "zoneLead": "Times in",
+      "slots": "{count, plural, =0 {No slots} one {{countLabel} slot} other {{countLabel} slots}}",
+      "tooShortBadge": "Too short",
+      "add": "Add",
+      "addLabel": "Add hours on {day}",
+      "editLabel": "Change {day}, {range}",
+      "removeLabel": "Remove {day}, {range}",
+      "editorTitle": "{day} hours",
+      "from": "From",
+      "to": "To",
+      "done": "Done",
+      "close": "Close",
+      "remove": "Remove these hours",
+      "tooShort": "Shorter than one {length} slot, so patients cannot book it. Make it longer, or pick a shorter slot length."
+    },
+    "errors": {
+      "endBeforeStart": "The end time must be after the start time. Pick a later end time.",
+      "overlap": "These hours overlap {range}. Pick times outside it.",
+      "dateTaken": "That date already has an exception. Remove it first, or pick another date.",
+      "dateOutOfRange": "Pick a date from today to {date}."
+    },
+    "days": {
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday"
+    },
+    "preview": {
+      "toggle": "Preview as a patient in {city}",
+      "title": "What a patient in {city} sees",
+      "zoneLead": "Times in",
+      "country": "Patient's country",
+      "noDst": "{city} does not change its clocks.",
+      "dstLater": "{doctorCity} changes its clocks on {date}; from then your hours show {hours, plural, one {an hour} other {{hoursLabel} hours}} later in {city}.",
+      "dstEarlier": "{doctorCity} changes its clocks on {date}; from then your hours show {hours, plural, one {an hour} other {{hoursLabel} hours}} earlier in {city}.",
+      "bothDst": "{city} changes its clocks too, so each date is worked out on its own.",
+      "weekendLegend": "Shaded days are the weekend in {country}: {first} and {second}.",
+      "weekend": "Weekend",
+      "leadNote": "Times less than {notice} away are hidden: your minimum notice.",
+      "yourTime": "Your time:",
+      "noTimes": "No times",
+      "dayOff": "Day off",
+      "empty": "No open times in the coming week. Add weekly hours or extra hours."
+    },
+    "exceptions": {
+      "title": "Exceptions",
+      "lead": "A day off, or extra hours on one date. They replace your weekly hours for that date.",
+      "none": "No exceptions. Your weekly hours apply every week.",
+      "add": "Add an exception",
+      "formTitle": "New exception",
+      "kind": "Type",
+      "off": "Day off",
+      "offBody": "No bookings on that date.",
+      "extra": "Extra hours",
+      "extraBody": "Open times on top of your weekly hours.",
+      "date": "Date",
+      "dateHint": "Dates and times on your own clock: {zone}.",
+      "submit": "Add exception",
+      "new": "Just added",
+      "removeLabel": "Remove the exception on {date}"
+    },
+    "notice": {
+      "title": "Minimum notice",
+      "label": "Shortest notice before a visit",
+      "hint": "Stops last-minute bookings you cannot prepare for.",
+      "hours": "{hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}}"
+    },
+    "toast": {
+      "added": "Added {day}, {range}.",
+      "removed": "Removed {day}, {range}.",
+      "changed": "{day} hours changed to {range}.",
+      "dayOffAdded": "Day off added: {date}.",
+      "extraAdded": "Extra hours added: {date}, {range}.",
+      "exceptionRemoved": "Exception removed: {date}.",
+      "zone": "Time zone set to {zone}. Your hours keep the same clock times.",
+      "slotLength": "Slot length set to {length}.",
+      "notice": "Minimum notice set to {notice}.",
+      "undo": "Undo",
+      "undone": "Change undone.",
+      "dismiss": "Dismiss"
+    },
+    "empty": {
+      "title": "No weekly hours yet",
+      "body": "Patients can book you once you add the hours you see patients each week.",
+      "action": "Add your first hours"
+    },
+    "countries": {
+      "SA": "Saudi Arabia",
+      "AE": "United Arab Emirates",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman"
+    },
+    "cities": {
+      "SA": "Riyadh",
+      "AE": "Dubai",
+      "KW": "Kuwait City",
+      "QA": "Doha",
+      "BH": "Manama",
+      "OM": "Muscat"
+    },
+    "countriesIn": {
+      "SA": "Saudi Arabia",
+      "AE": "the United Arab Emirates",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman"
+    }
   }
 }

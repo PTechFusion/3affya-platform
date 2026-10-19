@@ -5,10 +5,12 @@ import specialtiesJson from "@/data/sample/specialties.json";
 import bodySystemsJson from "@/data/sample/body-systems.json";
 import invitesJson from "@/data/sample/invites.json";
 import profilesJson from "@/data/sample/profiles.json";
+import availabilityJson from "@/data/sample/availability.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
 import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
 import { business } from "@/config/business";
 import { feeLines } from "@/lib/fees";
+import { addDays, zonedInstant, zonedParts, type StoredException, type StoredRule } from "@/lib/slots";
 
 export type SampleDoctor = {
   id: string;
@@ -275,4 +277,50 @@ export function verifiedAlternatives(d: SampleDoctor, limit = 2): { scope: "spec
   const seesSameAges = others.filter((v) => v.ages === d.ages || v.ages === "allAges");
   if (seesSameAges.length) return { scope: "ages", doctors: seesSameAges.slice(0, limit) };
   return { scope: "any", doctors: others.slice(0, limit) };
+}
+
+/* ---------------- Availability (screen 30) ---------------- */
+
+/** A doctor's availability as stored (data/sample/availability.json): UTC instants plus the rule zone, never local times. */
+export type SampleAvailability = {
+  doctorId: string;
+  timeZone: string;
+  slotMinutes: number;
+  leadTimeHours: number;
+  /** Rule B6: off until the first weekly hours are saved. */
+  acceptingNewPatients: boolean;
+  rules: StoredRule[];
+  exceptions: StoredException[];
+};
+
+const availabilityData = availabilityJson as unknown as {
+  schedules: SampleAvailability[];
+  addedException: StoredException & { doctorId: string };
+};
+
+/**
+ * Prototype only: sampleInstant's shift, applied in whole days on the doctor's wall clock, so a day off still runs midnight to
+ * midnight and extra hours keep their clock times when the shift crosses a DST change. Gone with task 1.5.
+ */
+function sampleInstantOnWallClock(iso: string, timeZone: string): string {
+  const days = Math.round((sampleInstant(iso).getTime() - Date.parse(iso)) / 86_400_000);
+  const wall = zonedParts(new Date(iso), timeZone);
+  return zonedInstant(addDays(wall, days), wall.minutes, timeZone).toISOString();
+}
+
+function shiftException(x: StoredException, timeZone: string): StoredException {
+  return { ...x, startsAtUtc: sampleInstantOnWallClock(x.startsAtUtc, timeZone), endsAtUtc: sampleInstantOnWallClock(x.endsAtUtc, timeZone) };
+}
+
+/** The doctor's weekly rules and exceptions. Rules repeat weekly, so only the dated exceptions are shifted into the coming week. */
+export function availabilityFor(doctorId: string): SampleAvailability | undefined {
+  const row = availabilityData.schedules.find((s) => s.doctorId === doctorId);
+  return row ? { ...row, exceptions: row.exceptions.map((x) => shiftException(x, row.timeZone)) } : undefined;
+}
+
+/** The exception the `?state=exceptionAdded` preview shows as just added, shifted like the others. */
+export function sampleAddedException(doctorId: string): StoredException | undefined {
+  const row = availabilityData.schedules.find((s) => s.doctorId === doctorId);
+  const { doctorId: owner, ...x } = availabilityData.addedException;
+  return row && owner === doctorId ? shiftException(x, row.timeZone) : undefined;
 }
