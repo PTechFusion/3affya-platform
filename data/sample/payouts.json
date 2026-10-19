@@ -1,0 +1,61 @@
+[
+  {
+    "sample": "notStarted",
+    "doctorId": "doc_002",
+    "doctorTimeZone": "America/Chicago",
+    "stripeAccountId": null,
+    "detailsSubmitted": false,
+    "chargesEnabled": false,
+    "payoutsEnabled": false,
+    "currentlyDue": [],
+    "pastDue": [],
+    "bankLast4": null,
+    "nextPayout": null,
+    "recentPayouts": []
+  },
+  {
+    "sample": "inProgress",
+    "doctorId": "doc_002",
+    "doctorTimeZone": "America/Chicago",
+    "stripeAccountId": "acct_sample_in_progress",
+    "detailsSubmitted": false,
+    "chargesEnabled": false,
+    "payoutsEnabled": false,
+    "currentlyDue": ["external_account", "tos_acceptance.date", "tos_acceptance.ip"],
+    "pastDue": [],
+    "bankLast4": null,
+    "nextPayout": null,
+    "recentPayouts": []
+  },
+  {
+    "sample": "enabled",
+    "doctorId": "doc_002",
+    "doctorTimeZone": "America/Chicago",
+    "stripeAccountId": "acct_sample_enabled",
+    "detailsSubmitted": true,
+    "chargesEnabled": true,
+    "payoutsEnabled": true,
+    "currentlyDue": [],
+    "pastDue": [],
+    "bankLast4": "6789",
+    "nextPayout": { "arrivalUtc": "2026-11-12T15:00:00Z", "amountCents": 50000, "currency": "USD" },
+    "recentPayouts": [
+      { "id": "po_sample_002", "arrivalUtc": "2026-11-05T15:00:00Z", "amountCents": 25000, "currency": "USD", "status": "paid" },
+      { "id": "po_sample_001", "arrivalUtc": "2026-10-29T15:00:00Z", "amountCents": 50000, "currency": "USD", "status": "paid" }
+    ]
+  },
+  {
+    "sample": "restricted",
+    "doctorId": "doc_002",
+    "doctorTimeZone": "America/Chicago",
+    "stripeAccountId": "acct_sample_restricted",
+    "detailsSubmitted": true,
+    "chargesEnabled": false,
+    "payoutsEnabled": false,
+    "currentlyDue": [],
+    "pastDue": ["individual.verification.document", "individual.verification.additional_document"],
+    "bankLast4": "6789",
+    "nextPayout": null,
+    "recentPayouts": []
+  }
+]

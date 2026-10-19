@@ -1816,5 +1816,101 @@
       "BH": "Bahrain",
       "OM": "Oman"
     }
+  },
+  "payouts": {
+    "metaTitle": "Payouts",
+    "metaDescription": "Connect Stripe to get paid for first visits, see what Stripe still needs, and see your next payout.",
+    "loadingTitle": "Loading payouts",
+    "title": {
+      "notStarted": "Set up payouts",
+      "inProgress": "Finish setting up payouts",
+      "enabled": "Payouts are on",
+      "restricted": "Stripe needs more details"
+    },
+    "flags": {
+      "label": "Account status",
+      "chargesOn": "Bookings open",
+      "chargesOff": "Bookings paused",
+      "payoutsOn": "Payouts on",
+      "payoutsOff": "Payouts paused"
+    },
+    "earnings": {
+      "line": "You receive <strong>{amount}</strong> for each first visit.",
+      "note": "The patient pays the platform fee and card processing on top of your fee.",
+      "noFee": "Set your first-visit fee to see what you receive.",
+      "noFeeLink": "Set your fee",
+      "breakdown": "How the patient's price adds up",
+      "yourFee": "Your fee",
+      "yourFeeDetail": "Paid out to your bank",
+      "platformFee": "Platform fee",
+      "platformFeeDetail": "{pct} of your fee, kept by 3affya",
+      "cardProcessing": "Card processing",
+      "cardProcessingDetail": "{cardPct} plus {cardFixed}, charged by Stripe and the card networks",
+      "total": "The patient pays",
+      "prototypeNote": "Prototype: the payout schedule, and whether you or 3affya pay Stripe's payout fees, wait on Dr Ayman (open question 12)."
+    },
+    "how": {
+      "notStarted": "Stripe, our payment partner, pays your fee into your bank. Your bank details stay with Stripe.",
+      "inProgress": "Finish the steps below and patients can book you.",
+      "restricted": "Stripe paused bookings and payouts until you send what is listed below."
+    },
+    "steps": {
+      "title": "Your steps on Stripe",
+      "left": "{count, plural, =0 {All done} one {{countLabel} step left} other {{countLabel} steps left}}",
+      "identity": "Confirm who you are",
+      "identityDetail": "Date of birth, home address and Social Security number. Your name and email come filled in.",
+      "bank": "Add your bank account",
+      "bankDetail": "The US account where Stripe sends your earnings.",
+      "payouts": "Payouts on",
+      "payoutsDetail": "Stripe checks your details and switches payouts on. Then patients can book you.",
+      "status": {
+        "done": "Done",
+        "current": "Next",
+        "todo": "To do",
+        "needed": "Action needed",
+        "paused": "Paused"
+      }
+    },
+    "needs": {
+      "idDocument": "A photo of your government ID",
+      "addressDocument": "A document that shows your home address",
+      "ssn": "Your Social Security number",
+      "dob": "Your date of birth",
+      "address": "Your home address",
+      "phone": "Your phone number",
+      "website": "Your practice website",
+      "bankAccount": "Your bank's routing and account numbers",
+      "terms": "Your agreement to Stripe's terms",
+      "other": "Other details Stripe asks for"
+    },
+    "next": {
+      "title": "Next payout",
+      "to": "To your account ending {last4}"
+    },
+    "recent": {
+      "title": "Last payouts",
+      "paid": "Paid",
+      "inTransit": "On the way",
+      "failed": "Failed"
+    },
+    "zone": "Dates in your time zone:",
+    "stripe": {
+      "setUp": "Set up payouts with Stripe",
+      "continue": "Continue with Stripe",
+      "dashboard": "Open your Stripe dashboard",
+      "pending": "Opening Stripe…",
+      "hintOnboarding": "Opens Stripe in this tab. You can stop at any point and continue from this page; Stripe keeps what you entered.",
+      "hintDashboard": "Opens Stripe in this tab. See every payout or change your bank there.",
+      "error": {
+        "preview": "This preview is not connected to Stripe yet. On the live site, this button takes you to Stripe.",
+        "unavailable": "Stripe did not answer. Please try again in a minute.",
+        "notAllowed": "Please sign in again to continue."
+      }
+    },
+    "book": {
+      "hidden": "Book stays hidden on your profile until payouts are on.",
+      "hiddenRestricted": "Book is hidden on your profile until Stripe switches payouts back on. Your earnings so far stay in your Stripe balance.",
+      "shown": "Book shows on your profile, so patients can book and pay you."
+    }
   }
 }
