@@ -208,3 +208,14 @@ export function SectionHeading({ title, lead, action }: { title: string; lead?: 
     </div>
   );
 }
+
+/* ---------------- Search icon ---------------- */
+/** Magnifier for search fields: never mirrored in RTL (rule R2). */
+export function SearchIcon({ className = "size-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" className={className} style={{ transform: "none" }}>
+      <circle cx="8.5" cy="8.5" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M13 13l4.25 4.25" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}

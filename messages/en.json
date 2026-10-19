@@ -493,5 +493,135 @@
       "body": "Search by specialty or name, then open any verified profile."
     },
     "lastReviewed": "Last reviewed {date}"
+  },
+  "faq": {
+    "metaTitle": "Common questions about 3affya",
+    "metaDescription": "Plain answers about first visits with US-trained doctors, fees and refunds, how your records are handled, and joining as a doctor.",
+    "title": "Common questions",
+    "lead": "Short, plain answers about visits, fees, your records and joining as a doctor.",
+    "searchLabel": "Search the questions",
+    "searchPlaceholder": "Try: refund, records, prescription",
+    "searchClear": "Clear",
+    "resultCount": "{count, plural, one {{countLabel} question matches} other {{countLabel} questions match}}",
+    "topics": "Topics",
+    "groups": {
+      "patients": "For patients",
+      "fees": "Fees and refunds",
+      "records": "Records and AI",
+      "doctors": "For doctors"
+    },
+    "items": {
+      "travel": {
+        "q": "Do I need to travel to the US?",
+        "a": "No. You join the visit from home in your country, by video or phone."
+      },
+      "usDoctor": {
+        "q": "How can a US doctor see me?",
+        "a": "Your doctor is licensed in the US and sees you from there by video or phone. The visit is a second opinion: the doctor explains your condition, reviews your records and suggests next steps.",
+        "link": "Read how it works"
+      },
+      "cannotDo": {
+        "q": "What can this visit not do?",
+        "a": "It is not for emergencies. If this is urgent, call {number}. Over video or phone the doctor cannot examine you. Your local doctor stays in charge of tests, prescriptions and follow-up."
+      },
+      "boardCertified": {
+        "q": "What does US board certified mean?",
+        "a": "The doctor passed a national specialty exam after residency, on top of the licence every doctor needs. We check both.",
+        "link": "Why US training matters"
+      },
+      "account": {
+        "q": "Do I need an account?",
+        "a": "Not to browse. You can search for doctors and read their profiles without one. You sign in with your email only when you book or upload records."
+      },
+      "visitTime": {
+        "q": "Is the visit time shown in my time or the doctor's?",
+        "a": "Every time is shown in your own time zone, with the zone named, like {example}. Your booking confirmation shows both times."
+      },
+      "dialect": {
+        "q": "Will the doctor speak my dialect?",
+        "a": "Every doctor on 3affya speaks Arabic. Each profile lists the doctor's languages and dialect, so you can choose someone who speaks the way you do."
+      },
+      "cost": {
+        "q": "How much does a first visit cost?",
+        "a": "Each doctor sets one price, shown on the profile before you book. There is nothing to pay until you book.",
+        "link": "How fees work"
+      },
+      "included": {
+        "q": "What is included in the price?",
+        "a": "The price you see covers everything: the doctor's fee, the 3affya fee and card processing. At checkout these show as three lines that add up to the same total. Nothing is added later."
+      },
+      "pay": {
+        "q": "How do I pay?",
+        "a": "By card, Apple Pay or Google Pay, when you book. We hold your time for {minutes, plural, one {{minutesLabel} minute} other {{minutesLabel} minutes}} while you pay. You pay 3affya once, for the first visit."
+      },
+      "cancel": {
+        "q": "Can I cancel and get a refund?",
+        "a": "Yes. The cancellation terms are shown on the payment step, before you pay. If the doctor cancels, you get a full refund. Refunds go back to the card or wallet you paid with.",
+        "link": "Read the refund policy"
+      },
+      "afterVisit": {
+        "q": "Do I pay anything after the first visit?",
+        "a": "Not to 3affya. If you keep seeing the same doctor after the first visit, you agree on that care and its cost with the doctor directly."
+      },
+      "processing": {
+        "q": "What happens to the records I upload?",
+        "a": "AI reads each page and writes a one-page summary and a dated timeline for your doctor. Every item links to the page it came from. Missing or unreadable pages are flagged, never guessed."
+      },
+      "aiConsent": {
+        "q": "Do you ask before AI reads my records?",
+        "a": "Yes. Consent to AI processing is its own checkbox, separate from the privacy consent. No file is processed until you agree and pay."
+      },
+      "storage": {
+        "q": "Where are my records stored?",
+        "a": "On a private, encrypted server run for 3affya. Only you and the doctor you choose can open them. Before you agree, the upload page says where your files are stored and processed.",
+        "link": "Read the privacy policy"
+      },
+      "recordsCost": {
+        "q": "How much does a records summary cost?",
+        "a": "{price} for every {gb} GB of files, rounded up to the next {gb} GB. You see the price before you pay. If processing fails, trying again is free."
+      },
+      "notDiagnosis": {
+        "q": "Is the AI summary a diagnosis?",
+        "a": "No. The summary is labelled as written by AI, and it helps your doctor prepare. It does not diagnose and does not replace the visit. Your doctor decides what it means."
+      },
+      "sharing": {
+        "q": "Who can see my summary?",
+        "a": "Only you, until you share it with a doctor you choose. A share link stops working after {days, plural, one {{daysLabel} day} other {{daysLabel} days}}, or sooner if you turn it off."
+      },
+      "deleting": {
+        "q": "Can I delete my records?",
+        "a": "Yes, at any time from your account. Deleting removes your files, the summary and any share links. We keep only a note that the deletion happened."
+      },
+      "whoCanJoin": {
+        "q": "Who can join 3affya?",
+        "a": "Doctors with a US licence who speak Arabic. Many already have a profile here, built from public US records and marked as unclaimed.",
+        "link": "See how joining works"
+      },
+      "claim": {
+        "q": "How do I claim my profile?",
+        "a": "Open your invite link, or find your profile and tap “{claim}”. Claiming is free. Add your credentials, fee and times, then we review and publish it."
+      },
+      "verification": {
+        "q": "How do you check doctors?",
+        "a": "Before a profile goes live, we check the US state licence and board certification against the official registries. The verified badge shows the date, and we check again every {months, plural, one {month} other {{monthsLabel} months}}."
+      },
+      "removal": {
+        "q": "Can I have my listing removed?",
+        "a": "Yes. Open your profile and ask for it to be removed. We confirm it is you, then take the page down within {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}}."
+      },
+      "payouts": {
+        "q": "How do I get paid?",
+        "a": "You set your own first-visit fee. Patients pay through 3affya, and Stripe pays you out to your bank. After the first visit, care and payment continue directly between you and the patient."
+      }
+    },
+    "emptyTitle": "No question matches “{query}”",
+    "emptyTitleGeneric": "No question matches your search",
+    "emptyBody": "Try one short word, like fee or records. Or send us your question and a person on our team will answer.",
+    "emptyAction": "Ask us your question",
+    "moreTitle": "Still have a question?",
+    "moreBody": "Write to us and a person on our team will reply.",
+    "moreAction": "Contact us",
+    "lastReviewed": "Last reviewed {date}",
+    "loading": "Loading questions"
   }
 }
