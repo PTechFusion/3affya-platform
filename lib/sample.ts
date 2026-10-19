@@ -81,3 +81,34 @@ export function toDoctorCardData(d: SampleDoctor, locale: Locale, timeZone: stri
     boardCertified: d.boardCertified,
   };
 }
+
+/* ---------------- Claim invites (screen 9) ---------------- */
+// One appended block, its import included, so parallel screens appending to this file merge cleanly.
+import invitesJson from "@/data/sample/invites.json";
+
+/** An invite as the prototype stores it. Production stores a hash of the token, never the token itself (task 2.3). */
+export type SampleInvite = {
+  id: string;
+  token: string;
+  doctorId: string;
+  email: string;
+  sentAtUtc: string;
+  expiresAtUtc: string;
+  usedAtUtc: string | null;
+};
+
+export type InviteStatus = "valid" | "expired" | "used";
+
+export const sampleInvites = invitesJson as SampleInvite[];
+
+/** Looks a token up and derives its status at `now`. Undefined means forged: no such token, or its doctor row is gone. */
+export function inviteByToken(
+  token: string,
+  now: Date = new Date(),
+): { invite: SampleInvite; doctor: SampleDoctor; status: InviteStatus } | undefined {
+  const invite = sampleInvites.find((i) => i.token === token);
+  const doctor = invite ? sampleDoctors.find((d) => d.id === invite.doctorId) : undefined;
+  if (!invite || !doctor) return undefined;
+  const status: InviteStatus = invite.usedAtUtc ? "used" : new Date(invite.expiresAtUtc) <= now ? "expired" : "valid";
+  return { invite, doctor, status };
+}

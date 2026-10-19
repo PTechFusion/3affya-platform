@@ -1,0 +1,29 @@
+[
+  {
+    "id": "inv_001",
+    "token": "demo-valid",
+    "doctorId": "doc_013",
+    "email": "maha.mansour@example.com",
+    "sentAtUtc": "2026-10-19T07:00:00Z",
+    "expiresAtUtc": "2027-12-31T20:59:59Z",
+    "usedAtUtc": null
+  },
+  {
+    "id": "inv_002",
+    "token": "demo-expired",
+    "doctorId": "doc_014",
+    "email": "ziad.saleh@example.com",
+    "sentAtUtc": "2026-09-28T07:00:00Z",
+    "expiresAtUtc": "2026-10-12T07:00:00Z",
+    "usedAtUtc": null
+  },
+  {
+    "id": "inv_003",
+    "token": "demo-used",
+    "doctorId": "doc_010",
+    "email": "fadi.baroudi@example.com",
+    "sentAtUtc": "2026-10-05T07:00:00Z",
+    "expiresAtUtc": "2026-10-19T07:00:00Z",
+    "usedAtUtc": "2026-10-08T15:20:00Z"
+  }
+]

@@ -1212,5 +1212,110 @@
         }
       }
     }
+  },
+  "claim": {
+    "metaTitle": "Claim your profile | 3affya",
+    "metaDescription": "Your 3affya profile is already built from public US records. Confirm your email to claim it, free.",
+    "loadingTitle": "Opening your invite",
+    "registrySource": "From public US records (NPPES)",
+    "valid": {
+      "title": "Are you {name}?",
+      "lead": "Claim it free to add your photo, fee and weekly times, so Gulf patients can book you. You can edit everything, any time."
+    },
+    "email": {
+      "label": "Your email",
+      "hint": "We send a {digits}-digit code here. Patients never see your email.",
+      "submit": "Send code",
+      "sending": "Sending…",
+      "scrutiny": "Claiming means patients see this profile as yours, so keep your fee and times current.",
+      "error": {
+        "empty": "Enter your email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com.",
+        "noName": "Add your name before the @, like name@example.com.",
+        "noDomain": "Add the part after the @, like name@example.com.",
+        "noDot": "Check the part after the @. It needs a dot, like example.com.",
+        "link": "This invite link has stopped working. Reload the page to see why.",
+        "limited": "Too many codes asked for in the last hour. Wait an hour, then try again.",
+        "unavailable": "We could not send the code just now. Please try again in a minute."
+      }
+    },
+    "code": {
+      "sentTo": "We sent a {digits}-digit code to <b>{email}</b>. It can take a minute to arrive.",
+      "spam": "Not there? Check your spam folder.",
+      "resent": "We sent a new code. Use the latest one.",
+      "label": "{digits}-digit code",
+      "hint": "Type or paste it. Spaces and dashes are fine.",
+      "submit": "Confirm and continue",
+      "checking": "Checking…",
+      "resend": "Send a new code",
+      "change": "Use a different email",
+      "error": {
+        "empty": "Enter the {digits}-digit code from the email.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "wrong": "That code does not match. Check the latest email, or send a new code.",
+        "link": "This invite link has stopped working. Reload the page to see why.",
+        "limited": "Too many tries in the last hour. Wait an hour, then send a new code.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "inbox": {
+      "gmail": "Open Gmail",
+      "outlook": "Open Outlook",
+      "yahoo": "Open Yahoo Mail",
+      "icloud": "Open iCloud Mail",
+      "newTab": "opens in a new tab"
+    },
+    "prototypeNote": "Prototype: no email is sent yet. Any {digits} digits work; {wrong} shows the wrong-code message.",
+    "done": {
+      "title": "Your profile is claimed",
+      "body": "Next, add your photo and your licence and board details. Patients can book you once your credentials are verified."
+    },
+    "checklist": {
+      "title": "Your profile so far",
+      "progress": "{done} of {total} done",
+      "name": "Name",
+      "npi": "NPI number",
+      "specialty": "Specialty",
+      "email": "Email confirmed",
+      "photo": "Professional photo",
+      "credentials": "State licence and board status",
+      "status": {
+        "registry": "From the registry",
+        "done": "Done",
+        "current": "This step",
+        "todo": "Next"
+      }
+    },
+    "expired": {
+      "title": "This invite link has expired",
+      "body": "It stopped working on {date}. Request a new one and we will email it to the address this invite went to."
+    },
+    "used": {
+      "title": "This invite link was already used",
+      "body": "It was used on {date}, and each link works once. If you claimed this profile, request a new link to sign in. If you did not, contact us."
+    },
+    "request": {
+      "submit": "Request a new link",
+      "sending": "Sending…",
+      "sentTitle": "A new link is on its way",
+      "sentBody": "Check the inbox this invite went to. It can take a few minutes.",
+      "error": {
+        "limited": "Too many links asked for in the last hour. Wait an hour, then try again.",
+        "unavailable": "We could not send a new link just now. Please try again in a minute."
+      }
+    },
+    "forged": {
+      "title": "This invite link does not work",
+      "emptyTitle": "We could not match it to a profile",
+      "emptyBody": "The link may be cut short or mistyped. Open it again from the invite email, or find your profile by name or NPI.",
+      "action": "Find your profile"
+    },
+    "limited": {
+      "title": "Too many attempts",
+      "body": "To keep profiles safe, invite links can be opened {count, plural, one {once} other {{countLabel} times}} an hour from one connection. Wait an hour, then open your link again."
+    },
+    "contactLead": "Questions?",
+    "contactLink": "Contact us"
   }
 }

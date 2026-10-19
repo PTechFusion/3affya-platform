@@ -5,3 +5,4 @@ Synthetic, for the prototype only. Never put a real patient document or a real N
 - `doctors.json`: 20 doctors, 8 verified, 4 pending, 8 unclaimed. Field names match the planned schema (task 1.4).
 - `specialties.json`: 24 of the 104 specialty groups, bilingual, with sample counts. The full list comes from the content document in task 1.5.
 - `bookings.json`: three bookings in the three money states the patient portal shows. Amounts in minor units; the three lines sum to the total.
+- `invites.json`: three claim invites for screen 9 (`/claim/[token]`): `demo-valid` for `doc_013` (unclaimed), `demo-expired` for `doc_014`, `demo-used` for `doc_010` (already claimed, so that profile is pending). Any other token is forged. Real invites store only a hash of the token and expire 14 days after sending (task 2.3); the valid demo expires far ahead so the prototype link keeps working. Emails use the reserved `example.com` domain.
