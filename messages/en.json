@@ -835,5 +835,90 @@
       "body": "Check the spelling, or search by your NPI. If you are not listed yet, you can start a profile from scratch.",
       "action": "Start a new profile"
     }
+  },
+  "howItWorks": {
+    "metaTitle": "How 3affya works: find, book, talk",
+    "metaDescription": "Find a US-trained, Arabic-speaking doctor, book a first visit at one all-in price, and talk by video or phone. No account needed to browse.",
+    "title": "How 3affya works",
+    "lead": "Three steps from search to a visit in Arabic. No account needed to browse.",
+    "stepsLabel": "The three steps",
+    "loadingLabel": "Loading how it works",
+    "step1": {
+      "title": "Find a doctor",
+      "body": "Search by specialty or condition. Each profile shows training, languages and the full price.",
+      "noAccount": "No account needed to browse",
+      "notSure": "Not sure which specialty? Ask our assistant"
+    },
+    "step2": {
+      "title": "Book and pay once",
+      "body": "Pick a time shown in your own time zone. You sign in only at this step.",
+      "hold": "{count, plural, other {We hold the time for you for {minutes} minutes while you pay.}}"
+    },
+    "step3": {
+      "title": "Talk to your doctor in Arabic",
+      "body": "Join by video or phone at the time you booked. Share your records first so the doctor has read them."
+    },
+    "fees": {
+      "title": "One price, shown before you book",
+      "lead": "You see the full price before you book. Nothing is added at the end.",
+      "youPay": "You pay, all in",
+      "example": "Example: a first visit with a doctor whose fee is {fee}",
+      "breakdown": "What the price includes",
+      "doctorFee": "Doctor's fee",
+      "doctorFeeHint": "Set by the doctor and paid to the doctor.",
+      "platformFee": "3affya fee",
+      "platformFeeHint": "{pct} of the doctor's fee, on the first visit only.",
+      "cardProcessing": "Card processing",
+      "cardProcessingHint": "{pct} + {fixed}, charged by the card network. We pass it on at cost.",
+      "total": "Total",
+      "payWith": "Pay by card, Apple Pay or Google Pay.",
+      "cancelTitle": "If you need to cancel",
+      "cancelBody": "{count, plural, other {Cancel more than {hours} hours before the visit and you get a full refund. After that, the visit cannot be refunded.}}",
+      "cancelCheckout": "You see these terms again on the payment page, before you pay.",
+      "refundLink": "Read the refund policy",
+      "emptyTitle": "Doctors are publishing their fees now",
+      "emptyBody": "Each doctor sets one fee. When the first fees are live, a full worked example appears here.",
+      "emptyAction": "Browse specialties"
+    },
+    "visit": {
+      "title": "Video or phone: you choose",
+      "lead": "Each doctor chooses which visit types to offer. You pick one when you book.",
+      "video": "Video",
+      "videoBest": "Best for showing a rash, a wound or how you move, and for meeting face to face.",
+      "phone": "Phone",
+      "phoneBest": "Best for talking through results and questions, a weak connection, or more privacy."
+    },
+    "scope": {
+      "title": "What a first visit is",
+      "body": "A first consultation and second opinion from a US-licensed doctor. The doctor explains your condition, reviews your records and suggests next steps. It does not replace your local doctor."
+    },
+    "prepare": {
+      "title": "Before your visit",
+      "lead": "Five small things that help the visit go well.",
+      "device": {
+        "q": "Test your phone or computer",
+        "a": "Open the visit link a few minutes early. Check that your camera, microphone and internet work."
+      },
+      "room": {
+        "q": "Find a private, quiet room",
+        "a": "Choose a room with good light where you can talk freely. Headphones help."
+      },
+      "id": {
+        "q": "Keep your ID close",
+        "a": "The doctor may ask to see an ID with your photo before you start."
+      },
+      "notes": {
+        "q": "Write down your questions and medicines",
+        "a": "List your symptoms, when they started, and every medicine you take, with the dose."
+      },
+      "records": {
+        "q": "Share your records",
+        "a": "Upload reports, scans and lab results before the visit so the doctor can read them first."
+      }
+    },
+    "cta": {
+      "title": "Ready to find your doctor?",
+      "body": "Browse verified doctors. You only sign in when you book."
+    }
   }
 }
