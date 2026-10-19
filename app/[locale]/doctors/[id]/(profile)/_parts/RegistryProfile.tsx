@@ -9,13 +9,13 @@ import { getTranslations } from "next-intl/server";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { DoctorCard } from "@/components/brand/DoctorCard";
-import { CheckIcon, ChevronNext, EmptyState, LinkButton, Surface } from "@/components/ui";
+import { Breadcrumbs, CheckIcon, ChevronNext, EmptyState, LinkButton, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { business } from "@/config/business";
 import { formatDate, formatNumber, type Locale } from "@/lib/format";
 import { toDoctorCardData, toRegistryCardData, toRegistryFacts, verifiedAlternatives, withoutBooking, type SampleDoctorDetails } from "@/lib/sample";
 import { emergencyNumberFor, type Viewer } from "@/lib/viewer";
-import { Breadcrumbs, sectionTitle } from "./bits";
+import { sectionTitle } from "./bits";
 import { InviteDoctor } from "./InviteDoctor";
 
 type Props = { doctor: SampleDoctorDetails; locale: Locale; viewer: Viewer; removalPending: boolean; invited: boolean };
@@ -76,7 +76,9 @@ export async function RegistryProfile({ doctor: d, locale: loc, viewer, removalP
       </div>
 
       <main className="mx-auto max-w-6xl px-4 pb-14 pt-5 sm:px-6 sm:pt-6">
-        <Breadcrumbs label={t("breadcrumb")} doctors={tn("doctors")} specialty={specialty} specialtyHref={specialtyHref} current={name} />
+        <div className="mb-5 hidden sm:block">
+          <Breadcrumbs label={t("breadcrumb")} items={[{ label: tn("doctors"), href: "/search" }, { label: specialty, href: specialtyHref }, { label: name }]} />
+        </div>
         {removalPending && !pending ? (
           <div role="status" className="mb-6 rounded-[var(--radius-card)] border border-sky-500/40 bg-sky-100 p-4">
             <p className="font-semibold text-sea-900">{t("registry.removal.title")}</p>
@@ -98,7 +100,7 @@ export async function RegistryProfile({ doctor: d, locale: loc, viewer, removalP
                   {panel.cta}
                 </LinkButton>
                 {panel.notMe ? (
-                  <Link href={`${thisIsMe}?choice=remove`} className="self-center text-center text-sm font-semibold text-white underline underline-offset-4 hover:text-lagoon-300">
+                  <Link href={`${thisIsMe}?intent=remove`} className="self-center text-center text-sm font-semibold text-white underline underline-offset-4 hover:text-lagoon-300">
                     {t("registry.claim.notMe")}
                   </Link>
                 ) : null}

@@ -38,6 +38,15 @@ export type SampleDoctor = {
 export type SampleSpecialty = { slug: string; nameEn: string; nameAr: string; doctorCount: number };
 
 export const sampleDoctors = doctorsJson as unknown as SampleDoctor[];
+
+// Prototype only: sample slots were authored for 10 to 23 Nov 2026. Every instant is shifted so the first authored day is
+// always tomorrow, so "next available" and "within 72 h" stay meaningful whenever the prototype is opened. Gone with task 1.5.
+const SAMPLE_ANCHOR_UTC = Date.UTC(2026, 10, 9);
+export function sampleInstant(iso: string): Date {
+  const now = new Date();
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return new Date(Date.parse(iso) + (today - SAMPLE_ANCHOR_UTC));
+}
 export const sampleSpecialties = specialtiesJson as SampleSpecialty[];
 
 export const verifiedDoctors = () => sampleDoctors.filter((d) => d.state === "verified");
@@ -64,7 +73,7 @@ export function toDoctorCardData(d: SampleDoctor, locale: Locale, timeZone: stri
   const languages = d.languages
     .map((l) => (l.dialect ? `${tl(l.code)} (${tl(`dialect.${l.dialect}`)})` : tl(l.code)))
     .join(locale === "ar" ? "، " : ", ");
-  const next = d.nextAvailableUtc ? new Date(d.nextAvailableUtc) : undefined;
+  const next = d.nextAvailableUtc ? sampleInstant(d.nextAvailableUtc) : undefined;
   return {
     nameEn: d.nameEn,
     nameAr: d.nameAr,
@@ -192,7 +201,7 @@ export function profileFor(id: string): SampleProfile | undefined {
 
 /** The doctor's next open times, earliest first. */
 export function upcomingSlots(id: string): Date[] {
-  return (profileFor(id)?.slotsUtc ?? []).map((s) => new Date(s)).sort((a, b) => a.getTime() - b.getTime());
+  return (profileFor(id)?.slotsUtc ?? []).map(sampleInstant).sort((a, b) => a.getTime() - b.getTime());
 }
 
 /**

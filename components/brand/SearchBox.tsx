@@ -2,6 +2,7 @@
 // Hero search with live suggestions (rule S1): at most 8 suggestions, the predicted part in bold, arrow keys copy the
 // suggestion into the field, Enter submits. Rule S3: visible submit button, query persists in the URL.
 // Labels default to the patient search on home; other pages (Find your profile on /for-professionals) pass their own.
+// layout="inline" keeps field and button on one row for toolbars (the sticky bar on /search).
 import { useId, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -27,6 +28,7 @@ export function SearchBox({
   initialOpen,
   labels,
   action = "/search",
+  layout = "stack",
 }: {
   suggestions: SearchSuggestion[];
   initialQuery?: string;
@@ -35,7 +37,10 @@ export function SearchBox({
   labels?: Partial<SearchBoxLabels>;
   /** Route the form submits to with ?q=. */
   action?: string;
+  /** "stack" (hero): button under the field on phone. "inline" (toolbars): field and button on one row at every width. */
+  layout?: "stack" | "inline";
 }) {
+  const inline = layout === "inline";
   const t = useTranslations("home");
   const label = labels?.label ?? t("searchLabel");
   const placeholder = labels?.placeholder ?? t("searchPlaceholder");
@@ -83,7 +88,7 @@ export function SearchBox({
       role="search"
       action={`/${locale}${action}`}
       method="get"
-      className="flex flex-col gap-2 sm:flex-row"
+      className={inline ? "flex flex-row gap-2" : "flex flex-col gap-2 sm:flex-row"}
       onSubmit={(e) => {
         e.preventDefault();
         go(`${action}?q=${encodeURIComponent(value.trim())}`);
@@ -115,7 +120,10 @@ export function SearchBox({
           onFocus={() => setOpen(true)}
           onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
-          className="w-full min-h-13 rounded-[var(--radius-field)] border-0 bg-white px-4 text-ink-900 shadow-[var(--shadow-nav)] placeholder:text-ink-500/70"
+          className={[
+            "w-full rounded-[var(--radius-field)] bg-white px-4 text-ink-900 placeholder:text-ink-500/70",
+            inline ? "min-h-12 border border-sand-300 focus:border-lagoon-600" : "min-h-13 border-0 shadow-[var(--shadow-nav)]",
+          ].join(" ")}
         />
         {open && typed.trim() ? (
           <ul
@@ -150,7 +158,7 @@ export function SearchBox({
           </ul>
         ) : null}
       </div>
-      <Button type="submit" className="min-h-13 sm:px-7">
+      <Button type="submit" className={inline ? "shrink-0 px-4 sm:px-6" : "min-h-13 sm:px-7"}>
         {submit}
       </Button>
     </form>

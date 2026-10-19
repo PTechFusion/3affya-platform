@@ -32,8 +32,14 @@ export function formatPercent(pct: number, locale: Locale, maximumFractionDigits
 
 /** Time in the viewer's zone with the zone named, e.g. "6:00 PM Riyadh (GMT+3)". Rule P6. */
 export function formatTimeInZone(instant: Date, timeZone: string, locale: Locale): string {
-  const time = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" }).format(instant);
-  return `${time} ${zoneLabel(instant, timeZone)}`;
+  const time = new Intl.DateTimeFormat(tag(locale), { timeZone, hour: "numeric", minute: "2-digit" })
+    .format(instant)
+    .replace(/ /g, " "); // "6:00 م" never splits from its marker
+  // The zone never breaks across lines (no-break spaces). In Arabic it is also wrapped in a left-to-right isolate
+  // (U+2066 ... U+2069, rule R3); without it the closing parenthesis of "(GMT+3)" joins the right-to-left run and is drawn
+  // mirrored at the far end of the line.
+  const zone = zoneLabel(instant, timeZone).replace(/ /g, " ");
+  return `${time} ${locale === "ar" ? `⁦${zone}⁩` : zone}`;
 }
 
 /** "Riyadh (GMT+3)": the city from the IANA id plus the offset at that instant. */

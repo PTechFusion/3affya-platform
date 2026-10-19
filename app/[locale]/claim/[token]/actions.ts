@@ -7,7 +7,7 @@
 // Every answer is the same whether or not an account already exists for the email (rule F6).
 import { business } from "@/config/business";
 import { inviteByToken } from "@/lib/sample";
-import { checkEmail, type EmailProblem } from "@/app/[locale]/ai-tools/_parts/email";
+import { checkEmail, type EmailProblem } from "@/lib/email";
 import { checkCode, codeDigits, prototypeWrongCode, type CodeProblem } from "./_parts/code";
 
 /** "link": the token is no longer valid (expired, used or forged since the page loaded). */

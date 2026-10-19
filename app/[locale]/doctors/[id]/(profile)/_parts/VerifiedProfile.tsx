@@ -7,7 +7,7 @@ import { getTranslations } from "next-intl/server";
 import { SiteNav } from "@/components/brand/SiteNav";
 import { SiteFooter } from "@/components/brand/SiteFooter";
 import { DoctorCard } from "@/components/brand/DoctorCard";
-import { Badge, ChevronNext, EmptyState, LinkButton, SlotLink, Surface, Tag } from "@/components/ui";
+import { Badge, Breadcrumbs, ChevronNext, EmptyState, LinkButton, SlotLink, Surface, Tag } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { business } from "@/config/business";
 import { verifiers } from "@/config/verifiers";
@@ -15,7 +15,7 @@ import { feeLines } from "@/lib/fees";
 import { formatDate, formatMoney, formatNumber, formatSlotDay, formatTime, formatZone, type Locale } from "@/lib/format";
 import { profileFor, toDoctorCardData, upcomingSlots, type SampleDoctorDetails } from "@/lib/sample";
 import { emergencyNumberFor, type Viewer } from "@/lib/viewer";
-import { Breadcrumbs, Row, VerifierLink, sectionTitle } from "./bits";
+import { Row, VerifierLink, sectionTitle } from "./bits";
 
 type Props = { doctor: SampleDoctorDetails; locale: Locale; viewer: Viewer; payoutsReady: boolean };
 
@@ -121,7 +121,9 @@ export async function VerifiedProfile({ doctor: d, locale: loc, viewer, payoutsR
     <>
       <SiteNav />
       <main className="mx-auto max-w-6xl px-4 pb-14 pt-4 sm:px-6 sm:pt-6">
-        <Breadcrumbs label={t("breadcrumb")} doctors={tn("doctors")} specialty={specialty} specialtyHref={otherDoctorsHref} current={name} />
+        <div className="mb-5 hidden sm:block">
+          <Breadcrumbs label={t("breadcrumb")} items={[{ label: tn("doctors"), href: "/search" }, { label: specialty, href: otherDoctorsHref }, { label: name }]} />
+        </div>
         {/* Phone: one column in DOM order 1-4 (the wrappers are display: contents). Desktop: two columns, the wrappers are blocks. */}
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-x-12">
           <div className="contents lg:col-start-2 lg:row-start-1 lg:flex lg:flex-col lg:gap-6">

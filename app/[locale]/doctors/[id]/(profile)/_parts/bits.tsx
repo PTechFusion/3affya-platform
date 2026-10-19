@@ -1,7 +1,5 @@
 // Small pieces both profile variants share: the section heading style, a label/value row, the breadcrumb and a verifier link.
 import type { ReactNode } from "react";
-import { Link } from "@/i18n/navigation";
-import { ChevronNext } from "@/components/ui";
 
 export const sectionTitle = "text-xl font-bold text-sea-900";
 
@@ -33,31 +31,3 @@ export function VerifierLink({ href, domain, lead }: { href: string; domain: str
   );
 }
 
-/** Doctors > specialty > this doctor (rule S15). Hidden on phone so the card, price and times keep the first screen. */
-export function Breadcrumbs({ label, doctors, specialty, specialtyHref, current }: { label: string; doctors: string; specialty: string; specialtyHref: string; current: string }) {
-  return (
-    <nav aria-label={label} className="mb-5 hidden text-sm sm:block">
-      <ol className="flex flex-wrap items-center gap-1.5 text-ink-500">
-        <li>
-          <Link href="/search" className="hover:text-sea-700 hover:underline">
-            {doctors}
-          </Link>
-        </li>
-        <li aria-hidden="true">
-          <ChevronNext className="size-3.5" />
-        </li>
-        <li>
-          <Link href={specialtyHref} className="hover:text-sea-700 hover:underline">
-            {specialty}
-          </Link>
-        </li>
-        <li aria-hidden="true">
-          <ChevronNext className="size-3.5" />
-        </li>
-        <li aria-current="page" className="font-semibold text-ink-700">
-          {current}
-        </li>
-      </ol>
-    </nav>
-  );
-}

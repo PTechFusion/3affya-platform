@@ -114,7 +114,7 @@ export default async function ClaimInvite({ params, searchParams }: Props) {
       <DoctorCard doctor={toDoctorCardData(doctor, loc, viewer.timeZone, tl)} state={doctor.state} />
       <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
         {doctor.state === "unclaimed" ? <p className="text-ink-700">{t("registrySource")}</p> : <span />}
-        <Link href={`/doctors/${doctor.id}/this-is-me`} className="font-semibold text-sea-700 underline-offset-2 hover:underline">
+        <Link href={`/doctors/${doctor.id}/this-is-me?intent=remove`} className="font-semibold text-sea-700 underline-offset-2 hover:underline">
           {tc("notMe")}
         </Link>
       </div>

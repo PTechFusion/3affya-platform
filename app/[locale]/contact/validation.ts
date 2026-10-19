@@ -1,3 +1,4 @@
+import { checkEmail, type EmailProblem } from "@/lib/email";
 // Contact form rules, shared by the client (validate on blur, rule F4) and the server action (never trust the client).
 // Each failure is a specific code so the message can name the sub-rule and the fix (rules F5, L4); never "invalid".
 
@@ -30,6 +31,16 @@ export type ContactResult =
   | { ok: false; error: "validation"; fields: ContactErrors }
   | { ok: false; error: "unavailable" };
 
+const EMAIL_CODES: Record<EmailProblem, ContactErrorCode> = {
+  empty: "emailMissing",
+  spaces: "emailSpace",
+  noAt: "emailNoAt",
+  manyAt: "emailManyAt",
+  noName: "emailNoLocal",
+  noDomain: "emailNoDomain",
+  noDot: "emailNoDot",
+};
+
 export function validateField(field: ContactField, raw: string): ContactErrorCode | undefined {
   const value = raw.trim();
   if (field === "name") {
@@ -40,15 +51,8 @@ export function validateField(field: ContactField, raw: string): ContactErrorCod
   if (field === "email") {
     if (!value) return "emailMissing";
     if (value.length > CONTACT_LIMITS.emailMax) return "emailTooLong";
-    if (/\s/.test(value)) return "emailSpace";
-    const parts = value.split("@");
-    if (parts.length === 1) return "emailNoAt";
-    if (parts.length > 2) return "emailManyAt";
-    const [local = "", domain = ""] = parts;
-    if (!local) return "emailNoLocal";
-    if (!domain) return "emailNoDomain";
-    if (!domain.includes(".") || domain.startsWith(".") || domain.endsWith(".")) return "emailNoDot";
-    return undefined;
+    const problem = checkEmail(value);
+    return problem ? EMAIL_CODES[problem] : undefined;
   }
   if (!value) return "messageMissing";
   if (value.length < CONTACT_LIMITS.messageMin) return "messageTooShort";

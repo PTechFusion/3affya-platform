@@ -8,7 +8,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button, CheckIcon, ChevronNext, Field, Input, LinkButton, Surface } from "@/components/ui";
 import { business } from "@/config/business";
 import { formatNumber, type Locale } from "@/lib/format";
-import { checkEmail } from "@/app/[locale]/ai-tools/_parts/email";
+import { checkEmail } from "@/lib/email";
 import { sendClaimCode, verifyClaimCode, type SendCodeResult, type VerifyCodeResult } from "../actions";
 import { checkCode, codeDigits, prototypeWrongCode } from "./code";
 import { inboxLinksFor } from "./inbox";

@@ -103,6 +103,9 @@ Commit as `M<milestone>.<task> <screen name>` (one task id, from the brief heade
   (`supportEmail`, `fullRefundCutoffHours`, membership prices, support hours all live there). The three fee lines come from
   `lib/fees.ts feeLines()` and render with `components/brand/FeeBreakdown`. Rule C5: any "from" or card price is the all-in
   `totalCents`, never the doctor fee alone.
+- **Shared rules:** `lib/email.ts checkEmail` is the one email check (map its codes to your copy). `lib/sample.ts sampleInstant`
+  shifts authored sample times so the first slot is always tomorrow; use it for any sample instant, never `new Date(iso)`.
+  `components/ui Breadcrumbs` is the S15 trail; `SlotLink` the open-time link; `RadioCard` the card-style radio.
 - **Reuse before you build:** `Disclosure` (accordion row), `CtaBand` (closing band), `SearchIcon`, `Textarea`, `Chip`,
   `SectionHeading`, `LinkButton` in `components/ui`; `TrustStrip` (`layout="stack"` for sidebars), `SearchBox` (`labels`,
   `action`, `initialOpen`), `LegalPage`, `FeeBreakdown`, `MissingPage`, `PortalShell` in `components/brand`.
@@ -170,7 +173,6 @@ list. Returned screens get one more build pass, then come back to the reviewer w
 - Last-reviewed date is implemented four ways (02, 13, 14 constants; 16 `lib/legal.ts`): one `lib/reviewed.ts` map and a
   `ReviewedOn` line.
 - Verifier URLs (ABMS Certification Matters, FSMB DocInfo) duplicated in 02 and 14: `config/verifiers.ts`.
-- Two email validators (11 `_parts/email.ts`, 15 `validation.ts`): one shared module before sign-in (18) is built.
 - 03 renders its three fee lines in its own `<dl>`: switch to `FeeBreakdown`.
 
 ## 10. Waves
