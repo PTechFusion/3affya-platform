@@ -5,10 +5,15 @@ import specialtiesJson from "@/data/sample/specialties.json";
 import bodySystemsJson from "@/data/sample/body-systems.json";
 import invitesJson from "@/data/sample/invites.json";
 import profilesJson from "@/data/sample/profiles.json";
+import builderJson from "@/data/sample/builder.json";
+import usStatesJson from "@/data/sample/us-states.json";
 import type { DoctorCardData, DoctorCardState } from "@/components/brand/DoctorCard";
-import { formatDate, formatMoney, formatTimeInZone, type Locale } from "@/lib/format";
-import { business } from "@/config/business";
-import { feeLines } from "@/lib/fees";
+import type { Locale } from "@/lib/format";
+import { sampleInstant, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
+
+// The card mapping and the sample clock live in lib/card-data.ts (no JSON imports, so client components can use them);
+// pages keep importing them from here.
+export { sampleInstant, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
 
 export type SampleDoctor = {
   id: string;
@@ -39,14 +44,6 @@ export type SampleSpecialty = { slug: string; nameEn: string; nameAr: string; do
 
 export const sampleDoctors = doctorsJson as unknown as SampleDoctor[];
 
-// Prototype only: sample slots were authored for 10 to 23 Nov 2026. Every instant is shifted so the first authored day is
-// always tomorrow, so "next available" and "within 72 h" stay meaningful whenever the prototype is opened. Gone with task 1.5.
-const SAMPLE_ANCHOR_UTC = Date.UTC(2026, 10, 9);
-export function sampleInstant(iso: string): Date {
-  const now = new Date();
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-  return new Date(Date.parse(iso) + (today - SAMPLE_ANCHOR_UTC));
-}
 export const sampleSpecialties = specialtiesJson as SampleSpecialty[];
 
 export const verifiedDoctors = () => sampleDoctors.filter((d) => d.state === "verified");
@@ -64,37 +61,6 @@ export function featuredDoctors(): SampleDoctor[] {
 export function lowestVerifiedFeeCents(): number | undefined {
   const fees = verifiedDoctors().map((d) => d.feeUsdCents).filter((f): f is number => typeof f === "number");
   return fees.length ? Math.min(...fees) : undefined;
-}
-
-/** Translator for the `languages` namespace: language codes and dialect names. */
-export type LanguageLabels = (key: string) => string;
-
-export function toDoctorCardData(d: SampleDoctor, locale: Locale, timeZone: string, tl: LanguageLabels): DoctorCardData {
-  const languages = d.languages
-    .map((l) => (l.dialect ? `${tl(l.code)} (${tl(`dialect.${l.dialect}`)})` : tl(l.code)))
-    .join(locale === "ar" ? "، " : ", ");
-  const next = d.nextAvailableUtc ? sampleInstant(d.nextAvailableUtc) : undefined;
-  return {
-    nameEn: d.nameEn,
-    nameAr: d.nameAr,
-    specialtyEn: d.specialtyEn,
-    specialtyAr: d.specialtyAr,
-    cityEn: d.cityEn,
-    cityAr: d.cityAr,
-    photoUrl: d.photoUrl ?? undefined,
-    languages,
-    visitTypes: d.visitTypes,
-    ages: d.ages,
-    tags: d.tags,
-    trainingLines: d.training,
-    yearsInPractice: d.yearsInPractice ?? undefined,
-    // Rule C5: the card price is the all-in total the patient pays, never the doctor fee alone.
-    feeLabel: d.feeUsdCents != null ? formatMoney(feeLines(d.feeUsdCents).totalCents, business.currencyPresentment, locale) : undefined,
-    nextAvailableLabel: next ? `${formatDate(next, timeZone, locale)} · ${formatTimeInZone(next, timeZone, locale)}` : undefined,
-    // verifiedOn is a calendar date, not an instant: format it in UTC so a viewer west of UTC does not see the day before.
-    verifiedOnLabel: d.verifiedOn ? formatDate(new Date(`${d.verifiedOn}T00:00:00Z`), "UTC", locale) : undefined,
-    boardCertified: d.boardCertified,
-  };
 }
 
 /* ---------------- Screen 4, specialty directory ---------------- */
@@ -275,4 +241,42 @@ export function verifiedAlternatives(d: SampleDoctor, limit = 2): { scope: "spec
   const seesSameAges = others.filter((v) => v.ages === d.ages || v.ages === "allAges");
   if (seesSameAges.length) return { scope: "ages", doctors: seesSameAges.slice(0, limit) };
   return { scope: "any", doctors: others.slice(0, limit) };
+}
+
+/* ---------------- Profile builder (screen 29) ---------------- */
+
+/** A US state or DC for the city and licence pickers, bilingual (data/sample/us-states.json). */
+export type UsState = { code: string; nameEn: string; nameAr: string };
+export const usStates = usStatesJson as UsState[];
+export const usStateByCode = (code: string) => usStates.find((s) => s.code === code);
+export const usStateByName = (nameEn: string) => usStates.find((s) => s.nameEn === nameEn);
+
+export type CredentialKind = "licence" | "board" | "other";
+export type BoardStatus = "certified" | "eligible";
+export type SampleCredentialFile = { id: string; name: string; kind: CredentialKind; sizeBytes: number; uploadedAtUtc: string };
+
+/**
+ * What a doctor entered in the builder beyond the registry row (data/sample/builder.json): licence, board status and the
+ * names of the uploaded credential files (the prototype stores names, never files). The submitted and decided instants and
+ * the reviewer's note are what the builder's submitted and rejected previews read; instants go through sampleInstant.
+ * Rows without an entry here start from the registry row alone.
+ */
+export type SampleBuilderRow = {
+  id: string;
+  licenceState: string | null;
+  licenceNumber: string | null;
+  boardStatus: BoardStatus | null;
+  /** Null: use the board named in profiles.json. */
+  boardName: string | null;
+  videoLink: string;
+  files: SampleCredentialFile[];
+  submittedAtUtc: string | null;
+  decidedAtUtc: string | null;
+  rejection: { fileId: string; reasonEn: string; reasonAr: string } | null;
+};
+
+const sampleBuilderRows = builderJson as unknown as SampleBuilderRow[];
+
+export function builderRowFor(id: string): SampleBuilderRow | undefined {
+  return sampleBuilderRows.find((r) => r.id === id);
 }

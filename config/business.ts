@@ -28,6 +28,11 @@ export const business = {
   verifiedReverifyMonths: 12,
   specialtyCountShowMin: 5, // (default until Dr Ayman confirms) a specialty shows its verified-doctor count from this many up (rule H6); fewer reads "Open for booking"
   intakeMaxTurns: 20,
+  // Profile builder (screen 29, tasks 2.4 and 2.5): expertise tags and upload limits.
+  expertiseTagsMax: 10,
+  expertiseTagMaxChars: 30,
+  credentialMaxMb: 20, // PDF or image, per file (task 2.4)
+  photoMaxMb: 10, // (default until Dr Ayman confirms) profile photo, JPG or PNG
   defaultTimeZone: "Asia/Riyadh",
   supportWhatsApp: "", // set in env for production
   supportEmail: "hello@3affya.com",

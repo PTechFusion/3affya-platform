@@ -1644,5 +1644,376 @@
         "error": "We could not send that just now. Please try again."
       }
     }
+  },
+  "builder": {
+    "metaTitle": "Your profile: build your 3affya card",
+    "metaDescription": "Check the profile we built from the NPI registry, add your photo and credentials, and watch your card update as you type.",
+    "title": "Your profile",
+    "lead": "Patients see this card in search and on your profile. It changes as you type.",
+    "progress": "{done} of {total} done",
+    "progressLeft": "{count, plural, =0 {Ready to submit} one {{countLabel} item needed to submit} other {{countLabel} items needed to submit}}",
+    "progressLabel": "Profile progress",
+    "stage": {
+      "registry": "Not submitted yet",
+      "uploaded": "Credentials uploaded",
+      "submitted": "Under review",
+      "rejected": "Changes needed",
+      "live": "Live",
+      "editing": "Live"
+    },
+    "banner": {
+      "registry": {
+        "title": "We built your profile from the NPI registry",
+        "body": "Add your photo, licence and board, then submit for review. Until then, patients see the registry version."
+      },
+      "uploaded": {
+        "title": "Your credentials are uploaded",
+        "body": "Submit for review when the checklist is complete. Until we approve it, your card says Credentials pending verification."
+      },
+      "submitted": {
+        "title": "Submitted for review on {date}",
+        "body": "We check your licence and board with the bodies that issued them, then email you the result. You can keep editing while you wait."
+      },
+      "rejected": {
+        "title": {
+          "licence": "We could not verify your licence",
+          "board": "We could not verify your board certificate",
+          "other": "We could not verify one of your files"
+        },
+        "reviewed": "Reviewed on {date}. Our reviewer wrote:",
+        "after": "Replace the file, then submit again. Everything else you entered is kept.",
+        "action": "Replace the file"
+      },
+      "live": {
+        "title": "Approved: your profile is live",
+        "body": "Patients can find you in search now. Next:",
+        "availability": "Publish your weekly hours",
+        "card": "Download your practice ID card",
+        "payouts": "Set up payouts",
+        "view": "View your public profile"
+      },
+      "editing": {
+        "title": "Your profile is live",
+        "body": "Changes show on your public profile when you save. A new licence or board goes back to review first.",
+        "view": "View your public profile"
+      }
+    },
+    "steps": {
+      "label": "Profile steps",
+      "stepOf": "Step {step} of {total}",
+      "status": {
+        "done": "Done",
+        "needed": "{count, plural, one {{countLabel} item needed to submit} other {{countLabel} items needed to submit}}",
+        "later": "You can finish this later"
+      },
+      "photo": "Photo and name",
+      "location": "Specialty and location",
+      "visits": "Languages and visits",
+      "credentials": "Licence and board",
+      "training": "Training and bio",
+      "expertise": "Expertise and availability"
+    },
+    "coach": {
+      "dismiss": "Got it",
+      "photo": {
+        "title": "Start with your photo",
+        "body": "Profiles with a photo get about twice the views. Your card changes as you type; tap it to see the back."
+      },
+      "location": {
+        "title": "Patients search by specialty",
+        "body": "We filled this in from the NPI registry. Check it: patients filter on specialty and city."
+      },
+      "visits": {
+        "title": "Name your dialect",
+        "body": "Gulf patients look for a doctor who speaks their dialect. The fee you set shows as the full price patients pay."
+      },
+      "credentials": {
+        "title": "What we verify",
+        "body": "We check your licence and board with the bodies that issued them. With your photo, they are all you need to submit."
+      },
+      "training": {
+        "title": "Write it in both languages",
+        "body": "Patients read the bio in their own language. If you write only one, we show it with its own direction."
+      },
+      "expertise": {
+        "title": "Short tags help patients find you",
+        "body": "Add up to {max} conditions you see most. Weekly hours turn on Accepting new patients."
+      }
+    },
+    "actions": {
+      "continue": "Save and continue",
+      "finish": "Save and go to the checklist",
+      "back": "Back",
+      "saving": "Saving…",
+      "saved": "All changes saved",
+      "saveFailed": "We could not save. Your entries are kept here; check your connection and try again.",
+      "fixErrors": "Fix the highlighted field to save this step."
+    },
+    "optional": "{label} (optional)",
+    "photo": {
+      "label": "Professional photo",
+      "upload": "Upload a photo",
+      "replace": "Replace photo",
+      "remove": "Remove photo",
+      "none": "No photo yet. Your card shows a plain placeholder.",
+      "benefit": "Profiles with a photo get about {n}x the views.",
+      "source": "Source: Doximity analysis of {profiles} physician profiles.",
+      "guideTitle": "What works best",
+      "guide": {
+        "recent": "A recent photo of you alone, head and shoulders",
+        "coat": "A white coat; scrubs under a coat are fine for surgical and emergency doctors",
+        "background": "A plain, light background",
+        "no": "No group photos, stock photos or heavy filters"
+      },
+      "formats": "JPG or PNG, up to {max} MB."
+    },
+    "fields": {
+      "nameEn": {
+        "label": "Name in English",
+        "hint": "As on your licence, with your title, for example Dr Maha Mansour."
+      },
+      "nameAr": {
+        "label": "Name in Arabic",
+        "hint": "How Arabic readers see your name, for example د. مها منصور."
+      },
+      "npi": {
+        "label": "NPI number",
+        "hint": "From the NPI registry. Not yours?",
+        "contact": "Contact us"
+      },
+      "specialty": {
+        "label": "Specialty",
+        "hint": "Patients filter search by specialty."
+      },
+      "years": {
+        "label": "Years in practice",
+        "hint": "Since you finished residency. Shown on your card."
+      },
+      "state": {
+        "label": "US state",
+        "choose": "Choose a state"
+      },
+      "cityEn": {
+        "label": "City in English",
+        "hint": "Where you practise, for example Dearborn."
+      },
+      "cityAr": {
+        "label": "City in Arabic",
+        "hint": "For example ديربورن."
+      },
+      "languages": {
+        "legend": "Languages you consult in",
+        "dialect": "Arabic dialect",
+        "dialectNone": "Not specified",
+        "dialectHint": "Gulf patients often look for their own dialect."
+      },
+      "visitTypes": {
+        "legend": "Visit types",
+        "video": "Best when the patient needs to show you something.",
+        "phone": "Best for questions, follow-up and privacy."
+      },
+      "ages": {
+        "legend": "Patients you see"
+      },
+      "fee": {
+        "label": "First-visit fee in US dollars",
+        "hint": "Whole dollars, digits only.",
+        "total": "Patients see {total}: your fee plus the platform fee and card processing.",
+        "totalLink": "How fees work"
+      },
+      "videoLink": {
+        "label": "Video visit link",
+        "hint": "Your own Zoom, Doxy.me or Teams link. Patients get it after they book."
+      },
+      "licenceState": {
+        "label": "Licence state"
+      },
+      "licenceNumber": {
+        "label": "Licence number",
+        "hint": "As printed on your licence."
+      },
+      "board": {
+        "legend": "Board status",
+        "certified": "Board certified",
+        "eligible": "Board eligible",
+        "eligibleHint": "You finished residency and can sit the board exam. Patients see this as text, never as the badge."
+      },
+      "boardName": {
+        "label": "Certifying board",
+        "hint": "The ABMS or AOA board printed on your certificate, for example American Board of Pediatrics."
+      },
+      "school": {
+        "label": "Medical school"
+      },
+      "gradYear": {
+        "label": "Graduation year"
+      },
+      "training": {
+        "legend": "Residency and fellowship",
+        "hint": "One per line, for example Johns Hopkins, residency.",
+        "line": "Training line {n}",
+        "add": "Add a line",
+        "remove": "Remove line {n}"
+      },
+      "bioEn": {
+        "label": "Bio in English",
+        "hint": "Two or three sentences: who you see and how you help."
+      },
+      "bioAr": {
+        "label": "Bio in Arabic",
+        "hint": "Patients read the bio in their own language."
+      },
+      "count": "{count} of {max} characters",
+      "tags": {
+        "label": "Expertise tags",
+        "hint": "Text only, up to {max} characters each, for example Asthma or Sports injuries.",
+        "add": "Add tag",
+        "remove": "Remove {tag}",
+        "count": "{count} of {max} tags",
+        "empty": "No tags yet. Add the conditions you see most."
+      },
+      "availability": {
+        "title": "Accepting new patients",
+        "off": "Off",
+        "on": "On",
+        "offBody": "This turns on when you publish your weekly hours.",
+        "onBody": "Patients can book your published times.",
+        "link": "Set your weekly hours"
+      }
+    },
+    "files": {
+      "legend": "Credential files",
+      "hint": "PDF, JPG or PNG, up to {max} MB each. Only our review team can open these files.",
+      "kind": {
+        "licence": "State licence",
+        "board": "Board certificate",
+        "boardEligible": "Board eligibility letter",
+        "other": "Anything else"
+      },
+      "choose": "Choose a file",
+      "remove": "Remove {name}",
+      "none": "No file yet",
+      "size": "{size} MB",
+      "status": {
+        "pending": "Pending review",
+        "rejected": "Not accepted",
+        "verified": "Verified"
+      }
+    },
+    "errors": {
+      "nameMissing": "Enter your name in English, as it is on your licence.",
+      "nameTooLong": "Shorten the name to {max} characters or fewer.",
+      "nameArLatin": "Write the name in Arabic letters, or leave this empty.",
+      "yearsDigits": "Use digits only, for example 12.",
+      "yearsRange": "Enter a number from 0 to {max}.",
+      "cityTooLong": "Shorten the city to {max} characters or fewer.",
+      "feeDigits": "Enter whole US dollars in digits, for example 200.",
+      "feeZero": "Enter a fee above zero.",
+      "linkHttps": "Start the link with https:// so it opens securely.",
+      "linkFormat": "Paste the full link, for example https://zoom.us/j/123456.",
+      "licenceChars": "Use only the letters, digits and hyphens printed on your licence.",
+      "licenceTooLong": "A licence number has at most {max} characters. Check for extra text.",
+      "boardNotNamed": "Write the board's full name. It starts with American Board of, or American Osteopathic Board of.",
+      "boardTooLong": "Shorten the board name to {max} characters or fewer.",
+      "schoolTooLong": "Shorten the school name to {max} characters or fewer.",
+      "gradDigits": "Use four digits, for example 2009.",
+      "gradRange": "Enter a year from {min} to {max}.",
+      "trainingTooLong": "Shorten this line to {max} characters or fewer.",
+      "bioTooLong": "Shorten the bio to {max} characters. It has {count} now.",
+      "photoType": "Choose a JPG or PNG photo.",
+      "photoSize": "Choose a photo under {max} MB. This one is {size} MB.",
+      "photoStock": "This looks like a stock photo. Upload a photo of you, on your own.",
+      "fileType": "Upload a PDF, JPG or PNG file.",
+      "fileSize": "Upload a file under {max} MB. This one is {size} MB.",
+      "tagEmpty": "Type a tag first, for example Asthma.",
+      "tagTooLong": "Keep a tag to {max} characters. This one has {count}.",
+      "tagDuplicate": "You already have this tag.",
+      "tagsFull": "You have {max} tags, the most a card shows. Remove one to add another."
+    },
+    "checklist": {
+      "title": "Publish checklist",
+      "lead": "Only the first group is needed to submit. The rest can wait until you are ready to take bookings.",
+      "required": "Needed for review",
+      "later": "Can wait",
+      "items": {
+        "photo": "Professional photo",
+        "name": "Name",
+        "specialty": "Specialty",
+        "npi": "NPI number",
+        "licence": "State licence",
+        "board": "Board status",
+        "files": "Licence and board files",
+        "languages": "Languages and dialect",
+        "visits": "Visit types and fee",
+        "bio": "Bio",
+        "tags": "Expertise tags",
+        "availability": "Weekly hours"
+      },
+      "status": {
+        "registry": "From the registry",
+        "done": "Done"
+      },
+      "missing": {
+        "photoMissing": "Add a photo",
+        "nameMissing": "Add your name",
+        "specialtyMissing": "Choose your specialty",
+        "npiMissing": "Contact us to add your NPI",
+        "licenceMissing": "Add the state and number",
+        "boardStatusMissing": "Choose certified or eligible",
+        "boardNameMissing": "Name the certifying board",
+        "licenceFileMissing": "Upload your licence",
+        "boardFileMissing": "Upload your board certificate",
+        "fileRejected": "Replace the file we could not accept",
+        "languagesMissing": "Choose at least one language",
+        "visitTypeMissing": "Choose video, phone or both",
+        "feeMissing": "Set your first-visit fee",
+        "bioMissing": "Write a short bio",
+        "tagsMissing": "Add a few tags",
+        "availabilityMissing": "Publish your weekly hours"
+      },
+      "go": "Step {step}",
+      "goLabel": "{item}: go to step {step}",
+      "contact": "Contact us",
+      "track": {
+        "label": "Review stages",
+        "submit": "Submit",
+        "review": "Under review",
+        "live": "Live"
+      },
+      "submit": "Submit for review",
+      "resubmit": "Submit again",
+      "submitting": "Submitting…",
+      "blocked": "{count, plural, one {Finish {countLabel} more item above to submit.} other {Finish {countLabel} more items above to submit.}}",
+      "ready": "We check your licence and board with the bodies that issued them, then email you the result.",
+      "submitted": "Submitted on {date}. We email you when the review is done.",
+      "submitFailed": "We could not submit. Your entries are kept; try again in a moment.",
+      "saveChanges": "Save changes",
+      "changesSaved": "Saved. Your public profile shows the changes."
+    },
+    "preview": {
+      "title": "Live preview",
+      "lead": "The card patients see in search and on your profile.",
+      "language": "Preview language",
+      "mode": "Show the card",
+      "modeReview": "During review",
+      "modeVerified": "Once verified",
+      "openCard": "Full card",
+      "openCardLabel": "See the full card, both sides",
+      "switchTo": "Preview in {language}",
+      "dialogTitle": "Your card",
+      "bioTitle": "On your profile",
+      "bioEmpty": "Your bio shows here once you write it.",
+      "addNameAr": "Add your name in Arabic",
+      "addNameArBody": "Arabic readers see your English name until you add it.",
+      "addBioAr": "Add your bio in Arabic",
+      "addBioEn": "Add your bio in English",
+      "bookNote": "Patients tap Book here to choose a time. In this preview it does nothing."
+    },
+    "notFound": {
+      "title": "We could not find this profile",
+      "body": "The link may be old. Search for your name or NPI to find your profile.",
+      "action": "Find your profile"
+    },
+    "loading": "Loading your profile"
   }
 }
