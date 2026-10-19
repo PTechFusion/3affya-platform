@@ -209,6 +209,82 @@
     "send": "Send",
     "prototypeNote": "Prototype: the assistant goes live in milestone 3. The layout and the pinned safety block are final."
   },
+  "aiTools": {
+    "metaTitle": "AI tools, coming soon | 3affya",
+    "metaDescription": "Simple AI helpers for your medical papers and visits, coming soon. Every result is labelled as AI and is never a diagnosis.",
+    "badge": "Coming soon",
+    "title": "AI tools for your care",
+    "intent": "Simple helpers for your medical papers and visits. We are building them now.",
+    "listLabel": "Tools we are building",
+    "inRecordsSummary": "Included in the records summary at launch",
+    "tools": {
+      "translator": {
+        "name": "Document translator",
+        "line": "Translates your medical papers between Arabic and English."
+      },
+      "prep": {
+        "name": "Visit preparation",
+        "line": "Gathers your questions, medicines and history before a visit."
+      },
+      "explainer": {
+        "name": "Instruction explainer",
+        "line": "Explains your doctor's instructions in plain words."
+      },
+      "organiser": {
+        "name": "Visit and task organiser",
+        "line": "Keeps your visits, tests and follow-ups in one list."
+      },
+      "sharing": {
+        "name": "Sharing assistant",
+        "line": "Helps you choose what to share, with whom, and for how long."
+      },
+      "search": {
+        "name": "Guided doctor search",
+        "line": "Finds doctors from what you tell it, in your own words."
+      },
+      "medicines": {
+        "name": "Medicine comparison",
+        "line": "Matches your medicines to their US names. It never advises a change."
+      },
+      "letters": {
+        "name": "English email helper",
+        "line": "Writes English emails to US clinics, explains them in Arabic, and sends only when you approve."
+      },
+      "gaps": {
+        "name": "Missing record checker",
+        "line": "Spots missing pages and pages that are hard to read."
+      },
+      "duplicates": {
+        "name": "Duplicate organiser",
+        "line": "Groups repeated and updated copies so each record shows once."
+      }
+    },
+    "safety": {
+      "title": "AI results are always labelled",
+      "body": "Every result says it was made by AI and shows whether a doctor has reviewed it. It is not a diagnosis and does not replace your visit. You can always ask a person."
+    },
+    "notify": {
+      "title": "Get an email when each tool launches",
+      "body": "One short email per new tool. Nothing else.",
+      "label": "Email address",
+      "hint": "We use it only for launch emails. Stop them any time.",
+      "placeholder": "name@example.com",
+      "submit": "Tell me when these launch",
+      "sending": "Sending…",
+      "sentTitle": "You are on the list",
+      "sentBody": "We will email you when a tool goes live. Nothing else.",
+      "prototypeNote": "Prototype: this preview does not save your email yet.",
+      "error": {
+        "empty": "Enter your email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com.",
+        "noName": "Add your name before the @, like name@example.com.",
+        "noDomain": "Add the part after the @, like name@example.com.",
+        "noDot": "Check the part after the @. It needs a dot, like example.com.",
+        "unavailable": "We could not save your email just now. Please try again in a minute."
+      }
+    }
+  },
   "languages": {
     "ar": "Arabic",
     "en": "English",
