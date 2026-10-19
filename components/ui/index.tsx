@@ -370,3 +370,48 @@ export function Breadcrumbs({ label, items }: { label: string; items: Array<{ la
     </nav>
   );
 }
+
+/* ---------------- Segmented control ---------------- */
+/**
+ * Two to four mutually exclusive views of one thing (card side, card language) as a single row of native radios: arrow keys
+ * move between options and the legend names the group. Controlled: the caller holds the value. Give an option `lang` when its
+ * label is in another script (rule H10: each language named in its own script).
+ */
+export function SegmentedControl<V extends string>({
+  legend,
+  name,
+  options,
+  value,
+  onChange,
+}: {
+  legend: string;
+  name: string;
+  options: Array<{ value: V; label: string; lang?: string }>;
+  value: V;
+  onChange: (value: V) => void;
+}) {
+  return (
+    <fieldset className="min-w-0">
+      <legend className="mb-1.5 text-sm font-semibold text-ink-700">{legend}</legend>
+      <div className="inline-flex max-w-full rounded-[var(--radius-tag)] border border-sand-300 bg-white p-1">
+        {options.map((o) => (
+          <label
+            key={o.value}
+            lang={o.lang}
+            className="flex min-h-11 cursor-pointer items-center justify-center rounded-[var(--radius-tag)] px-4 text-[15px] font-semibold text-ink-700 transition-colors hover:text-sea-900 has-checked:bg-sea-700 has-checked:text-white has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-lagoon-500"
+          >
+            <input
+              type="radio"
+              name={name}
+              value={o.value}
+              checked={value === o.value}
+              onChange={() => onChange(o.value)}
+              className="sr-only"
+            />
+            {o.label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
