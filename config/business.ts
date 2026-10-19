@@ -7,7 +7,7 @@ export const business = {
   cardProcessingPct: 2.9,
   cardProcessingFixedCents: 30,
   slotHoldMinutes: 10,
-  cancelFullRefundHours: 24, // full refund when cancelled more than this many hours before the visit, none after (default until Q8)
+  fullRefundCutoffHours: 24, // (default until Q8) full refund when the patient cancels more than this many hours before the visit, none after
   recordsBlockGb: 1,
   recordsBlockPriceCents: 999,
   shareDefaultDays: 30, // (default until Q13)

@@ -11,7 +11,7 @@ import { SiteFooter } from "@/components/brand/SiteFooter";
 import { Badge, ChevronDown, ChevronNext, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, formatNumber, type Locale } from "@/lib/format";
-import { firstVisitBreakdown } from "@/lib/fees";
+import { feeLines } from "@/lib/fees";
 import { lowestVerifiedFeeCents } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
@@ -50,21 +50,21 @@ export default async function HowItWorks({ params, searchParams }: Props) {
 
   // Worked example from the lowest published first-visit fee, so it matches "from" prices elsewhere on the site.
   const exampleFee = sp.state === "empty" ? undefined : lowestVerifiedFeeCents();
-  const fees = exampleFee != null ? firstVisitBreakdown(exampleFee) : undefined;
-  const feeLines = fees
+  const fees = exampleFee != null ? feeLines(exampleFee) : undefined;
+  const feeRows = fees
     ? [
-        { key: "doctor", label: t("fees.doctorFee"), hint: t("fees.doctorFeeHint"), amount: fees.doctorFee },
+        { key: "doctor", label: t("fees.doctorFeeCents"), hint: t("fees.doctorFeeCentsHint"), amount: fees.doctorFeeCents },
         {
           key: "platform",
-          label: t("fees.platformFee"),
-          hint: t("fees.platformFeeHint", { pct: percent(business.firstVisitPlatformFeePct) }),
-          amount: fees.platformFee,
+          label: t("fees.platformFeeCents"),
+          hint: t("fees.platformFeeCentsHint", { pct: percent(business.firstVisitPlatformFeePct) }),
+          amount: fees.platformFeeCents,
         },
         {
           key: "card",
-          label: t("fees.cardProcessing"),
-          hint: t("fees.cardProcessingHint", { pct: percent(business.cardProcessingPct), fixed: money(business.cardProcessingFixedCents) }),
-          amount: fees.cardProcessing,
+          label: t("fees.cardProcessingCents"),
+          hint: t("fees.cardProcessingCentsHint", { pct: percent(business.cardProcessingPct), fixed: money(business.cardProcessingFixedCents) }),
+          amount: fees.cardProcessingCents,
         },
       ]
     : [];
@@ -115,10 +115,10 @@ export default async function HowItWorks({ params, searchParams }: Props) {
                 <>
                   <div className="mt-4 rounded-[var(--radius-field)] bg-white p-4 shadow-[var(--shadow-nav)] sm:p-5">
                     <p className="text-sm font-semibold text-ink-700">{t("fees.youPay")}</p>
-                    <p className="tabular mt-0.5 text-4xl font-bold text-sea-900">{money(fees.total)}</p>
-                    <p className="mt-1 text-sm text-ink-500">{t("fees.example", { fee: money(fees.doctorFee) })}</p>
+                    <p className="tabular mt-0.5 text-4xl font-bold text-sea-900">{money(fees.totalCents)}</p>
+                    <p className="mt-1 text-sm text-ink-500">{t("fees.example", { fee: money(fees.doctorFeeCents) })}</p>
                     <dl aria-label={t("fees.breakdown")} className="mt-4 border-t border-sand-200">
-                      {feeLines.map((line) => (
+                      {feeRows.map((line) => (
                         <div key={line.key} className="flex items-start justify-between gap-4 border-b border-sand-200 py-3">
                           <dt className="min-w-0">
                             <span className="block font-semibold text-ink-900">{line.label}</span>
@@ -128,8 +128,8 @@ export default async function HowItWorks({ params, searchParams }: Props) {
                         </div>
                       ))}
                       <div className="flex items-baseline justify-between gap-4 pt-3 text-lg font-bold text-sea-900">
-                        <dt>{t("fees.total")}</dt>
-                        <dd className="tabular">{money(fees.total)}</dd>
+                        <dt>{t("fees.totalCents")}</dt>
+                        <dd className="tabular">{money(fees.totalCents)}</dd>
                       </div>
                     </dl>
                   </div>
@@ -147,7 +147,7 @@ export default async function HowItWorks({ params, searchParams }: Props) {
               <div className="mt-4 border-t border-lagoon-600/25 pt-4">
                 <h4 className="font-bold text-sea-900">{t("fees.cancelTitle")}</h4>
                 <p className="mt-1 text-ink-700">
-                  {t("fees.cancelBody", { count: business.cancelFullRefundHours, hours: num(business.cancelFullRefundHours) })}
+                  {t("fees.cancelBody", { count: business.fullRefundCutoffHours, hours: num(business.fullRefundCutoffHours) })}
                 </p>
                 <p className="mt-1 text-sm text-ink-700">{t("fees.cancelCheckout")}</p>
                 <Link href="/refunds" className="mt-2 inline-flex items-center gap-1 font-semibold text-sea-700 underline-offset-4 hover:underline">
