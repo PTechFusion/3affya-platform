@@ -2183,7 +2183,39 @@
       "handwritten": "The handwriting could not be read. Nothing was taken from this page.",
       "cutOff": "Part of the page is cut off. Nothing was taken from this page."
     },
-    "loading": "Loading the summary"
+    "loading": "Loading the summary",
+    "inRange": "Within range",
+    "rangeContext": "Results outside the lab's range are marked. That is common and not always a problem: your doctor can tell you what it means for you.",
+    "tabs": {
+      "label": "Summary views",
+      "overview": "Overview",
+      "timeline": "Timeline",
+      "flags": "Flags"
+    },
+    "kind": {
+      "document": "Document",
+      "condition": "Condition noted",
+      "procedure": "Procedure",
+      "medication": "Medication",
+      "allergy": "Allergy",
+      "result": "Test result"
+    },
+    "timeline": {
+      "order": "{audience, select, professional {Newest first. Dates are as printed on the documents.} other {Newest first. Dates are as printed on your documents.}}",
+      "empty": "No dates found in these documents.",
+      "undated": "{audience, select, professional {Medications and allergies are not on the timeline: the documents give no date for them.} other {Medications and allergies are not on the timeline: your documents give no date for them.}}",
+      "undatedItems": "Also without a date: {items}."
+    },
+    "sheet": {
+      "pageOf": "Page {page} of {pages}",
+      "preview": "Prototype: the page from the upload shows here.",
+      "taken": "Taken from this page",
+      "takenEmpty": "Nothing in the summary comes from this page.",
+      "flagged": "Flagged on this page",
+      "pagesLabel": "Pages of this document",
+      "prev": "Previous page",
+      "next": "Next page"
+    }
   },
   "builder": {
     "metaTitle": "Your profile: build your 3affya card",
@@ -2555,5 +2587,30 @@
       "action": "Find your profile"
     },
     "loading": "Loading your profile"
+  },
+  "patientSummary": {
+    "metaTitle": "Records summary | 3affya",
+    "metaDescription": "Your one-page summary of the records you uploaded, with the source page for every item.",
+    "breadcrumb": "Breadcrumb",
+    "title": "Your records summary",
+    "lead": "Your summary is ready. It lists what your documents say, in plain words. Tap the source under any item to see the page it came from.",
+    "download": "Download or print",
+    "share": "Share with a doctor",
+    "uploadClearer": "Upload a clearer photo",
+    "missing": {
+      "title": "Something missing?",
+      "body": "Your summary only knows the documents you uploaded. If a report or letter is missing, add it to your records.",
+      "action": "Add a document"
+    },
+    "notReady": {
+      "title": "Your summary is not ready yet",
+      "body": "We write it after every page of your documents has been read. You can follow each step on the progress page.",
+      "action": "See progress"
+    },
+    "error": {
+      "title": "Your summary could not be opened",
+      "body": "Your documents are safe. Please try again in a minute. If it keeps happening, talk to a human.",
+      "retry": "Try again"
+    }
   }
 }
