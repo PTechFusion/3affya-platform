@@ -1212,5 +1212,109 @@
         }
       }
     }
+  },
+  "thisIsMe": {
+    "metaTitle": "Are you {name}? Claim or remove this profile",
+    "metaDescription": "Doctors listed from public US records can claim their 3affya profile for free, or ask us to take it down. We handle removal requests {sla}.",
+    "title": "Are you {name}?",
+    "titleGeneric": "Is this your profile?",
+    "lead": "Claim this profile to keep it up to date, or ask us to take it down.",
+    "sla": "{hours, plural, one {within one hour} other {within {count} hours}}",
+    "choice": {
+      "legend": "What would you like to do?",
+      "claim": {
+        "title": "This is me",
+        "body": "Claim it, free"
+      },
+      "remove": {
+        "title": "Remove me",
+        "body": "Take it down"
+      }
+    },
+    "form": {
+      "name": "Your full name",
+      "npi": "Your NPI number",
+      "npiHint": "{digits} digits, as on your NPPES record.",
+      "email": "Email address",
+      "emailHint": "We write to you here to confirm it is you.",
+      "reason": "Why should we remove it?",
+      "reasonChoose": "Choose a reason",
+      "wrongDetailsHint": "You can correct the details yourself if you claim the profile instead. Claiming is free.",
+      "claimInstead": "Claim it instead",
+      "details": "Tell us more (optional)",
+      "note": {
+        "claim": "We email you a link. Open it, enter the {digits}-digit code, and the profile is yours to edit.",
+        "remove": "A person on our team checks the request, then takes the profile down {sla}."
+      },
+      "submit": {
+        "none": "Send request",
+        "claim": "Send my claim link",
+        "remove": "Ask to remove my profile"
+      },
+      "sending": "Sending…",
+      "retry": "Try sending again"
+    },
+    "reasons": {
+      "notListed": "I do not want to be listed",
+      "notPractising": "I no longer see patients",
+      "wrongDetails": "The details are wrong",
+      "other": "Another reason"
+    },
+    "errors": {
+      "intentMissing": "Choose This is me to claim the profile, or Remove me to take it down.",
+      "nameMissing": "Enter your full name, as on your medical licence.",
+      "nameTooLong": "Shorten your name to {nameMax} characters or fewer.",
+      "npiMissing": "Enter your NPI number. It has {digits} digits.",
+      "npiNotDigits": "Use digits only. Remove any letters or other signs.",
+      "npiLength": "An NPI has {digits} digits. This one has {count}. Check for a missing or extra digit.",
+      "npiStart": "An NPI starts with 1 or 2. Check the first digit.",
+      "npiMismatch": "This is not the NPI on this profile's public record. Check it against your NPPES record.",
+      "emailMissing": "Enter your email address so we can confirm it is you.",
+      "emailTooLong": "Shorten your email address to {emailMax} characters or fewer.",
+      "emailSpace": "Remove the space from your email address.",
+      "emailNoAt": "Add the @ sign, as in name@example.com.",
+      "emailManyAt": "Use only one @ sign in your email address.",
+      "emailNoLocal": "Add the part before the @, as in name@example.com.",
+      "emailNoDomain": "Add the part after the @, as in name@example.com.",
+      "emailNoDot": "Check the part after the @. It needs a dot, as in example.com.",
+      "reasonMissing": "Choose a reason, so our team knows how to handle your request.",
+      "detailsTooLong": "Shorten this to {detailsMax} characters or fewer. It has {detailsCount} now."
+    },
+    "failed": {
+      "title": "Your request was not sent",
+      "body": "Something went wrong on our side. Your answers are still here. Try again in a minute, or email us at <email>{address}</email>."
+    },
+    "profileUnavailable": {
+      "title": "This profile can no longer be changed here",
+      "body": "It may have been claimed or taken down a moment ago. Reload the page to see where it stands now."
+    },
+    "submitted": {
+      "remove": {
+        "title": "Request received",
+        "lead": "Your profile comes down {sla}. Here is what happens until then.",
+        "step1": "We email <email>{address}</email> to confirm the request came from you.",
+        "step1NoEmail": "We email you to confirm the request came from you.",
+        "step2": "A person on our team checks it against the public record.",
+        "step3": "We take the profile down. Its link then says the doctor asked to be removed, and search engines are told the page is gone.",
+        "after": "We email you again when it is done."
+      },
+      "claim": {
+        "title": "Check your email",
+        "body": "We sent a claim link to <email>{address}</email>. Open it, enter the {digits}-digit code, and the profile is yours to edit.",
+        "bodyNoEmail": "We sent you a claim link. Open it, enter the {digits}-digit code, and the profile is yours to edit.",
+        "spam": "Not there in a few minutes? Check your spam or junk folder."
+      },
+      "backToProfile": "Back to the profile"
+    },
+    "claimed": {
+      "title": "This profile is already claimed",
+      "lead": "{name}'s profile was claimed already, so it cannot be claimed or removed from this page.",
+      "youTitle": "Are you {name}?",
+      "youBody": "Sign in to your professional portal to edit your profile.",
+      "portal": "Go to my portal",
+      "notYouTitle": "Did someone else claim it?",
+      "notYouBody": "Tell us, and a person on our team will look into it.",
+      "report": "Tell us it was not you"
+    }
   }
 }

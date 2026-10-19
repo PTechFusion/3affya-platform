@@ -83,10 +83,15 @@ export function Input({ invalid, className, ...props }: React.InputHTMLAttribute
   );
 }
 
-export function Select({ className, children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
+export function Select({ invalid, className, children, ...props }: React.SelectHTMLAttributes<HTMLSelectElement> & { invalid?: boolean }) {
   return (
     <select
-      className={cx("w-full min-h-12 rounded-[var(--radius-field)] border border-sand-300 bg-white px-4 py-3 text-ink-900", className)}
+      aria-invalid={invalid || undefined}
+      className={cx(
+        "w-full min-h-12 rounded-[var(--radius-field)] border bg-white px-4 py-3 text-ink-900",
+        invalid ? "border-danger" : "border-sand-300 focus:border-lagoon-600",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -261,5 +266,35 @@ export function CtaBand({ title, body, action }: { title: string; body?: string;
       </div>
       {action}
     </div>
+  );
+}
+
+/* ---------------- Radio card ---------------- */
+/**
+ * One choice in a radio group, drawn as a tappable card: a title and an optional line under it. Group several inside a
+ * <fieldset> with a <legend>; the native radio keeps arrow-key movement and screen-reader semantics. `invalid` marks the
+ * group when nothing is chosen yet (the error text goes under the group, rule F5).
+ */
+export function RadioCard({
+  title,
+  description,
+  invalid,
+  className,
+  ...props
+}: Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "title"> & { title: string; description?: string; invalid?: boolean }) {
+  return (
+    <label
+      className={cx(
+        "flex min-h-12 cursor-pointer items-start gap-2.5 rounded-[var(--radius-field)] border bg-white p-3 transition-colors has-checked:border-sea-700 has-checked:bg-sea-100",
+        invalid ? "border-danger" : "border-sand-300 hover:border-lagoon-600",
+        className,
+      )}
+    >
+      <input type="radio" className="mt-1 size-5 shrink-0 accent-sea-700" {...props} />
+      <span className="flex min-w-0 flex-col">
+        <span className="font-semibold text-ink-900">{title}</span>
+        {description ? <span className="text-sm text-ink-700">{description}</span> : null}
+      </span>
+    </label>
   );
 }
