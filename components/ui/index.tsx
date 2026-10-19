@@ -1,26 +1,39 @@
 // Shared UI primitives. Every product screen composes these; do not restyle them per page.
 import type { ReactNode } from "react";
+import { Link } from "@/i18n/navigation";
 
 const cx = (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(" ");
 
 /* ---------------- Button ---------------- */
 type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+type ButtonSize = "md" | "lg";
+const buttonBase =
+  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-field)] font-semibold transition-colors disabled:opacity-45 disabled:cursor-not-allowed min-h-12";
+const buttonSizes: Record<ButtonSize, string> = { md: "px-5 py-3 text-[15px]", lg: "px-6 py-4 text-base" };
+const buttonVariants: Record<ButtonVariant, string> = {
+  primary: "bg-sea-700 text-white hover:bg-sea-800",
+  secondary: "bg-white text-sea-700 border border-sea-700 hover:bg-sea-100",
+  ghost: "bg-transparent text-sea-700 hover:bg-sand-100",
+  danger: "bg-danger text-white hover:brightness-95",
+};
+
 export function Button({
   variant = "primary",
   size = "md",
   className,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: "md" | "lg" }) {
-  const base =
-    "inline-flex items-center justify-center gap-2 rounded-[var(--radius-field)] font-semibold transition-colors disabled:opacity-45 disabled:cursor-not-allowed min-h-12";
-  const sizes = { md: "px-5 py-3 text-[15px]", lg: "px-6 py-4 text-base" };
-  const variants: Record<ButtonVariant, string> = {
-    primary: "bg-sea-700 text-white hover:bg-sea-800",
-    secondary: "bg-white text-sea-700 border border-sea-700 hover:bg-sea-100",
-    ghost: "bg-transparent text-sea-700 hover:bg-sand-100",
-    danger: "bg-danger text-white hover:brightness-95",
-  };
-  return <button className={cx(base, sizes[size], variants[variant], className)} {...props} />;
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant; size?: ButtonSize }) {
+  return <button className={cx(buttonBase, buttonSizes[size], buttonVariants[variant], className)} {...props} />;
+}
+
+/** A link styled as a button. Use this for navigation; never nest a Button inside a Link (invalid HTML). */
+export function LinkButton({
+  variant = "primary",
+  size = "md",
+  className,
+  ...props
+}: React.ComponentProps<typeof Link> & { variant?: ButtonVariant; size?: ButtonSize }) {
+  return <Link className={cx(buttonBase, buttonSizes[size], buttonVariants[variant], className)} {...props} />;
 }
 
 /* ---------------- Field ---------------- */
@@ -128,6 +141,15 @@ export function ChevronNext({ className = "size-4" }: { className?: string }) {
   );
 }
 
+/** Disclosure chevron: points down, never mirrored; rotate it on open. */
+export function ChevronDown({ className = "size-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className={className}>
+      <path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 /* ---------------- Skeleton and Empty ---------------- */
 export function Skeleton({ className }: { className?: string }) {
   return <div aria-hidden="true" className={cx("skeleton", className)} />;
@@ -158,4 +180,31 @@ export function CoachMark({ title, body }: { title: string; body: string }) {
 /* ---------------- Card surface ---------------- */
 export function Surface({ className, children }: { className?: string; children: ReactNode }) {
   return <div className={cx("rounded-[var(--radius-card)] border border-sand-200 bg-white p-5", className)}>{children}</div>;
+}
+
+/* ---------------- Chip ---------------- */
+/** Tappable pill for quick picks (specialty chips, quick replies). Wrap in a Link or button for the action. */
+export function Chip({ tone = "sand", children }: { tone?: "sand" | "water"; children: ReactNode }) {
+  const tones = {
+    sand: "bg-sand-100 text-sea-800 hover:bg-sand-200",
+    water: "bg-white/15 text-white ring-1 ring-white/40 hover:bg-white/25",
+  };
+  return (
+    <span className={cx("inline-flex min-h-10 items-center rounded-[var(--radius-tag)] px-4 py-1.5 text-sm font-medium transition-colors", tones[tone])}>
+      {children}
+    </span>
+  );
+}
+
+/* ---------------- Section heading ---------------- */
+export function SectionHeading({ title, lead, action }: { title: string; lead?: string; action?: ReactNode }) {
+  return (
+    <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+      <div className="max-w-2xl">
+        <h2 className="text-2xl font-bold text-sea-900 sm:text-3xl">{title}</h2>
+        {lead ? <p className="mt-1.5 text-ink-700">{lead}</p> : null}
+      </div>
+      {action}
+    </div>
+  );
 }

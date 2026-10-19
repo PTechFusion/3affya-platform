@@ -57,6 +57,25 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
       <Badge tone="unclaimed">{t("unclaimed")}</Badge>
     );
 
+  // The faces are plain divs (a card-wide <button> would nest the Book button inside it, which is invalid HTML and breaks
+  // hydration). Tapping anywhere flips; this small control is the keyboard and screen-reader route.
+  const flipControl = side ? null : (
+    <button
+      type="button"
+      aria-pressed={showBack}
+      onClick={(e) => {
+        e.stopPropagation();
+        setFlipped((f) => !f);
+      }}
+      className={[
+        "ms-auto inline-flex min-h-8 items-center rounded-[var(--radius-tag)] px-2.5 text-[12px] font-semibold",
+        showBack ? "bg-white/15 text-white hover:bg-white/25" : "bg-white/60 text-sea-800 hover:bg-white",
+      ].join(" ")}
+    >
+      {showBack ? t("front") : t("tapToFlip")}
+    </button>
+  );
+
   const Front = (
     <div
       className={[
@@ -95,6 +114,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
             <CheckIcon /> {t("boardCertified")}
           </span>
         ) : null}
+        {flipControl}
       </div>
     </div>
   );
@@ -104,7 +124,10 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
       className={["flex h-full flex-col rounded-[var(--radius-card)] text-white shadow-[var(--shadow-card)]", mini ? "p-3" : "p-5 sm:p-6"].join(" ")}
       style={{ background: "linear-gradient(135deg, #065E78, #08708E 45%, #0194BE 80%, #02B3CA)" }}
     >
-      <p className={[mini ? "text-base" : "text-lg", "font-bold"].join(" ")}>{name}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className={[mini ? "text-base" : "text-lg", "font-bold"].join(" ")}>{name}</p>
+        {flipControl}
+      </div>
       <dl className={["mt-1.5 grid gap-x-4 gap-y-1", mini ? "text-xs" : "text-[13px]", "grid-cols-[auto_1fr]"].join(" ")}>
         <dt className="text-white/75">{t("languages")}</dt>
         <dd>{doctor.languages}</dd>
@@ -151,7 +174,14 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
           ) : null}
         </div>
         {state === "verified" && !mini ? (
-          <Button variant="secondary" className="border-white bg-white text-lagoon-900" onClick={onBook}>
+          <Button
+            variant="secondary"
+            className="border-white bg-white text-lagoon-900"
+            onClick={(e) => {
+              e.stopPropagation();
+              onBook?.();
+            }}
+          >
             {tc("book")}
           </Button>
         ) : null}
@@ -161,12 +191,9 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
 
   return (
     <div className={["relative w-full", mini ? "max-w-xs" : "max-w-md"].join(" ")} style={{ perspective: "1400px" }}>
-      <button
-        type="button"
-        aria-label={t("tapToFlip")}
-        aria-pressed={showBack}
+      <div
         onClick={() => !side && setFlipped((f) => !f)}
-        className="block w-full text-start"
+        className="w-full text-start"
         style={{ transformStyle: "preserve-3d", transition: "transform .55s cubic-bezier(.2,.8,.2,1)", transform: showBack ? "rotateY(180deg)" : "none" }}
       >
         <div className={mini ? "h-40" : "h-[356px]"} style={{ backfaceVisibility: "hidden" }}>
@@ -178,7 +205,7 @@ export function DoctorCard({ doctor, state, size = "full", side, onBook }: Props
         >
           {Back}
         </div>
-      </button>
+      </div>
     </div>
   );
 }

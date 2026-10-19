@@ -21,7 +21,8 @@
     "close": "Close",
     "from": "from",
     "perVisit": "per visit",
-    "notForEmergencies": "Not for emergencies. If this is urgent, call your local emergency number."
+    "notForEmergencies": "Not for emergencies. If this is urgent, call your local emergency number.",
+    "notForEmergenciesWithNumber": "Not for emergencies. If this is urgent, call {number}."
   },
   "nav": {
     "doctors": "Doctors",
@@ -31,11 +32,45 @@
     "signIn": "Sign in"
   },
   "home": {
-    "title": "US-trained Arabic-speaking doctors",
-    "subtitle": "American expertise. Care in Arabic. Made for you.",
+    "metaTitle": "3affya: US-trained, Arabic-speaking doctors",
+    "metaDescription": "Book a first video visit with a US board certified doctor who speaks Arabic. Licence checked, price shown before you book.",
+    "title": "US-trained, Arabic-speaking doctors, for you",
+    "subtitle": "Book a first video visit with a US board certified doctor who speaks your language.",
+    "searchLabel": "Search for a specialty, condition or doctor",
     "searchPlaceholder": "Specialty, condition or doctor name",
     "search": "Search",
-    "scaffoldNote": "Scaffold only. The home page is task 1.6. The brand system is at /brand."
+    "suggestionsLabel": "Suggestions",
+    "kindSpecialty": "Specialty",
+    "kindDoctor": "Doctor",
+    "noSuggestions": "No match yet. Press Search to look through all doctors.",
+    "popularSpecialties": "Popular specialties",
+    "askChat": "Not sure which specialty? Ask our assistant",
+    "doctorsTitle": "Verified doctors",
+    "doctorsLead": "Every doctor here holds a US licence that we checked ourselves. Tap a card to see the back.",
+    "seeAllDoctors": "See all doctors",
+    "doctorsEmptyTitle": "Verified doctors are joining now",
+    "doctorsEmptyBody": "The first profiles are being checked. Browse the specialties to see who is coming.",
+    "doctorsEmptyAction": "Browse specialties",
+    "stepsTitle": "How it works",
+    "stepsLead": "Three steps. No account needed to browse.",
+    "step1Title": "Find a doctor",
+    "step1Body": "Search by specialty or condition. Every profile shows training, languages and the first-visit price.",
+    "step2Title": "Book and pay",
+    "step2Body": "Pick a time shown in your own time zone and pay by card, Apple Pay or Google Pay.",
+    "step3Title": "Talk in Arabic",
+    "step3Body": "Meet by video or phone. Upload your records before the visit so the doctor has already read them.",
+    "legalTitle": "How a US doctor can see you",
+    "legalBody": "Your doctor is licensed in the United States and consults you from there by video. The visit is a first consultation and a second opinion: the doctor explains your condition, reviews your records and recommends next steps. It is not an emergency service and does not replace your local physician.",
+    "legalLink": "Read how it works",
+    "faqTitle": "Common questions",
+    "faqLink": "All questions",
+    "faq1Q": "Do I need to travel to the US?",
+    "faq1A": "No. You join the visit from home in your country, by video or phone.",
+    "faq2Q": "What does US board certified mean?",
+    "faq2A": "The doctor passed a national specialty exam after residency, on top of the licence every doctor needs. We check both.",
+    "faq3Q": "How much does a first visit cost?",
+    "faq3A": "Each doctor sets one price, shown on the profile before you book. There is nothing to pay until you book.",
+    "ctaBody": "Browse verified doctors and book your first visit in minutes."
   },
   "card": {
     "unclaimed": "Unclaimed profile",
@@ -62,7 +97,9 @@
     "expertise": "Expertise",
     "tapToFlip": "Tap to flip",
     "front": "Front",
-    "backSide": "Back"
+    "backSide": "Back",
+    "loading": "Loading doctor",
+    "specialtyLabel": "Specialty"
   },
   "brand": {
     "title": "3affya brand system",
@@ -118,7 +155,69 @@
     "city": "Houston, Texas",
     "school": "Baylor College of Medicine",
     "residency": "Residency, Johns Hopkins",
-    "tags": ["Migraine", "Epilepsy", "Multiple sclerosis", "Second opinions"],
+    "tags": [
+      "Migraine",
+      "Epilepsy",
+      "Multiple sclerosis",
+      "Second opinions"
+    ],
     "dialect": "Arabic (Levantine), English"
+  },
+  "trust": {
+    "label": "Why patients trust 3affya",
+    "licence": "Licence verified",
+    "licenceBody": "We check every doctor's US state licence against the registry.",
+    "board": "US board certified",
+    "boardBody": "A doctor who passed a national specialty exam after residency, on top of the licence every doctor needs.",
+    "price": "First visit from {price}",
+    "priceUnknown": "One clear price",
+    "priceBody": "Each doctor sets one price. You see it before you book."
+  },
+  "footer": {
+    "patients": "Patients",
+    "company": "Company",
+    "legal": "Legal",
+    "faq": "FAQ",
+    "about": "About",
+    "contact": "Contact",
+    "aiTools": "AI tools",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "fees": "Fees",
+    "refunds": "Refunds",
+    "entity": "3affya is operated by a US company now being registered.",
+    "address": "Registered address: confirmed before launch.",
+    "copyright": "© 2026 3affya. All rights reserved."
+  },
+  "intake": {
+    "title": "Find the right specialty",
+    "aiLabel": "AI assistant",
+    "scope": "I am an AI assistant, not a doctor, and I do not diagnose. I ask a few questions, suggest one to three specialties, then show you doctors who treat them.",
+    "consent": "By continuing you agree that your answers are processed by AI to suggest a specialty. Nothing here goes into a medical record.",
+    "question1": "What is your main concern today?",
+    "quickReplies": "Quick replies",
+    "reply": {
+      "skin": "Skin",
+      "heart": "Heart",
+      "child": "My child",
+      "women": "Women's health",
+      "pain": "Pain",
+      "mind": "Mood or sleep",
+      "other": "Something else"
+    },
+    "freeText": "Or type it in your own words",
+    "send": "Send",
+    "prototypeNote": "Prototype: the assistant goes live in milestone 3. The layout and the pinned safety block are final."
+  },
+  "languages": {
+    "ar": "Arabic",
+    "en": "English",
+    "dialect": {
+      "Egyptian": "Egyptian",
+      "Gulf": "Gulf",
+      "Iraqi": "Iraqi",
+      "Levantine": "Levantine",
+      "Moroccan": "Moroccan"
+    }
   }
 }

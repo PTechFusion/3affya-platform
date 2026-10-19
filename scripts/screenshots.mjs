@@ -16,7 +16,10 @@ for (const width of WIDTHS) {
   for (const locale of LOCALES) {
     for (const route of ROUTES) {
       const url = `${BASE}/${locale}${route === "/" ? "" : route}`;
-      await page.goto(url, { waitUntil: "networkidle" });
+      // "load" plus fonts, not networkidle: link prefetches for routes not built yet 404 and keep the network busy.
+      await page.goto(url, { waitUntil: "load" });
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(800);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
       const name = `${route === "/" ? "home" : route.slice(1).replace(/\//g, "-")}-${locale}-${width}.png`;
       await page.screenshot({ path: out + name, fullPage: true });
