@@ -88,6 +88,31 @@ scripts/                i18n-check, screenshots
 - Every page has a skeleton with real labels and an empty state with one action. No blank waits.
 - Prices and fees come from `config/business.ts`, never inline.
 
+## Database (lane L1, tasks 1.4 and 1.5)
+
+Supabase runs locally through the CLI (Docker needed). Ports are the CLI defaults plus 1000, so it sits beside another
+local Supabase project: API `http://127.0.0.1:55321`, Postgres `127.0.0.1:55322`.
+
+| Command | What it does |
+|---|---|
+| `npm run db:start` | Starts the local stack; `npx supabase status -o env` prints the URL and keys for `.env` |
+| `npm run db:reset` | Rebuilds the database: every migration in `supabase/migrations`, then `supabase/seed.sql` |
+| `npm run db:types` | Regenerates `lib/db/types.ts` from the local schema (never edit it by hand) |
+| `npm run test:rls` | The RLS suite in `tests/rls` against the running stack: every cross-tenant read and write refused |
+
+- Schema: one migration per table group, `supabase/migrations/<timestamp>_<lane>_<what>.sql`. RLS is on every table and
+  every privilege starts revoked; policy helpers live in the unexposed `private` schema. Admin access needs the admin
+  role and a TOTP session (aal2). `audit_log` is insert-only for every role.
+- Server code reaches the database only through `lib/db/client.ts` (`createUserClient`, `createServiceClient`).
+- `supabase/seed.sql` is generated from `data/sample/*.json` by `python scripts/build_dev_seed.py`; it is synthetic, so
+  dev data equals prototype data. Seeded accounts have no password: sign in by email code (Mailpit on port 55324).
+- Registry import (task 1.5, once, idempotent; `DATABASE_URL` from `.env.example`), in this order:
+  `scripts/seed_specialties.py` (the 104 groups), `scripts/map_taxonomy.py --shortlist ...` (NPPES codes to groups;
+  unmapped codes to `output/taxonomy_exceptions.csv`), `scripts/seed_professionals.py --shortlist ... --registry-as-of ...`
+  (unclaimed listings, idempotent on NPI), `scripts/enrich_cms.py --dac ... --as-of ...` (report in
+  `output/cms_join_report.md`). The shortlist and the CMS files are not in the repo. Python 3.10+,
+  `pip install -r scripts/requirements-seed.txt`.
+
 ## Known notes
 
 - `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.

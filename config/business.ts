@@ -190,3 +190,11 @@ export const aiLimits = {
   jobTokenCap: 3_000_000, // (default until the M1 extraction spike measures tokens per page) per-job token cap, enforced in lib/ai (task 1.9)
   attemptsPerCall: 3, // task 3.8: three attempts per page or call, then the job fails with a reason
 } as const;
+
+/* ---------------- Storage, lane L1 (tasks 1.4, 3.10) ---------------- */
+// Appended block. Records files are read only through signed URLs that server code mints after checking the share is live
+// (architecture: signed URLs, 10-minute expiry for records). The database cannot cap a signed URL's lifetime, so this is
+// the one place it is set.
+export const storageRules = {
+  recordsSignedUrlSeconds: 600,
+} as const;

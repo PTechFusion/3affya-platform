@@ -11,9 +11,14 @@
     "typecheck": "tsc --noEmit",
     "i18n:check": "node scripts/i18n-check.mjs",
     "screens": "node scripts/screenshots.mjs",
-    "check": "npm run lint && npm run typecheck && npm run i18n:check"
+    "check": "npm run lint && npm run typecheck && npm run i18n:check",
+    "db:start": "supabase start",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local --schema public > lib/db/types.ts",
+    "test:rls": "vitest run --config tests/rls/vitest.config.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.2",
     "next": "16.4.2",
     "next-intl": "4.14.9",
     "react": "19.3.1",
@@ -27,7 +32,10 @@
     "@types/react-dom": "19.3.0",
     "eslint": "10.13.0",
     "eslint-config-next": "16.4.2",
+    "supabase": "2.119.0",
     "tailwindcss": "4.3.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
   }
 }
