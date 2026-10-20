@@ -11,3 +11,6 @@ next-env.d.ts
 .claude/worktrees/
 node_modules
 .netlify
+
+# Python bytecode from scripts/*.py (lane L1)
+__pycache__/

@@ -1,0 +1,204 @@
+code,rows,profession,grouping,classification,specialization,reason
+390200000X,7593,Student,"Student, Health Care",Student in an Organized Health Care Education/Training Program,,"student in a training programme, not a practising professional"
+183500000X,5677,Pharmacist,Pharmacy Service Providers,Pharmacist,,"pharmacist without a specialisation (NUCC codes Clinical Pharmacy Specialist separately, 1835P0018X); card 90 names clinical pharmacy and the specialties, with advanced training"
+106S00000X,4815,Behavioral Health,Behavioral Health & Social Service Providers,Behavior Technician,,"behaviour technician: implements plans under close supervision and does not assess or design them (NUCC); card 88 describes assessment and goal-setting and, unlike card 96, names no assistants"
+208M00000X,919,Physician,Allopathic & Osteopathic Physicians,Hospitalist,,"hospital medicine is a care setting with no board; hospitalists train in internal medicine, family medicine or paediatrics and the code does not say which card (sample correction: the sample had it on internal medicine)"
+207RH0003X,477,Physician,Allopathic & Osteopathic Physicians,Internal Medicine,Hematology & Oncology,"combined haematology and oncology: card 17 (medical oncology) and card 18 (haematology, which names blood cancers) each cover half; one group per code (sample correction: the sample had it on oncology)"
+104100000X,451,Social Worker,Behavioral Health & Social Service Providers,Social Worker,,"social worker without the clinical specialisation (NUCC codes it separately, 1041C0700X); card 87 names clinical social work"
+174400000X,426,Other,Other Service Providers,Specialist,,generic classification that does not say which profession; no single card
+3747P1801X,393,Other,Nursing Service Related Providers,Technician,Personal Care Attendant,"personal care, home support or companion role; no card covers it"
+111N00000X,370,Chiropractor,Chiropractic Providers,Chiropractor,,chiropractic: no card covers chiropractors
+374U00000X,346,Other,Nursing Service Related Providers,Home Health Aide,,"personal care, home support or companion role; no card covers it"
+343900000X,322,Other,Transportation Services,Non-emergency Medical Transport (VAN),,"transport service, not a clinical profession"
+172A00000X,192,Other,Other Service Providers,Driver,,"transport service, not a clinical profession"
+208D00000X,184,Physician,Allopathic & Osteopathic Physicians,General Practice,,general practice: its own NUCC classification with no residency or board; card 1 describes U.S. family-medicine training
+171R00000X,146,Other,Other Service Providers,Interpreter,,"interpreter: language service, not a clinical profession"
+164W00000X,135,Nurse (LPN),Nursing Service Providers,Licensed Practical Nurse,,licensed practical nurse; card 77 names registered and specialist nursing
+225700000X,116,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Massage Therapist,,massage therapy: no card covers it
+171100000X,99,Other,Other Service Providers,Acupuncturist,,complementary or alternative therapy: no card covers it
+374J00000X,97,Other,Nursing Service Related Providers,Doula,,doula: non-clinical birth support; no card covers it
+251E00000X,94,Other,Agencies,Home Health,,"facility, agency, unit or organisation code, not an individual professional"
+372500000X,90,Other,Nursing Service Related Providers,Chore Provider,,"personal care, home support or companion role; no card covers it"
+373H00000X,84,Other,Nursing Service Related Providers,Day Training/Habilitation Specialist,,life-skills support for people with developmental disabilities; card 88 is behaviour analysis
+156F00000X,80,Other,Eye and Vision Services Providers,Technician/Technologist,,generic classification that does not say which profession; no single card
+183700000X,80,Other,Pharmacy Service Providers,Pharmacy Technician,,pharmacy technician: support role; card 90 is pharmacists
+175T00000X,76,Other,Other Service Providers,Peer Specialist,,peer support (lived-experience) role: no card covers it
+247200000X,76,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Other",,generic classification that does not say which profession; no single card
+225400000X,60,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Rehabilitation Practitioner,,generic classification that does not say which profession; no single card
+171W00000X,59,Other,Other Service Providers,Contractor,,"home or vehicle modification contractor, not a clinical profession"
+376J00000X,57,Other,Nursing Service Related Providers,Homemaker,,"personal care, home support or companion role; no card covers it"
+3747A0650X,56,Other,Nursing Service Related Providers,Technician,Attendant Care Provider,"personal care, home support or companion role; no card covers it"
+2355S0801X,55,Other,"Speech, Language and Hearing Service Providers",Specialist/Technologist,Speech-Language Assistant,"card 83 is the pathologist; card 96 names physical-rehabilitation assistants, not this one"
+253Z00000X,54,Other,Agencies,In Home Supportive Care,,"facility, agency, unit or organisation code, not an individual professional"
+164X00000X,49,Nurse (LPN),Nursing Service Providers,Licensed Vocational Nurse,,licensed vocational nurse; card 77 names registered and specialist nursing
+372600000X,48,Other,Nursing Service Related Providers,Adult Companion,,"personal care, home support or companion role; no card covers it"
+376K00000X,48,Other,Nursing Service Related Providers,Nurse's Aide,,"personal care, home support or companion role; no card covers it"
+156FX1800X,40,Other,Eye and Vision Services Providers,Technician/Technologist,Optician,"dispensing optician (eyewear); card 94 names optometry, orthoptics and low vision"
+367H00000X,39,Nurse Anesthetist / Midwife,Physician Assistants & Advanced Practice Nursing Providers,Anesthesiologist Assistant,,not a nurse anaesthetist (card 79) or a physician assistant (card 80); no card names it
+175F00000X,36,Other,Other Service Providers,Naturopath,,complementary or alternative therapy: no card covers it
+320900000X,33,Other,Residential Treatment Facilities,"Community Based Residential Treatment Facility, Intellectual and/or Developmental Disabilities",,"facility, agency, unit or organisation code, not an individual professional"
+171400000X,32,Other,Other Service Providers,Health & Wellness Coach,,health and wellness coaching: no card covers it
+3336C0003X,32,Other,Suppliers,Pharmacy,Community/Retail Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+174H00000X,30,Other,Other Service Providers,Health Educator,,general health education: no card names it (card 92 is diabetes education and lactation only)
+342000000X,30,Other,Transportation Services,Transportation Network Company,,"transport service, not a clinical profession"
+347C00000X,28,Other,Transportation Services,Private Vehicle,,"transport service, not a clinical profession"
+332B00000X,26,Other,Suppliers,Durable Medical Equipment & Medical Supplies,,"supplier of equipment, medicines or meals, not an individual professional"
+333600000X,25,Other,Suppliers,Pharmacy,,"supplier of equipment, medicines or meals, not an individual professional"
+237700000X,23,Other,"Speech, Language and Hearing Service Providers",Hearing Instrument Specialist,,"hearing instrument specialist (hearing aid dispenser), not an audiologist (card 84)"
+1041S0200X,22,Social Worker,Behavioral Health & Social Service Providers,Social Worker,School,school social worker: not the clinical specialisation (1041C0700X) and NUCC gives no definition; card 87 names clinical social work
+282N00000X,21,Other,Hospitals,General Acute Care Hospital,,"facility, agency, unit or organisation code, not an individual professional"
+133N00000X,18,Other,Dietary & Nutritional Service Providers,Nutritionist,,"nutritionist, not a registered dietitian (NUCC); card 89 names registered dietitians"
+251S00000X,18,Other,Agencies,Community/Behavioral Health,,"facility, agency, unit or organisation code, not an individual professional"
+101YS0200X,17,Counselor,Behavioral Health & Social Service Providers,Counselor,School,"school guidance counsellor, an education-sector role; card 87 is clinical counselling"
+176B00000X,17,Other,Other Service Providers,Midwife,,midwife who need not be a nurse (NUCC); card 79 names nurse midwifery
+246RP1900X,16,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Pathology",Phlebotomy,"phlebotomy (specimen collection); card 97 names laboratory science, cytotechnology, histotechnology"
+252Y00000X,16,Other,Agencies,Early Intervention Provider Agency,,"facility, agency, unit or organisation code, not an individual professional"
+374700000X,16,Other,Nursing Service Related Providers,Technician,,generic classification that does not say which profession; no single card
+251C00000X,14,Other,Agencies,"Day Training, Developmentally Disabled Services",,"facility, agency, unit or organisation code, not an individual professional"
+344600000X,13,Other,Transportation Services,Taxi,,"transport service, not a clinical profession"
+111NR0400X,12,Chiropractor,Chiropractic Providers,Chiropractor,Rehabilitation,chiropractic: no card covers chiropractors
+146N00000X,12,Other,Emergency Medical Service Providers,"Emergency Medical Technician, Basic",,"basic EMT, not a paramedic (NUCC codes Paramedic separately, 146L00000X); card 100 names paramedicine"
+1744R1102X,11,Other,Other Service Providers,Specialist,Research Study,"administrative, management or records role, not patient care"
+251B00000X,11,Other,Agencies,Case Management,,"facility, agency, unit or organisation code, not an individual professional"
+133NN1002X,10,Other,Dietary & Nutritional Service Providers,Nutritionist,"Nutrition, Education","nutritionist, not a registered dietitian (NUCC); card 89 names registered dietitians"
+221700000X,10,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Art Therapist,,creative arts or recreation therapy: no card covers it
+247ZC0005X,10,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Pathology","Clinical Laboratory Director, Non-physician","administrative, management or records role, not patient care"
+347E00000X,10,Other,Transportation Services,Transportation Broker,,"transport service, not a clinical profession"
+1710I1002X,9,Other,Other Service Providers,Military Health Care Provider,Independent Duty Corpsman,military role: no card covers it
+225800000X,9,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Recreation Therapist,,creative arts or recreation therapy: no card covers it
+310400000X,9,Other,Nursing & Custodial Care Facilities,Assisted Living Facility,,"facility, agency, unit or organisation code, not an individual professional"
+174M00000X,8,Other,Other Service Providers,Veterinarian,,"veterinary, not human health care"
+247000000X,8,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Health Information",,"administrative, management or records role, not patient care"
+291U00000X,8,Other,Laboratories,Clinical Medical Laboratory,,"facility, agency, unit or organisation code, not an individual professional"
+311ZA0620X,8,Other,Nursing & Custodial Care Facilities,Custodial Care Facility,Adult Care Home,"facility, agency, unit or organisation code, not an individual professional"
+3416L0300X,8,Other,Transportation Services,Ambulance,Land Transport,"transport service, not a clinical profession"
+343800000X,8,Other,Transportation Services,Secured Medical Transport (VAN),,"transport service, not a clinical profession"
+111NS0005X,7,Chiropractor,Chiropractic Providers,Chiropractor,Sports Physician,chiropractic: no card covers chiropractors
+167G00000X,7,Other,Nursing Service Providers,Licensed Psychiatric Technician,,licensed psychiatric technician: no card covers it
+171WH0202X,7,Other,Other Service Providers,Contractor,Home Modifications,"home or vehicle modification contractor, not a clinical profession"
+2084B0040X,7,Physician,Allopathic & Osteopathic Physicians,Psychiatry & Neurology,Behavioral Neurology & Neuropsychiatry,shared by neurologists and psychiatrists; no single card
+261QM0801X,7,Other,Ambulatory Health Care Facilities,Clinic/Center,Mental Health (Including Community Mental Health Center),"facility, agency, unit or organisation code, not an individual professional"
+261QP2000X,7,Other,Ambulatory Health Care Facilities,Clinic/Center,Physical Therapy,"facility, agency, unit or organisation code, not an individual professional"
+261QP2300X,7,Other,Ambulatory Health Care Facilities,Clinic/Center,Primary Care,"facility, agency, unit or organisation code, not an individual professional"
+102L00000X,6,Other,Behavioral Health & Social Service Providers,Psychoanalyst,,"practised by psychiatrists, psychologists and social workers; the code does not say which card"
+126800000X,6,Other,Dental Providers,Dental Assistant,,dental assistant: support role; no card covers it
+163WA2000X,6,Registered Nurse,Nursing Service Providers,Registered Nurse,Administrator,"administrative, management or records role, not patient care"
+173000000X,6,Other,Other Service Providers,Legal Medicine,,legal medicine spans forensic pathology and forensic psychiatry; no single card
+261Q00000X,6,Other,Ambulatory Health Care Facilities,Clinic/Center,,"facility, agency, unit or organisation code, not an individual professional"
+261QA0600X,6,Other,Ambulatory Health Care Facilities,Clinic/Center,Adult Day Care,"facility, agency, unit or organisation code, not an individual professional"
+284300000X,6,Other,Hospitals,Special Hospital,,"facility, agency, unit or organisation code, not an individual professional"
+146D00000X,5,Other,Emergency Medical Service Providers,Personal Emergency Response Attendant,,"personal care, home support or companion role; no card covers it"
+170100000X,5,Other,Other Service Providers,"Medical Genetics, Ph.D. Medical Genetics",,PhD medical geneticist: NUCC describes a consultant to a clinical genetics programme and names no laboratory work; card 60 and card 103 each fit part
+1710I1003X,5,Other,Other Service Providers,Military Health Care Provider,Independent Duty Medical Technicians,military role: no card covers it
+235500000X,5,Other,"Speech, Language and Hearing Service Providers",Specialist/Technologist,,generic classification that does not say which profession; no single card
+251J00000X,5,Other,Agencies,Nursing Care,,"facility, agency, unit or organisation code, not an individual professional"
+261QD1600X,5,Other,Ambulatory Health Care Facilities,Clinic/Center,Developmental Disabilities,"facility, agency, unit or organisation code, not an individual professional"
+261QM0855X,5,Other,Ambulatory Health Care Facilities,Clinic/Center,Adolescent and Children Mental Health,"facility, agency, unit or organisation code, not an individual professional"
+111NI0013X,4,Chiropractor,Chiropractic Providers,Chiropractor,Independent Medical Examiner,chiropractic: no card covers chiropractors
+225C00000X,4,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Rehabilitation Counselor,,rehabilitation counsellor (vocational): no card covers it
+246Z00000X,4,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other",,generic classification that does not say which profession; no single card
+261QH0100X,4,Other,Ambulatory Health Care Facilities,Clinic/Center,Health Service,"facility, agency, unit or organisation code, not an individual professional"
+3104A0625X,4,Other,Nursing & Custodial Care Facilities,Assisted Living Facility,"Assisted Living, Mental Illness","facility, agency, unit or organisation code, not an individual professional"
+3336C0002X,4,Other,Suppliers,Pharmacy,Clinic Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+376G00000X,4,Other,Nursing Service Related Providers,Nursing Home Administrator,,"administrative, management or records role, not patient care"
+103TF0200X,3,Psychologist,Behavioral Health & Social Service Providers,Psychologist,Forensic,"forensic psychology (legal assessment); card 28 covers forensic psychiatry, physicians only"
+111NN0400X,3,Chiropractor,Chiropractic Providers,Chiropractor,Neurology,chiropractic: no card covers chiropractors
+111NX0100X,3,Chiropractor,Chiropractic Providers,Chiropractor,Occupational Health,chiropractic: no card covers chiropractors
+122400000X,3,Dentist,Dental Providers,Denturist,,"denturist: a separately licensed denture maker, not a prosthodontist (card 69)"
+163WC1600X,3,Registered Nurse,Nursing Service Providers,Registered Nurse,Continuing Education/Staff Development,"administrative, management or records role, not patient care"
+171000000X,3,Other,Other Service Providers,Military Health Care Provider,,military role: no card covers it
+171WV0202X,3,Other,Other Service Providers,Contractor,Vehicle Modifications,"home or vehicle modification contractor, not a clinical profession"
+1744P3200X,3,Other,Other Service Providers,Specialist,Prosthetics Case Management,"administrative, management or records role, not patient care"
+202D00000X,3,Other,Allopathic & Osteopathic Physicians,Integrative Medicine,,integrative medicine: no card names it
+202K00000X,3,Other,Allopathic & Osteopathic Physicians,Phlebology,,phlebology (venous disease) is practised from several base specialties; card 46 is vascular surgery
+208U00000X,3,Physician,Allopathic & Osteopathic Physicians,Clinical Pharmacology,,clinical pharmacology (physicians): no card covers it (card 90 is pharmacists)
+225500000X,3,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Specialist/Technologist,,generic classification that does not say which profession; no single card
+246ZX2200X,3,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other",Orthopedic Assistant,"orthopaedic physician extender: clinic work (history, examination, injections, casts) as well as first assisting; card 99 covers only the theatre half"
+251G00000X,3,Other,Agencies,"Hospice Care, Community Based",,"facility, agency, unit or organisation code, not an individual professional"
+253J00000X,3,Other,Agencies,Foster Care Agency,,"facility, agency, unit or organisation code, not an individual professional"
+282E00000X,3,Other,Hospitals,Long Term Care Hospital,,"facility, agency, unit or organisation code, not an individual professional"
+332BX2000X,3,Other,Suppliers,Durable Medical Equipment & Medical Supplies,Oxygen Equipment & Supplies,"supplier of equipment, medicines or meals, not an individual professional"
+335E00000X,3,Other,Suppliers,Prosthetic/Orthotic Supplier,,"supplier of equipment, medicines or meals, not an individual professional"
+385H00000X,3,Other,Respite Care Facility,Respite Care,,"facility, agency, unit or organisation code, not an individual professional"
+101200000X,2,Other,Behavioral Health & Social Service Providers,Drama Therapist,,creative arts or recreation therapy: no card covers it
+111NX0800X,2,Chiropractor,Chiropractic Providers,Chiropractor,Orthopedic,chiropractic: no card covers chiropractors
+146M00000X,2,Other,Emergency Medical Service Providers,"Emergency Medical Technician, Intermediate",,"intermediate EMT, not a paramedic (NUCC codes Paramedic separately, 146L00000X); card 100 names paramedicine"
+172M00000X,2,Other,Other Service Providers,Mechanotherapist,,complementary or alternative therapy: no card covers it
+173C00000X,2,Other,Other Service Providers,Reflexologist,,complementary or alternative therapy: no card covers it
+177F00000X,2,Other,Other Service Providers,Lodging,,"facility, agency, unit or organisation code, not an individual professional"
+225A00000X,2,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Music Therapist,,creative arts or recreation therapy: no card covers it
+225CX0006X,2,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Rehabilitation Counselor,Orientation and Mobility Training Provider,orientation and mobility instructor for visual impairment: no card names it
+246YC3302X,2,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Health Information","Coding Specialist, Physician Office Based","administrative, management or records role, not patient care"
+246ZB0301X,2,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other",Biomedical Engineering,biomedical engineering: not patient care
+251300000X,2,Other,Agencies,Local Education Agency (LEA),,"facility, agency, unit or organisation code, not an individual professional"
+261QD0000X,2,Other,Ambulatory Health Care Facilities,Clinic/Center,Dental,"facility, agency, unit or organisation code, not an individual professional"
+261QS1000X,2,Other,Ambulatory Health Care Facilities,Clinic/Center,Student Health,"facility, agency, unit or organisation code, not an individual professional"
+261QU0200X,2,Other,Ambulatory Health Care Facilities,Clinic/Center,Urgent Care,"facility, agency, unit or organisation code, not an individual professional"
+281P00000X,2,Other,Hospitals,Chronic Disease Hospital,,"facility, agency, unit or organisation code, not an individual professional"
+282NW0100X,2,Other,Hospitals,General Acute Care Hospital,Women,"facility, agency, unit or organisation code, not an individual professional"
+283Q00000X,2,Other,Hospitals,Psychiatric Hospital,,"facility, agency, unit or organisation code, not an individual professional"
+302R00000X,2,Other,Managed Care Organizations,Health Maintenance Organization,,"facility, agency, unit or organisation code, not an individual professional"
+3104A0630X,2,Other,Nursing & Custodial Care Facilities,Assisted Living Facility,"Assisted Living, Behavioral Disturbances","facility, agency, unit or organisation code, not an individual professional"
+320600000X,2,Other,Residential Treatment Facilities,"Residential Treatment Facility, Intellectual and/or Developmental Disabilities",,"facility, agency, unit or organisation code, not an individual professional"
+320800000X,2,Other,Residential Treatment Facilities,"Community Based Residential Treatment Facility, Mental Illness",,"facility, agency, unit or organisation code, not an individual professional"
+323P00000X,2,Other,Residential Treatment Facilities,Psychiatric Residential Treatment Facility,,"facility, agency, unit or organisation code, not an individual professional"
+324500000X,2,Other,Residential Treatment Facilities,Substance Abuse Rehabilitation Facility,,"facility, agency, unit or organisation code, not an individual professional"
+332BC3200X,2,Other,Suppliers,Durable Medical Equipment & Medical Supplies,Customized Equipment,"supplier of equipment, medicines or meals, not an individual professional"
+385HR2060X,2,Other,Respite Care Facility,Respite Care,"Respite Care, Intellectual and/or Developmental Disabilities, Child","facility, agency, unit or organisation code, not an individual professional"
+405300000X,2,Other,Other Service Providers,Prevention Professional,,prevention professional (substance-use prevention programmes): no card covers it
+103TE1100X,1,Psychologist,Behavioral Health & Social Service Providers,Psychologist,Exercise & Sports,"sport and exercise psychology: performance work with athletes and sports organisations (NUCC), not the assessment and therapy card 85 describes"
+111NN1001X,1,Chiropractor,Chiropractic Providers,Chiropractor,Nutrition,chiropractic: no card covers chiropractors
+111NR0200X,1,Chiropractor,Chiropractic Providers,Chiropractor,Radiology,chiropractic: no card covers chiropractors
+125J00000X,1,Other,Dental Providers,Dental Therapist,,dental therapist: a mid-level dental role no card names
+125K00000X,1,Other,Dental Providers,Advanced Practice Dental Therapist,,advanced practice dental therapist: a mid-level dental role no card names
+156FX1101X,1,Other,Eye and Vision Services Providers,Technician/Technologist,Ophthalmic Assistant,ophthalmic assistant: support role; no card covers it
+172P00000X,1,Other,Other Service Providers,Naprapath,,complementary or alternative therapy: no card covers it
+1744R1103X,1,Other,Other Service Providers,Specialist,Research Data Abstracter/Coder,"administrative, management or records role, not patient care"
+193400000X,1,Other,Group,Single Specialty,,"group practice code, not an individual professional"
+202C00000X,1,Other,Allopathic & Osteopathic Physicians,Independent Medical Examiner,,independent medical examiner: insurance and legal assessments; no card covers it
+207RM1200X,1,Physician,Allopathic & Osteopathic Physicians,Internal Medicine,Magnetic Resonance Imaging (MRI),NUCC recommends this code not be used; the practice it describes (MRI) has no clear card
+207RP1002X,1,Physician,Allopathic & Osteopathic Physicians,Internal Medicine,Physician Nutrition Specialist,physician nutrition specialist: no card names clinical nutrition medicine
+209800000X,1,Other,Allopathic & Osteopathic Physicians,Legal Medicine,,legal medicine spans forensic pathology and forensic psychiatry; no single card
+211D00000X,1,Other,Podiatric Medicine & Surgery Service Providers,"Assistant, Podiatric",,podiatric assistant: support role; card 64 is podiatrists
+225600000X,1,Other,"Respiratory, Developmental, Rehabilitative and Restorative Service Providers",Dance Therapist,,creative arts or recreation therapy: no card covers it
+246QL0900X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Pathology",Laboratory Management,"administrative, management or records role, not patient care"
+246QL0901X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Pathology","Laboratory Management, Diplomate","administrative, management or records role, not patient care"
+246W00000X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Cardiology",,the code does not say whether the work is recording (card 99) or imaging (card 98)
+246X00000X,1,Other,"Technologists, Technicians & Other Technical Service Providers",Specialist/Technologist Cardiovascular,,generic classification that does not say which profession; no single card
+246Y00000X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Health Information",,"administrative, management or records role, not patient care"
+246YR1600X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Health Information",Registered Record Administrator,"administrative, management or records role, not patient care"
+246ZA2600X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other","Art, Medical",medical illustration: not patient care
+246ZB0500X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other",Biochemist,biochemist: NUCC gives no definition; laboratory scientist role no card names
+246ZN0300X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Specialist/Technologist, Other",Nephrology,nephrology (dialysis) technologist: NUCC gives no definition; no card covers it
+2470A2800X,1,Other,"Technologists, Technicians & Other Technical Service Providers","Technician, Health Information",Assistant Record Technician,"administrative, management or records role, not patient care"
+251V00000X,1,Other,Agencies,Voluntary or Charitable,,"facility, agency, unit or organisation code, not an individual professional"
+251X00000X,1,Other,Agencies,Supports Brokerage,,"facility, agency, unit or organisation code, not an individual professional"
+261QE0002X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Emergency Care,"facility, agency, unit or organisation code, not an individual professional"
+261QM0850X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Adult Mental Health,"facility, agency, unit or organisation code, not an individual professional"
+261QM1300X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Multi-Specialty,"facility, agency, unit or organisation code, not an individual professional"
+261QM2500X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Medical Specialty,"facility, agency, unit or organisation code, not an individual professional"
+261QP0904X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,"Public Health, Federal","facility, agency, unit or organisation code, not an individual professional"
+261QR0400X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Rehabilitation,"facility, agency, unit or organisation code, not an individual professional"
+261QR0405X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,"Rehabilitation, Substance Use Disorder","facility, agency, unit or organisation code, not an individual professional"
+261QR1100X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Research,"facility, agency, unit or organisation code, not an individual professional"
+261QS1200X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Sleep Disorder Diagnostic,"facility, agency, unit or organisation code, not an individual professional"
+261QX0100X,1,Other,Ambulatory Health Care Facilities,Clinic/Center,Occupational Medicine,"facility, agency, unit or organisation code, not an individual professional"
+273100000X,1,Other,Hospital Units,Epilepsy Unit,,"facility, agency, unit or organisation code, not an individual professional"
+273R00000X,1,Other,Hospital Units,Psychiatric Unit,,"facility, agency, unit or organisation code, not an individual professional"
+282J00000X,1,Other,Hospitals,Religious Nonmedical Health Care Institution,,"facility, agency, unit or organisation code, not an individual professional"
+282NC0060X,1,Other,Hospitals,General Acute Care Hospital,Critical Access,"facility, agency, unit or organisation code, not an individual professional"
+282NC2000X,1,Other,Hospitals,General Acute Care Hospital,Children,"facility, agency, unit or organisation code, not an individual professional"
+302F00000X,1,Other,Managed Care Organizations,Exclusive Provider Organization,,"facility, agency, unit or organisation code, not an individual professional"
+305R00000X,1,Other,Managed Care Organizations,Preferred Provider Organization,,"facility, agency, unit or organisation code, not an individual professional"
+305S00000X,1,Other,Managed Care Organizations,Point of Service,,"facility, agency, unit or organisation code, not an individual professional"
+314000000X,1,Other,Nursing & Custodial Care Facilities,Skilled Nursing Facility,,"facility, agency, unit or organisation code, not an individual professional"
+3140N1450X,1,Other,Nursing & Custodial Care Facilities,Skilled Nursing Facility,"Nursing Care, Pediatric","facility, agency, unit or organisation code, not an individual professional"
+320700000X,1,Other,Residential Treatment Facilities,"Residential Treatment Facility, Physical Disabilities",,"facility, agency, unit or organisation code, not an individual professional"
+332U00000X,1,Other,Suppliers,Home Delivered Meals,,"supplier of equipment, medicines or meals, not an individual professional"
+3336H0001X,1,Other,Suppliers,Pharmacy,Home Infusion Therapy Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+3336I0012X,1,Other,Suppliers,Pharmacy,Institutional Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+3336M0002X,1,Other,Suppliers,Pharmacy,Mail Order Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+3336M0003X,1,Other,Suppliers,Pharmacy,Managed Care Organization Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+3336S0011X,1,Other,Suppliers,Pharmacy,Specialty Pharmacy,"supplier of equipment, medicines or meals, not an individual professional"
+341600000X,1,Other,Transportation Services,Ambulance,,"transport service, not a clinical profession"
+385HR2055X,1,Other,Respite Care Facility,Respite Care,"Respite Care, Mental Illness, Child","facility, agency, unit or organisation code, not an individual professional"

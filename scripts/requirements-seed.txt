@@ -1,0 +1,4 @@
+# Seed and mapping scripts (lane L1, task 1.5): python -m pip install -r scripts/requirements-seed.txt (Python 3.10+).
+psycopg2-binary==2.9.10
+openpyxl==3.1.5
+pypdf==6.7.3
