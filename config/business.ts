@@ -54,3 +54,15 @@ export const business = {
     SA: ["fri", "sat"], KW: ["fri", "sat"], QA: ["fri", "sat"], OM: ["fri", "sat"], BH: ["fri", "sat"], AE: ["sat", "sun"], US: ["sat", "sun"],
   } as Record<string, string[]>,
 } as const;
+
+/* ---------------- Patient sign-in (screen 18, task 3.6) ---------------- */
+// Email one-time code limits for the patient sign-in. The code length is business.otpDigits. Production enforces these in the
+// database per email address and per IP (so they hold across instances), and answers the same whether or not an account exists
+// for the address (rule F6). (default until Dr Ayman confirms)
+export const signInLimits = {
+  codeValidMinutes: 10, // a code works this long after it is sent
+  resendAfterSeconds: 60, // the resend timer on the code step
+  codesPerHour: 5, // codes one address can ask for in an hour; past it the page says when to try again (rule F5)
+  wrongCodesMax: 5, // wrong codes in a row before the code stops working
+  lockMinutes: 15, // wait after either limit, before a new code can be sent
+} as const;
