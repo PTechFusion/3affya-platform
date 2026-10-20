@@ -795,3 +795,38 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message in the page flow (PLAYBOOK §9, the one notice box): a title, an optional body and at most one action. Tones:
+ * info (sky), success (lagoon), warning (gold), danger (white with a danger border). Danger is announced at once (role alert,
+ * e.g. a list that did not load); the others are polite status. For a change the person just made with Undo, use Toast.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, { box: string; title: string }> = {
+  info: { box: "border-sky-500/40 bg-sky-100", title: "text-sea-900" },
+  success: { box: "border-lagoon-600/40 bg-lagoon-100", title: "text-lagoon-900" },
+  warning: { box: "border-gold-500/50 bg-gold-100", title: "text-ink-900" },
+  danger: { box: "border-danger/60 bg-white", title: "text-danger" },
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: ReactNode;
+  body?: ReactNode;
+  action?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div role={tone === "danger" ? "alert" : "status"} className={cx("rounded-[var(--radius-field)] border p-4", noticeTones[tone].box, className)}>
+      <p className={cx("font-semibold", noticeTones[tone].title)}>{title}</p>
+      {body ? <div className="mt-1 text-sm text-ink-700">{body}</div> : null}
+      {action ? <div className="mt-3">{action}</div> : null}
+    </div>
+  );
+}

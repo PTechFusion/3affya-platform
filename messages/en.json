@@ -3882,5 +3882,180 @@
       "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
       "action": "Choose another time"
     }
+  },
+  "adminListings": {
+    "metaTitle": "Listings · Admin · 3affya",
+    "metaDescription": "Every professional on 3affya, claimed or not, by status, specialty, name or NPI.",
+    "title": "Listings",
+    "lead": "Every professional on 3affya, claimed or not. Open a row to see what patients see, edit it or suspend it.",
+    "loading": "Loading listings",
+    "count": "{count, plural, =0 {No listings} one {{countLabel} listing} other {{countLabel} listings}}",
+    "showing": "Showing {shown} of {total}",
+    "zone": "Dates and times in <zone>{name}</zone>",
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "unclaimed": "Unclaimed",
+      "claimed": "Claimed",
+      "inReview": "In review",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "suspended": "Suspended",
+      "removed": "Removed",
+      "chipLabel": "{label}: {countLabel}"
+    },
+    "filters": {
+      "label": "Find a listing",
+      "search": "Name or NPI",
+      "specialty": "Specialty",
+      "allSpecialties": "All specialties",
+      "option": "{name} · {countLabel}",
+      "submit": "Search",
+      "applied": "Applied filters",
+      "remove": "Remove filter: {label}",
+      "query": "“{query}”"
+    },
+    "table": {
+      "caption": "Listings",
+      "name": "Name",
+      "specialty": "Specialty",
+      "city": "City",
+      "verifiedOn": "Verified on",
+      "nextCheck": "Next re-verification",
+      "actions": "Actions",
+      "npi": "NPI",
+      "notVerified": "Not verified",
+      "noneScheduled": "None scheduled",
+      "editLabel": "Edit listing",
+      "viewProfileLabel": "View the public profile of {name}",
+      "openReview": "Open review",
+      "openReviewLabel": "Open the review of {name}",
+      "basis": {
+        "licence": "Licence expires",
+        "cycle": "Yearly check"
+      },
+      "dueSoon": "{days, plural, one {Due in {daysLabel} day} other {Due in {daysLabel} days}}",
+      "dueToday": "Due today",
+      "overdue": "{days, plural, one {Overdue by {daysLabel} day} other {Overdue by {daysLabel} days}}"
+    },
+    "line": {
+      "unclaimed": "Public US records ({source}), {date}",
+      "claimed": "Claimed on {date}. Credentials not sent yet",
+      "claimedNoDate": "Claimed. Credentials not sent yet",
+      "inReview": "In review since {date}",
+      "rejected": "Rejected on {date}. The doctor can send again",
+      "suspended": "Suspended on {date}",
+      "removed": "Removed on {date}"
+    },
+    "source": {
+      "cms": "CMS"
+    },
+    "empty": {
+      "title": "No listings match these filters",
+      "body": "Nothing matches: {filters}. Clear the filters to see all {totalLabel} listings.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "The listings did not load",
+      "body": "Something went wrong on our side. Nothing was changed. Try again in a moment.",
+      "action": "Try again"
+    },
+    "drawer": {
+      "details": "Details",
+      "npi": "NPI",
+      "specialty": "Specialty",
+      "city": "City",
+      "source": "Listed from",
+      "sourceValue": "Public US records ({source}), file of {date}",
+      "claimedOn": "Claimed on",
+      "sentOn": "Sent for review",
+      "decidedOn": "Rejected on",
+      "verifiedOn": "Verified on",
+      "nextCheck": "Next re-verification",
+      "nextCheckValue": "{date}, {basis}",
+      "licence": "Licence",
+      "licenceValue": "{state}, expires {date}",
+      "board": "Board",
+      "notice": {
+        "unclaimedTitle": "Not claimed by the doctor",
+        "unclaimedBody": "Patients see it labelled Unclaimed, with its source and date, and no price, times or booking.",
+        "claimedTitle": "Claimed, credentials not sent yet",
+        "claimedBody": "Patients see credentials pending verification until the doctor sends them and you approve.",
+        "inReviewTitle": "Waiting for review since {date}",
+        "inReviewBody": "Check the licence, board and sanctions at the source, then approve or reject on the review page.",
+        "rejectedTitle": "Rejected on {date}",
+        "rejectedBody": "What the doctor was told: {reason}",
+        "suspendedTitle": "Suspended on {date} by {name}",
+        "suspendedBody": "Patients cannot find this listing while it is suspended.",
+        "suspendedReason": "Reason: {reason}",
+        "dueSoonTitle": "{days, plural, one {Re-verification due in {daysLabel} day} other {Re-verification due in {daysLabel} days}}",
+        "dueTodayTitle": "Re-verification due today",
+        "overdueTitle": "{days, plural, one {Re-verification overdue by {daysLabel} day} other {Re-verification overdue by {daysLabel} days}}",
+        "dueBody": "{basis} on {date}. Check the licence and board again at the source."
+      },
+      "preview": "What patients see",
+      "previewHidden": "Nothing: search leaves a suspended listing out and its profile is not shown.",
+      "previewRemoved": "A page saying the profile was removed.",
+      "viewProfile": "View public profile",
+      "edit": {
+        "title": "Edit details",
+        "nameAr": "Name in Arabic",
+        "nameArHint": "As patients read it. The English name comes from the US registry and is not edited here.",
+        "specialty": "Specialty group",
+        "specialtyHint": "The group patients find this doctor under in search.",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "readOnly": "A removed listing cannot be edited.",
+        "errors": {
+          "required": "Enter the name in Arabic.",
+          "notArabic": "Write the name in Arabic letters only.",
+          "tooLong": "Keep the name to {max} characters or fewer.",
+          "specialty": "Choose a specialty group from the list.",
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing changed since you opened it. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was saved. Try again."
+        }
+      },
+      "suspend": {
+        "title": "Suspend listing",
+        "body": "Hides the listing from patients until you unsuspend it.",
+        "open": "Suspend this listing",
+        "confirmTitle": "Suspend {name}?",
+        "confirmBody": "Patients stop finding the listing in search and on its profile. This does not cancel visits already booked.",
+        "reason": "Reason",
+        "reasonHint": "Kept in the audit log with your name. Say what happened and what would end the suspension.",
+        "keep": "Keep listed",
+        "confirm": "Suspend listing",
+        "working": "Suspending…",
+        "errors": {
+          "required": "Write the reason for the audit log.",
+          "tooShort": "Write at least {min} characters, so the next admin knows what happened.",
+          "tooLong": "Keep the reason to {max} characters or fewer.",
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing is not verified any more, so it cannot be suspended. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was changed. Try again."
+        }
+      },
+      "unsuspend": {
+        "title": "Unsuspend listing",
+        "body": "Lists the doctor again: search, the profile and booking come back at once.",
+        "action": "Unsuspend listing",
+        "working": "Unsuspending…",
+        "errors": {
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing is not suspended any more. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was changed. Try again."
+        }
+      }
+    },
+    "toast": {
+      "suspended": "{name} is suspended. Patients can no longer find the listing.",
+      "unsuspended": "{name} is listed again.",
+      "saved": "Changes to {name} saved.",
+      "undone": "Undone. {name} is back as it was.",
+      "undo": "Undo",
+      "dismiss": "Close",
+      "failed": "That did not go through. Nothing was changed. Try again."
+    }
   }
 }

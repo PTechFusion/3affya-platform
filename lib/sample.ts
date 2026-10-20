@@ -1011,3 +1011,92 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+/* ---------------- Admin listings (screen 39, task 2.8) ---------------- */
+// Appended block. Every professional row as the admin listings table reads it. The status is derived, so it cannot disagree
+// with the public pages: the card state in doctors.json (unclaimed, pending, verified; "suspended" on the one suspended sample,
+// doc_391), then the claim invite (screen 9) and the builder's review decision (screen 29) split "pending" into claimed, in
+// review and rejected. data/sample/listings.json adds what only admin sees: licence expiry (rule A2), the claim and review
+// instants and the suspension. Instants and licence dates go through sampleInstant; verifiedOn stays a fixed calendar date.
+import listingsJson from "@/data/sample/listings.json";
+
+/** The planned professionals.status values (architecture, critical flow 3), plus "inReview" for a claim waiting on admin. */
+export type ListingStatus = "unclaimed" | "claimed" | "inReview" | "verified" | "rejected" | "suspended" | "removed";
+export const listingStatuses: readonly ListingStatus[] = ["unclaimed", "claimed", "inReview", "verified", "rejected", "suspended", "removed"];
+
+type ListingRow = {
+  id: string;
+  /** Calendar date the medical licence expires (YYYY-MM-DD). */
+  licenceExpiresOn: string | null;
+  claimedAtUtc: string | null;
+  submittedAtUtc: string | null;
+  suspension: { atUtc: string; byAdminId: string; reasonEn: string; reasonAr: string } | null;
+};
+
+const listingRows = listingsJson as unknown as ListingRow[];
+
+export type SampleListing = {
+  doctor: SampleDoctor;
+  status: ListingStatus;
+  /** Rows not yet verified: where the public facts came from, and the file date (UTC midnight). */
+  registry: { source: RegistrySource; asOf: Date } | null;
+  claimedAt: Date | null;
+  submittedAt: Date | null;
+  /** Rejected rows: when admin decided, and the reason the doctor sees (screen 29's rejected preview). */
+  decidedAt: Date | null;
+  rejection: { reasonEn: string; reasonAr: string } | null;
+  /** Verified and suspended rows (dates at UTC midnight). */
+  verifiedOn: Date | null;
+  licenceExpiresOn: Date | null;
+  board: string | null;
+  licenceStateEn: string | null;
+  licenceStateAr: string | null;
+  suspension: { at: Date; byEn: string; byAr: string; reasonEn: string | null; reasonAr: string | null } | null;
+  removedAt: Date | null;
+};
+
+const utcDate = (ymd: string) => new Date(`${ymd}T00:00:00Z`);
+
+function listingFor(d: SampleDoctor): SampleListing {
+  const row = listingRows.find((r) => r.id === d.id);
+  const profile = profileFor(d.id);
+  const builder = builderRowFor(d.id);
+  // Invites keep their authored instants (screen 9 compares them unshifted), so a claim date read from one does too.
+  const invite = sampleInvites.find((i) => i.doctorId === d.id && i.usedAtUtc);
+  const raw = d.state as string; // doctors.json may carry "suspended" or "removed", which the public card state does not name
+  const submittedAtUtc = row?.submittedAtUtc ?? builder?.submittedAtUtc ?? null;
+  const status: ListingStatus =
+    raw === "verified" || raw === "unclaimed" || raw === "suspended" || raw === "removed"
+      ? raw
+      : builder?.rejection
+        ? "rejected"
+        : submittedAtUtc
+          ? "inReview"
+          : "claimed";
+  const verifiedish = status === "verified" || status === "suspended";
+  const s = row?.suspension;
+  const by = s && s.byAdminId === sampleAdmin.id ? sampleAdmin : null;
+  return {
+    doctor: d,
+    status,
+    registry: !verifiedish && profile?.registrySource && profile.registryAsOf ? { source: profile.registrySource, asOf: utcDate(profile.registryAsOf) } : null,
+    claimedAt: row?.claimedAtUtc ? sampleInstant(row.claimedAtUtc) : invite?.usedAtUtc ? new Date(invite.usedAtUtc) : null,
+    submittedAt: (status === "inReview" || status === "rejected") && submittedAtUtc ? sampleInstant(submittedAtUtc) : null,
+    decidedAt: status === "rejected" && builder?.decidedAtUtc ? sampleInstant(builder.decidedAtUtc) : null,
+    rejection: status === "rejected" && builder?.rejection ? { reasonEn: builder.rejection.reasonEn, reasonAr: builder.rejection.reasonAr } : null,
+    verifiedOn: verifiedish && d.verifiedOn ? utcDate(d.verifiedOn) : null,
+    licenceExpiresOn: verifiedish && row?.licenceExpiresOn ? sampleInstant(`${row.licenceExpiresOn}T00:00:00Z`) : null,
+    board: verifiedish ? (profile?.board ?? null) : null,
+    licenceStateEn: verifiedish ? (profile?.licenceStateEn ?? null) : null,
+    licenceStateAr: verifiedish ? (profile?.licenceStateAr ?? null) : null,
+    suspension:
+      status === "suspended" && s
+        ? { at: sampleInstant(s.atUtc), byEn: by?.nameEn ?? s.byAdminId, byAr: by?.nameAr ?? s.byAdminId, reasonEn: s.reasonEn, reasonAr: s.reasonAr }
+        : null,
+    removedAt: null, // no removed sample yet: removals are confirmed on screen 41
+  };
+}
+
+/** Every listing, in data order. Production pages these from Postgres by status, specialty and name (indexed, see architecture). */
+export function sampleListings(): SampleListing[] {
+  return sampleDoctors.map(listingFor);
+}

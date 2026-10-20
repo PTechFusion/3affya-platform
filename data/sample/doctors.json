@@ -831,5 +831,51 @@
     "nextAvailableUtc": null,
     "bioEn": "",
     "bioAr": ""
+  },
+  {
+    "id": "doc_391",
+    "npi": "1391047226",
+    "state": "suspended",
+    "gender": "m",
+    "nameEn": "Dr Jamal Qasem",
+    "nameAr": "د. جمال قاسم",
+    "specialty": "cardiology",
+    "specialtyEn": "Cardiology",
+    "specialtyAr": "أمراض القلب",
+    "cityEn": "Chicago, Illinois",
+    "cityAr": "شيكاغو، إلينوي",
+    "medicalSchool": "University of Michigan",
+    "graduationYear": 2006,
+    "hospitalAffiliation": "Rush University Medical Center",
+    "photoUrl": "/brand/placeholder-doctor.svg",
+    "languages": [
+      {
+        "code": "ar",
+        "dialect": "Levantine"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [
+      "video"
+    ],
+    "ages": "adults",
+    "tags": [
+      "Blood pressure",
+      "Palpitations",
+      "Cholesterol"
+    ],
+    "training": [
+      "University of Chicago, residency",
+      "Northwestern University, fellowship"
+    ],
+    "yearsInPractice": 16,
+    "boardCertified": true,
+    "verifiedOn": "2026-09-14",
+    "feeUsdCents": 20000,
+    "nextAvailableUtc": null,
+    "bioEn": "Board certified cardiologist trained in the United States, seeing patients from the Gulf by video.",
+    "bioAr": "طبيب قلب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
   }
 ]

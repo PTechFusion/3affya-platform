@@ -115,3 +115,10 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Admin listings (screen 39, task 2.8) ---------------- */
+// Appended block. Re-verification (rule A2): the next check is the licence expiry or the yearly cycle
+// (business.verifiedReverifyMonths after the verified-on date), whichever comes first.
+export const listingRules = {
+  reverifyDueSoonDays: 30, // (default until Dr Ayman confirms) the listings table flags a verified row this many days before its next check
+} as const;
