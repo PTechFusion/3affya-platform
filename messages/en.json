@@ -2620,5 +2620,196 @@
     },
     "contactLead": "Trouble signing in?",
     "contactLink": "Contact us"
+  },
+  "settings": {
+    "metaTitle": "Settings",
+    "metaDescription": "Choose your language, time zone, calendar and emails, update your details, and download or delete your data.",
+    "title": "Settings",
+    "lead": "Language, time zone, emails and your account.",
+    "loading": "Loading your settings",
+    "onThisPage": "On this page",
+    "language": {
+      "title": "Language",
+      "legend": "For the site and the emails we send you"
+    },
+    "timeZone": {
+      "title": "Time zone",
+      "label": "Your time zone",
+      "hint": "Visit times, receipts and emails show in this zone.",
+      "now": "Time there now: <strong>{time}</strong>",
+      "gulf": "Gulf countries",
+      "other": "Other places",
+      "places": {
+        "SA": "Riyadh, Saudi Arabia",
+        "AE": "Dubai, United Arab Emirates",
+        "KW": "Kuwait City, Kuwait",
+        "QA": "Doha, Qatar",
+        "BH": "Manama, Bahrain",
+        "OM": "Muscat, Oman",
+        "cairo": "Cairo, Egypt",
+        "amman": "Amman, Jordan",
+        "beirut": "Beirut, Lebanon",
+        "baghdad": "Baghdad, Iraq",
+        "istanbul": "Istanbul, Türkiye",
+        "london": "London, United Kingdom",
+        "newYork": "New York, United States",
+        "chicago": "Chicago, United States",
+        "losAngeles": "Los Angeles, United States"
+      }
+    },
+    "calendar": {
+      "title": "Calendar",
+      "lead": "Dates show in the Gregorian calendar.",
+      "hijri": "Also show the Hijri date",
+      "example": "For example: {date}"
+    },
+    "emails": {
+      "title": "Emails",
+      "lead": "We send them to <address>{email}</address>.",
+      "private": "Emails never include your records or health details. Sign in to read them.",
+      "alwaysOn": "Always on",
+      "optional": "You choose",
+      "bookings": {
+        "title": "Bookings",
+        "body": "Confirmations, changes and the link to join your visit. You need these, so they stay on."
+      },
+      "summaryReady": {
+        "title": "Summary ready",
+        "body": "When the summary of your records is ready to read."
+      },
+      "shareOpened": {
+        "title": "Summary opened",
+        "body": "When a doctor opens a summary you shared."
+      },
+      "news": {
+        "title": "News from 3affya",
+        "body": "New doctors and specialties. Never anything about your health."
+      }
+    },
+    "details": {
+      "title": "Your details",
+      "lead": "Doctors you book see your name. We sign you in with your email.",
+      "nameLegend": "Your name",
+      "nameHint": "Fill in one or both. Doctors see the one that matches the language of your visit.",
+      "nameAr": "In Arabic letters",
+      "nameEn": "In English letters",
+      "email": "Email",
+      "emailHint": "We send your sign-in code here. If you change it, we first send a code to the new address.",
+      "phone": "Mobile number (optional)",
+      "phoneHint": "With the country code, for example +966 50 123 4567. We call only if there is a problem with a visit.",
+      "save": "Save details",
+      "saving": "Saving",
+      "retry": "Try again",
+      "failedTitle": "We could not save your details",
+      "failedBody": "Your changes are still here. Check your connection and try again."
+    },
+    "errors": {
+      "nameMissing": "Add your name in Arabic letters, English letters or both.",
+      "nameShort": "Add your full name. It needs at least {min, plural, one {{minLabel} letter} other {{minLabel} letters}}.",
+      "nameLong": "Shorten your name to {max} characters or fewer.",
+      "nameDigits": "Remove the numbers. A name has letters only.",
+      "nameSymbols": "Use letters, spaces and hyphens only.",
+      "nameNotArabic": "Use Arabic letters here. Put the English spelling in the next field.",
+      "nameNotLatin": "Use English letters (A to Z) here. Put the Arabic spelling in the field above.",
+      "emailMissing": "Enter your email address. We send your sign-in code there.",
+      "emailLong": "Shorten your email address to {max} characters or fewer.",
+      "emailSpace": "Remove the space from your email address.",
+      "emailNoAt": "Add the @ sign, as in name@example.com.",
+      "emailManyAt": "Use only one @ sign in your email address.",
+      "emailNoLocal": "Add the part before the @, as in name@example.com.",
+      "emailNoDomain": "Add the part after the @, as in name@example.com.",
+      "emailNoDot": "Check the part after the @. It needs a dot, as in example.com.",
+      "phoneChars": "Use digits only, with + before the country code.",
+      "phoneNoCode": "Start with + and your country code, and drop the first 0. For example +966 50 123 4567.",
+      "phoneLengthExact": "A number in {country} has {min} digits after {code}. This one has {count}.",
+      "phoneLengthRange": "A number in {country} has {min} or {max} digits after {code}. This one has {count}.",
+      "phoneShort": "This number is too short. Check the digits after the country code.",
+      "phoneLong": "This number is too long. A phone number has at most {max} digits."
+    },
+    "countries": {
+      "SA": "Saudi Arabia",
+      "AE": "the United Arab Emirates",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman"
+    },
+    "data": {
+      "title": "Your data",
+      "downloadTitle": "Download your data",
+      "downloadBody": "One ZIP file with your details, bookings, receipts, uploaded files and summaries.",
+      "download": "Download my data",
+      "preparing": "Requesting",
+      "requestedTitle": "We are preparing your file",
+      "requestedBody": "We will email <address>{email}</address> when it is ready. The file stays available for {days}.",
+      "privacy": "How we keep and protect your data"
+    },
+    "delete": {
+      "title": "Delete",
+      "lead": "Each option says what is removed and what we must keep.",
+      "removed": "What is removed",
+      "kept": "What we keep",
+      "uploads": {
+        "title": "Delete my uploads",
+        "body": "Removes your records and their summaries now. Your account stays open.",
+        "removed1": "Every file you uploaded",
+        "removed2": "The summaries made from them",
+        "removed3": "Every share link, so doctors lose access at once",
+        "kept1": "A note that you deleted them, with the date",
+        "kept2": "Receipts for processing your records, for {years}",
+        "kept3": "Encrypted backups, until they are replaced within {days}",
+        "action": "Delete my uploads",
+        "confirmTitle": "Delete all your uploads now?",
+        "confirmBody": "You cannot undo this. If you want a copy, download your data first.",
+        "confirm": "Delete my uploads",
+        "keep": "Keep my uploads",
+        "deleting": "Deleting",
+        "emptyTitle": "No uploads",
+        "emptyBody": "There are no records to delete. Files you upload show up in Records.",
+        "emptyAction": "Upload records"
+      },
+      "account": {
+        "title": "Delete my account",
+        "body": "Closes your account. We wait {days} before we delete it, so you can change your mind.",
+        "removed1": "Your name, email and phone number",
+        "removed2": "Your uploads, summaries and share links",
+        "removed3": "Your settings and your sign-in",
+        "kept1": "Booking and payment records, for {years}, as tax and accounting rules require",
+        "kept2": "A note that you deleted your account, with the date",
+        "kept3": "Encrypted backups, until they are replaced within {days}",
+        "doctorNotes": "Doctors keep their own notes from your visits, as their licence requires. Deleting your account does not remove those.",
+        "action": "Delete my account",
+        "confirmTitle": "Delete your account?",
+        "confirmBody": "We will delete it on {day}, <nowrap>{time}</nowrap>. Until then you can sign in and keep it.",
+        "confirmVisits": "Visits booked for after that date are cancelled, and the <link>refund policy</link> applies.",
+        "confirm": "Delete my account",
+        "keep": "Keep my account",
+        "asking": "Requesting",
+        "scheduled": "Deletion is set for {day}, <nowrap>{time}</nowrap>."
+      },
+      "banner": {
+        "title": "Your account will be deleted on {day}",
+        "body": "We delete it at <nowrap>{time}</nowrap>. Nothing is removed before then, and you can still sign in. If you changed your mind, keep your account.",
+        "action": "Keep my account"
+      }
+    },
+    "units": {
+      "days": "{days, plural, one {{daysLabel} day} other {{daysLabel} days}}",
+      "years": "{years, plural, one {{yearsLabel} year} other {{yearsLabel} years}}"
+    },
+    "toast": {
+      "zone": "Time zone set to {zone}.",
+      "hijriOn": "Hijri dates are on.",
+      "hijriOff": "Hijri dates are off.",
+      "emailOn": "Emails on: {title}.",
+      "emailOff": "Emails off: {title}.",
+      "detailsSaved": "Your details are saved.",
+      "uploadsDeleted": "Your uploads are deleted.",
+      "deletionRequested": "Your account will be deleted on {day}.",
+      "kept": "Your account is kept. Nothing was deleted.",
+      "failed": "We could not save that. Check your connection and try again.",
+      "undo": "Undo",
+      "undone": "Change undone."
+    }
   }
 }

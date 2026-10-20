@@ -66,3 +66,14 @@ export const signInLimits = {
   wrongCodesMax: 5, // wrong codes in a row before the code stops working
   lockMinutes: 15, // wait after either limit, before a new code can be sent
 } as const;
+
+/* ---------------- Patient settings: deletion, retention and export (screen 28, task 3.6) ---------------- */
+// Appended block. What /patient/settings says is removed, what is kept and for how long (rule T8), and the wait before an
+// account deletion runs (rule B10: Keep my account undoes it until then). Counsel confirms the retention periods per country
+// before launch; the privacy page (legal.privacy.sections.keep) must then say the same numbers.
+export const accountData = {
+  deletionGraceDays: 14, // (default until Dr Ayman confirms) a deletion request waits this long, then the job deletes the account
+  paymentRecordsKeepYears: 7, // (default until counsel confirms) bookings, receipts and refunds kept after deletion for tax and accounting
+  backupRollOffDays: 30, // nightly encrypted backups are replaced after this many days (architecture file, operations checklist)
+  exportAvailableDays: 7, // (default until Dr Ayman confirms) how long a prepared download of the patient's data stays available
+} as const;
