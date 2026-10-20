@@ -14,7 +14,35 @@ const intl = createMiddleware(routing);
 const PROFILE = new RegExp(`^/(${routing.locales.join("|")})/doctors/([^/]+)/?$`);
 const REMOVED = new Set(removals.requests.filter((r) => r.status === "confirmed").map((r) => r.doctorId));
 
+// Prototype gate (task 1.11): HTTP basic auth while the build is under review. SITE_USERS is "user:password,user:password"
+// in the host's env; unset (local dev) means no gate. Read per request: Netlify's edge runtime fills env at invocation, not at
+// module load. Remove before launch.
+declare const Netlify: { env: { get(key: string): string | undefined } } | undefined;
+
+function siteUsers() {
+  const raw = process.env.SITE_USERS || (typeof Netlify === "undefined" ? undefined : Netlify.env.get("SITE_USERS")) || "";
+  return new Set(raw.split(",").map((u) => u.trim()).filter(Boolean));
+}
+
+function allowed(request: NextRequest) {
+  const users = siteUsers();
+  if (users.size === 0) return true;
+  const header = request.headers.get("authorization") ?? "";
+  if (!header.startsWith("Basic ")) return false;
+  try {
+    return users.has(atob(header.slice(6)));
+  } catch {
+    return false;
+  }
+}
+
 export function middleware(request: NextRequest) {
+  if (!allowed(request)) {
+    return new NextResponse("Authentication required", {
+      status: 401,
+      headers: { "WWW-Authenticate": 'Basic realm="3affya preview", charset="UTF-8"' },
+    });
+  }
   const response = intl(request);
   const { pathname, searchParams } = request.nextUrl;
   const profile = PROFILE.exec(pathname);
