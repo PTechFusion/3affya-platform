@@ -476,6 +476,12 @@ export const sampleProfessionalId = sampleProfessional.id;
  */
 export const samplePatient = { firstNameEn: "Noura", firstNameAr: "نورة", gender: "f", country: "SA", timeZone: "Asia/Riyadh" } as const;
 
+/**
+ * The prototype's signed-in admin (screens 37 to 47): Dr Ayman's operations lead in Riyadh. Admin pages render dates in this
+ * zone unless ?tz= is set; audit rows and job logs keep their UTC instants. Production reads the session and the TOTP factor.
+ */
+export const sampleAdmin = { id: "adm_001", nameEn: "Sara Al-Rashid", nameAr: "سارة الراشد", email: "ops@3affya.example", timeZone: "Asia/Riyadh" } as const;
+
 type SampleSummaryRow = Omit<SummaryData, "generatedAt"> & {
   recordSetId: string;
   patient: { firstNameEn: string; firstNameAr: string; gender: "f" | "m" };
