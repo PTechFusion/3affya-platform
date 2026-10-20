@@ -836,8 +836,8 @@ export function Notice({
   action?: ReactNode;
   icon?: ReactNode;
   role?: "alert" | "status" | "note";
-  /** Alias of role for callers that think in live regions. */
-  live?: "alert" | "status";
+  /** Alias of role for callers that think in live regions ("polite" reads as "status"). */
+  live?: "alert" | "status" | "polite";
   id?: string;
   className?: string;
   children?: ReactNode;
@@ -847,7 +847,7 @@ export function Notice({
   return (
     <div
       id={id}
-      role={role ?? live}
+      role={role ?? (live === "polite" ? "status" : live)}
       className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3.5 text-ink-900", t.box, className)}
     >
       {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}
