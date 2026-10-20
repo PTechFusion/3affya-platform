@@ -1253,3 +1253,89 @@ export function removalRequests(now: Date = new Date()): SampleRemovalRequest[] 
 export function removalRequestById(id: string, now: Date = new Date()): SampleRemovalRequest | undefined {
   return removalRequests(now).find((r) => r.id === id);
 }
+
+/* ---------------- Members and subscriptions, admin (screen 42) ---------------- */
+// Appended block (wave 5). The admin members list: every verified professional with their membership, if any, and the Stripe
+// facts the subscription webhooks store (data/sample/membership-billing.json): customer and subscription ids for the Dashboard
+// links, when it started, free months an admin granted, and the last invoice. No amounts are stored: the invoice amount is the
+// list price for the plan's interval (config/business.ts). doc_002 has one row per screen-33 preview state in memberships.json;
+// the admin list shows its active row (mem_active), the one /professional/membership?state=active shows. Imported here, not at
+// the top, so this section stays one appended block (ES imports are hoisted either way).
+import membershipBillingJson from "@/data/sample/membership-billing.json";
+
+export type MembershipInvoiceStatus = "paid" | "failed";
+
+/** Stripe facts per membership, instants shifted with sampleInstant. `compUntil`: no charge until then (free months). */
+export type SampleMemberBilling = {
+  stripeCustomerId: string;
+  stripeSubscriptionId: string;
+  startedAt: Date;
+  compUntil: Date | null;
+  lastInvoice: { id: string; number: string; status: MembershipInvoiceStatus; at: Date } | null;
+};
+
+/** One professional as the admin members list reads them. No membership row means the free Claimed plan (status none). */
+export type AdminMemberRow = {
+  doctor: SampleDoctor;
+  membership: SampleMembership | null;
+  billing: SampleMemberBilling | null;
+  /** The doctor's own zone: the one their membership page shows dates in. */
+  doctorTimeZone: string;
+};
+
+type SampleMemberBillingRow = {
+  membershipId: string;
+  stripeCustomerId: string;
+  stripeSubscriptionId: string;
+  startedAtUtc: string;
+  compUntilUtc: string | null;
+  lastInvoice: { id: string; number: string; status: MembershipInvoiceStatus; atUtc: string } | null;
+};
+const memberBillingRows = membershipBillingJson as unknown as SampleMemberBillingRow[];
+const ADMIN_LISTED_PROFESSIONAL_ROW = "mem_active";
+
+function shiftedMembership(row: SampleMembershipRow): SampleMembership {
+  const at = (iso: string | null) => (iso ? sampleInstant(iso) : null);
+  return {
+    id: row.id,
+    doctorId: row.doctorId,
+    status: row.status,
+    interval: row.interval,
+    currentPeriodEnd: at(row.currentPeriodEndUtc),
+    paymentFailedAt: at(row.paymentFailedAtUtc),
+    cancelledAt: at(row.cancelledAtUtc),
+    timeZone: row.timeZone,
+  };
+}
+
+function shiftedBilling(row: SampleMemberBillingRow): SampleMemberBilling {
+  const invoice = row.lastInvoice;
+  return {
+    stripeCustomerId: row.stripeCustomerId,
+    stripeSubscriptionId: row.stripeSubscriptionId,
+    startedAt: sampleInstant(row.startedAtUtc),
+    compUntil: row.compUntilUtc ? sampleInstant(row.compUntilUtc) : null,
+    lastInvoice: invoice ? { id: invoice.id, number: invoice.number, status: invoice.status, at: sampleInstant(invoice.atUtc) } : null,
+  };
+}
+
+/** Every verified professional with their membership, in doctor order. Production reads memberships joined to profiles (admin RLS). */
+export function adminMemberRows(): AdminMemberRow[] {
+  return verifiedDoctors().map((doctor) => {
+    const listed = (m: SampleMembershipRow) =>
+      m.doctorId === doctor.id && m.status !== "none" && (doctor.id !== sampleProfessional.id || m.id === ADMIN_LISTED_PROFESSIONAL_ROW);
+    const row = sampleMembershipRows.find(listed);
+    const billing = row ? memberBillingRows.find((b) => b.membershipId === row.id) : undefined;
+    return {
+      doctor,
+      membership: row ? shiftedMembership(row) : null,
+      billing: billing ? shiftedBilling(billing) : null,
+      doctorTimeZone: row?.timeZone ?? doctorTimeZone(doctor),
+    };
+  });
+}
+
+/** One professional's row on the admin list, or undefined when they are not on it (not verified, or no such id). */
+export function adminMemberRow(doctorId: string): AdminMemberRow | undefined {
+  return adminMemberRows().find((r) => r.doctor.id === doctorId);
+}

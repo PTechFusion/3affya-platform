@@ -959,3 +959,44 @@ export function Notice({
     </div>
   );
 }
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message in the page flow (PLAYBOOK §9): what just changed (success), something to act on (warning, e.g. a past-due
+ * payment), a failure (danger) or a plain note (info). A title, an optional body and an optional action row. `live` makes it a
+ * live region: "status" for a change the user just made, "alert" for an error; leave it off for a notice that is simply part of
+ * the page. `headingLevel` keeps the outline right where the notice sits under an h2.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, string> = {
+  info: "border-sky-500/40 bg-sky-100",
+  success: "border-success/40 bg-success/10",
+  warning: "border-gold-500/50 bg-gold-100",
+  danger: "border-danger/40 bg-danger/10",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  live,
+  headingLevel = 2,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: string;
+  body?: ReactNode;
+  action?: ReactNode;
+  live?: "status" | "alert";
+  headingLevel?: 2 | 3;
+  className?: string;
+}) {
+  const Heading = headingLevel === 3 ? "h3" : "h2";
+  return (
+    <div role={live} className={cx("rounded-[var(--radius-card)] border p-4 sm:p-5", noticeTones[tone], className)}>
+      <Heading className="text-lg font-bold text-ink-900">{title}</Heading>
+      {body ? <div className="mt-1 text-ink-900">{body}</div> : null}
+      {action ? <div className="mt-3 flex flex-wrap items-center gap-3">{action}</div> : null}
+    </div>
+  );
+}

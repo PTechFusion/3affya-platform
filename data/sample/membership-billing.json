@@ -1,0 +1,58 @@
+[
+  {
+    "membershipId": "mem_active",
+    "stripeCustomerId": "cus_sample_doc002",
+    "stripeSubscriptionId": "sub_sample_doc002",
+    "startedAtUtc": "2026-09-28T14:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc002_02", "number": "OK2A7C-0002", "status": "paid", "atUtc": "2026-10-28T14:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a01",
+    "stripeCustomerId": "cus_sample_doc001",
+    "stripeSubscriptionId": "sub_sample_doc001",
+    "startedAtUtc": "2026-10-20T09:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc001_01", "number": "SH1B4D-0001", "status": "paid", "atUtc": "2026-10-20T09:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a02",
+    "stripeCustomerId": "cus_sample_doc003",
+    "stripeSubscriptionId": "sub_sample_doc003",
+    "startedAtUtc": "2026-10-15T08:00:00Z",
+    "compUntilUtc": "2027-01-15T08:00:00Z",
+    "lastInvoice": { "id": "in_sample_doc003_01", "number": "LM3C9E-0001", "status": "paid", "atUtc": "2026-10-15T08:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a03",
+    "stripeCustomerId": "cus_sample_doc004",
+    "stripeSubscriptionId": "sub_sample_doc004",
+    "startedAtUtc": "2026-09-07T06:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc004_03", "number": "KS4D2F-0003", "status": "failed", "atUtc": "2026-11-07T06:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a04",
+    "stripeCustomerId": "cus_sample_doc005",
+    "stripeSubscriptionId": "sub_sample_doc005",
+    "startedAtUtc": "2026-09-19T15:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc005_02", "number": "NF5E8A-0002", "status": "paid", "atUtc": "2026-10-19T15:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a05",
+    "stripeCustomerId": "cus_sample_doc006",
+    "stripeSubscriptionId": "sub_sample_doc006",
+    "startedAtUtc": "2026-10-03T18:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc006_02", "number": "TN6F1B-0002", "status": "failed", "atUtc": "2026-11-03T18:00:00Z" }
+  },
+  {
+    "membershipId": "mem_a06",
+    "stripeCustomerId": "cus_sample_doc007",
+    "stripeSubscriptionId": "sub_sample_doc007",
+    "startedAtUtc": "2026-10-12T10:00:00Z",
+    "compUntilUtc": null,
+    "lastInvoice": { "id": "in_sample_doc007_01", "number": "HA7A3C-0001", "status": "paid", "atUtc": "2026-10-12T10:00:00Z" }
+  }
+]
