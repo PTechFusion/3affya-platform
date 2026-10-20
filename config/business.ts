@@ -141,3 +141,10 @@ export const outreach = {
   inviteValidDays: 14, // a claim link works once, for this many days after it is sent (task 2.3)
   personalLineMaxChars: 300, // (default until Dr Ayman confirms) the optional note at the top of the invite email
 } as const;
+
+/* ---------------- Removal requests (screen 41, task 2.8) ---------------- */
+// Appended block. The promise to the doctor is business.removalSlaHours (48) from the request; the admin queue's timer turns
+// amber once a request is this many hours old and red once the promise is missed. (default until Dr Ayman confirms)
+export const removalRules = {
+  slaWarnAfterHours: 36,
+} as const;

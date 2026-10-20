@@ -4479,5 +4479,236 @@
       "why": "You received this because the public US NPI registry lists you as a practising doctor.",
       "optOut": "To stop emails from 3affya, reply with the word STOP."
     }
+  },
+  "adminRemovals": {
+    "metaTitle": "Removal requests",
+    "metaDescription": "Remove-me requests from doctors listed from public records, with the timer, the checks and the decision.",
+    "title": "Removal requests",
+    "lead": "Doctors listed from public records who asked us to take their profile down. Each was promised a decision {sla}.",
+    "sla": "{hours, plural, one {within one hour} other {within {count} hours}}",
+    "units": {
+      "hours": "{count, plural, one {{n} hour} other {{n} hours}}",
+      "hoursShort": "{count, plural, =0 {under 1 h} other {{n} h}}"
+    },
+    "tabs": {
+      "label": "Removal requests",
+      "open": "Open",
+      "decided": "Decided"
+    },
+    "legend": "Times in <z>{zone}</z>. The timer turns amber once a request is {warn} old, and red after {sla}.",
+    "legendDecided": "Times in <z>{zone}</z>. Time to decide runs from the request to the decision; the promise is {sla}.",
+    "columns": {
+      "listing": "Listing",
+      "askedBy": "Asked by",
+      "reason": "Reason",
+      "checks": "Checks",
+      "received": "Received",
+      "timeLeft": "Time left",
+      "decision": "Decision",
+      "decided": "Decided",
+      "taken": "Time to decide"
+    },
+    "npi": "NPI",
+    "reasons": {
+      "notListed": "Does not want to be listed",
+      "notPractising": "No longer sees patients",
+      "wrongDetails": "Says the details are wrong",
+      "other": "Another reason"
+    },
+    "status": {
+      "open": "Open",
+      "infoRequested": "Waiting on the doctor",
+      "confirmed": "Removed",
+      "refused": "Refused"
+    },
+    "timer": {
+      "left": "{count, plural, =0 {Under 1 h left} other {{n} h left}}",
+      "overdue": "{count, plural, =0 {Overdue} other {{n} h overdue}}",
+      "paused": "{count, plural, =0 {Paused, under 1 h left} other {Paused, {n} h left}}",
+      "taken": "{count, plural, =0 {Took under 1 h} other {Took {n} h}}",
+      "takenLate": "{count, plural, =0 {Took under 1 h, late} other {Took {n} h, late}}"
+    },
+    "checksCount": "{passed} of {total} checks",
+    "overdue": {
+      "title": "{count, plural, one {{countLabel} request missed the {slaLabel}-hour promise} other {{countLabel} requests missed the {slaLabel}-hour promise}}",
+      "body": "Each doctor was told the profile comes down {sla}. Decide these first.",
+      "filtered": "Showing only the requests that missed the promise.",
+      "show": "Show only these",
+      "showAll": "Show all open requests"
+    },
+    "empty": {
+      "open": {
+        "title": "No removal requests waiting",
+        "body": "New requests from the This is me page land here. Each must be decided {sla}.",
+        "action": "See decided requests"
+      },
+      "decided": {
+        "title": "No decisions yet",
+        "body": "Removed and refused requests show here, with who decided and when.",
+        "action": "See open requests"
+      }
+    },
+    "error": {
+      "title": "The queue did not load",
+      "body": "Nothing was changed. Try again in a minute.",
+      "action": "Try again"
+    },
+    "loading": "Loading removal requests",
+    "languages": {
+      "ar": "Arabic",
+      "en": "English"
+    },
+    "detail": {
+      "metaTitle": "Removal request",
+      "loading": "Loading the request",
+      "breadcrumb": "You are here",
+      "meta": "Request <code>{id}</code> · received {day}",
+      "decided": {
+        "confirmed": {
+          "title": "Profile removed",
+          "body": "Removed on {day} at <nowrap>{time}</nowrap> by {admin}, {taken} after the request. Its public link answers 410 Gone."
+        },
+        "refused": {
+          "title": "Request refused",
+          "body": "Refused on {day} at <nowrap>{time}</nowrap> by {admin}, {taken} after the request. The profile stays listed."
+        },
+        "inTime": "Within the promise of {sla}.",
+        "late": "Later than the promise of {sla}.",
+        "reasonLead": "We sent the doctor this reason:"
+      },
+      "seePublic": "See the public page",
+      "auditLog": "Open the audit log",
+      "backToQueue": "Back to removal requests",
+      "waiting": {
+        "title": "Waiting on the doctor",
+        "body": "{admin} asked on {day} at <nowrap>{time}</nowrap>:"
+      },
+      "request": {
+        "title": "The request",
+        "askedBy": "Asked by",
+        "email": "Email",
+        "npi": "NPI given",
+        "reason": "Reason",
+        "details": "Details",
+        "noDetails": "Nothing added.",
+        "language": "Language",
+        "received": "Received"
+      },
+      "checks": {
+        "title": "Checks",
+        "summary": "{passed} of {total} passed",
+        "lead": "A person decides. These are what the request can prove; the NPI is public, so the name and the email matter most.",
+        "given": "Request: <b>{value}</b>",
+        "record": "Record: <b>{value}</b>",
+        "npi": {
+          "pass": "NPI matches the public record",
+          "fail": "NPI does not match the public record"
+        },
+        "name": {
+          "pass": "Name matches the public record",
+          "fail": "Name differs from the public record"
+        },
+        "email": {
+          "pass": "Email confirmed",
+          "fail": "Email not confirmed",
+          "passDetail": "The confirmation link was opened on {day} at <nowrap>{time}</nowrap>.",
+          "failDetail": "The confirmation link we sent has not been opened."
+        },
+        "unclaimed": {
+          "pass": "Profile is still unclaimed",
+          "fail": "Profile was claimed since",
+          "failDetail": "A claimed profile is not removed from here: its owner can delete it from their portal."
+        }
+      },
+      "profile": {
+        "title": "Matching profile",
+        "source": "Listed from the CMS NPPES file of {date}.",
+        "practice": "Practice on record: <b>{name}</b>.",
+        "removedNote": "No longer public: its link answers 410 Gone."
+      },
+      "timer": {
+        "title": "Time left to decide",
+        "titleOverdue": "Past the promise",
+        "titlePaused": "Timer paused",
+        "late": "{value} late",
+        "of": "of {sla}",
+        "dueBy": "Decide by {day} at <nowrap>{time}</nowrap>.",
+        "dueWas": "It was due on {day} at <nowrap>{time}</nowrap>.",
+        "pausedSince": "Paused since {day} at <nowrap>{time}</nowrap>, when we asked the doctor a question. It runs again when they reply."
+      },
+      "notFound": {
+        "title": "This request is not in the queue",
+        "body": "The link may be old, or the request id mistyped.",
+        "action": "Back to removal requests"
+      }
+    },
+    "decision": {
+      "title": "Your decision",
+      "hint": "Each decision is written to the audit log, and the doctor gets an email in the language of the request.",
+      "confirm": "Confirm removal",
+      "askInfo": "Ask for more information",
+      "refuse": "Refuse with reason",
+      "cancel": "Cancel",
+      "working": "Saving…",
+      "confirmStep": {
+        "title": "Remove {name}'s profile?",
+        "body": "It comes down now: its link answers 410 Gone, search engines are told the page is gone, and we email the doctor that it is done.",
+        "checksWarning": "Only {passed} of {total} checks passed. You can still remove it; the audit entry records the checks as they stand.",
+        "submit": "Remove the profile",
+        "keep": "Keep it listed"
+      },
+      "refuseStep": {
+        "title": "Refuse the request",
+        "label": "Reason the doctor reads",
+        "hint": "We email it in {language}. Say what they can do next.",
+        "submit": "Refuse and email the doctor"
+      },
+      "askInfoStep": {
+        "title": "Ask for more information",
+        "label": "Your question",
+        "hint": "We email it in {language}. The timer pauses until they reply.",
+        "submit": "Send the question"
+      },
+      "errors": {
+        "refuse": {
+          "noteMissing": "Write why you are refusing. The doctor reads it in our email."
+        },
+        "askInfo": {
+          "noteMissing": "Write what you need from the doctor."
+        },
+        "noteTooShort": "{min, plural, one {Add a little more, at least {minLabel} character, so the doctor knows what to do next.} other {Add a little more, at least {minLabel} characters, so the doctor knows what to do next.}}",
+        "noteTooLong": "Shorten this to {maxLabel} characters or fewer. It has {countLabel} now."
+      },
+      "failed": {
+        "unavailable": {
+          "title": "That did not go through",
+          "body": "Nothing was changed. Try again in a minute."
+        },
+        "decided": {
+          "title": "Already decided",
+          "body": "Someone decided this request a moment ago. Reload the page to see the decision."
+        },
+        "notFound": {
+          "title": "This request is gone",
+          "body": "It is no longer in the queue. Go back to the list to see where it stands."
+        }
+      },
+      "done": {
+        "confirm": {
+          "title": "Profile removed",
+          "body": "{name}'s profile is down. Its link now answers 410 Gone, the audit log has the entry, and we emailed the doctor."
+        },
+        "refuse": {
+          "title": "Request refused",
+          "body": "{name}'s profile stays listed. We emailed the doctor your reason, and the audit log has the entry."
+        },
+        "askInfo": {
+          "title": "Question sent",
+          "body": "The timer is paused until the doctor replies. Their answer arrives on this page."
+        },
+        "seePublic": "See the public page",
+        "backToQueue": "Back to removal requests"
+      }
+    }
   }
 }
