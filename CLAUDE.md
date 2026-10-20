@@ -19,6 +19,11 @@ Full brief for a build agent: `docs/screens/PLAYBOOK.md` (route map, states, rep
 4. Compare with the layout call. Fix. Two or three passes is normal.
 5. Commit as `M1.6 home page` (one task id per commit). Note any deliberate deviation from the layout call in column N of `docs/programmx_aafia-screen-inventory_2026-10.xlsx`.
 
+## Backend and integration lanes (from 20 Oct 2026)
+All 47 screens are built. The work behind them is cut into lanes that do not touch each other's files: `docs/lanes/README.md`
+is the brief every lane agent receives, one brief per lane (L1 schema and RLS, L2 Stripe webhook, L3 AI client, L4 email
+templates, L5 quality and CI now; L6 data wiring and L7 auth after L1 merges). Branch `lane/<slug>`, PR into `dev`.
+
 ## Status (19 Oct 2026)
 Done in this repo: 1.1, 1.2 (scaffold, i18n and RTL, lint rule, tokens, DoctorCard, /brand), screen 1 home, portal shells and 404 (the shell half of 1.7). Branches: work on `dev`, release to `main`. Next: waves 1 to 3 of `docs/screens/PLAYBOOK.md`, then 1.11 deploy for Dr Ayman's approval on Fri 23 Oct. Tasks 1.3, 1.4, 1.5 (Supabase, schema, seed) run in parallel on the backend lane.
 
