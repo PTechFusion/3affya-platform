@@ -115,3 +115,18 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Admin sign-in (screen 37, task 2.8) ---------------- */
+// Appended block. Three factors in a row: work email, a code emailed to it (business.otpDigits long), then the code from an
+// authenticator app (TOTP, RFC 6238) or one recovery code. No TOTP, no access: there is no route in without the third step.
+// A refusal never says which factor failed (rule F6); failures count per email address and per IP in the database, whether
+// or not the address belongs to a team account, and past attemptsMax sign-in pauses for lockMinutes. (default until Dr Ayman confirms)
+export const adminSignIn = {
+  emailCodeValidMinutes: 10, // the emailed code works this long after it is sent
+  resendAfterSeconds: 60, // the resend timer on the email-code step
+  totpDigits: 6, // authenticator code length (RFC 6238 default; every common app uses it)
+  totpPeriodSeconds: 30, // the authenticator code changes this often
+  recoveryCodeChars: 10, // letters and numbers per recovery code, shown in groups of five
+  attemptsMax: 5, // refused sign-ins in a row before sign-in pauses
+  lockMinutes: 30, // the pause, after which a new attempt may start
+} as const;

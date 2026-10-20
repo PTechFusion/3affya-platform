@@ -3882,5 +3882,90 @@
       "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
       "action": "Choose another time"
     }
+  },
+  "adminLogin": {
+    "metaTitle": "Admin sign-in | 3affya",
+    "metaDescription": "Sign-in for the 3affya team: your work email, a code we email you, and the code from your authenticator app.",
+    "loading": "Opening admin sign-in",
+    "step": "Step {step} of {total}",
+    "checking": "Checking…",
+    "signIn": "Sign in",
+    "patients": "Not on the 3affya team? <link>Go to patient sign-in</link>",
+    "prototypeNote": "Prototype: no email is sent and no session is created. Any {digits} digits work; {wrong} in either code shows the refused message.",
+    "prototypeRecovery": "Prototype: any full recovery code works; {wrong} shows the refused message.",
+    "email": {
+      "title": "Admin sign-in",
+      "lead": "For the 3affya team only. Sign-in has three steps: your work email, a code we email to it, then the code from your authenticator app.",
+      "label": "Work email",
+      "hint": "We email a {digits}-digit code to this address.",
+      "sending": "Sending…",
+      "error": {
+        "empty": "Enter your work email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com",
+        "manyAt": "Use only one @ in your email address.",
+        "noName": "Add your name before the @, like name@example.com",
+        "noDomain": "Add the part after the @, like name@example.com",
+        "noDot": "Check the part after the @. It needs a dot, like example.com",
+        "unavailable": "We could not send the code just now. Please try again in a minute."
+      }
+    },
+    "code": {
+      "title": "Check your email",
+      "sentTo": "If this address belongs to a team account, we sent a <nowrap>{digits}-digit</nowrap> code to:",
+      "valid": "It works for {minutes, plural, one {one minute} other {{minutesLabel} minutes}}. Not there? Check your spam folder.",
+      "resent": "If this address belongs to a team account, we sent a new code. Use the latest one.",
+      "label": "{digits}-digit code from the email",
+      "hint": "Type or paste it. Spaces and dashes are fine.",
+      "resend": "Send a new code",
+      "resendIn": "You can send a new code in <n>{time}</n>",
+      "change": "Use a different email",
+      "error": {
+        "empty": "Enter the code from the email. It has {digits} digits.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "totp": {
+      "title": "Enter the code from your app",
+      "lead": "Open your authenticator app and find 3affya. Enter the <nowrap>{digits}-digit</nowrap> code it shows. The code changes every {seconds, plural, one {second} other {{secondsLabel} seconds}}.",
+      "label": "{digits}-digit code from the app",
+      "hint": "Type or paste it. If the code changes while you type, enter the new one.",
+      "useRecovery": "Use a recovery code instead",
+      "error": {
+        "empty": "Enter the code from your authenticator app. It has {digits} digits.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "recovery": {
+      "title": "Use a recovery code",
+      "lead": "Enter one of the recovery codes you saved when you set up your authenticator app. Each code works once.",
+      "label": "Recovery code",
+      "hint": "{chars, plural, one {One letter or number} other {{charsLabel} letters and numbers}}, like {example}. Dashes and spaces are fine.",
+      "useApp": "Use the authenticator app instead",
+      "lost": "Lost your phone and your recovery codes? Ask the account owner to reset your sign-in.",
+      "error": {
+        "empty": "Enter one of your recovery codes.",
+        "chars": "Use only the letters A to Z and the numbers 0 to 9. If your keyboard is set to Arabic, switch it to English.",
+        "length": "A recovery code has {chars, plural, one {one letter or number} other {{charsLabel} letters and numbers}}. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "refused": {
+      "title": "We could not sign you in",
+      "body": "Something you entered did not match. For security, we do not say which step. Start again from your email, and we will send you a new code.",
+      "limit": "After {max, plural, one {one try} other {{maxLabel} tries}} in a row that do not match, sign-in pauses for {minutes, plural, one {one minute} other {{minutesLabel} minutes}}.",
+      "action": "Start again"
+    },
+    "locked": {
+      "title": "Sign-in is paused",
+      "body": "Too many tries did not match, so sign-in is paused. You can start again at {time}.",
+      "notYou": "If these tries were not yours, tell the account owner."
+    },
+    "done": {
+      "title": "You are signed in",
+      "body": "Opening the review queue…"
+    }
   }
 }
