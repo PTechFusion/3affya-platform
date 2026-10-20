@@ -538,3 +538,47 @@ export function Toast({
     </div>
   );
 }
+/* ---------------- Tab links ---------------- */
+/**
+ * Two to four views of one list as tabs that are links (e.g. ?tab=past): each view has its own URL, so it works without
+ * JavaScript, survives a reload and can be shared. `current` marks the open view (aria-current); pass none while loading.
+ * `count` is already formatted (lib/format) and sits in a pill after the label. On phone the tabs share the row equally.
+ */
+export function TabLinks({
+  label,
+  items,
+}: {
+  label: string;
+  items: Array<{ href: React.ComponentProps<typeof Link>["href"]; label: string; count?: string; current?: boolean }>;
+}) {
+  return (
+    <nav aria-label={label} className="border-b border-sand-300">
+      <ul className="-mb-px flex">
+        {items.map((item) => (
+          <li key={item.label} className="flex flex-1 sm:flex-none">
+            <Link
+              href={item.href}
+              aria-current={item.current ? "page" : undefined}
+              className={cx(
+                "flex min-h-12 flex-1 items-center justify-center gap-2 border-b-[3px] px-5 text-[15px] font-semibold transition-colors",
+                item.current ? "border-sea-700 text-sea-900" : "border-transparent text-ink-700 hover:border-sand-400 hover:text-sea-900",
+              )}
+            >
+              {item.label}
+              {item.count ? (
+                <span
+                  className={cx(
+                    "tabular rounded-[var(--radius-tag)] px-2 py-0.5 text-[12.5px]",
+                    item.current ? "bg-sea-100 text-sea-800" : "bg-sand-200 text-ink-700",
+                  )}
+                >
+                  {item.count}
+                </span>
+              ) : null}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}

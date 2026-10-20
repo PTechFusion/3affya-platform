@@ -2918,5 +2918,84 @@
         "action": "See all receipts"
       }
     }
+  },
+  "bookings": {
+    "metaTitle": "Your bookings",
+    "metaDescription": "Your upcoming and past visits, each time in your time zone, with the link to join.",
+    "title": "Your bookings",
+    "lead": "Times are in your time zone. Open a booking for its details and receipt.",
+    "loading": "Loading your bookings",
+    "tabs": {
+      "label": "Bookings",
+      "upcoming": "Upcoming",
+      "past": "Past"
+    },
+    "next": {
+      "title": "Next visit",
+      "doctorTime": "Doctor's time: {day} · <nowrap>{time}</nowrap>",
+      "joinVideo": "Join the video visit",
+      "joinPhone": "Join the call",
+      "view": "View details"
+    },
+    "sections": {
+      "later": "Later visits",
+      "past": "Past visits",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "upcoming": "Confirmed",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "join": "Join",
+    "joinLabel": "Join the visit with {name}",
+    "view": "View",
+    "cancelNote": {
+      "doctor": "The doctor cancelled on {date}. Refunded in full.",
+      "patientRefunded": "You cancelled on {date}. Refunded in full.",
+      "patientLate": "You cancelled on {date}, less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} before the visit, so there was no refund."
+    },
+    "empty": {
+      "title": "No bookings yet",
+      "body": "When you book a visit with a doctor, it shows here with the time in your time zone and the link to join."
+    },
+    "emptyUpcoming": {
+      "title": "No upcoming visits",
+      "body": "Nothing is booked right now. Your earlier bookings are under Past."
+    },
+    "emptyPast": {
+      "title": "No past visits yet",
+      "body": "After your first visit, it shows here with its details and receipt.",
+      "action": "See upcoming visits"
+    },
+    "error": {
+      "title": "Your bookings did not load",
+      "body": "Something went wrong on our side, and nothing in your bookings has changed. Each join link is also in your confirmation email.",
+      "action": "Try again"
+    },
+    "cancel": {
+      "open": "Cancel booking",
+      "title": "Cancel this visit?",
+      "refundFull": "You get a full refund of {amount} to the card you paid with.",
+      "refundNone": "The visit is less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away, so there is no refund.",
+      "policy": "Refund policy",
+      "keep": "Keep booking",
+      "confirm": "Cancel booking",
+      "working": "Cancelling",
+      "error": {
+        "notFound": "This booking is no longer in your account. Reload the page.",
+        "state": "This booking changed since the page loaded. Reload the page to see it.",
+        "unavailable": "That did not go through. Try again in a minute."
+      }
+    },
+    "cancelled": {
+      "refunded": "Your visit with {name} is cancelled. {amount} goes back to the card you paid with.",
+      "noRefund": "Your visit with {name} is cancelled. There is no refund because it was less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away."
+    }
   }
 }
