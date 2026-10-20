@@ -3,7 +3,8 @@
 // The professional marks a visit done only once it has started and while it is upcoming: the database stamps done_at,
 // moves the status to 'done' and back to 'upcoming' when the mark is cleared, and a done visit always has its time.
 // Deleting a patient's account is refused while a visit is still ahead; afterwards the bookings stay, for the payment
-// records, unlinked and without the patient's names, phone and concern. Receipts and refunds name their subject: a visit
+// records, unlinked and without the patient's names and phone; what the visit was for (the concern and its language)
+// stays with the line (decision 4, 20 Oct 2026). Receipts and refunds name their subject: a visit
 // (with its booking) or the processing of a record set (without one). Money rows are the webhook's, so the fixtures
 // here are written by the service client.
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -172,7 +173,7 @@ describe("deleting a patient's account", () => {
     }
   });
 
-  it("once the visit is cancelled the delete succeeds, and the bookings stay unlinked, without names, phone or concern", async () => {
+  it("once the visit is cancelled the delete succeeds, and the bookings stay unlinked, without names or phone, concern kept", async () => {
     must(
       await w.service
         .from("bookings")
@@ -192,8 +193,8 @@ describe("deleting a patient's account", () => {
         patient_first_name_en: null,
         patient_first_name_ar: null,
         patient_phone: null,
-        concern: null,
-        concern_locale: null,
+        concern: identifying.concern,
+        concern_locale: identifying.concern_locale,
         professional_id: w.ids.professionalA,
         doctor_fee_cents: w.fees.doctorFeeCents,
         payment_intent_id: booking.payment_intent_id,

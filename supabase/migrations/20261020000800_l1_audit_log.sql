@@ -1,4 +1,4 @@
--- L1 schema v1, file 8 of 9: the append-only audit log (ADR-2, lib/audit.ts, screen 47).
+-- L1 schema v1, file 8 of 10: the append-only audit log (ADR-2, lib/audit.ts, screen 47).
 --
 -- Insert-only for every role: no UPDATE, DELETE or TRUNCATE privilege for anon, authenticated or the service role, and
 -- triggers that refuse all three even for the table owner. Admins read it (with TOTP); server code and webhook handlers

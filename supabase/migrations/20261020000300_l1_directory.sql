@@ -1,4 +1,4 @@
--- L1 schema v1, file 3 of 9: the directory. Specialties (104 groups, task 1.5), professionals (66k registry rows plus the
+-- L1 schema v1, file 3 of 10: the directory. Specialties (104 groups, task 1.5), professionals (the registry's doctors plus the
 -- claimed ones, ADR-5), the private side of a professional, specialty links, expertise tags and credential files.
 
 -- NUCC taxonomy codes are ten characters: three digits, six letters or digits, then X (e.g. 207RC0000X, 1223G0001X).
@@ -139,7 +139,8 @@ create table public.professionals (
   city_en text check (char_length(city_en) between 1 and 100),
   city_ar text check (char_length(city_ar) between 1 and 100),
   state_code text check (private.is_us_state_code(state_code)),
-  -- 'US' when the registry gives a US practice state; null for the few registry rows that practise abroad.
+  -- 'US' when the registry gives a US practice state; for a doctor practising abroad, the country the registry's State (or
+  -- State and City) names unambiguously (scripts/seed_professionals.py), else null (e.g. US military mail codes).
   practice_country text check (practice_country ~ '^[A-Z]{2}$'),
   photo_url text check (char_length(photo_url) <= 500),
   bio_en text check (char_length(bio_en) <= 4000),
@@ -202,7 +203,7 @@ create index professionals_directory_idx on public.professionals
 create index professionals_status_specialty_name_idx on public.professionals (status, specialty_id, last_name, id);
 
 -- plan_cache_mode: the slug check is re-planned on every row, so a bulk import that starts on a near-empty table switches
--- to the slug index as it grows instead of keeping a cached sequential scan (which made the first 66k import quadratic).
+-- to the slug index as it grows instead of keeping a cached sequential scan (which made the first registry import quadratic).
 create function private.professionals_set_slug() returns trigger
 language plpgsql
 set search_path = ''
@@ -212,7 +213,7 @@ declare
   base text;
 begin
   if new.slug is null or new.slug = '' then
-    -- One slug writer at a time (a single key, so a 66k-row import holds one lock, not one per row): two concurrent
+    -- One slug writer at a time (a single key, so a registry import holds one lock, not one per row): two concurrent
     -- inserts with the same name, city and last four digits then fall back to the full NPI instead of failing.
     perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtext('public.professionals.slug'));
     base := concat_ws('-',
@@ -373,9 +374,10 @@ $$;
 create trigger professionals_snapshot_registry after update of status on public.professionals
   for each row execute function private.professionals_snapshot_registry();
 
--- Deleting the account behind a claimed listing (the deletion job, or an admin) takes the listing down rather than
--- leaving a live page with no owner; the profile row's delete then unlinks it. Decision for Dr Ayman: "removed" (410,
--- as below) or back to the public registry row ("unclaimed").
+-- Deleting the account behind a claimed listing (the deletion job, or an admin) archives the listing: 'removed' hides it
+-- from every public surface (the profile answers 410) while the row, its bookings, credentials and history stay, because
+-- a deletion means the doctor no longer wants to be seen, not that the records go (decided 20 Oct 2026). The profile
+-- row's delete then unlinks it.
 create function private.profiles_release_listing() returns trigger
 language plpgsql
 security definer

@@ -1,6 +1,6 @@
 // Positive controls for the RLS suite, so no refusal elsewhere passes only because nothing works: owners read their own
 // rows, public-by-design rows are public, the writes the policies allow go through, the aal2 admin reads a row from each
-// of the 26 tables while the same role without TOTP reads none of them, the aal2 admin still writes nothing through the
+// of the 27 tables while the same role without TOTP reads none of them, the aal2 admin still writes nothing through the
 // API (server code only), and the refusal checks themselves fail when the operation is in fact allowed.
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { business } from "../../config/business";
@@ -41,6 +41,7 @@ const OWN_ROWS: Array<[PersonaKey, TableName, (w: World) => Match]> = [
   ["patientA", "record_items", (w) => ({ id: w.ids.itemA })],
   ["patientA", "record_summaries", (w) => ({ id: w.ids.summaryA })],
   ["patientA", "consents", (w) => ({ id: w.ids.consentA })],
+  ["patientA", "introduction_requests", (w) => ({ id: w.ids.requestA })],
   ["patientB", "record_shares", (w) => ({ id: w.ids.shareB })],
   ["professionalA", "profiles", (w) => ({ id: w.user("professionalA") })],
   ["professionalA", "professionals", (w) => ({ id: w.ids.professionalA })],
@@ -53,6 +54,7 @@ const OWN_ROWS: Array<[PersonaKey, TableName, (w: World) => Match]> = [
   ["professionalA", "bookings", (w) => ({ id: w.ids.bookingA })],
   ["professionalA", "memberships", (w) => ({ id: w.ids.membershipA })],
   ["professionalA", "banners", (w) => ({ id: w.ids.bannerA })],
+  ["professionalA", "introduction_requests", (w) => ({ id: w.ids.requestA })],
   ["professionalB", "record_shares", (w) => ({ id: w.ids.shareB })],
   ["professionalPending", "professionals", (w) => ({ id: w.ids.professionalPending })],
   ["professionalPending", "professional_private", (w) => ({ professional_id: w.ids.professionalPending })],

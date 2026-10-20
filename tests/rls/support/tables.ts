@@ -1,4 +1,4 @@
-// The cross-tenant matrix as data: for each of the 26 L1 tables, the row an attacker aims at for each operation and who
+// The cross-tenant matrix as data: for each of the 27 L1 tables, the row an attacker aims at for each operation and who
 // may legitimately read it (the positive control that keeps a refusal from being vacuous). matrix.rls.ts runs every case
 // as patient A, professional A and anonymous; controls.rls.ts runs the write half again as an aal2 admin, who writes
 // through server code only. "B" rows belong to the other tenant (patient B, professional B); the read target of a table
@@ -35,6 +35,7 @@ export const TABLES = [
   "consents",
   "ai_jobs",
   "audit_log",
+  "introduction_requests",
 ] as const;
 export type TableName = (typeof TABLES)[number];
 
@@ -486,5 +487,28 @@ export const TABLE_CASES: readonly TableCase[] = [
     },
     update: (w) => ({ match: { id: w.ids.auditRow }, owner: "admin", values: { action: "rlsTest.tampered" } }),
     remove: (w) => ({ match: { id: w.ids.auditRow }, owner: "admin" }),
+  },
+  {
+    table: "introduction_requests",
+    tenancy: "the patient's unpaid request to a verified professional; the patient (send, withdraw, checklist, delete the transcript), that professional (read, decline), admin (aal2) reads",
+    read: (w) => ({
+      match: { id: w.ids.requestB },
+      owner: "patientB",
+      tenantFilters: tenants({ patient_id: w.user("patientB") }, { professional_id: w.ids.professionalB }),
+    }),
+    insert: (w, attacker) => ({
+      patient_id: w.user("patientB"),
+      professional_id: w.ids.professionalB,
+      requested_start: w.slot(50 + ATTACKER_INDEX[attacker]).slot_start,
+      visit_type: "video",
+      patient_time_zone: business.defaultTimeZone,
+    }),
+    // Each attacker tries the move its own side may make on its own requests: the patient's withdrawal, the decline.
+    update: (w, attacker) => ({
+      match: { id: w.ids.requestB },
+      owner: "patientB",
+      values: attacker === "professionalA" ? { status: "declined" } : { status: "withdrawn" },
+    }),
+    remove: (w) => ({ match: { id: w.ids.requestB }, owner: "patientB" }),
   },
 ];

@@ -206,6 +206,49 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"introduction_requests": {
+                  Row: {
+                    "age_group": Database["public"]['Enums']["age_group"] | null,"answered_at": string | null,"booked_by": Database["public"]['Enums']["booked_by"],"booking_id": string | null,"concern": string | null,"concern_locale": Database["public"]['Enums']["app_locale"] | null,"consent_id": string | null,"created_at": string,"id": string,"patient_first_name_ar": string | null,"patient_first_name_en": string | null,"patient_gender": Database["public"]['Enums']["gender"] | null,"patient_id": string | null,"patient_time_zone": string,"prepared": (string)[],"professional_id": string,"received_at": string,"requested_start": string,"specialty_id": string | null,"status": Database["public"]['Enums']["introduction_request_status"],"transcript": Json | null,"updated_at": string,"visit_type": Database["public"]['Enums']["visit_type"],"withdrawn_at": string | null
+                  }
+                  Insert: {
+                    "age_group"?: Database["public"]['Enums']["age_group"] | null,"answered_at"?: string | null,"booked_by"?: Database["public"]['Enums']["booked_by"],"booking_id"?: string | null,"concern"?: string | null,"concern_locale"?: Database["public"]['Enums']["app_locale"] | null,"consent_id"?: string | null,"created_at"?: string,"id"?: string,"patient_first_name_ar"?: string | null,"patient_first_name_en"?: string | null,"patient_gender"?: Database["public"]['Enums']["gender"] | null,"patient_id"?: string | null,"patient_time_zone": string,"prepared"?: (string)[],"professional_id": string,"received_at"?: string,"requested_start": string,"specialty_id"?: string | null,"status"?: Database["public"]['Enums']["introduction_request_status"],"transcript"?: Json | null,"updated_at"?: string,"visit_type": Database["public"]['Enums']["visit_type"],"withdrawn_at"?: string | null
+                  }
+                  Update: {
+                    "age_group"?: Database["public"]['Enums']["age_group"] | null,"answered_at"?: string | null,"booked_by"?: Database["public"]['Enums']["booked_by"],"booking_id"?: string | null,"concern"?: string | null,"concern_locale"?: Database["public"]['Enums']["app_locale"] | null,"consent_id"?: string | null,"created_at"?: string,"id"?: string,"patient_first_name_ar"?: string | null,"patient_first_name_en"?: string | null,"patient_gender"?: Database["public"]['Enums']["gender"] | null,"patient_id"?: string | null,"patient_time_zone"?: string,"prepared"?: (string)[],"professional_id"?: string,"received_at"?: string,"requested_start"?: string,"specialty_id"?: string | null,"status"?: Database["public"]['Enums']["introduction_request_status"],"transcript"?: Json | null,"updated_at"?: string,"visit_type"?: Database["public"]['Enums']["visit_type"],"withdrawn_at"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "introduction_requests_booking_id_fkey"
+      columns: ["booking_id"]
+isOneToOne: true
+      referencedRelation: "bookings"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "introduction_requests_consent_id_fkey"
+      columns: ["consent_id"]
+isOneToOne: false
+      referencedRelation: "consents"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "introduction_requests_patient_id_fkey"
+      columns: ["patient_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "introduction_requests_professional_id_fkey"
+      columns: ["professional_id"]
+isOneToOne: false
+      referencedRelation: "professionals"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "introduction_requests_specialty_id_fkey"
+      columns: ["specialty_id"]
+isOneToOne: false
+      referencedRelation: "specialties"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"invites": {
                   Row: {
                     "bounce": Database["public"]['Enums']["invite_bounce"] | null,"bounced_at": string | null,"created_at": string,"created_by": string | null,"email": string,"expires_at": string,"id": string,"language": Database["public"]['Enums']["app_locale"],"opened_at": string | null,"personal_line": string | null,"professional_id": string,"revoked_at": string | null,"revoked_by": string | null,"sent_at": string,"token_hash": string,"used_at": string | null,"used_by": string | null,"current_status": Database["public"]['Enums']["invite_status"] | null
@@ -660,12 +703,17 @@ isOneToOne: false
               "bucket_id": string,"id": number,"prefix": string,"queued_at": string
             }[]
                            },
+"professional_busy_times":
+{ Args: { "from_at": string,"professional": string,"to_at": string }; Returns: {
+              "ends_at": string,"starts_at": string
+            }[]
+                           },
 "schema_security_report":
 { Args: Record<PropertyKey, never>; Returns: Json
                            }
           }
           Enums: {
-            "age_group": "baby"|"child"|"teen"|"adult","age_scope": "adults"|"children"|"allAges","ai_job_kind": "records","ai_job_status": "queued"|"processing"|"failed"|"done"|"cancelled"|"retryQueued","app_locale": "ar"|"en","audit_actor_kind": "admin"|"professional"|"patient"|"system","availability_exception_kind": "off"|"extra","billing_interval": "month"|"year","board_status": "certified"|"eligible","booked_by": "self"|"parent","booking_status": "upcoming"|"done"|"cancelled"|"refunded","cancelled_by": "patient"|"doctor"|"platform","consent_kind": "recordsProcessing"|"recordsShare"|"intakeChat","credential_kind": "licence"|"board"|"other","credential_review_status": "pending"|"accepted"|"rejected","gender": "f"|"m","invite_bounce": "noMailbox"|"rejected","invite_status": "sent"|"opened"|"claimed"|"expired"|"bounced"|"revoked","invoice_status": "paid"|"failed","membership_status": "none"|"active"|"past_due"|"cancelled","page_status": "read"|"unreadable"|"reading"|"waiting"|"failed"|"notRead","payment_wallet": "applePay"|"googlePay","pipeline_failure_reason": "damaged"|"unavailable","pipeline_step": "validate"|"quote"|"pay"|"extract"|"dedupe"|"summarise"|"flag"|"store"|"notify","professional_source": "nppes"|"self"|"admin","professional_status": "unclaimed"|"claimed"|"pending_review"|"verified"|"rejected"|"suspended"|"removed","record_file_kind": "pdf"|"docx"|"jpg"|"png"|"other","record_file_status": "checking"|"accepted"|"rejected","record_item_type": "condition"|"medication"|"allergy"|"procedure"|"result"|"immunization"|"vital"|"unreadable"|"other","record_reject_reason": "type"|"archive"|"tooLarge"|"setFull"|"empty"|"encrypted"|"duplicate","record_set_status": "draft"|"queued"|"processing"|"failed"|"done"|"cancelled","refund_initiator": "automatic"|"admin","refund_reason": "patientEarly"|"patientLate"|"doctor"|"platform"|"byRule"|"override","refund_status": "pending"|"succeeded"|"failed","removal_reason": "notListed"|"notPractising"|"wrongDetails"|"other","removal_status": "open"|"infoRequested"|"confirmed"|"refused","slot_hold_status": "held"|"consumed","unreadable_reason": "blurry"|"handwritten"|"cutOff","user_role": "patient"|"professional"|"admin","visit_type": "video"|"phone"
+            "age_group": "baby"|"child"|"teen"|"adult","age_scope": "adults"|"children"|"allAges","ai_job_kind": "records","ai_job_status": "queued"|"processing"|"failed"|"done"|"cancelled"|"retryQueued","app_locale": "ar"|"en","audit_actor_kind": "admin"|"professional"|"patient"|"system","availability_exception_kind": "off"|"extra","billing_interval": "month"|"year","board_status": "certified"|"eligible","booked_by": "self"|"parent","booking_status": "upcoming"|"done"|"cancelled"|"refunded","cancelled_by": "patient"|"doctor"|"platform","consent_kind": "recordsProcessing"|"recordsShare"|"intakeChat","credential_kind": "licence"|"board"|"other","credential_review_status": "pending"|"accepted"|"rejected","gender": "f"|"m","introduction_request_status": "open"|"booked"|"declined"|"withdrawn","invite_bounce": "noMailbox"|"rejected","invite_status": "sent"|"opened"|"claimed"|"expired"|"bounced"|"revoked","invoice_status": "paid"|"failed","membership_status": "none"|"active"|"past_due"|"cancelled","page_status": "read"|"unreadable"|"reading"|"waiting"|"failed"|"notRead","payment_wallet": "applePay"|"googlePay","pipeline_failure_reason": "damaged"|"unavailable","pipeline_step": "validate"|"quote"|"pay"|"extract"|"dedupe"|"summarise"|"flag"|"store"|"notify","professional_source": "nppes"|"self"|"admin","professional_status": "unclaimed"|"claimed"|"pending_review"|"verified"|"rejected"|"suspended"|"removed","record_file_kind": "pdf"|"docx"|"jpg"|"png"|"other","record_file_status": "checking"|"accepted"|"rejected","record_item_type": "condition"|"medication"|"allergy"|"procedure"|"result"|"immunization"|"vital"|"unreadable"|"other","record_reject_reason": "type"|"archive"|"tooLarge"|"setFull"|"empty"|"encrypted"|"duplicate","record_set_status": "draft"|"queued"|"processing"|"failed"|"done"|"cancelled","refund_initiator": "automatic"|"admin","refund_reason": "patientEarly"|"patientLate"|"doctor"|"platform"|"byRule"|"override","refund_status": "pending"|"succeeded"|"failed","removal_reason": "notListed"|"notPractising"|"wrongDetails"|"other","removal_status": "open"|"infoRequested"|"confirmed"|"refused","slot_hold_status": "held"|"consumed","unreadable_reason": "blurry"|"handwritten"|"cutOff","user_role": "patient"|"professional"|"admin","visit_type": "video"|"phone"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -781,7 +829,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "age_group": ["baby", "child", "teen", "adult"],"age_scope": ["adults", "children", "allAges"],"ai_job_kind": ["records"],"ai_job_status": ["queued", "processing", "failed", "done", "cancelled", "retryQueued"],"app_locale": ["ar", "en"],"audit_actor_kind": ["admin", "professional", "patient", "system"],"availability_exception_kind": ["off", "extra"],"billing_interval": ["month", "year"],"board_status": ["certified", "eligible"],"booked_by": ["self", "parent"],"booking_status": ["upcoming", "done", "cancelled", "refunded"],"cancelled_by": ["patient", "doctor", "platform"],"consent_kind": ["recordsProcessing", "recordsShare", "intakeChat"],"credential_kind": ["licence", "board", "other"],"credential_review_status": ["pending", "accepted", "rejected"],"gender": ["f", "m"],"invite_bounce": ["noMailbox", "rejected"],"invite_status": ["sent", "opened", "claimed", "expired", "bounced", "revoked"],"invoice_status": ["paid", "failed"],"membership_status": ["none", "active", "past_due", "cancelled"],"page_status": ["read", "unreadable", "reading", "waiting", "failed", "notRead"],"payment_wallet": ["applePay", "googlePay"],"pipeline_failure_reason": ["damaged", "unavailable"],"pipeline_step": ["validate", "quote", "pay", "extract", "dedupe", "summarise", "flag", "store", "notify"],"professional_source": ["nppes", "self", "admin"],"professional_status": ["unclaimed", "claimed", "pending_review", "verified", "rejected", "suspended", "removed"],"record_file_kind": ["pdf", "docx", "jpg", "png", "other"],"record_file_status": ["checking", "accepted", "rejected"],"record_item_type": ["condition", "medication", "allergy", "procedure", "result", "immunization", "vital", "unreadable", "other"],"record_reject_reason": ["type", "archive", "tooLarge", "setFull", "empty", "encrypted", "duplicate"],"record_set_status": ["draft", "queued", "processing", "failed", "done", "cancelled"],"refund_initiator": ["automatic", "admin"],"refund_reason": ["patientEarly", "patientLate", "doctor", "platform", "byRule", "override"],"refund_status": ["pending", "succeeded", "failed"],"removal_reason": ["notListed", "notPractising", "wrongDetails", "other"],"removal_status": ["open", "infoRequested", "confirmed", "refused"],"slot_hold_status": ["held", "consumed"],"unreadable_reason": ["blurry", "handwritten", "cutOff"],"user_role": ["patient", "professional", "admin"],"visit_type": ["video", "phone"]
+            "age_group": ["baby", "child", "teen", "adult"],"age_scope": ["adults", "children", "allAges"],"ai_job_kind": ["records"],"ai_job_status": ["queued", "processing", "failed", "done", "cancelled", "retryQueued"],"app_locale": ["ar", "en"],"audit_actor_kind": ["admin", "professional", "patient", "system"],"availability_exception_kind": ["off", "extra"],"billing_interval": ["month", "year"],"board_status": ["certified", "eligible"],"booked_by": ["self", "parent"],"booking_status": ["upcoming", "done", "cancelled", "refunded"],"cancelled_by": ["patient", "doctor", "platform"],"consent_kind": ["recordsProcessing", "recordsShare", "intakeChat"],"credential_kind": ["licence", "board", "other"],"credential_review_status": ["pending", "accepted", "rejected"],"gender": ["f", "m"],"introduction_request_status": ["open", "booked", "declined", "withdrawn"],"invite_bounce": ["noMailbox", "rejected"],"invite_status": ["sent", "opened", "claimed", "expired", "bounced", "revoked"],"invoice_status": ["paid", "failed"],"membership_status": ["none", "active", "past_due", "cancelled"],"page_status": ["read", "unreadable", "reading", "waiting", "failed", "notRead"],"payment_wallet": ["applePay", "googlePay"],"pipeline_failure_reason": ["damaged", "unavailable"],"pipeline_step": ["validate", "quote", "pay", "extract", "dedupe", "summarise", "flag", "store", "notify"],"professional_source": ["nppes", "self", "admin"],"professional_status": ["unclaimed", "claimed", "pending_review", "verified", "rejected", "suspended", "removed"],"record_file_kind": ["pdf", "docx", "jpg", "png", "other"],"record_file_status": ["checking", "accepted", "rejected"],"record_item_type": ["condition", "medication", "allergy", "procedure", "result", "immunization", "vital", "unreadable", "other"],"record_reject_reason": ["type", "archive", "tooLarge", "setFull", "empty", "encrypted", "duplicate"],"record_set_status": ["draft", "queued", "processing", "failed", "done", "cancelled"],"refund_initiator": ["automatic", "admin"],"refund_reason": ["patientEarly", "patientLate", "doctor", "platform", "byRule", "override"],"refund_status": ["pending", "succeeded", "failed"],"removal_reason": ["notListed", "notPractising", "wrongDetails", "other"],"removal_status": ["open", "infoRequested", "confirmed", "refused"],"slot_hold_status": ["held", "consumed"],"unreadable_reason": ["blurry", "handwritten", "cutOff"],"user_role": ["patient", "professional", "admin"],"visit_type": ["video", "phone"]
           }
         }
 } as const

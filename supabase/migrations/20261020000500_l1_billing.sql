@@ -1,4 +1,4 @@
--- L1 schema v1, file 5 of 9: memberships and the banner add-on (task 3.5). Stripe Billing is the system of record; these
+-- L1 schema v1, file 5 of 10: memberships and the banner add-on (task 3.5). Stripe Billing is the system of record; these
 -- rows are what the subscription and invoice webhooks store, written by the webhook handler only (service role). No
 -- amounts are stored: a plan's price is config/business.ts and the invoice is Stripe's.
 

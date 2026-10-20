@@ -1,5 +1,5 @@
 // Task 1.4: "tests/rls refuses every cross-tenant attempt as patient, professional and anonymous". For every one of the
-// 26 L1 tables (support/tables.ts) and each attacker (patient A, professional A, anonymous), a SELECT, INSERT, UPDATE and
+// 27 L1 tables (support/tables.ts) and each attacker (patient A, professional A, anonymous), a SELECT, INSERT, UPDATE and
 // DELETE aimed at the other tenant's row, each expected to be refused as support/refusal.ts defines it. Before the
 // refusals, each table's control shows the target rows exist and their owner can read them, so no refusal is vacuous.
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -26,9 +26,9 @@ afterAll(async () => {
 });
 
 describe("matrix coverage", () => {
-  it("has one case per L1 table, 26 in all", () => {
+  it("has one case per L1 table, 27 in all", () => {
     expect(TABLE_CASES.map((c) => c.table)).toEqual([...TABLES]);
-    expect(new Set(TABLES).size).toBe(26);
+    expect(new Set(TABLES).size).toBe(27);
   });
 
   it("covers every table the API exposes in public (other lanes' tables excepted)", async () => {

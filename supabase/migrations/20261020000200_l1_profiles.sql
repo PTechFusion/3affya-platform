@@ -1,4 +1,4 @@
--- L1 schema v1, file 2 of 9: profiles, the role mirror from auth.users, and the role helpers every policy uses.
+-- L1 schema v1, file 2 of 10: profiles, the role mirror from auth.users, and the role helpers every policy uses.
 
 -- Valid IANA zone name (the viewer's or the rule's zone). Null passes: the app falls back to business.defaultTimeZone.
 create function private.is_time_zone(value text) returns boolean

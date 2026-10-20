@@ -1,4 +1,4 @@
--- L1 schema v1, file 7 of 9: patient records (critical flow 2, ADR-4): sets, files, pages, typed items, summaries,
+-- L1 schema v1, file 7 of 10: patient records (critical flow 2, ADR-4): sets, files, pages, typed items, summaries,
 -- shares, consents and the pipeline's jobs.
 --
 -- Every child row carries patient_id and points at its parent through a composite foreign key that includes it, so a

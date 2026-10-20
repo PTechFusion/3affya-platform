@@ -1,4 +1,4 @@
--- L1 schema v1, file 6 of 9: claim invites (critical flow 3, task 2.3, screen 46) and removal requests (screen 41).
+-- L1 schema v1, file 6 of 10: claim invites (critical flow 3, task 2.3, screen 46) and removal requests (screen 41).
 -- Both are admin-only through the API. The claim page and the remove-me form run in server code, which looks rows up by
 -- token hash and writes them; anonymous callers never touch these tables directly.
 

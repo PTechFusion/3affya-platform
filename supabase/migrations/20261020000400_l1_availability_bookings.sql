@@ -1,4 +1,4 @@
--- L1 schema v1, file 4 of 9: availability (ADR-7), slot holds and bookings (critical flow 1), receipts and refunds.
+-- L1 schema v1, file 4 of 10: availability (ADR-7), slot holds and bookings (critical flow 1), receipts and refunds.
 -- Money state here (bookings paid, receipts, refunds) is written only by the Stripe webhook handler, as the service role
 -- (ADR-6). The API roles get read access, plus the two small writes a patient and a professional make on a booking.
 
@@ -86,8 +86,8 @@ create unique index slot_holds_one_live_hold_per_patient on public.slot_holds (p
 create table public.bookings (
   id uuid primary key default gen_random_uuid(),
   professional_id uuid not null references public.professionals (id) on delete restrict,
-  -- Unlinked when the patient deletes their account; the booking itself is kept for accountData.paymentRecordsKeepYears
-  -- with the patient's name, phone and concern removed (private.profiles_scrub_bookings below).
+  -- Unlinked when the patient deletes their account; the booking itself is kept as a line for
+  -- accountData.paymentRecordsKeepYears with the patient's name and phone removed (private.profiles_scrub_bookings below).
   patient_id uuid references public.profiles (id) on delete set null,
   hold_id uuid unique references public.slot_holds (id) on delete set null,
   -- The webhook's idempotency key: one booking per payment.
@@ -243,9 +243,10 @@ create trigger refunds_set_updated_at before update on public.refunds
 
 /* ---------------- account deletion ---------------- */
 
--- Deleting a patient's account (the deletion job after accountData.deletionGraceDays, or an admin) keeps their bookings
--- for the payment records but removes what identifies them: name, phone and concern (screen 28 promises the name and
--- phone go). Visits still ahead must be cancelled and refunded through Stripe first, so the delete is refused until then.
+-- Deleting a patient's account (the deletion job after accountData.deletionGraceDays, or an admin) keeps every booking as
+-- a line, with what the visit was for, but removes who it was: first names and phone (screen 28 promises the name and
+-- phone go; decided 20 Oct 2026: a patient's lines stay after deletion). Visits still ahead must be cancelled and refunded
+-- through Stripe first, so the delete is refused until then.
 create function private.profiles_scrub_bookings() returns trigger
 language plpgsql
 security definer
@@ -258,8 +259,7 @@ begin
     raise exception 'cancel and refund the upcoming visits before deleting the account' using errcode = '55000';
   end if;
   update public.bookings
-     set patient_first_name_en = null, patient_first_name_ar = null, patient_phone = null,
-         concern = null, concern_locale = null
+     set patient_first_name_en = null, patient_first_name_ar = null, patient_phone = null
    where patient_id = old.id;
   return old;
 end;
@@ -267,6 +267,43 @@ $$;
 
 create trigger profiles_scrub_bookings before delete on public.profiles
   for each row execute function private.profiles_scrub_bookings();
+
+/* ---------------- busy times ---------------- */
+
+-- The times a verified professional cannot be booked: live holds and live bookings that have not ended, as bare intervals
+-- with no patient data, so the public profile, the slot picker and search (tasks 2.6, 3.2) can subtract them from the open
+-- times for any visitor. Nothing that has ended is returned (a doctor's past visits are nobody's business), and ranges are
+-- capped at 100 days (more than business.bookingHorizonDays) so one call cannot scan a calendar.
+create function public.professional_busy_times(professional uuid, from_at timestamptz, to_at timestamptz)
+returns table (starts_at timestamptz, ends_at timestamptz)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select busy.starts_at, busy.ends_at
+    from (
+      select h.slot_start as starts_at, h.slot_end as ends_at
+        from public.slot_holds h
+       where h.professional_id = professional
+         and (h.status = 'consumed' or h.expires_at > now())
+         and h.slot_start < to_at and h.slot_end > from_at
+      union
+      select b.starts_at, b.ends_at
+        from public.bookings b
+       where b.professional_id = professional
+         and b.status in ('upcoming', 'done')
+         and b.starts_at < to_at and b.ends_at > from_at
+    ) as busy
+   where private.professional_is_verified(professional)
+     and to_at > from_at
+     and to_at <= from_at + interval '100 days'
+     and busy.ends_at > now()
+   order by busy.starts_at;
+$$;
+
+revoke all on function public.professional_busy_times(uuid, timestamptz, timestamptz) from public;
+grant execute on function public.professional_busy_times(uuid, timestamptz, timestamptz) to anon, authenticated, service_role;
 
 /* ---------------- policy helpers ---------------- */
 

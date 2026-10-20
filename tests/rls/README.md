@@ -2,8 +2,9 @@
 
 Proves, against the local Supabase stack, that row-level security and the grants in `supabase/migrations/` refuse every
 cross-tenant attempt as a patient, a professional and an anonymous caller, that `audit_log` cannot be changed, that the
-constraints and guard triggers hold the round-3 rules (paths, overlaps, done marks, account deletion, the purge queue),
-and that the writes the policies do allow still work. Lane L1 owns this folder.
+constraints and guard triggers hold the round-3 rules (paths, overlaps, done marks, account deletion, the purge queue)
+and the round-4 ones (introduction requests, busy times, the concern kept on a deleted patient's lines), and that the
+writes the policies do allow still work. Lane L1 owns this folder.
 
 ## Run it
 
@@ -42,29 +43,34 @@ the one missing `@rolldown/binding-<platform>` package at the version `node_modu
 | `support/env.ts`, `support/global-setup.ts` | Finds the stack's URL and keys, checks Auth and PostgREST answer, hands them to the files via `provide`/`inject`. |
 | `support/clients.ts` | Service, anon and signed-in clients (no persisted session, 30 s timeout per request); the exposed-tables lookup. |
 | `support/totp.ts` | RFC 6238 TOTP on `node:crypto`, so the admin persona passes the TOTP step and holds an aal2 session. |
-| `support/fixtures.ts` | Personas and the fixture rows in all 26 tables plus storage objects; the extra accounts, listings and booking rows a file adds (`addAccount`, `insertListing`, `bookingRow`); lock-wait retries; the purge-queue reader; cleanup in dependency order (records receipts, AI jobs and the purge queue included). |
+| `support/fixtures.ts` | Personas and the fixture rows in all 27 tables plus storage objects; the extra accounts, listings and booking rows a file adds (`addAccount`, `insertListing`, `bookingRow`); lock-wait retries; the purge-queue reader; cleanup in dependency order (records receipts, AI jobs and the purge queue included). |
 | `support/refusal.ts` | The refusal definitions below, as assertions, plus storage variants (download, upload, list, sign). |
 | `support/tables.ts` | The matrix as data: per table, the target row of each operation and who may read it. |
-| `matrix.rls.ts` | 26 tables x 3 attackers x SELECT/INSERT/UPDATE/DELETE, each with an owner control. |
+| `matrix.rls.ts` | 27 tables x 3 attackers x SELECT/INSERT/UPDATE/DELETE, each with an owner control. |
 | `controls.rls.ts` | Positive controls, admin aal2 versus aal1, admin writes nothing, the refusal checks are not vacuous (each fails with its own "allowed" message). |
 | `roles.rls.ts` | `profiles.role` mirrors `app_metadata.role`; unknown roles refused; a user cannot change its own role. |
 | `audit-log.rls.ts` | `audit_log` update and delete fail for every role; `schema_security_report()`; self-naming inserts only; `actor_system` is server code's, on system entries only; each role's own event vocabulary and listings; size caps. |
 | `guards.rls.ts` | Guard triggers: listing status, verified board and licence details, `prepared` versus `done_at`. |
 | `slot-holds.rls.ts` | One hold per slot (unique constraint), one live hold per patient (unique index), no overlap (exclusion), the four-hour span, bookable listings only, the one-hour expiry ceiling, the concern and its language together. |
-| `bookings.rls.ts` | No overlapping live bookings (exclusion); the done mark (started visits only, status follows, stamped); account deletion refused while a visit is ahead, then the bookings scrubbed; receipt and refund subjects. |
+| `bookings.rls.ts` | No overlapping live bookings (exclusion); the done mark (started visits only, status follows, stamped); account deletion refused while a visit is ahead, then the bookings kept without names and phone (concern kept); receipt and refund subjects. |
 | `records.rls.ts` | `storage_path` allowlists on `record_files` and `credentials`; deleting a record set (not while the pipeline works on it), the purge queue and its two service-only functions; AI jobs and records receipts outlive the set. |
 | `shares.rls.ts` | Live share versus none, revoked or expired: reads, `viewed_at` once, reviewed once; a new share's names and gender come from the profile; a named booking must be with the same professional. |
 | `storage.rls.ts` | `records`, `credentials` and `cards` buckets: download, list, sign, overwrite, move, upload and delete across tenants; nobody but the patient reads records objects; a decided credential's file outlives the decision; the professional writes only its own `photo/` folder. |
 | `stamps.rls.ts` | The database stamps `viewed_at`, `revoked_at`, `reviewed_at`, `done_at`, `withdrawn_at` and `deletion_requested_at` whatever time the client sends; one-way withdrawal; the clears an owner may make. |
+| `introductions.rls.ts` | Round 4, `introduction_requests`: who sends (own request, verified listing, future time, own intake consent; names and gender from the profile), who reads, the one-way moves (withdraw, decline) and their stamps, the transcript only the patient deletes, the checklist, the webhook's booked mark, account deletion. |
+| `busy-times.rls.ts` | Round 4, `professional_busy_times`: bare intervals of a verified listing's live holds and bookings for anon and signed-in callers; expired holds, cancelled visits, unverified listings and bad ranges answer nothing. |
 | `listings.rls.ts` | The registry snapshot when a listing leaves unclaimed, and who reads it; an unclaimed row has no account; deleting the account behind a verified listing takes it down; US-only state codes; bounded training; the `listing-<last4>` slug; no duplicate languages or visit types; bounded specialty synonyms and Stripe requirement lists. |
 
 ## Counts
 
-699 tests in 12 files, all passing against the final schema after a clean `npm run db:reset` (20 Oct 2026, with no
-import holding the slug lock): `matrix.rls.ts` 340, `controls.rls.ts` 124, `audit-log.rls.ts` 46, `storage.rls.ts` 41,
-`listings.rls.ts` 29, `records.rls.ts` 26, `slot-holds.rls.ts` 21, `shares.rls.ts` 19, `bookings.rls.ts` 16,
-`guards.rls.ts` 16, `stamps.rls.ts` 12, `roles.rls.ts` 9. Round 2 ended with 611 in 10 files (8 of them failed on the
-round-3 schema before this update). Round 3 added `bookings.rls.ts` and `records.rls.ts` and grew `audit-log.rls.ts`
+758 tests in 14 files, all passing on the local stack after a clean `npm run db:reset` with the ten migrations (20 Oct
+2026, about 40 s): `matrix.rls.ts` 353, `controls.rls.ts` 129, `audit-log.rls.ts` 46,
+`storage.rls.ts` 41, `introductions.rls.ts` 32, `listings.rls.ts` 29, `records.rls.ts` 26, `slot-holds.rls.ts` 21,
+`shares.rls.ts` 19, `bookings.rls.ts` 16, `guards.rls.ts` 16, `stamps.rls.ts` 12, `roles.rls.ts` 9, `busy-times.rls.ts` 9.
+Round 4 added `introductions.rls.ts` and `busy-times.rls.ts`, the `introduction_requests` case in the matrix (340 to
+353) and its owner and admin controls (124 to 129), and changed the account-deletion case in `bookings.rls.ts` (the
+concern stays); a withdrawn intake consent is refused and a past range of busy times answers nothing. Round 3 ended with 699 in 12 files; round 2 with 611 in 10 files (8 of them failed on the round-3 schema
+before that update). Round 3 added `bookings.rls.ts` and `records.rls.ts` and grew `audit-log.rls.ts`
 (34 to 46), `storage.rls.ts` (28 to 41), `listings.rls.ts` (18 to 29), `slot-holds.rls.ts` (17 to 21) and
 `shares.rls.ts` (13 to 19).
 
@@ -75,8 +81,8 @@ password, on `example.com` addresses.
 
 | Persona | Role | What it has |
 |---|---|---|
-| patientA | patient | Its own live hold, booking (with professional A, days ahead), a second booking with professional A that started an hour or two ago (the one a professional may mark done), receipt, refund, done set and draft set with file, page, item, summary, consent. |
-| patientB | patient | The same (one booking, with professional B), plus a live share of set B to professional B and an expired share of set B2. |
+| patientA | patient | Its own live hold, booking (with professional A, days ahead), a second booking with professional A that started an hour or two ago (the one a professional may mark done), receipt, refund, done set and draft set with file, page, item, summary, consent, and an open introduction request to professional A (concern and transcript). |
+| patientB | patient | The same (one booking and one request, with professional B), plus a live share of set B to professional B and an expired share of set B2. |
 | professionalA | professional | A verified listing: accepting new patients, Stripe charges and payouts on, so `can_take_bookings` is true. |
 | professionalB | professional | The same, plus tag, credential, availability, membership, banner, invite and removal request (as A has). |
 | professionalPending | professional | A `pending_review` listing with its own tag, specialty link and availability (not public). |
@@ -113,7 +119,7 @@ meta-test cannot pass on an unrelated error.
 ## The matrix (`matrix.rls.ts`)
 
 Attackers: **patient A**, **professional A**, **anonymous**. Each attacker runs SELECT, INSERT, UPDATE and DELETE on all
-26 tables: 312 attempts. `controls.rls.ts` runs the 78 writes again as the **aal2 admin**, since admin writes go through
+27 tables: 324 attempts. `controls.rls.ts` runs the 81 writes again as the **aal2 admin**, since admin writes go through
 server code only. "B" means patient B or professional B. Where professional B's rows are public by design (listing,
 specialty links, tags, availability), the SELECT target is the pending listing's row instead.
 
@@ -145,6 +151,7 @@ specialty links, tags, availability), the SELECT target is the pending listing's
 | consents | the account | patient B's consent | a consent for patient B | patient B's consent |
 | ai_jobs | no tenant (hangs off a set); admin-only | the job on set B | a job on set B | the job on set B |
 | audit_log | no tenant; admin-only; append-only | the fixture row | a row naming another account | the fixture row |
+| introduction_requests | the patient and the addressed professional | patient B's request (by patient, by professional B) | a request for patient B to professional B | patient B's request (withdraw; decline as professional A) |
 
 A further test fails if PostgREST exposes a `public` table with no case here. `stripe_events` (L2) and `ai_calls` (L3)
 are the exceptions; their lanes cover them.
@@ -159,7 +166,7 @@ are the exceptions; their lanes cover them.
     itself, creates a draft set (but not a non-draft one), adds a file row to its draft set (but not to a done set),
     records a consent, and shares its summary with a verified professional (but not with the pending one).
   - A listing the service client moves to `claimed` is submitted to `pending_review` by its own professional.
-  - The aal2 admin reads a row from each of the 26 tables. adminNoTotp reads none of the admin-only rows.
+  - The aal2 admin reads a row from each of the 27 tables. adminNoTotp reads none of the admin-only rows.
   - The meta-test: each refusal check, run against the owner doing the allowed thing, fails with its own message.
 - **Roles** (`roles.rls.ts`): createUser with each role, and with none (patient). `updateUserById` moves the role each
   way. An unknown role is refused at createUser (no account, no profile) and at update (the role stays). A user cannot
@@ -210,7 +217,8 @@ are the exceptions; their lanes cover them.
     checklist takes no item twice (`bookings_prepared_check`).
   - Account deletion: the Auth admin API refuses to delete a patient with a visit still ahead (the account, profile and
     bookings stay). Once that visit is cancelled the delete succeeds, and both bookings (the cancelled one and a done
-    one) keep their row with `patient_id`, first names, phone, concern and its language null, fee and payment intact.
+    one) keep their row with `patient_id`, first names and phone null, the concern and its language kept (decision 4,
+    20 Oct 2026), fee and payment intact.
   - Subjects: a `records` receipt with a booking, a `booking` receipt without one and a `booking` receipt naming a set
     fail with `23514` (`receipts_subject`, `receipts_records_have_no_booking`); refunds follow the same rules
     (`refunds_subject`, `refunds_records_have_no_booking`); a records receipt for a set and a booking receipt for a visit
@@ -278,3 +286,33 @@ are the exceptions; their lanes cover them.
   - Lists server code writes (round 3): a specialty's synonyms of 51 entries, with a 61-character, an empty or a null
     entry fail with `23514` (50 of 60 characters are stored); a Stripe requirement list (`stripe_currently_due`,
     `stripe_past_due`) with a null entry fails with `23514`.
+- **Introduction requests** (`introductions.rls.ts`, round 4):
+  - Sending: patient A sends a request to a verified listing; it is `open`, `received_at` is now, and it carries the
+    first names and gender of its profile. Sending `patient_first_name_en`, `patient_first_name_ar`, `patient_gender`,
+    `status`, `booking_id`, `received_at`, `answered_at` or `withdrawn_at` is refused (not insert-granted, `42501`); a
+    service-client insert with other names stores the profile's too. Refused (`42501`): a request naming another
+    patient, one to the pending listing or to an unclaimed registry listing, a requested time in the past, and one naming
+    patient B's intake consent or patient A's own records consent; naming its own `intakeChat` consent works. A concern
+    without its language, a transcript that is not an array and one over 64 KB fail with `23514`.
+  - Reading: the addressed professional reads the request with its concern and transcript, and the patient reads its
+    own; professional B, patient B and anon read none of patient A's requests.
+  - Moves: patient A withdraws an open request (the database stamps `withdrawn_at`) and cannot reopen it; professional
+    A cannot decline a withdrawn one. Professional A declines an open request (`answered_at` stamped); it cannot withdraw
+    one, mark one booked or reopen a declined one, and patient A cannot withdraw a declined one, decline its own or mark
+    it booked. Neither writes `withdrawn_at` or `answered_at` itself (`42501`).
+  - Transcript and checklist: patient A ticks `prepared`; professional A cannot. Professional A can neither delete nor
+    rewrite the transcript; patient A cannot rewrite it (or empty it to `[]`), deletes it (null; the request stays and
+    the professional still reads it) and cannot bring it back.
+  - Server code: `booked` without `answered_at` fails with `23514` (`introduction_requests_answered`); with a booking and
+    `answered_at` it is stored, and then neither side moves it. One booking answers one request (`23505`); `withdrawn`
+    without `withdrawn_at` fails (`introduction_requests_withdrawn`).
+  - Account deletion: deleting the patient through the Auth admin API keeps the request with `patient_id`, first names,
+    gender, transcript and the (cascaded) consent link null; status, professional, time, visit type, concern and its
+    language stay, and the professional still reads the line.
+- **Busy times** (`busy-times.rls.ts`, round 4):
+  - Anon, patient A and professional A calling `rpc('professional_busy_times')` for professional B over the next week
+    get exactly two rows, each with only `starts_at` and `ends_at`: patient B's live hold and upcoming booking (fixture
+    rows). An expired hold still `held` (another patient's) and a cancelled booking inside the same range are not in it,
+    and no patient id, row id, concern, name, payment intent or visit type appears in the answer.
+  - Nothing comes back while the listing is `pending_review` or `suspended` (it answers again once verified), for a
+    reversed range, an empty range, or a range of 100 days and a minute; a range of exactly 100 days answers.

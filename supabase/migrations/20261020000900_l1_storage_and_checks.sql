@@ -1,4 +1,4 @@
--- L1 schema v1, file 9 of 9: Storage buckets (architecture Data section) with their object policies, and the
+-- L1 schema v1, file 9 of 10: Storage buckets (architecture Data section) with their object policies, and the
 -- service-role-only security report the RLS suite (tests/rls) and the M4 hardening checklist read.
 
 /* ---------------- buckets ---------------- */

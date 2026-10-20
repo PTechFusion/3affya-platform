@@ -1,5 +1,5 @@
 // The fixture world each RLS test file builds in beforeAll and removes in afterAll: fresh personas with a unique run id,
-// and through the service client at least one real row per tenant in each of the 26 L1 tables, so every cross-tenant
+// and through the service client at least one real row per tenant in each of the 27 L1 tables, so every cross-tenant
 // attempt aims at a row that exists. "A" is the attacking side, "B" the other tenant; professionalPending owns the
 // listing that is not public. Synthetic data only, on example.com addresses.
 //
@@ -7,7 +7,7 @@
 // then marks the run's queued folders purged, so the purge job never sees them. An AI job outlives its set (set_id goes
 // null), so the run's jobs are removed by their idempotency key.
 //
-// Other agents write to the same local database at the same time (the 66k registry import among them), so nothing here
+// Other agents write to the same local database at the same time (the registry import among them), so nothing here
 // assumes a table is empty or counts a whole table. Rows are found and removed by the run's own ids, and cleanup also
 // sweeps by tenant column so a row a failing test let through is removed too. audit_log rows stay (append-only by
 // design); theirs have target_id starting rls-test-. The import holds the advisory lock the slug trigger takes for its
@@ -114,6 +114,10 @@ export interface WorldIds {
   consentB: string;
   aiJobA: string;
   aiJobB: string;
+  /** Patient A's open introduction request to professional A (round 4), with a concern and an intake transcript. */
+  requestA: string;
+  /** Patient B's open introduction request to professional B, the same shape. */
+  requestB: string;
   auditRow: number;
 }
 
@@ -182,6 +186,15 @@ export function randomHex(bytes: number): string {
 
 export function isoIn(ms: number): string {
   return new Date(Date.now() + ms).toISOString();
+}
+
+// A short synthetic intake chat (task 3.12) in the stored shape: an array of { role, text, at } turns.
+export function intakeTranscript(): Array<{ role: string; text: string; at: string }> {
+  const at = new Date().toISOString();
+  return [
+    { role: "assistant", text: "Synthetic intake question (fixture)", at },
+    { role: "user", text: "Synthetic answer (fixture)", at },
+  ];
 }
 
 export const MINUTE = 60_000;
@@ -353,6 +366,13 @@ export async function buildWorld(area: string): Promise<World> {
     const users = [...Object.values(userIds), ...extraUserIds];
     const listings = [...listingIds];
 
+    // Introduction requests first: they name bookings and consents (set null on delete) and hang off listings (cascade),
+    // but a request a run's patient sent to a listing outside the run would outlive the listings step.
+    await step("introduction requests", async () => {
+      for (const [column, values] of [["professional_id", listings], ["patient_id", users]] as const) {
+        if (values.length > 0) await check(`introduction_requests by ${column}`, service.from("introduction_requests").delete().in(column, values));
+      }
+    });
     await step("records objects", () => removeStorageFolders(service, "records", users));
     await step("credential objects", () => removeStorageFolders(service, "credentials", listings));
     await step("cards objects", () => removeStorageFolders(service, "cards", listings));
@@ -932,6 +952,30 @@ export async function buildWorld(area: string): Promise<World> {
         ])
         .select("id"),
       "ai_jobs",
+    );
+
+    /* introduction requests (round 4): one open request per patient, to the professional of its own side */
+    Object.assign(ids, { requestA: randomUUID(), requestB: randomUUID() });
+    const requestRow = (id: string, patient: UserPersonaKey, professional: string) => ({
+      id,
+      patient_id: user(patient),
+      professional_id: professional,
+      requested_start: new Date(firstSlot + 48 * HOUR).toISOString(),
+      visit_type: "video",
+      concern: "Synthetic concern (fixture)",
+      concern_locale: "en",
+      patient_time_zone: business.defaultTimeZone,
+      transcript: intakeTranscript(),
+    });
+    must(
+      await service
+        .from("introduction_requests")
+        .insert([
+          requestRow(ids.requestA, "patientA", ids.professionalA),
+          requestRow(ids.requestB, "patientB", ids.professionalB),
+        ])
+        .select("id"),
+      "introduction_requests",
     );
 
     /* audit_log: one row the suite can aim at; it stays (append-only) */
