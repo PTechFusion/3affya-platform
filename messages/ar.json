@@ -5146,5 +5146,342 @@
       "undoFailed": "لم يتم التراجع. افتح سجل التدقيق لتتحقق من القرار.",
       "dismiss": "إغلاق"
     }
+  },
+  "adminPayments": {
+    "metaTitle": "المدفوعات والاسترداد والتحويلات | إدارة عافية",
+    "metaDescription": "كل دفعة ببنودها الثلاثة، وكل استرداد مع من قام به وسببه، وتحويلات Stripe لكل طبيب.",
+    "title": "المدفوعات والاسترداد والتحويلات",
+    "lead": "كما سجّلتها إشعارات Stripe. لا تتغير المبالغ هنا إلا بعد تأكيد Stripe.",
+    "loading": "جارٍ تحميل المدفوعات",
+    "export": "تصدير CSV",
+    "zone": "الأوقات بتوقيت",
+    "currencyNote": "المبالغ بعملة {currency}، وهي العملة التي دُفعت بها كل دفعة.",
+    "openStripe": "فتح في Stripe",
+    "newTab": "(يفتح في علامة تبويب جديدة)",
+    "tabs": {
+      "label": "عروض المال",
+      "payments": "المدفوعات",
+      "refunds": "الاسترداد",
+      "payouts": "التحويلات"
+    },
+    "filters": {
+      "title": "عوامل التصفية",
+      "on": "{count, plural, zero {{countLabel} مفعّلة} one {{countLabel} مفعّل} two {{countLabel} مفعّلان} few {{countLabel} مفعّلة} many {{countLabel} مفعّلًا} other {{countLabel} مفعّل}}",
+      "status": "الحالة",
+      "reason": "السبب",
+      "account": "حساب Stripe",
+      "doctor": "الطبيب",
+      "anyDoctor": "كل الأطباء",
+      "period": "الفترة",
+      "anyTime": "أي وقت",
+      "lastDays": "آخر {days} يومًا",
+      "apply": "عرض النتائج",
+      "clear": "مسح عوامل التصفية",
+      "chipsLabel": "عوامل التصفية المفعّلة",
+      "remove": "إزالة عامل التصفية: {label}"
+    },
+    "status": {
+      "paid": "مدفوع",
+      "refunded": "مسترد",
+      "partlyRefunded": "مسترد جزئيًا",
+      "refundPending": "بانتظار Stripe"
+    },
+    "visit": {
+      "upcoming": "الزيارة قادمة",
+      "done": "تمت الزيارة",
+      "cancelled": "أُلغيت الزيارة"
+    },
+    "visitType": {
+      "video": "زيارة بالفيديو",
+      "phone": "زيارة بالهاتف"
+    },
+    "brand": {
+      "visa": "فيزا",
+      "mastercard": "ماستركارد"
+    },
+    "wallet": {
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    },
+    "card": "{brand} تنتهي بالأرقام {last4}",
+    "columns": {
+      "paidOn": "تاريخ الدفع",
+      "payment": "الدفعة",
+      "doctorFee": "أتعاب الطبيب",
+      "platformFee": "رسوم المنصة",
+      "cardProcessing": "معالجة البطاقة",
+      "total": "المجموع",
+      "status": "الحالة",
+      "action": "إجراء",
+      "refundedOn": "تاريخ الطلب",
+      "amount": "المبلغ",
+      "reason": "السبب",
+      "by": "بواسطة",
+      "doctor": "الطبيب",
+      "account": "حساب Stripe",
+      "bank": "البنك",
+      "nextPayout": "التحويل القادم",
+      "lastPayout": "آخر تحويل"
+    },
+    "row": {
+      "refund": "استرداد",
+      "refundLabel": "استرداد الدفعة {number}",
+      "lines": "البنود الثلاثة",
+      "doctorFeeShort": "الطبيب",
+      "platformFeeShort": "المنصة",
+      "cardShort": "البطاقة"
+    },
+    "refunds": {
+      "status": {
+        "pending": "بانتظار Stripe",
+        "succeeded": "مسترد"
+      },
+      "reason": {
+        "patientEarly": "ألغى المريض مبكرًا",
+        "patientLate": "ألغى المريض متأخرًا",
+        "doctor": "ألغى الطبيب",
+        "platform": "مشكلة من جهتنا",
+        "override": "كاملًا، فوق ما تقتضيه القاعدة",
+        "byRule": "حسب القاعدة، قبل موعد الزيارة"
+      },
+      "by": {
+        "patient": "تلقائيًا، عند إلغاء المريض",
+        "doctor": "تلقائيًا، عند إلغاء الطبيب",
+        "platform": "تلقائيًا"
+      },
+      "note": "ملاحظة: {note}"
+    },
+    "payouts": {
+      "lead": "تُقرأ من واجهة Stripe عند فتح هذه الصفحة. تستضيف Stripe تحويلات كل طبيب وبياناته البنكية.",
+      "status": {
+        "enabled": "التحويلات مفعّلة",
+        "inProgress": "قيد الإعداد",
+        "restricted": "تطلب Stripe تفاصيل",
+        "notStarted": "لم يُعدّ بعد"
+      },
+      "bookingsPaused": "الحجز متوقف حتى تحصل Stripe على ما تحتاجه.",
+      "needs": "تطلب Stripe: {items}",
+      "overdue": "{item} (متأخر)",
+      "need": {
+        "idDocument": "صورة الهوية",
+        "addressDocument": "إثبات العنوان",
+        "ssn": "رقم الضمان الاجتماعي",
+        "dob": "تاريخ الميلاد",
+        "address": "عنوان السكن",
+        "phone": "رقم الهاتف",
+        "website": "موقع العيادة",
+        "bankAccount": "الحساب البنكي",
+        "terms": "الموافقة على شروط Stripe",
+        "other": "تفاصيل أخرى"
+      },
+      "bank": "ينتهي بالأرقام {last4}",
+      "noBank": "لم يُضف",
+      "noNext": "لا يوجد تحويل مجدول",
+      "noLast": "لا يوجد بعد",
+      "record": {
+        "paid": "تم التحويل",
+        "inTransit": "في الطريق",
+        "failed": "لم يتم"
+      }
+    },
+    "detail": {
+      "breadcrumb": "مسار التنقل",
+      "crumb": "الدفعة {number}",
+      "title": "الدفعة {number}",
+      "totalPaid": "المبلغ المدفوع",
+      "paidOn": "تاريخ الدفع",
+      "method": "وسيلة الدفع",
+      "receipt": "رقم الإيصال",
+      "patient": "المريض",
+      "lines": {
+        "caption": "ما دفعه المريض، كما في الإيصال",
+        "doctorFee": "أتعاب الطبيب",
+        "doctorFeeDetail": "يحددها الطبيب",
+        "platformFee": "رسوم المنصة",
+        "platformFeeDetail": "{pct} من أتعاب الطبيب، للزيارة الأولى فقط",
+        "cardProcessing": "معالجة البطاقة",
+        "cardProcessingDetail": "شبكات البطاقات ومزوّد الدفع لدينا",
+        "total": "المجموع المدفوع"
+      },
+      "flow": {
+        "title": "أين ذهب المبلغ",
+        "doctor": "إلى حساب {name} في Stripe",
+        "doctorDetail": "دفعة بوجهة محددة، التحويل {id}",
+        "platform": "رسوم عافية",
+        "platformDetail": "رسوم المنصة مع بند معالجة البطاقة الذي يغطي رسوم Stripe",
+        "total": "المبلغ المحصّل"
+      },
+      "refunds": {
+        "title": "الاسترداد",
+        "none": "لا يوجد استرداد على هذه الدفعة.",
+        "net": "المتبقي بعد الاسترداد",
+        "byRule": "استرداد حسب القاعدة",
+        "inFull": "استرداد كامل",
+        "inProgress": "هناك استرداد بانتظار Stripe. أي طلب جديد يعيد الاسترداد نفسه، لذلك تتوقف الأزرار حتى تؤكده Stripe."
+      },
+      "visit": {
+        "title": "الزيارة",
+        "patientTime": "بتوقيت المريض",
+        "doctorTime": "بتوقيت الطبيب",
+        "cancelled": "ألغاها {by, select, patient {المريض} doctor {الطبيب} other {المنصة}} في {date}، قبل الزيارة بـ{hours}.",
+        "deadline": "استرداد كامل عند الإلغاء قبل <nowrap>{day}</nowrap> <nowrap>{time}</nowrap>."
+      },
+      "stripe": {
+        "title": "في Stripe",
+        "payment": "الدفعة",
+        "account": "حساب الطبيب المرتبط",
+        "transfer": "التحويل",
+        "refund": "الاسترداد",
+        "key": "مفتاح عدم التكرار",
+        "noAccount": "لا يوجد حساب مرتبط"
+      },
+      "notFound": {
+        "title": "لم نجد هذه الدفعة",
+        "body": "ربما الرابط ناقص، أو أن Stripe لم تؤكد هذه الدفعة.",
+        "action": "عرض كل المدفوعات"
+      }
+    },
+    "rule": {
+      "patientEarly": "{gender, select, f {ألغت} other {ألغى}} {patient} قبل الزيارة بأكثر من {cutoff}، لذلك يُسترد المجموع كاملًا.",
+      "patientLate": "{gender, select, f {ألغت} other {ألغى}} {patient} قبل الزيارة بـ{cutoff} أو أقل، لذلك لا تعيد القاعدة شيئًا.",
+      "doctor": "ألغى الطبيب الزيارة، لذلك يُسترد المجموع كاملًا.",
+      "platform": "تعذّرت الزيارة بسبب مشكلة من جهتنا، لذلك يُسترد المجموع كاملًا.",
+      "upcomingEarly": "الزيارة بعد أكثر من {cutoff}، لذلك يعيد الإلغاء الآن المجموع كاملًا.",
+      "upcomingLate": "الزيارة بعد {cutoff} أو أقل، لذلك لا يعيد الإلغاء الآن شيئًا حسب القاعدة.",
+      "visitDone": "تمت الزيارة، لذلك لا تعيد القاعدة شيئًا."
+    },
+    "drawer": {
+      "title": "استرداد الدفعة {number}",
+      "summary": "{gender, select, f {دفعت} other {دفع}} {patient} مبلغ {total} عبر {method} لزيارة مع {doctor}.",
+      "legend": "المبلغ المراد استرداده",
+      "byRule": "حسب قاعدة الاسترداد",
+      "inFull": "كاملًا",
+      "inFullDetail": "البنود الثلاثة كلها، أيًا كان ما تقتضيه القاعدة.",
+      "outcome": "ما الذي سيحدث",
+      "toPatient": "يعود إلى المريض",
+      "toPatientDetail": "يذهب المبلغ إلى {method}",
+      "fromDoctor": "يُسترجع من {name}",
+      "fromDoctorDetail": "عكس التحويل من رصيده في Stripe",
+      "fromPlatform": "تعيده عافية",
+      "fromPlatformDetail": "رسوم المنصة ومعالجة البطاقة",
+      "reversal": "إذا لم يكفِ رصيد {name} في Stripe، يصبح الرصيد سالبًا وتسترده Stripe من التحويلات اللاحقة. ولا تعيد Stripe رسوم المعالجة الخاصة بها.",
+      "visit": "عند تأكيد Stripe، يُسجَّل الحجز مستردًا وتُلغى الزيارة.",
+      "noteRequired": "لماذا تسترد أكثر مما تقتضيه القاعدة؟",
+      "noteOptional": "ملاحظة لسجل التدقيق (اختياري)",
+      "noteHint": "تُحفظ في سجل التدقيق باسمك.",
+      "once": "تنفّذ Stripe هذا الاسترداد مرة واحدة: يحمل الطلب المفتاح {key}، فأي ضغطة ثانية تعيد الاسترداد نفسه. يتغير الإيصال وهذه الجداول عند تأكيد Stripe.",
+      "keep": "إبقاء الدفعة",
+      "confirm": "استرداد {amount}",
+      "working": "جارٍ الطلب من Stripe…",
+      "error": {
+        "notFound": "لم تعد هذه الدفعة موجودة. أعد تحميل الصفحة.",
+        "alreadyRefunded": "لهذه الدفعة استرداد بالفعل. أعد تحميل الصفحة لتراه.",
+        "nothingToRefund": "لا تعيد القاعدة شيئًا لهذه الدفعة. اختر «كاملًا» لتسترد رغم ذلك.",
+        "noteRequired": "اكتب سبب الاسترداد بأكثر مما تقتضيه القاعدة، فهو يُحفظ في سجل التدقيق.",
+        "unavailable": "لم تستجب Stripe ولم يُسترد شيء. حاول مرة أخرى بعد دقيقة.",
+        "notAllowed": "سجّل الدخول مرة أخرى بحساب الإدارة لتنفيذ الاسترداد."
+      }
+    },
+    "requested": {
+      "title": "طُلب استرداد {amount}",
+      "body": "وصل الطلب إلى Stripe بالمفتاح {key}. تتغير هذه الدفعة وإيصال المريض والحجز عندما تؤكده Stripe عبر charge.refunded.",
+      "preview": "نسخة تجريبية: Stripe غير مرتبطة بعد، لذلك لم يُرسل شيء."
+    },
+    "pending": {
+      "title": "{count, plural, zero {لا توجد مبالغ بانتظار Stripe} one {استرداد واحد بانتظار Stripe} two {استردادان بانتظار Stripe} few {{countLabel} عمليات استرداد بانتظار Stripe} many {{countLabel} عملية استرداد بانتظار Stripe} other {{countLabel} عملية استرداد بانتظار Stripe}}",
+      "body": "قبلت Stripe الطلب، لكن تأكيدها (charge.refunded) لم يُعالَج بعد، لذلك ما زال الإيصال والحجز يظهران الدفعة مدفوعة. لا تطلب الاسترداد مرة أخرى، فالطلب الثاني يعيد الاسترداد نفسه. وإذا بقي هنا، راجع سجل إرسال الإشعارات في Stripe.",
+      "action": "سجل إرسال الإشعارات"
+    },
+    "empty": {
+      "payments": {
+        "title": "لا توجد مدفوعات بعد",
+        "body": "تظهر الدفعة هنا عندما يدفع المريض ثمن زيارة وتؤكد Stripe الدفع.",
+        "action": "فتح المدفوعات في Stripe"
+      },
+      "refunds": {
+        "title": "لا توجد عمليات استرداد بعد",
+        "body": "يظهر الاسترداد هنا عندما تؤكده Stripe، سواء جاء من إلغاء أو من هذه الصفحة.",
+        "action": "عرض المدفوعات"
+      },
+      "payouts": {
+        "title": "لا توجد حسابات مرتبطة بعد",
+        "body": "يظهر حساب Stripe الخاص بالطبيب هنا عندما يبدأ إعداد التحويلات.",
+        "action": "فتح قائمة المراجعة"
+      },
+      "filtered": {
+        "title": "لا شيء يطابق عوامل التصفية",
+        "body": "جرّب عوامل تصفية أقل أو فترة أطول.",
+        "action": "مسح عوامل التصفية"
+      }
+    },
+    "error": {
+      "payments": {
+        "title": "لم تُحمَّل المدفوعات",
+        "body": "لم تستجب قاعدة البيانات، ولم يتغير شيء. حاول مرة أخرى بعد قليل."
+      },
+      "refunds": {
+        "title": "لم تُحمَّل عمليات الاسترداد",
+        "body": "لم تستجب قاعدة البيانات، ولم يتغير شيء. حاول مرة أخرى بعد قليل."
+      },
+      "payouts": {
+        "title": "لم تستجب Stripe",
+        "body": "تأتي تفاصيل التحويلات من Stripe مباشرة، ولم يتغير شيء. حاول مرة أخرى بعد قليل."
+      },
+      "action": "حاول مرة أخرى"
+    },
+    "csv": {
+      "payments": {
+        "receipt": "رقم الإيصال",
+        "paidAtUtc": "وقت الدفع (UTC)",
+        "patient": "المريض",
+        "email": "بريد المريض",
+        "doctor": "الطبيب",
+        "visitType": "نوع الزيارة",
+        "visitAtUtc": "وقت الزيارة (UTC)",
+        "currency": "العملة",
+        "doctorFee": "أتعاب الطبيب",
+        "platformFee": "رسوم المنصة",
+        "cardProcessing": "معالجة البطاقة",
+        "total": "المجموع المدفوع",
+        "refunded": "المسترد",
+        "net": "المتبقي بعد الاسترداد",
+        "status": "الحالة",
+        "method": "وسيلة الدفع",
+        "paymentIntent": "دفعة Stripe",
+        "transfer": "تحويل Stripe"
+      },
+      "refunds": {
+        "refund": "الاسترداد",
+        "atUtc": "وقت الطلب (UTC)",
+        "receipt": "رقم الإيصال",
+        "patient": "المريض",
+        "doctor": "الطبيب",
+        "currency": "العملة",
+        "amount": "المبلغ",
+        "reason": "السبب",
+        "by": "بواسطة",
+        "note": "ملاحظة",
+        "status": "الحالة",
+        "key": "مفتاح عدم التكرار",
+        "paymentIntent": "دفعة Stripe"
+      },
+      "payouts": {
+        "doctor": "الطبيب",
+        "account": "حساب Stripe",
+        "status": "الحالة",
+        "charges": "الدفع بالبطاقة مفعّل",
+        "payouts": "التحويلات مفعّلة",
+        "needs": "ما تطلبه Stripe",
+        "bank": "آخر 4 أرقام للبنك",
+        "nextAtUtc": "التحويل القادم (UTC)",
+        "nextAmount": "مبلغ التحويل القادم",
+        "lastAtUtc": "آخر تحويل (UTC)",
+        "lastAmount": "مبلغ آخر تحويل",
+        "lastStatus": "حالة آخر تحويل",
+        "currency": "العملة"
+      },
+      "yes": "نعم",
+      "no": "لا"
+    }
   }
 }
