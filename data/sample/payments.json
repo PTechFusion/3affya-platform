@@ -1,0 +1,128 @@
+{
+  "charges": [
+    { "bookingId": "bk_001", "paymentIntentId": "pi_sample_1847_2210", "transferId": "tr_sample_1847_2210" },
+    { "bookingId": "bk_002", "paymentIntentId": "pi_sample_1847_1936", "transferId": "tr_sample_1847_1936" },
+    { "bookingId": "bk_003", "paymentIntentId": "pi_sample_1847_2054", "transferId": "tr_sample_1847_2054" },
+    { "bookingId": "bk_004", "paymentIntentId": "pi_sample_1847_2216", "transferId": "tr_sample_1847_2216" },
+    { "bookingId": "bk_005", "paymentIntentId": "pi_sample_1847_2231", "transferId": "tr_sample_1847_2231" },
+    { "bookingId": "bk_006", "paymentIntentId": "pi_sample_1847_2101", "transferId": "tr_sample_1847_2101" },
+    { "bookingId": "bk_007", "paymentIntentId": "pi_sample_1847_1988", "transferId": "tr_sample_1847_1988" },
+    { "bookingId": "bk_008", "paymentIntentId": "pi_sample_1847_2188", "transferId": "tr_sample_1847_2188" },
+    { "bookingId": "bk_009", "paymentIntentId": "pi_sample_1847_2047", "transferId": "tr_sample_1847_2047" },
+    { "bookingId": "bk_272", "paymentIntentId": "pi_sample_1847_2240", "transferId": "tr_sample_1847_2240" }
+  ],
+  "accounts": [
+    {
+      "doctorId": "doc_001",
+      "stripeAccountId": "acct_sample_doc_001",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "1180",
+      "nextPayout": { "arrivalUtc": "2026-11-12T15:00:00Z", "amountCents": 18000, "currency": "USD" },
+      "recentPayouts": []
+    },
+    { "doctorId": "doc_002", "payoutsSample": "enabled" },
+    {
+      "doctorId": "doc_003",
+      "stripeAccountId": "acct_sample_doc_003",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "4402",
+      "nextPayout": { "arrivalUtc": "2026-11-12T15:00:00Z", "amountCents": 22000, "currency": "USD" },
+      "recentPayouts": [
+        { "id": "po_sample_003_1", "arrivalUtc": "2026-10-08T15:00:00Z", "amountCents": 15000, "currency": "USD", "status": "paid" }
+      ]
+    },
+    {
+      "doctorId": "doc_004",
+      "stripeAccountId": "acct_sample_doc_004",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "9035",
+      "nextPayout": { "arrivalUtc": "2026-11-12T15:00:00Z", "amountCents": 25000, "currency": "USD" },
+      "recentPayouts": []
+    },
+    {
+      "doctorId": "doc_005",
+      "stripeAccountId": "acct_sample_doc_005",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "7731",
+      "nextPayout": null,
+      "recentPayouts": []
+    },
+    {
+      "doctorId": "doc_006",
+      "stripeAccountId": "acct_sample_doc_006",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "2268",
+      "nextPayout": { "arrivalUtc": "2026-11-12T15:00:00Z", "amountCents": 18000, "currency": "USD" },
+      "recentPayouts": []
+    },
+    {
+      "doctorId": "doc_007",
+      "stripeAccountId": "acct_sample_doc_007",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": true,
+      "currentlyDue": [],
+      "pastDue": [],
+      "bankLast4": "5517",
+      "nextPayout": null,
+      "recentPayouts": [
+        { "id": "po_sample_007_1", "arrivalUtc": "2026-10-01T15:00:00Z", "amountCents": 22000, "currency": "USD", "status": "paid" }
+      ]
+    },
+    {
+      "doctorId": "doc_008",
+      "stripeAccountId": "acct_sample_doc_008",
+      "detailsSubmitted": true,
+      "chargesEnabled": true,
+      "payoutsEnabled": false,
+      "currentlyDue": ["external_account"],
+      "pastDue": [],
+      "bankLast4": "3390",
+      "nextPayout": null,
+      "recentPayouts": [
+        { "id": "po_sample_008_1", "arrivalUtc": "2026-10-16T15:00:00Z", "amountCents": 15000, "currency": "USD", "status": "failed" }
+      ]
+    },
+    {
+      "doctorId": "doc_009",
+      "stripeAccountId": "acct_sample_doc_009",
+      "detailsSubmitted": false,
+      "chargesEnabled": false,
+      "payoutsEnabled": false,
+      "currentlyDue": ["external_account", "tos_acceptance.date", "tos_acceptance.ip"],
+      "pastDue": [],
+      "bankLast4": null,
+      "nextPayout": null,
+      "recentPayouts": []
+    }
+  ],
+  "pendingRefund": {
+    "bookingId": "bk_009",
+    "kind": "full",
+    "requestedBy": "adm_001",
+    "requestedAtUtc": "2026-11-08T16:20:00Z",
+    "idempotencyKey": "refund-bk_009",
+    "noteEn": "Family emergency on the day. Goodwill refund in full, agreed with the doctor.",
+    "noteAr": "ظرف عائلي طارئ يوم الزيارة. استرداد كامل من باب حسن التعامل، بالاتفاق مع الطبيب."
+  }
+}

@@ -115,3 +115,10 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Admin payments, refunds and payouts (screen 43, task 3.11) ---------------- */
+// Appended block. The period filter of the admin money tables, in days back from today, shortest first; no choice is all time.
+// The refund rule itself is business.fullRefundCutoffHours above (lib/refunds.ts).
+export const adminMoney = {
+  periodDaysOptions: [7, 30, 90] as readonly number[],
+} as const;

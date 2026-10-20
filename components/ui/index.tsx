@@ -795,3 +795,53 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message inside the page flow (PLAYBOOK §9): what happened or what needs attention, one line of title, an optional
+ * body and at most one action. The tone tints the box and its start-edge bar (so it mirrors in RTL); it never carries the
+ * meaning alone, the title does. Pass `role="status"` when the notice appears after an action, `role="alert"` only for an
+ * error the user must act on now. Not for toasts (Toast) or empty lists (EmptyState).
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, string> = {
+  info: "border-sky-500 bg-sky-100",
+  success: "border-success bg-success/10",
+  warning: "border-warning bg-gold-100",
+  danger: "border-danger bg-danger/10",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  role,
+  id,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: ReactNode;
+  body?: ReactNode;
+  action?: ReactNode;
+  role?: "status" | "alert";
+  id?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      id={id}
+      role={role}
+      className={cx(
+        "flex flex-col items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+        noticeTones[tone],
+        className,
+      )}
+    >
+      <div className="min-w-0">
+        <p className="font-semibold text-ink-900">{title}</p>
+        {body ? <div className="mt-0.5 text-sm text-ink-700">{body}</div> : null}
+      </div>
+      {action ? <div className="shrink-0">{action}</div> : null}
+    </div>
+  );
+}

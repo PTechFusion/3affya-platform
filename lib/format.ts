@@ -121,3 +121,15 @@ export const DAY_MS = 86_400_000;
 export function daysLeft(until: Date, now: Date = new Date()): number {
   return Math.max(0, Math.floor((until.getTime() - now.getTime()) / DAY_MS));
 }
+
+/* ---------------- Plain amounts for files (screen 43 CSV export) ---------------- */
+// Appended block. A minor-unit amount as a bare decimal for spreadsheets and accounting files: "309.00", "0.300" for KWD;
+// Western digits, a dot, no grouping and no currency code (the file carries the currency in its own column). Never for
+// display on a page: use formatMoney there.
+export function formatMinorUnits(amountMinor: number, currency: string): string {
+  const fraction = THREE_DECIMAL.has(currency) ? 3 : 2;
+  const sign = amountMinor < 0 ? "-" : "";
+  const abs = Math.abs(Math.trunc(amountMinor));
+  const unit = 10 ** fraction;
+  return `${sign}${Math.floor(abs / unit)}.${String(abs % unit).padStart(fraction, "0")}`;
+}

@@ -1011,3 +1011,160 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+/* ---------------- Admin payments, refunds and payouts (screen 43) ---------------- */
+// Appended block (screen 43, tasks 3.4 and 3.11). The admin's view of the same payments the patient's receipts read (23) and
+// the doctor's payouts page shows (35), so the three views of one payment agree: each payment is the receipt row mapped by
+// toReceipt above (lines as charged, the refund amount by the refund rule), plus the Stripe ids from data/sample/payments.json
+// and the doctor's connected account. doc_002's account is the "enabled" row of payouts.json, the one screen 35 shows.
+// Prototype: every payment is Noura's (receipts.json); production reads all patients' rows under the admin role (task 3.11)
+// and the payout lists from Stripe's API. Money state in these rows is written only by the webhook handlers (ADR-6).
+import adminPaymentsJson from "@/data/sample/payments.json";
+
+/** Who started a refund: the cancel action on a cancellation (task 3.6), or an admin from this screen (task 3.4). */
+export type AdminRefundBy = { kind: "automatic"; cancelledBy: CancelledBy } | { kind: "admin"; adminId: string };
+
+/**
+ * One refund of a payment. "succeeded" is what the charge.refunded webhook stored; "pending" is a request Stripe has accepted
+ * but whose webhook has not been handled yet, so the receipt and the booking do not show it yet. `reason` is the refund rule's
+ * reason for a cancellation, "byRule" for an admin's refund of a visit still ahead by the rule, or "override" for a refund in
+ * full that the rule would not give.
+ */
+export type AdminRefund = {
+  id: string;
+  paymentId: string;
+  at: Date;
+  amountCents: number;
+  status: "pending" | "succeeded";
+  reason: RefundReason | "byRule" | "override";
+  by: AdminRefundBy;
+  noteEn: string | null;
+  noteAr: string | null;
+  idempotencyKey: string;
+};
+
+export type AdminPayment = Omit<SampleReceipt, "refunds"> & {
+  doctor: SampleDoctor;
+  patient: { nameEn: string; nameAr: string; email: string };
+  stripe: { paymentIntentId: string; transferId: string; accountId: string | null };
+  refunds: AdminRefund[];
+};
+
+export type AdminPayoutAccount = PayoutAccount & { doctor: SampleDoctor };
+
+type AdminChargeRow = { bookingId: string; paymentIntentId: string; transferId: string };
+type AdminAccountRow = Omit<SamplePayoutRow, "sample" | "doctorTimeZone"> & { payoutsSample?: PayoutStatus };
+type AdminPendingRefundRow = {
+  bookingId: string;
+  kind: "full" | "rule";
+  requestedBy: string;
+  requestedAtUtc: string;
+  idempotencyKey: string;
+  noteEn: string | null;
+  noteAr: string | null;
+};
+
+const adminPaymentsData = adminPaymentsJson as unknown as {
+  charges: AdminChargeRow[];
+  accounts: AdminAccountRow[];
+  pendingRefund: AdminPendingRefundRow;
+};
+
+/** The one idempotency key per payment's refund: a second request for the same payment returns the same Stripe refund. */
+export const adminRefundKey = (paymentId: string) => `refund-${paymentId}`;
+
+/** Every connected account the admin sees, as the account.updated webhook stores it (payout lists come from Stripe's API). */
+export function adminPayoutAccounts(): AdminPayoutAccount[] {
+  return adminPaymentsData.accounts.flatMap((row): AdminPayoutAccount[] => {
+    const doctor = sampleDoctors.find((d) => d.id === row.doctorId);
+    if (!doctor) return [];
+    if (row.payoutsSample) {
+      // The signed-in doctor's own row, so this list and screen 35 show the same account, next payout and last payouts.
+      const shared = samplePayoutAccount(row.payoutsSample);
+      if (!shared) return [];
+      const { doctorId: _id, doctorTimeZone: _zone, ...account } = shared;
+      void _id;
+      void _zone;
+      return [{ ...account, doctor }];
+    }
+    const { doctorId: _doctorId, payoutsSample: _sample, nextPayout, recentPayouts, ...account } = row;
+    void _doctorId;
+    void _sample;
+    return [
+      {
+        ...account,
+        doctor,
+        nextPayout: nextPayout
+          ? { arrivesAt: sampleInstant(nextPayout.arrivalUtc), amountCents: nextPayout.amountCents, currency: nextPayout.currency }
+          : null,
+        recentPayouts: recentPayouts.map((p) => ({
+          id: p.id,
+          arrivesAt: sampleInstant(p.arrivalUtc),
+          amountCents: p.amountCents,
+          currency: p.currency,
+          status: p.status,
+        })),
+      },
+    ];
+  });
+}
+
+/**
+ * Every payment, newest first. `withPendingSample` adds the sample refund request on bk_009 (an admin's refund in full that
+ * Stripe accepted but whose charge.refunded webhook has not been handled): the ?state=webhook-pending preview.
+ */
+export function adminPayments({ withPendingSample = false }: { withPendingSample?: boolean } = {}): AdminPayment[] {
+  const settings = samplePatientSettings();
+  const accounts = adminPayoutAccounts();
+  const pending = adminPaymentsData.pendingRefund;
+  return receiptRows
+    .flatMap((row): AdminPayment[] => {
+      const receipt = toReceipt(row);
+      const doctor = receipt ? sampleDoctors.find((d) => d.id === receipt.doctorId) : undefined;
+      const charge = adminPaymentsData.charges.find((c) => c.bookingId === row.bookingId);
+      if (!receipt || !doctor || !charge) return [];
+      const reason = receipt.cancellation?.reason ?? "platform";
+      const by: AdminRefundBy = { kind: "automatic", cancelledBy: receipt.cancellation?.by ?? "platform" };
+      const refunds: AdminRefund[] = receipt.refunds.map((x) => ({
+        id: x.id,
+        paymentId: receipt.id,
+        at: x.at,
+        amountCents: x.amountCents,
+        status: x.status,
+        reason,
+        by,
+        noteEn: null,
+        noteAr: null,
+        idempotencyKey: adminRefundKey(receipt.id),
+      }));
+      if (withPendingSample && pending.bookingId === receipt.id && refunds.length === 0) {
+        // In full on a late patient cancellation, which the rule refunds nothing for: an override, so the note says why.
+        const byRule = reason === "patientLate" ? 0 : receipt.totalCents;
+        refunds.push({
+          id: pending.idempotencyKey,
+          paymentId: receipt.id,
+          at: sampleInstant(pending.requestedAtUtc),
+          amountCents: pending.kind === "full" ? receipt.totalCents : byRule,
+          status: "pending",
+          reason: pending.kind === "full" && byRule < receipt.totalCents ? "override" : reason,
+          by: { kind: "admin", adminId: pending.requestedBy },
+          noteEn: pending.noteEn,
+          noteAr: pending.noteAr,
+          idempotencyKey: pending.idempotencyKey,
+        });
+      }
+      return [
+        {
+          ...receipt,
+          doctor,
+          patient: { nameEn: settings.nameEn, nameAr: settings.nameAr, email: settings.email },
+          stripe: {
+            paymentIntentId: charge.paymentIntentId,
+            transferId: charge.transferId,
+            accountId: accounts.find((a) => a.doctor.id === doctor.id)?.stripeAccountId ?? null,
+          },
+          refunds,
+        },
+      ];
+    })
+    .sort((a, b) => b.paidAt.getTime() - a.paidAt.getTime());
+}

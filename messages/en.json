@@ -3882,5 +3882,342 @@
       "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
       "action": "Choose another time"
     }
+  },
+  "adminPayments": {
+    "metaTitle": "Payments, refunds and payouts | 3affya admin",
+    "metaDescription": "Every payment with its three lines, every refund with who and why, and each doctor's Stripe payouts.",
+    "title": "Payments, refunds and payouts",
+    "lead": "As Stripe's webhooks stored them. Money here changes only when Stripe confirms it.",
+    "loading": "Loading payments",
+    "export": "Export CSV",
+    "zone": "Times in",
+    "currencyNote": "Amounts in {currency}, the currency each payment was charged in.",
+    "openStripe": "Open in Stripe",
+    "newTab": "(opens in a new tab)",
+    "tabs": {
+      "label": "Money views",
+      "payments": "Payments",
+      "refunds": "Refunds",
+      "payouts": "Payouts"
+    },
+    "filters": {
+      "title": "Filters",
+      "on": "{count, plural, one {{countLabel} on} other {{countLabel} on}}",
+      "status": "Status",
+      "reason": "Reason",
+      "account": "Stripe account",
+      "doctor": "Doctor",
+      "anyDoctor": "All doctors",
+      "period": "Period",
+      "anyTime": "Any time",
+      "lastDays": "Last {days} days",
+      "apply": "Show results",
+      "clear": "Clear filters",
+      "chipsLabel": "Filters on",
+      "remove": "Remove filter: {label}"
+    },
+    "status": {
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "partlyRefunded": "Partly refunded",
+      "refundPending": "Waiting for Stripe"
+    },
+    "visit": {
+      "upcoming": "Visit upcoming",
+      "done": "Visit done",
+      "cancelled": "Visit cancelled"
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "brand": {
+      "visa": "Visa",
+      "mastercard": "Mastercard"
+    },
+    "wallet": {
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    },
+    "card": "{brand} ending {last4}",
+    "columns": {
+      "paidOn": "Paid on",
+      "payment": "Payment",
+      "doctorFee": "Doctor's fee",
+      "platformFee": "Platform fee",
+      "cardProcessing": "Card processing",
+      "total": "Total",
+      "status": "Status",
+      "action": "Action",
+      "refundedOn": "Requested on",
+      "amount": "Amount",
+      "reason": "Reason",
+      "by": "By",
+      "doctor": "Doctor",
+      "account": "Stripe account",
+      "bank": "Bank",
+      "nextPayout": "Next payout",
+      "lastPayout": "Last payout"
+    },
+    "row": {
+      "refund": "Refund",
+      "refundLabel": "Refund payment {number}",
+      "lines": "The three lines",
+      "doctorFeeShort": "Doctor",
+      "platformFeeShort": "Platform",
+      "cardShort": "Card"
+    },
+    "refunds": {
+      "status": {
+        "pending": "Waiting for Stripe",
+        "succeeded": "Refunded"
+      },
+      "reason": {
+        "patientEarly": "Patient cancelled early",
+        "patientLate": "Patient cancelled late",
+        "doctor": "Doctor cancelled",
+        "platform": "Problem on our side",
+        "override": "In full, above the rule",
+        "byRule": "By the rule, visit still ahead"
+      },
+      "by": {
+        "patient": "Automatic, when the patient cancelled",
+        "doctor": "Automatic, when the doctor cancelled",
+        "platform": "Automatic"
+      },
+      "note": "Note: {note}"
+    },
+    "payouts": {
+      "lead": "Read from Stripe's API when this page opens. Stripe hosts each doctor's payouts and bank details.",
+      "status": {
+        "enabled": "Payouts on",
+        "inProgress": "Setting up",
+        "restricted": "Stripe needs details",
+        "notStarted": "Not set up"
+      },
+      "bookingsPaused": "Bookings paused until Stripe has what it needs.",
+      "needs": "Stripe needs: {items}",
+      "overdue": "{item} (overdue)",
+      "need": {
+        "idDocument": "photo ID",
+        "addressDocument": "proof of address",
+        "ssn": "Social Security number",
+        "dob": "date of birth",
+        "address": "home address",
+        "phone": "phone number",
+        "website": "practice website",
+        "bankAccount": "bank account",
+        "terms": "agreement to Stripe's terms",
+        "other": "other details"
+      },
+      "bank": "Ending {last4}",
+      "noBank": "Not added",
+      "noNext": "None scheduled",
+      "noLast": "None yet",
+      "record": {
+        "paid": "Paid",
+        "inTransit": "On the way",
+        "failed": "Failed"
+      }
+    },
+    "detail": {
+      "breadcrumb": "Breadcrumb",
+      "crumb": "Payment {number}",
+      "title": "Payment {number}",
+      "totalPaid": "Total paid",
+      "paidOn": "Paid",
+      "method": "Paid with",
+      "receipt": "Receipt number",
+      "patient": "Patient",
+      "lines": {
+        "caption": "What the patient paid, as on the receipt",
+        "doctorFee": "Doctor's fee",
+        "doctorFeeDetail": "Set by the doctor",
+        "platformFee": "Platform fee",
+        "platformFeeDetail": "{pct} of the doctor's fee, first visit only",
+        "cardProcessing": "Card processing",
+        "cardProcessingDetail": "Card networks and our payment provider",
+        "total": "Total paid"
+      },
+      "flow": {
+        "title": "Where the money went",
+        "doctor": "To {name}'s Stripe account",
+        "doctorDetail": "Destination charge, transfer {id}",
+        "platform": "3affya's application fee",
+        "platformDetail": "Platform fee plus the card processing line, which pays Stripe's fee",
+        "total": "Charged"
+      },
+      "refunds": {
+        "title": "Refunds",
+        "none": "No refund on this payment.",
+        "net": "Kept after refunds",
+        "byRule": "Refund by the rule",
+        "inFull": "Refund in full",
+        "inProgress": "A refund is waiting for Stripe. Refunding again would return the same refund, so the buttons are off until Stripe confirms."
+      },
+      "visit": {
+        "title": "The visit",
+        "patientTime": "Patient's time",
+        "doctorTime": "Doctor's time",
+        "cancelled": "Cancelled by the {by, select, patient {patient} doctor {doctor} other {platform}} on {date}, {hours} before the visit.",
+        "deadline": "Full refund if cancelled before <nowrap>{day}</nowrap> <nowrap>{time}</nowrap>."
+      },
+      "stripe": {
+        "title": "In Stripe",
+        "payment": "Payment",
+        "account": "Doctor's connected account",
+        "transfer": "Transfer",
+        "refund": "Refund",
+        "key": "Idempotency key",
+        "noAccount": "No connected account"
+      },
+      "notFound": {
+        "title": "We cannot find this payment",
+        "body": "The link may be incomplete, or Stripe never confirmed this payment.",
+        "action": "See all payments"
+      }
+    },
+    "rule": {
+      "patientEarly": "{patient} cancelled more than {cutoff} before the visit, so the whole total comes back.",
+      "patientLate": "{patient} cancelled {cutoff} or less before the visit, so the rule refunds nothing.",
+      "doctor": "The doctor cancelled, so the whole total comes back.",
+      "platform": "The visit could not happen because of a problem on our side, so the whole total comes back.",
+      "upcomingEarly": "The visit is more than {cutoff} away, so cancelling now refunds the whole total.",
+      "upcomingLate": "The visit is {cutoff} or less away, so cancelling now refunds nothing by the rule.",
+      "visitDone": "The visit took place, so the rule refunds nothing."
+    },
+    "drawer": {
+      "title": "Refund payment {number}",
+      "summary": "{patient} paid {total} with {method} for a visit with {doctor}.",
+      "legend": "How much to refund",
+      "byRule": "By the refund rule",
+      "inFull": "In full",
+      "inFullDetail": "All three lines, whatever the rule says.",
+      "outcome": "What happens",
+      "toPatient": "Back to the patient",
+      "toPatientDetail": "The refund goes to {method}",
+      "fromDoctor": "Taken back from {name}",
+      "fromDoctorDetail": "Transfer reversal on their Stripe balance",
+      "fromPlatform": "Returned by 3affya",
+      "fromPlatformDetail": "Platform fee and card processing",
+      "reversal": "If {name}'s Stripe balance is too low, it goes negative and Stripe recovers it from later payouts. Stripe keeps its own processing fee.",
+      "visit": "When Stripe confirms, the booking is marked refunded and the visit is cancelled.",
+      "noteRequired": "Why refund more than the rule?",
+      "noteOptional": "Note for the audit log (optional)",
+      "noteHint": "Saved in the audit log with your name.",
+      "once": "Stripe makes this refund once: the request carries the key {key}, so a second tap returns the same refund. The receipt and these tables change when Stripe confirms it.",
+      "keep": "Keep the payment",
+      "confirm": "Refund {amount}",
+      "working": "Asking Stripe…",
+      "error": {
+        "notFound": "This payment is no longer here. Reload the page.",
+        "alreadyRefunded": "This payment already has a refund. Reload the page to see it.",
+        "nothingToRefund": "The rule refunds nothing for this payment. Choose In full to refund anyway.",
+        "noteRequired": "Write why you are refunding more than the rule. It goes in the audit log.",
+        "unavailable": "Stripe did not answer. Nothing was refunded. Try again in a minute.",
+        "notAllowed": "Sign in again as an admin to refund."
+      }
+    },
+    "requested": {
+      "title": "Refund of {amount} requested",
+      "body": "Stripe has the request, with the key {key}. This payment, the patient's receipt and the booking change when Stripe confirms it with charge.refunded.",
+      "preview": "Preview: Stripe is not connected yet, so nothing was sent."
+    },
+    "pending": {
+      "title": "{count, plural, one {{countLabel} refund is waiting for Stripe} other {{countLabel} refunds are waiting for Stripe}}",
+      "body": "Stripe accepted it, but its confirmation (charge.refunded) has not been handled yet, so the receipt and the booking still show the payment as paid. Do not refund again: a second request returns the same refund. If it stays here, check the webhook deliveries in Stripe.",
+      "action": "Webhook deliveries"
+    },
+    "empty": {
+      "payments": {
+        "title": "No payments yet",
+        "body": "A payment appears here once a patient pays for a visit and Stripe confirms it.",
+        "action": "Open payments in Stripe"
+      },
+      "refunds": {
+        "title": "No refunds yet",
+        "body": "A refund appears here once Stripe confirms it, from a cancellation or from this page.",
+        "action": "See payments"
+      },
+      "payouts": {
+        "title": "No connected accounts yet",
+        "body": "A doctor's Stripe account appears here once they start setting up payouts.",
+        "action": "Open the review queue"
+      },
+      "filtered": {
+        "title": "Nothing matches these filters",
+        "body": "Try fewer filters or a longer period.",
+        "action": "Clear filters"
+      }
+    },
+    "error": {
+      "payments": {
+        "title": "Payments did not load",
+        "body": "The database did not answer. Nothing has changed. Try again in a moment."
+      },
+      "refunds": {
+        "title": "Refunds did not load",
+        "body": "The database did not answer. Nothing has changed. Try again in a moment."
+      },
+      "payouts": {
+        "title": "Stripe did not answer",
+        "body": "Payout details come straight from Stripe. Nothing has changed. Try again in a moment."
+      },
+      "action": "Try again"
+    },
+    "csv": {
+      "payments": {
+        "receipt": "Receipt number",
+        "paidAtUtc": "Paid at (UTC)",
+        "patient": "Patient",
+        "email": "Patient email",
+        "doctor": "Doctor",
+        "visitType": "Visit type",
+        "visitAtUtc": "Visit at (UTC)",
+        "currency": "Currency",
+        "doctorFee": "Doctor's fee",
+        "platformFee": "Platform fee",
+        "cardProcessing": "Card processing",
+        "total": "Total paid",
+        "refunded": "Refunded",
+        "net": "Kept after refunds",
+        "status": "Status",
+        "method": "Paid with",
+        "paymentIntent": "Stripe payment",
+        "transfer": "Stripe transfer"
+      },
+      "refunds": {
+        "refund": "Refund",
+        "atUtc": "Requested at (UTC)",
+        "receipt": "Receipt number",
+        "patient": "Patient",
+        "doctor": "Doctor",
+        "currency": "Currency",
+        "amount": "Amount",
+        "reason": "Reason",
+        "by": "By",
+        "note": "Note",
+        "status": "Status",
+        "key": "Idempotency key",
+        "paymentIntent": "Stripe payment"
+      },
+      "payouts": {
+        "doctor": "Doctor",
+        "account": "Stripe account",
+        "status": "Status",
+        "charges": "Card payments on",
+        "payouts": "Payouts on",
+        "needs": "Stripe needs",
+        "bank": "Bank last 4",
+        "nextAtUtc": "Next payout (UTC)",
+        "nextAmount": "Next payout amount",
+        "lastAtUtc": "Last payout (UTC)",
+        "lastAmount": "Last payout amount",
+        "lastStatus": "Last payout status",
+        "currency": "Currency"
+      },
+      "yes": "Yes",
+      "no": "No"
+    }
   }
 }
