@@ -3882,5 +3882,284 @@
       "body": "حجز شخص آخر موعد {slot} حين لم يكن محجوزاً لك، ولم يُخصم أي مبلغ.",
       "action": "اختر موعداً آخر"
     }
+  },
+  "adminAudit": {
+    "metaTitle": "سجل التدقيق",
+    "metaDescription": "من فعل ماذا في عافية، وعلى أي سجل، ومتى. للقراءة فقط، والإضافة فقط.",
+    "title": "سجل التدقيق",
+    "lead": "من فعل ماذا، وعلى أي سجل، ومتى. الأحدث أولاً.",
+    "readOnly": "للقراءة فقط. تُضاف القيود عند حدوث أي تغيير، ولا يمكن تعديلها أو حذفها أبداً.",
+    "loading": "جارٍ تحميل سجل التدقيق",
+    "zone": "الأوقات بتوقيت {zone}",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "dayHeading": "{relative} · {date}",
+    "removedSuffix": "(أُزيل)",
+    "columns": {
+      "time": "الوقت",
+      "actor": "المنفِّذ",
+      "action": "الإجراء",
+      "target": "العنصر"
+    },
+    "filters": {
+      "label": "تصفية السجل",
+      "actor": "المنفِّذ",
+      "action": "الإجراء",
+      "target": "العنصر",
+      "from": "من",
+      "to": "إلى",
+      "dateHint": "أيام كاملة بتوقيت {zone}، ويشمل ذلك اليومين.",
+      "dateOrder": "تاريخ النهاية قبل تاريخ البداية. اختر تاريخ نهاية في يوم البداية أو بعده.",
+      "allActors": "كل المنفِّذين",
+      "allActions": "كل الإجراءات",
+      "allTargets": "كل العناصر",
+      "admins": "المشرفون",
+      "people": "الأطباء والمرضى",
+      "system": "النظام",
+      "any": {
+        "professional": "أي طبيب",
+        "patient": "أي مريض"
+      },
+      "more": "فلاتر أخرى",
+      "moreCount": "فلاتر أخرى ({count})",
+      "apply": "تطبيق الفلاتر",
+      "clear": "مسح الفلاتر"
+    },
+    "areas": {
+      "verification": "التحقق",
+      "listings": "الملفات والدعوات",
+      "money": "المال",
+      "records": "السجلات والمشاركة",
+      "security": "الدخول والتصدير"
+    },
+    "areaAll": {
+      "verification": "كل أحداث التحقق",
+      "listings": "كل أحداث الملفات والدعوات",
+      "money": "كل الأحداث المالية",
+      "records": "كل أحداث السجلات والمشاركة",
+      "security": "كل أحداث الدخول والتصدير"
+    },
+    "results": {
+      "showing": "يُعرض {shown} من {total, plural, one {قيد واحد} two {قيدين} few {{totalLabel} قيود} many {{totalLabel} قيدًا} other {{totalLabel} قيد}}",
+      "showingFiltered": "يُعرض {shown} من {total, plural, one {قيد واحد مطابق} two {قيدين مطابقين} few {{totalLabel} قيود مطابقة} many {{totalLabel} قيدًا مطابقًا} other {{totalLabel} قيد مطابق}}",
+      "endTitle": "نهاية السجل",
+      "endBody": "هذا أقدم قيد، بتاريخ {date}.",
+      "endFiltered": "هذه كل القيود المطابقة لهذه الفلاتر."
+    },
+    "roles": {
+      "admin": "مشرف",
+      "professional": "طبيب",
+      "patient": "مريض",
+      "system": "النظام"
+    },
+    "systemActors": {
+      "sys_stripe": "إشعار Stripe الآلي",
+      "sys_pipeline": "خط معالجة السجلات",
+      "sys_scheduler": "مهمة مجدولة",
+      "sys_registry": "استيراد بيانات السجل الأمريكي"
+    },
+    "actions": {
+      "claim": {
+        "submitted": "أُرسل طلب التفعيل"
+      },
+      "verification": {
+        "checkRecorded": "سُجِّل فحص",
+        "approved": "اعتُمد التحقق",
+        "rejected": "رُفض التحقق"
+      },
+      "reverification": {
+        "scheduled": "جُدولت إعادة التحقق"
+      },
+      "registry": {
+        "refreshed": "حُدِّثت بيانات السجل"
+      },
+      "listing": {
+        "edited": "عُدِّل ملف"
+      },
+      "removal": {
+        "confirmed": "أُكِّدت الإزالة",
+        "refused": "رُفض طلب الإزالة"
+      },
+      "specialty": {
+        "edited": "عُدِّل تخصص"
+      },
+      "invite": {
+        "created": "أُنشئت دعوة",
+        "used": "استُخدمت دعوة",
+        "expired": "انتهت صلاحية دعوة"
+      },
+      "payment": {
+        "succeeded": "استُلمت دفعة"
+      },
+      "booking": {
+        "cancelled": "أُلغي حجز"
+      },
+      "refund": {
+        "succeeded": "اكتمل الاسترداد"
+      },
+      "payout": {
+        "paid": "حُوِّلت دفعة للطبيب"
+      },
+      "membership": {
+        "started": "بدأت العضوية"
+      },
+      "recordSet": {
+        "uploaded": "رُفعت سجلات",
+        "summarised": "كُتب الملخص",
+        "failed": "فشلت المعالجة"
+      },
+      "share": {
+        "created": "شُورك ملخص",
+        "opened": "فُتح ملخص مُشارَك"
+      },
+      "summary": {
+        "reviewed": "رُوجع الملخص"
+      },
+      "admin": {
+        "signedIn": "سُجِّل الدخول",
+        "signInRefused": "رُفض تسجيل الدخول"
+      },
+      "auditLog": {
+        "exported": "صُدِّر السجل"
+      }
+    },
+    "targets": {
+      "professional": "ملف طبيب",
+      "booking": "حجز",
+      "payout": "تحويل للطبيب",
+      "membership": "عضوية",
+      "specialty": "تخصص",
+      "invite": "دعوة",
+      "recordSet": "مجموعة سجلات",
+      "share": "ملخص مُشارَك",
+      "adminAccount": "حساب مشرف",
+      "registryImport": "استيراد بيانات",
+      "auditLog": "سجل التدقيق"
+    },
+    "fields": {
+      "status": "الحالة",
+      "updated": "ملفات حُدِّثت",
+      "added": "ملفات أُضيفت",
+      "synonymsEn": "المرادفات (بالإنجليزية)",
+      "synonymsAr": "المرادفات (بالعربية)",
+      "cityEn": "المدينة (بالإنجليزية)",
+      "cityAr": "المدينة (بالعربية)",
+      "nextReverification": "إعادة التحقق القادمة",
+      "amount": "المبلغ",
+      "refunded": "المبلغ المسترد",
+      "registry": "السجل",
+      "factor": "العامل الثاني",
+      "pages": "الصفحات",
+      "refund": "الاسترداد",
+      "plan": "الخطة",
+      "failedPage": "توقفت عند الصفحة",
+      "filters": "الفلاتر",
+      "rows": "عدد القيود"
+    },
+    "values": {
+      "notSet": "غير محدد",
+      "listingStatus": {
+        "unclaimed": "غير مُفعَّل",
+        "pending": "قيد المراجعة",
+        "verified": "موثَّق",
+        "rejected": "مرفوض",
+        "removed": "مُزال"
+      },
+      "inviteStatus": {
+        "valid": "صالحة",
+        "used": "مستخدمة",
+        "expired": "منتهية"
+      },
+      "bookingStatus": {
+        "upcoming": "قادم",
+        "cancelled": "ملغى",
+        "refunded": "مسترد"
+      },
+      "membershipStatus": {
+        "none": "بلا عضوية",
+        "active": "نشطة"
+      },
+      "recordSetStatus": {
+        "queued": "في الانتظار",
+        "processing": "قيد المعالجة",
+        "done": "الملخص جاهز",
+        "failed": "فشلت"
+      },
+      "shareStatus": {
+        "new": "مُشارَك ولم يُفتح",
+        "viewed": "فُتح",
+        "reviewed": "رُوجع"
+      },
+      "factor": {
+        "totp": "رمز تطبيق المصادقة"
+      },
+      "refundOutcome": {
+        "full": "استرداد كامل",
+        "none": "بلا استرداد (ضمن مهلة الإلغاء)"
+      },
+      "plan": {
+        "month": "شهرية"
+      }
+    },
+    "checks": {
+      "title": "التحقق",
+      "licence": "الترخيص",
+      "board": "شهادة البورد",
+      "sanctions": "العقوبات",
+      "result": {
+        "active": "ساري",
+        "certified": "معتمد",
+        "noneFound": "لا يوجد",
+        "notConfirmed": "لم يتأكد"
+      },
+      "source": "المصدر:",
+      "checked": "فُحص في {date} بواسطة {name}",
+      "reviewer": "المراجِع:",
+      "awaitingReview": "لم يُراجَع بعد"
+    },
+    "detail": {
+      "change": "ما الذي تغيّر",
+      "field": "الحقل",
+      "before": "قبل",
+      "after": "بعد",
+      "noChange": "لم يتغير أي حقل. هذا القيد يسجّل حدثاً.",
+      "details": "التفاصيل",
+      "note": "ملاحظة",
+      "record": "القيد",
+      "recordedAt": "وقت التسجيل",
+      "recordedUtc": "المخزَّن (UTC)",
+      "entryId": "رقم القيد",
+      "requestId": "معرّف الطلب",
+      "stripeEvent": "حدث Stripe",
+      "actorId": "معرّف المنفِّذ",
+      "targetId": "معرّف العنصر",
+      "professional": "الطبيب"
+    },
+    "empty": {
+      "title": "لا قيود تطابق هذه الفلاتر",
+      "body": "لا شيء في السجل يطابقها. القيود لا تُحذف أبداً، فوسّع الفلاتر لتجد القيود الأقدم.",
+      "action": "مسح الفلاتر"
+    },
+    "error": {
+      "title": "تعذّر تحميل سجل التدقيق",
+      "body": "لم يتغير شيء ولم يضِع شيء، والسجل مستمر في التسجيل. أعد المحاولة بعد قليل.",
+      "action": "إعادة المحاولة"
+    },
+    "export": {
+      "button": "تصدير CSV",
+      "pending": "جارٍ تجهيز الملف…",
+      "preview": {
+        "title": "التصدير متوقف في النموذج الأولي",
+        "body": "في النسخة الفعلية يُنزِّل هذا الزر {count, plural, one {القيد المطابق} two {القيدين المطابقين} few {{countLabel} قيود مطابقة} many {{countLabel} قيدًا مطابقًا} other {{countLabel} قيد مطابق}} في ملف CSV، ويُضاف التصدير نفسه إلى هذا السجل."
+      },
+      "nothingToExport": {
+        "title": "لا شيء للتصدير",
+        "body": "لا قيود تطابق هذه الفلاتر."
+      },
+      "notAllowed": {
+        "title": "التصدير يحتاج تسجيل دخول جديداً",
+        "body": "سجّل الدخول مجدداً برمز تطبيق المصادقة، ثم صدّر."
+      }
+    }
   }
 }

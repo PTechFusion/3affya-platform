@@ -1011,3 +1011,63 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+
+/* ---------------- Audit log (screen 47) ---------------- */
+// Appended block. data/sample/audit.json holds the log oldest first, the way an append-only table grows; auditEntries reads it
+// newest first. Ids and first names only: no emails, no surnames for patients, no record content. Professionals resolve
+// through doctors.json; an id doctors.json no longer has (doc_021) is a removed profile, so its name is gone from the log too.
+// Instants are authored for 12 Oct to 8 Nov 2026 and shifted with sampleInstant, so the newest entries stay recent.
+import auditJson from "@/data/sample/audit.json";
+import type { AuditAction, AuditActorKind, AuditChange, AuditCheckKind, AuditCheckResult, AuditDetail, AuditTargetType } from "@/lib/audit";
+
+/** Who an entry names as its actor. Admins and patients carry a first name; professionals read their name from doctors.json. */
+export type AuditActor = { id: string; kind: AuditActorKind; firstNameEn?: string; firstNameAr?: string };
+
+type AuditCheckRow = { kind: AuditCheckKind; source: string; result: AuditCheckResult; checkedAtUtc: string; by: string };
+type AuditEntryRow = {
+  id: string;
+  atUtc: string;
+  actorId: string;
+  action: AuditAction;
+  target: { type: AuditTargetType; id: string; doctorId?: string };
+  changes: AuditChange[];
+  details: AuditDetail[];
+  verification: { reviewer: string | null; checks: AuditCheckRow[] } | null;
+  note: { en: string; ar: string } | null;
+  requestId: string;
+  stripeEventId: string | null;
+};
+
+/** One primary-source check (rule A1): what was checked, against which source, the result, when and by whom. */
+export type AuditCheck = Omit<AuditCheckRow, "checkedAtUtc"> & { checkedAt: Date };
+
+export type SampleAuditEntry = Omit<AuditEntryRow, "atUtc" | "verification"> & {
+  at: Date;
+  /** Verification events only: the checks behind the decision and the reviewer who made it (null while checks are recorded). */
+  verification: { reviewer: string | null; checks: AuditCheck[] } | null;
+};
+
+const auditData = auditJson as unknown as { actors: AuditActor[]; entries: AuditEntryRow[] };
+
+export const auditActors: readonly AuditActor[] = auditData.actors;
+
+export function auditActorById(id: string): AuditActor | undefined {
+  return auditData.actors.find((a) => a.id === id);
+}
+
+/** The whole log, newest first. An entry the sample clock would put after `now` is left out: a log never holds the future. */
+export function auditEntries(now: Date = new Date()): SampleAuditEntry[] {
+  return auditData.entries
+    .map(({ atUtc, verification, ...row }) => ({
+      ...row,
+      at: sampleInstant(atUtc),
+      verification: verification
+        ? {
+            reviewer: verification.reviewer,
+            checks: verification.checks.map(({ checkedAtUtc, ...c }) => ({ ...c, checkedAt: sampleInstant(checkedAtUtc) })),
+          }
+        : null,
+    }))
+    .filter((e) => e.at.getTime() <= now.getTime())
+    .sort((a, b) => b.at.getTime() - a.at.getTime() || b.id.localeCompare(a.id));
+}

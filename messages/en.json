@@ -3882,5 +3882,284 @@
       "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
       "action": "Choose another time"
     }
+  },
+  "adminAudit": {
+    "metaTitle": "Audit log",
+    "metaDescription": "Who did what in 3affya, to which record, and when. Read only and append only.",
+    "title": "Audit log",
+    "lead": "Who did what, to which record, and when. Newest first.",
+    "readOnly": "Read only. Entries are added when something changes and can never be edited or deleted.",
+    "loading": "Loading the audit log",
+    "zone": "Times in {zone}",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "dayHeading": "{relative} · {date}",
+    "removedSuffix": "(removed)",
+    "columns": {
+      "time": "Time",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target"
+    },
+    "filters": {
+      "label": "Filter the log",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "from": "From",
+      "to": "To",
+      "dateHint": "Whole days in {zone}, both days included.",
+      "dateOrder": "The end date is before the start date. Pick an end date on or after the start date.",
+      "allActors": "All actors",
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "admins": "Admins",
+      "people": "Professionals and patients",
+      "system": "System",
+      "any": {
+        "professional": "Any professional",
+        "patient": "Any patient"
+      },
+      "more": "More filters",
+      "moreCount": "More filters ({count})",
+      "apply": "Apply filters",
+      "clear": "Clear filters"
+    },
+    "areas": {
+      "verification": "Verification",
+      "listings": "Listings and invites",
+      "money": "Money",
+      "records": "Records and sharing",
+      "security": "Sign-in and export"
+    },
+    "areaAll": {
+      "verification": "All verification events",
+      "listings": "All listing and invite events",
+      "money": "All money events",
+      "records": "All records and sharing events",
+      "security": "All sign-in and export events"
+    },
+    "results": {
+      "showing": "Showing {shown} of {total, plural, one {{totalLabel} entry} other {{totalLabel} entries}}",
+      "showingFiltered": "Showing {shown} of {total, plural, one {{totalLabel} matching entry} other {{totalLabel} matching entries}}",
+      "endTitle": "End of the log",
+      "endBody": "This is the oldest entry, from {date}.",
+      "endFiltered": "That is every entry that matches these filters."
+    },
+    "roles": {
+      "admin": "Admin",
+      "professional": "Professional",
+      "patient": "Patient",
+      "system": "System"
+    },
+    "systemActors": {
+      "sys_stripe": "Stripe webhook",
+      "sys_pipeline": "Records pipeline",
+      "sys_scheduler": "Scheduled job",
+      "sys_registry": "Registry import"
+    },
+    "actions": {
+      "claim": {
+        "submitted": "Claim submitted"
+      },
+      "verification": {
+        "checkRecorded": "Check recorded",
+        "approved": "Verification approved",
+        "rejected": "Verification rejected"
+      },
+      "reverification": {
+        "scheduled": "Re-verification scheduled"
+      },
+      "registry": {
+        "refreshed": "Registry refreshed"
+      },
+      "listing": {
+        "edited": "Listing edited"
+      },
+      "removal": {
+        "confirmed": "Removal confirmed",
+        "refused": "Removal refused"
+      },
+      "specialty": {
+        "edited": "Specialty edited"
+      },
+      "invite": {
+        "created": "Invite created",
+        "used": "Invite used",
+        "expired": "Invite expired"
+      },
+      "payment": {
+        "succeeded": "Payment received"
+      },
+      "booking": {
+        "cancelled": "Booking cancelled"
+      },
+      "refund": {
+        "succeeded": "Refund completed"
+      },
+      "payout": {
+        "paid": "Payout paid"
+      },
+      "membership": {
+        "started": "Membership started"
+      },
+      "recordSet": {
+        "uploaded": "Records uploaded",
+        "summarised": "Summary written",
+        "failed": "Processing failed"
+      },
+      "share": {
+        "created": "Summary shared",
+        "opened": "Shared summary opened"
+      },
+      "summary": {
+        "reviewed": "Summary reviewed"
+      },
+      "admin": {
+        "signedIn": "Signed in",
+        "signInRefused": "Sign-in refused"
+      },
+      "auditLog": {
+        "exported": "Log exported"
+      }
+    },
+    "targets": {
+      "professional": "Listing",
+      "booking": "Booking",
+      "payout": "Payout",
+      "membership": "Membership",
+      "specialty": "Specialty",
+      "invite": "Invite",
+      "recordSet": "Record set",
+      "share": "Shared summary",
+      "adminAccount": "Admin account",
+      "registryImport": "Registry import",
+      "auditLog": "Audit log"
+    },
+    "fields": {
+      "status": "Status",
+      "updated": "Listings updated",
+      "added": "Listings added",
+      "synonymsEn": "Synonyms (English)",
+      "synonymsAr": "Synonyms (Arabic)",
+      "cityEn": "City (English)",
+      "cityAr": "City (Arabic)",
+      "nextReverification": "Next re-verification",
+      "amount": "Amount",
+      "refunded": "Refunded",
+      "registry": "Registry",
+      "factor": "Second factor",
+      "pages": "Pages",
+      "refund": "Refund",
+      "plan": "Plan",
+      "failedPage": "Stopped at page",
+      "filters": "Filters",
+      "rows": "Rows"
+    },
+    "values": {
+      "notSet": "Not set",
+      "listingStatus": {
+        "unclaimed": "Unclaimed",
+        "pending": "Pending review",
+        "verified": "Verified",
+        "rejected": "Rejected",
+        "removed": "Removed"
+      },
+      "inviteStatus": {
+        "valid": "Valid",
+        "used": "Used",
+        "expired": "Expired"
+      },
+      "bookingStatus": {
+        "upcoming": "Upcoming",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "membershipStatus": {
+        "none": "No membership",
+        "active": "Active"
+      },
+      "recordSetStatus": {
+        "queued": "Queued",
+        "processing": "Processing",
+        "done": "Summary ready",
+        "failed": "Failed"
+      },
+      "shareStatus": {
+        "new": "Shared, not opened",
+        "viewed": "Opened",
+        "reviewed": "Reviewed"
+      },
+      "factor": {
+        "totp": "Authenticator code"
+      },
+      "refundOutcome": {
+        "full": "Full refund",
+        "none": "No refund (inside the cancellation window)"
+      },
+      "plan": {
+        "month": "Monthly"
+      }
+    },
+    "checks": {
+      "title": "Verification",
+      "licence": "Licence",
+      "board": "Board certification",
+      "sanctions": "Sanctions",
+      "result": {
+        "active": "Active",
+        "certified": "Certified",
+        "noneFound": "None found",
+        "notConfirmed": "Not confirmed"
+      },
+      "source": "Source:",
+      "checked": "Checked {date} by {name}",
+      "reviewer": "Reviewer:",
+      "awaitingReview": "Not reviewed yet"
+    },
+    "detail": {
+      "change": "What changed",
+      "field": "Field",
+      "before": "Before",
+      "after": "After",
+      "noChange": "No field changed. This entry records an event.",
+      "details": "Details",
+      "note": "Note",
+      "record": "Record",
+      "recordedAt": "Recorded",
+      "recordedUtc": "Stored (UTC)",
+      "entryId": "Entry",
+      "requestId": "Request ID",
+      "stripeEvent": "Stripe event",
+      "actorId": "Actor ID",
+      "targetId": "Target ID",
+      "professional": "Professional"
+    },
+    "empty": {
+      "title": "No entries match these filters",
+      "body": "Nothing in the log matches them. Entries are never deleted, so wider filters will find older ones.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "The audit log did not load",
+      "body": "Nothing was changed or lost, and the log keeps recording. Try again in a moment.",
+      "action": "Try again"
+    },
+    "export": {
+      "button": "Export CSV",
+      "pending": "Preparing the file…",
+      "preview": {
+        "title": "Export is off in the prototype",
+        "body": "In the live build this downloads the {count, plural, one {{countLabel} matching entry} other {{countLabel} matching entries}} as a CSV file, and the export itself is added to this log."
+      },
+      "nothingToExport": {
+        "title": "Nothing to export",
+        "body": "No entries match these filters."
+      },
+      "notAllowed": {
+        "title": "Export needs a fresh sign-in",
+        "body": "Sign in again with your authenticator code, then export."
+      }
+    }
   }
 }

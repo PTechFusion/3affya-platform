@@ -795,3 +795,54 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message in the page flow (PLAYBOOK §9, the one notice box): `info` for a neutral fact, `success` after something
+ * worked, `warning` for something that needs attention, `danger` for a failure. A title that says what happened, an optional
+ * body with the fix (rule L4), at most one action. The tone is the tint and the start-edge bar, never colour alone: the title
+ * carries the meaning. `role` "alert" for an error that appears after an action, "status" for a result; omit it for standing
+ * notes. Tints are the Badge tones.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, string> = {
+  info: "border-sea-500 bg-sky-100",
+  success: "border-success bg-[#E4F4EC]",
+  warning: "border-gold-500 bg-gold-100",
+  danger: "border-danger bg-[#FBE9E7]",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  role,
+  id,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: string;
+  body?: ReactNode;
+  action?: ReactNode;
+  role?: "alert" | "status";
+  id?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      id={id}
+      role={role}
+      className={cx(
+        "flex flex-col items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+        noticeTones[tone],
+        className,
+      )}
+    >
+      <div className="min-w-0">
+        <p className="font-semibold text-ink-900">{title}</p>
+        {body ? <div className="mt-0.5 text-ink-700">{body}</div> : null}
+      </div>
+      {action ? <div className="shrink-0">{action}</div> : null}
+    </div>
+  );
+}
