@@ -3577,5 +3577,323 @@
       "body": "Your documents are safe. Please try again in a minute. If it keeps happening, talk to a human.",
       "retry": "Try again"
     }
+  },
+  "book": {
+    "metaTitle": "Choose a time with {name} | 3affya",
+    "metaDescription": "Pick a first-visit time with {name}, shown in your own time zone.",
+    "title": "Choose a time",
+    "crumb": "Choose a time",
+    "breadcrumb": "You are here",
+    "loading": "Loading open times",
+    "visit": {
+      "legend": "Visit type",
+      "bestFor": {
+        "video": "best to show something, like a rash.",
+        "phone": "best to talk through results."
+      },
+      "onlyOne": "This is the only visit type {name} offers."
+    },
+    "calendar": {
+      "title": "Day and time",
+      "zoneLead": "Times in",
+      "prevWeek": "Previous week",
+      "nextWeek": "Next week",
+      "weekLabel": "{from} to {to}",
+      "dayTimes": "{count, plural, =0 {no open times} one {{countLabel} open time} other {{countLabel} open times}}",
+      "weekend": "weekend",
+      "weekendLegend": "Shaded days are the weekend in {country}: {first} and {second}.",
+      "timesOn": "Open times on {day}",
+      "earliest": "Earliest",
+      "takenShort": "Booked",
+      "slotLabel": "{day}, {time}, {zone}",
+      "doctorTime": "Doctor's time: {day}, {time}",
+      "takenTitle": "That time was just booked",
+      "takenBody": "{slot} is no longer open. Nothing was held or charged. The earliest open time is highlighted.",
+      "jumpedTitle": "No open times this week",
+      "jumpedBody": "Showing the first week with open times, starting {day}.",
+      "requestInstead": "Or request a time that suits you",
+      "emptyWeekTitle": "No open times this week",
+      "emptyWeekBody": "The next open times are in the week starting {day}.",
+      "emptyWeekNone": "There are no open times after this week yet.",
+      "showNextWeek": "Show that week",
+      "requestLead": "None of these times work?",
+      "requestLink": "Request a time"
+    },
+    "weekdays": {
+      "sun": "Sunday",
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sat": "Saturday"
+    },
+    "weekdaysShort": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "countriesIn": {
+      "SA": "Saudi Arabia",
+      "AE": "the UAE",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman",
+      "US": "the United States"
+    },
+    "questions": {
+      "title": "About the visit",
+      "lead": "So the doctor can prepare. You will not be asked again at payment.",
+      "forWhom": {
+        "legend": "Who is the visit for?",
+        "self": "Me",
+        "child": "My child",
+        "family": "Someone else in my family"
+      },
+      "age": {
+        "legendSelf": "Your age group",
+        "legendChild": "Your child's age group",
+        "legendOther": "Their age group",
+        "baby": "Baby",
+        "child": "Child",
+        "teen": "Teenager",
+        "adult": "Adult",
+        "under": "Under {years, plural, one {{yearsLabel} year} other {{yearsLabel} years}}",
+        "range": "{from} to {to} years",
+        "from": "{yearsLabel} years and over"
+      },
+      "reason": {
+        "label": "What would you like help with?",
+        "hint": "A sentence or two is enough. Only {name} sees it."
+      },
+      "notSeen": {
+        "children": "{name} sees children and teenagers only, under {ageLabel}.",
+        "adults": "{name} sees adults only, {ageLabel} and over.",
+        "link": {
+          "adults": "See {specialty} doctors who see adults",
+          "children": "See {specialty} doctors who see children"
+        }
+      }
+    },
+    "errors": {
+      "visit": {
+        "required": "Choose video or phone."
+      },
+      "slot": {
+        "required": "Choose a time first."
+      },
+      "forWhom": {
+        "required": "Choose who the visit is for."
+      },
+      "ageGroup": {
+        "required": "Choose an age group."
+      },
+      "reason": {
+        "required": "Write a few words about why you are booking.",
+        "tooShort": "Add a few more words so the doctor can prepare."
+      },
+      "reasonTooLong": "Keep it to {max} characters. You have {count}.",
+      "when": {
+        "required": "Choose at least one part of the day."
+      },
+      "holdFailedTitle": "We could not hold this time",
+      "holdFailedBody": "Nothing was charged. Check your connection and tap Continue again."
+    },
+    "summary": {
+      "price": "First visit, all-in",
+      "includes": "Includes every fee. Nothing is added at payment.",
+      "yourTime": "Your time",
+      "pick": "Pick a time",
+      "selected": "{day}, {time}",
+      "holding": "Holding this time…",
+      "heldFor": "Held for you:",
+      "heldStatus": "{slot} is held for you for {minutes, plural, one {{minutesLabel} minute} other {{minutesLabel} minutes}}.",
+      "toPayment": "Continue to payment"
+    },
+    "empty": {
+      "title": "No open times yet",
+      "body": "{name} has not opened times on 3affya yet. Tell us when suits you and we pass it on.",
+      "action": "Request a time"
+    },
+    "notBookable": {
+      "title": "Online booking is not open for {name}",
+      "bodyRegistry": "This profile comes from public US records and the doctor has not confirmed it yet, so it cannot take bookings. Verified doctors in the same specialty can.",
+      "bodyPayouts": "{name} is finishing account setup. Booking opens here when it is done.",
+      "action": "See other {specialty} doctors"
+    },
+    "request": {
+      "crumb": "Request a time",
+      "title": "Request a time with {name}",
+      "lead": "Say which times suit you. Nothing is held or charged until you book a time that is offered.",
+      "when": "Which times suit you?",
+      "mornings": "Mornings",
+      "afternoons": "Afternoons",
+      "evenings": "Evenings",
+      "send": "Send request",
+      "sending": "Sending…",
+      "failed": "We could not send your request. Check your connection and try again.",
+      "noCharge": "Nothing is charged for a request.",
+      "sentTitle": "Request sent to {name}",
+      "sentBody": "We will email you when a time is offered. You pay only if you book it.",
+      "sentAction": "Back to {name}'s profile"
+    }
+  },
+  "checkout": {
+    "metaTitle": "Review and pay | 3affya",
+    "metaDescription": "Check your first visit and pay the all-in price.",
+    "title": "Review and pay",
+    "crumb": "Review and pay",
+    "lead": "Check the details, then pay. The visit is booked only once payment goes through.",
+    "loading": "Loading your booking",
+    "hold": {
+      "label": "Your time is held for",
+      "expired": "The hold on your time has ended",
+      "total": "Total",
+      "announceWarn": "{minutes, plural, one {{minutesLabel} minute} other {{minutesLabel} minutes}} left before the hold ends.",
+      "announceExpired": "The hold on your time has ended. Nothing was charged.",
+      "renewed": "Your time is held again."
+    },
+    "review": {
+      "title": "Review",
+      "time": "Time",
+      "timeValue": "{day}, {time}",
+      "length": "{minutesLabel}-minute first visit",
+      "change": "Change",
+      "changeTime": "Change the time",
+      "changeVisit": "Change the visit type",
+      "changeFor": "Change who the visit is for",
+      "visitType": "Visit type",
+      "forWhom": "Who it is for",
+      "forValue": "{who} · {age}",
+      "notChosen": "Not chosen yet",
+      "missingTitle": "A few details are missing",
+      "missingBody": "Go back one step to choose the visit type and say who the visit is for.",
+      "missingAction": "Finish the details"
+    },
+    "details": {
+      "title": "Before you pay",
+      "bookingAs": "Booking in {name}'s account. The confirmation goes to the email on it.",
+      "location": {
+        "label": "Where will you be during the visit?",
+        "hint": "What a visit can include depends on where you are.",
+        "placeholder": "Choose a country"
+      },
+      "phone": {
+        "labelVideo": "Backup phone number",
+        "hintVideo": "{name} calls this number only if the video call drops.",
+        "labelPhone": "Phone number for the visit",
+        "hintPhone": "{name} calls you on this number at the visit time.",
+        "code": "Country code"
+      },
+      "consent": {
+        "legend": "Your agreement",
+        "telehealthTitle": "I agree to a visit by video or phone",
+        "telehealthBody": "{name} is licensed in the United States and sees you from there. A visit is a consultation and a second opinion, not emergency or in-person care.",
+        "telehealthLink": "What a visit can and cannot do",
+        "cancelTitle": "I have read the cancellation terms",
+        "cancelBody": "Cancel more than {cutoff} before the visit for a full refund. Later than that, or if you miss the visit, there is no refund.",
+        "cancelLink": "Refund policy",
+        "cutoff": "{hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}}"
+      },
+      "privacy": "Private: only {name} sees why you are booking and the records you choose to share. We never use your health details for marketing.",
+      "privacyLink": "Privacy policy"
+    },
+    "countries": {
+      "SA": "Saudi Arabia",
+      "AE": "United Arab Emirates",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman",
+      "other": "Another country"
+    },
+    "dialNames": {
+      "SA": "KSA",
+      "AE": "UAE",
+      "KW": "Kuwait",
+      "QA": "Qatar",
+      "BH": "Bahrain",
+      "OM": "Oman",
+      "GB": "UK",
+      "US": "USA"
+    },
+    "pay": {
+      "title": "Pay",
+      "doctorFee": "Doctor's fee",
+      "doctorFeeDetail": "Paid to {name}",
+      "platformFee": "Platform fee",
+      "platformFeeDetail": "{pct} of the doctor's fee",
+      "cardFee": "Card processing",
+      "cardFeeDetail": "{pct} plus {fixed}",
+      "total": "Total you pay",
+      "secured": "Secured by Stripe",
+      "stripeBody": "You enter your card or wallet in Stripe's secure form. 3affya never sees your card number.",
+      "methods": "Ways to pay",
+      "method": {
+        "applePay": "Apple Pay",
+        "googlePay": "Google Pay",
+        "visa": "Visa",
+        "mastercard": "Mastercard"
+      },
+      "mada": "A card that is mada only may be declined. A mada card that also shows Visa or Mastercard works, including in Apple Pay.",
+      "button": "Pay {amount}",
+      "captureNote": "The full amount is charged now. If you cancel, refunds follow the cancellation terms.",
+      "steps": {
+        "label": "Payment progress",
+        "held": "Time held for you",
+        "paying": "Taking payment with Stripe",
+        "confirming": "Booking your visit",
+        "done": "done",
+        "current": "in progress",
+        "waiting": "next"
+      },
+      "failedTitle": "Your card was declined",
+      "failedBody": "Nothing was charged and your time is still held. Try again, or use another card or Apple Pay.",
+      "errorTitle": "We could not reach the payment service",
+      "errorBody": "Nothing was charged and your details are still here. Try again in a moment.",
+      "expiredTitle": "Your hold has ended",
+      "expiredBody": "Nothing was charged. The time may still be open: hold it again, then pay.",
+      "holdAgain": "Hold this time again",
+      "holdingAgain": "Holding…",
+      "goneTitle": "This time is no longer open",
+      "goneBody": "Nothing was charged. Choose another time with the same doctor.",
+      "chooseAnother": "Choose another time"
+    },
+    "errors": {
+      "location": {
+        "required": "Choose where you will be during the visit."
+      },
+      "phone": {
+        "required": "Enter a phone number.",
+        "digits": "Use digits only.",
+        "length": "A number with {code} has {digits} digits after the code. You entered {count}."
+      },
+      "telehealth": {
+        "required": "Tick this box to agree to a visit by video or phone."
+      },
+      "cancellation": {
+        "required": "Tick this box to confirm you have read the cancellation terms."
+      }
+    },
+    "noSlot": {
+      "title": "Choose a time first",
+      "body": "Checkout needs a time from {name}'s open times.",
+      "action": "Choose a time"
+    },
+    "passed": {
+      "title": "This time has passed",
+      "body": "{slot} is in the past. Nothing was charged.",
+      "action": "Choose another time"
+    },
+    "taken": {
+      "title": "This time is no longer open",
+      "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
+      "action": "Choose another time"
+    }
   }
 }

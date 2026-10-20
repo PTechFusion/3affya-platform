@@ -998,3 +998,51 @@ export function recordSetFor(id: string, patientFirstNameEn: string = samplePati
 export function sampleUploadDraft(): { files: DraftFile[]; checking: string[] } {
   return recordsData.draft;
 }
+/* ---------------- Booking: slot picker and checkout (screens 19 and 20) ---------------- */
+// Appended block. The picker offers the same hand-authored open times the profile shows (profiles.json, through upcomingSlots),
+// so a time tapped on the profile is the time pre-selected there. Holds and bookings are not subtracted until task 3.2.
+
+// The practice's US state gives the doctor's zone when there is no availability schedule (only doc_002 has one).
+const STATE_TIME_ZONES: Readonly<Record<string, string>> = {
+  California: "America/Los_Angeles",
+  Illinois: "America/Chicago",
+  Michigan: "America/Detroit",
+  "New York": "America/New_York",
+  Ohio: "America/New_York",
+  Texas: "America/Chicago",
+};
+
+/** The doctor's own IANA zone: the availability schedule's zone, else the zone of the practice's state ("Chicago, Illinois"). */
+export function doctorTimeZone(d: SampleDoctor): string {
+  const schedule = availabilityData.schedules.find((s) => s.doctorId === d.id);
+  if (schedule) return schedule.timeZone;
+  const state = d.cityEn.split(",").pop()?.trim() ?? "";
+  return STATE_TIME_ZONES[state] ?? "America/New_York";
+}
+
+/** First-visit length in minutes: the doctor's slot length, else the default. */
+export function visitMinutesFor(doctorId: string): number {
+  return availabilityData.schedules.find((s) => s.doctorId === doctorId)?.slotMinutes ?? business.slotLengthMinutesDefault;
+}
+
+/** The times a patient can book now: the doctor's open times, minus any closer than the doctor's lead time (rule P8). */
+export function bookableSlots(doctorId: string, now: Date = new Date()): Date[] {
+  const leadHours = availabilityData.schedules.find((s) => s.doctorId === doctorId)?.leadTimeHours ?? business.leadTimeHoursDefault;
+  const notBefore = now.getTime() + leadHours * 3_600_000;
+  return upcomingSlots(doctorId).filter((s) => s.getTime() >= notBefore);
+}
+
+/**
+ * The answers the prototype's held, failed and paying previews show (?state=held on the picker, ?state=failed on checkout): the
+ * signed-in patient (samplePatient) booking doc_002 for her child. Synthetic; the phone follows the Saudi mobile pattern.
+ */
+export const sampleBookingAnswers = {
+  visit: "video",
+  forWhom: "child",
+  ageGroup: "child",
+  reasonEn: "Ear infections keep coming back, four since the start of the year. We want a second opinion on ear tubes.",
+  reasonAr: "التهابات الأذن تتكرر، أربع مرات منذ بداية السنة. نريد رأياً ثانياً في أنابيب الأذن.",
+  locationCountry: "SA",
+  phoneCountry: "SA",
+  phoneNational: "501234567",
+} as const;
