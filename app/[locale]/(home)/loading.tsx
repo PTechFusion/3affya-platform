@@ -11,7 +11,7 @@ export default function Loading() {
     <>
       <SiteNav />
       <WaterHero className="min-h-[520px]">
-        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 pb-32 pt-14 sm:px-6 sm:pt-20">
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 pb-36 pt-14 sm:px-6 sm:pb-44 sm:pt-20">
           <h1 className="max-w-3xl text-4xl font-bold leading-tight text-gold-300 sm:text-6xl">{t("title")}</h1>
           <p className="max-w-xl text-lg text-white/90 sm:text-xl">{t("subtitle")}</p>
           <div className="flex max-w-xl flex-col gap-2 sm:flex-row">
