@@ -13,5 +13,5 @@ export default defineConfig([
       "3affya/no-physical-utilities": "error",
     },
   },
-  globalIgnores([".next/**", "node_modules/**", "out/**", "public/**", "docs/**", "scripts/screenshots/**"]),
+  globalIgnores([".next/**", ".netlify/**", "node_modules/**", "out/**", "public/**", "docs/**", "scripts/screenshots/**"]),
 ]);
