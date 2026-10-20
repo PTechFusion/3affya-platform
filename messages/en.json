@@ -3882,5 +3882,2195 @@
       "body": "Someone else booked {slot} while it was not held for you. Nothing was charged.",
       "action": "Choose another time"
     }
+  },
+  "adminLogin": {
+    "metaTitle": "Admin sign-in | 3affya",
+    "metaDescription": "Sign-in for the 3affya team: your work email, a code we email you, and the code from your authenticator app.",
+    "loading": "Opening admin sign-in",
+    "step": "Step {step} of {total}",
+    "checking": "Checking…",
+    "signIn": "Sign in",
+    "patients": "Not on the 3affya team? <link>Go to patient sign-in</link>",
+    "prototypeNote": "Prototype: no email is sent and no session is created. Any {digits} digits work; {wrong} in either code shows the refused message.",
+    "prototypeRecovery": "Prototype: any full recovery code works; {wrong} shows the refused message.",
+    "email": {
+      "title": "Admin sign-in",
+      "lead": "For the 3affya team only. Sign-in has three steps: your work email, a code we email to it, then the code from your authenticator app.",
+      "label": "Work email",
+      "hint": "We email a {digits}-digit code to this address.",
+      "sending": "Sending…",
+      "error": {
+        "empty": "Enter your work email address.",
+        "spaces": "Remove the spaces from your email address.",
+        "noAt": "Add an @ to your email, like name@example.com",
+        "manyAt": "Use only one @ in your email address.",
+        "noName": "Add your name before the @, like name@example.com",
+        "noDomain": "Add the part after the @, like name@example.com",
+        "noDot": "Check the part after the @. It needs a dot, like example.com",
+        "unavailable": "We could not send the code just now. Please try again in a minute."
+      }
+    },
+    "code": {
+      "title": "Check your email",
+      "sentTo": "If this address belongs to a team account, we sent a <nowrap>{digits}-digit</nowrap> code to:",
+      "valid": "It works for {minutes, plural, one {one minute} other {{minutesLabel} minutes}}. Not there? Check your spam folder.",
+      "resent": "If this address belongs to a team account, we sent a new code. Use the latest one.",
+      "label": "{digits}-digit code from the email",
+      "hint": "Type or paste it. Spaces and dashes are fine.",
+      "resend": "Send a new code",
+      "resendIn": "You can send a new code in <n>{time}</n>",
+      "change": "Use a different email",
+      "error": {
+        "empty": "Enter the code from the email. It has {digits} digits.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "totp": {
+      "title": "Enter the code from your app",
+      "lead": "Open your authenticator app and find 3affya. Enter the <nowrap>{digits}-digit</nowrap> code it shows. The code changes every {seconds, plural, one {second} other {{secondsLabel} seconds}}.",
+      "label": "{digits}-digit code from the app",
+      "hint": "Type or paste it. If the code changes while you type, enter the new one.",
+      "useRecovery": "Use a recovery code instead",
+      "error": {
+        "empty": "Enter the code from your authenticator app. It has {digits} digits.",
+        "short": "The code has {digits} digits. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "recovery": {
+      "title": "Use a recovery code",
+      "lead": "Enter one of the recovery codes you saved when you set up your authenticator app. Each code works once.",
+      "label": "Recovery code",
+      "hint": "{chars, plural, one {One letter or number} other {{charsLabel} letters and numbers}}, like {example}. Dashes and spaces are fine.",
+      "useApp": "Use the authenticator app instead",
+      "lost": "Lost your phone and your recovery codes? Ask the account owner to reset your sign-in.",
+      "error": {
+        "empty": "Enter one of your recovery codes.",
+        "chars": "Use only the letters A to Z and the numbers 0 to 9. If your keyboard is set to Arabic, switch it to English.",
+        "length": "A recovery code has {chars, plural, one {one letter or number} other {{charsLabel} letters and numbers}}. You entered {count}.",
+        "unavailable": "We could not check the code just now. Please try again in a minute."
+      }
+    },
+    "refused": {
+      "title": "We could not sign you in",
+      "body": "Something you entered did not match. For security, we do not say which step. Start again from your email, and we will send you a new code.",
+      "limit": "After {max, plural, one {one try} other {{maxLabel} tries}} in a row that do not match, sign-in pauses for {minutes, plural, one {one minute} other {{minutesLabel} minutes}}.",
+      "action": "Start again"
+    },
+    "locked": {
+      "title": "Sign-in is paused",
+      "body": "Too many tries did not match, so sign-in is paused. You can start again at {time}.",
+      "notYou": "If these tries were not yours, tell the account owner."
+    },
+    "done": {
+      "title": "You are signed in",
+      "body": "Opening the review queue…"
+    }
+  },
+  "adminAudit": {
+    "metaTitle": "Audit log",
+    "metaDescription": "Who did what in 3affya, to which record, and when. Read only and append only.",
+    "title": "Audit log",
+    "lead": "Who did what, to which record, and when. Newest first.",
+    "readOnly": "Read only. Entries are added when something changes and can never be edited or deleted.",
+    "loading": "Loading the audit log",
+    "zone": "Times in {zone}",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "dayHeading": "{relative} · {date}",
+    "removedSuffix": "(removed)",
+    "columns": {
+      "time": "Time",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target"
+    },
+    "filters": {
+      "label": "Filter the log",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "from": "From",
+      "to": "To",
+      "dateHint": "Whole days in {zone}, both days included.",
+      "dateOrder": "The end date is before the start date. Pick an end date on or after the start date.",
+      "allActors": "All actors",
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "admins": "Admins",
+      "people": "Professionals and patients",
+      "system": "System",
+      "any": {
+        "professional": "Any professional",
+        "patient": "Any patient"
+      },
+      "more": "More filters",
+      "moreCount": "More filters ({count})",
+      "apply": "Apply filters",
+      "clear": "Clear filters"
+    },
+    "areas": {
+      "verification": "Verification",
+      "listings": "Listings and invites",
+      "money": "Money",
+      "records": "Records and sharing",
+      "security": "Sign-in and export"
+    },
+    "areaAll": {
+      "verification": "All verification events",
+      "listings": "All listing and invite events",
+      "money": "All money events",
+      "records": "All records and sharing events",
+      "security": "All sign-in and export events"
+    },
+    "results": {
+      "showing": "Showing {shown} of {total, plural, one {{totalLabel} entry} other {{totalLabel} entries}}",
+      "showingFiltered": "Showing {shown} of {total, plural, one {{totalLabel} matching entry} other {{totalLabel} matching entries}}",
+      "endTitle": "End of the log",
+      "endBody": "This is the oldest entry, from {date}.",
+      "endFiltered": "That is every entry that matches these filters."
+    },
+    "roles": {
+      "admin": "Admin",
+      "professional": "Professional",
+      "patient": "Patient",
+      "system": "System"
+    },
+    "systemActors": {
+      "sys_stripe": "Stripe webhook",
+      "sys_pipeline": "Records pipeline",
+      "sys_scheduler": "Scheduled job",
+      "sys_registry": "Registry import"
+    },
+    "actions": {
+      "claim": {
+        "submitted": "Claim submitted"
+      },
+      "verification": {
+        "checkRecorded": "Check recorded",
+        "approved": "Verification approved",
+        "rejected": "Verification rejected"
+      },
+      "reverification": {
+        "scheduled": "Re-verification scheduled"
+      },
+      "registry": {
+        "refreshed": "Registry refreshed"
+      },
+      "listing": {
+        "edited": "Listing edited"
+      },
+      "removal": {
+        "confirmed": "Removal confirmed",
+        "refused": "Removal refused"
+      },
+      "specialty": {
+        "edited": "Specialty edited"
+      },
+      "invite": {
+        "created": "Invite created",
+        "used": "Invite used",
+        "expired": "Invite expired"
+      },
+      "payment": {
+        "succeeded": "Payment received"
+      },
+      "booking": {
+        "cancelled": "Booking cancelled"
+      },
+      "refund": {
+        "succeeded": "Refund completed"
+      },
+      "payout": {
+        "paid": "Payout paid"
+      },
+      "membership": {
+        "started": "Membership started"
+      },
+      "recordSet": {
+        "uploaded": "Records uploaded",
+        "summarised": "Summary written",
+        "failed": "Processing failed"
+      },
+      "share": {
+        "created": "Summary shared",
+        "opened": "Shared summary opened"
+      },
+      "summary": {
+        "reviewed": "Summary reviewed"
+      },
+      "admin": {
+        "signedIn": "Signed in",
+        "signInRefused": "Sign-in refused"
+      },
+      "auditLog": {
+        "exported": "Log exported"
+      }
+    },
+    "targets": {
+      "professional": "Listing",
+      "booking": "Booking",
+      "payout": "Payout",
+      "membership": "Membership",
+      "specialty": "Specialty",
+      "invite": "Invite",
+      "recordSet": "Record set",
+      "share": "Shared summary",
+      "adminAccount": "Admin account",
+      "registryImport": "Registry import",
+      "auditLog": "Audit log"
+    },
+    "fields": {
+      "status": "Status",
+      "updated": "Listings updated",
+      "added": "Listings added",
+      "synonymsEn": "Synonyms (English)",
+      "synonymsAr": "Synonyms (Arabic)",
+      "cityEn": "City (English)",
+      "cityAr": "City (Arabic)",
+      "nextReverification": "Next re-verification",
+      "amount": "Amount",
+      "refunded": "Refunded",
+      "registry": "Registry",
+      "factor": "Second factor",
+      "pages": "Pages",
+      "refund": "Refund",
+      "plan": "Plan",
+      "failedPage": "Stopped at page",
+      "filters": "Filters",
+      "rows": "Rows"
+    },
+    "values": {
+      "notSet": "Not set",
+      "listingStatus": {
+        "unclaimed": "Unclaimed",
+        "pending": "Pending review",
+        "verified": "Verified",
+        "rejected": "Rejected",
+        "removed": "Removed"
+      },
+      "inviteStatus": {
+        "valid": "Valid",
+        "used": "Used",
+        "expired": "Expired"
+      },
+      "bookingStatus": {
+        "upcoming": "Upcoming",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "membershipStatus": {
+        "none": "No membership",
+        "active": "Active"
+      },
+      "recordSetStatus": {
+        "queued": "Queued",
+        "processing": "Processing",
+        "done": "Summary ready",
+        "failed": "Failed"
+      },
+      "shareStatus": {
+        "new": "Shared, not opened",
+        "viewed": "Opened",
+        "reviewed": "Reviewed"
+      },
+      "factor": {
+        "totp": "Authenticator code"
+      },
+      "refundOutcome": {
+        "full": "Full refund",
+        "none": "No refund (inside the cancellation window)"
+      },
+      "plan": {
+        "month": "Monthly"
+      }
+    },
+    "checks": {
+      "title": "Verification",
+      "licence": "Licence",
+      "board": "Board certification",
+      "sanctions": "Sanctions",
+      "result": {
+        "active": "Active",
+        "certified": "Certified",
+        "noneFound": "None found",
+        "notConfirmed": "Not confirmed"
+      },
+      "source": "Source:",
+      "checked": "Checked {date} by {name}",
+      "reviewer": "Reviewer:",
+      "awaitingReview": "Not reviewed yet"
+    },
+    "detail": {
+      "change": "What changed",
+      "field": "Field",
+      "before": "Before",
+      "after": "After",
+      "noChange": "No field changed. This entry records an event.",
+      "details": "Details",
+      "note": "Note",
+      "record": "Record",
+      "recordedAt": "Recorded",
+      "recordedUtc": "Stored (UTC)",
+      "entryId": "Entry",
+      "requestId": "Request ID",
+      "stripeEvent": "Stripe event",
+      "actorId": "Actor ID",
+      "targetId": "Target ID",
+      "professional": "Professional"
+    },
+    "empty": {
+      "title": "No entries match these filters",
+      "body": "Nothing in the log matches them. Entries are never deleted, so wider filters will find older ones.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "The audit log did not load",
+      "body": "Nothing was changed or lost, and the log keeps recording. Try again in a moment.",
+      "action": "Try again"
+    },
+    "export": {
+      "button": "Export CSV",
+      "pending": "Preparing the file…",
+      "preview": {
+        "title": "Export is off in the prototype",
+        "body": "In the live build this downloads the {count, plural, one {{countLabel} matching entry} other {{countLabel} matching entries}} as a CSV file, and the export itself is added to this log."
+      },
+      "nothingToExport": {
+        "title": "Nothing to export",
+        "body": "No entries match these filters."
+      },
+      "notAllowed": {
+        "title": "Export needs a fresh sign-in",
+        "body": "Sign in again with your authenticator code, then export."
+      }
+    }
+  },
+  "adminOutreach": {
+    "metaTitle": "Outreach and invites | 3affya admin",
+    "metaDescription": "Invite registry doctors to claim their profile, one email at a time, and track each invite.",
+    "title": "Outreach and invites",
+    "lead": "Invite registry doctors to claim their profile, one email at a time, and see which invites were opened and claimed.",
+    "loading": "Loading invites",
+    "gate": {
+      "title": "Sending is off until counsel clears it",
+      "body": "You can prepare an invite and check the email. Send and Resend switch on once counsel approves outreach emails."
+    },
+    "funnel": {
+      "label": "Invite funnel. Each number filters the list.",
+      "sent": "Sent",
+      "opened": "Opened",
+      "claimed": "Claimed",
+      "expired": "Expired",
+      "sentNote": "All invites",
+      "share": "{pct} of sent",
+      "bounced": "{countLabel} bounced",
+      "revoked": "{countLabel} revoked"
+    },
+    "tabs": {
+      "label": "Invite lists",
+      "sent": "Sent invites",
+      "invite": "To invite"
+    },
+    "filters": {
+      "label": "Search and filter",
+      "searchSent": "Search by name, NPI or email",
+      "searchInvite": "Search by name or NPI",
+      "submit": "Search",
+      "more": "More filters",
+      "moreActive": "More filters ({countLabel} on)",
+      "specialty": "Specialty",
+      "anySpecialty": "Any specialty",
+      "apply": "Apply",
+      "applied": "Filters in use",
+      "remove": "Remove filter: {label}",
+      "query": "Search: {q}",
+      "status": {
+        "opened": "Opened",
+        "claimed": "Claimed",
+        "expired": "Expired",
+        "bounced": "Bounced",
+        "revoked": "Revoked"
+      }
+    },
+    "sent": {
+      "caption": "Invites, newest first",
+      "zone": "Times in <run>{zone}</run>",
+      "sentOn": "Sent {date}",
+      "columns": {
+        "doctor": "Doctor",
+        "status": "Status",
+        "sent": "Sent",
+        "actions": "Actions"
+      }
+    },
+    "status": {
+      "sent": "Not opened yet",
+      "opened": "Opened",
+      "claimed": "Claimed",
+      "expired": "Expired",
+      "bounced": "Bounced",
+      "revoked": "Revoked"
+    },
+    "latest": {
+      "sent": "Works until {expires}.",
+      "opened": "Opened {date}. Works until {expires}.",
+      "claimed": "Claimed {date}.",
+      "expired": "Expired {date}. Opened {opened}, not claimed.",
+      "expiredUnopened": "Expired {date}, never opened.",
+      "bounced": {
+        "noMailbox": "Bounced {date}: no mailbox at this address.",
+        "rejected": "Bounced {date}: the receiving server refused it."
+      },
+      "revoked": "Revoked {date}. The link no longer works.",
+      "justSent": "Sent just now. Works until {expires}."
+    },
+    "actions": {
+      "resend": "Resend",
+      "revoke": "Revoke",
+      "inviteAgain": "Invite again",
+      "fixAddress": "Fix the address",
+      "off": "Off until counsel clears sending"
+    },
+    "toast": {
+      "revoked": "Invite to {name} revoked. The link no longer works.",
+      "restored": "Invite to {name} restored. The link works again.",
+      "resent": "Invite sent again to {name}. The earlier link no longer works.",
+      "failed": "That did not go through, so nothing changed. Try again.",
+      "undo": "Undo"
+    },
+    "errors": {
+      "notCleared": "Sending is off until counsel clears it, so nothing was sent.",
+      "gone": "This invite changed in the meantime: it was claimed, expired or revoked. Reload the page to see it.",
+      "unavailable": "That did not go through, so nothing changed. Try again in a minute."
+    },
+    "justSent": {
+      "title": "Invite sent to {name}",
+      "body": "We emailed <addr>{email}</addr>. The link works until {expires}. This list shows when it is opened and claimed.",
+      "action": "Invite another doctor"
+    },
+    "bounced": {
+      "title": "The invite to {name} bounced",
+      "body": "<addr>{email}</addr> did not accept it on {date}: {reason} Find another address the doctor published, then invite again.",
+      "reason": {
+        "noMailbox": "there is no mailbox at this address.",
+        "rejected": "the receiving server refused it."
+      },
+      "action": "Fix the address"
+    },
+    "empty": {
+      "sentTitle": "No invites sent yet",
+      "sentBody": "Invite a registry doctor to claim their profile. Each invite goes to one doctor at one address.",
+      "sentAction": "Choose a doctor to invite",
+      "inviteTitle": "Every registry doctor has an invite",
+      "inviteBody": "Each unclaimed doctor has an open invite or has claimed the profile. Doctors come back here when an invite expires, bounces or is revoked.",
+      "inviteAction": "See sent invites"
+    },
+    "noMatch": {
+      "sentTitle": "No invites match",
+      "sentBody": "No invite matches these filters. Clear them to see every invite.",
+      "inviteTitle": "No doctors match",
+      "inviteBody": "No unclaimed doctor matches these filters. Clear them to see everyone left to invite.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "Invites did not load",
+      "body": "Something went wrong on our side. Your filters are kept; try again in a moment.",
+      "action": "Try again"
+    },
+    "invite": {
+      "liveNote": "Doctors with an open invite are on the Sent invites tab.",
+      "npi": "NPI <ltr>{npi}</ltr>",
+      "never": "Never invited",
+      "last": {
+        "expired": "Last invite expired {date}",
+        "bounced": "Last invite bounced {date}",
+        "revoked": "Last invite revoked {date}"
+      },
+      "action": "Invite",
+      "again": "Invite again"
+    },
+    "how": {
+      "title": "How invites work",
+      "oneByOne": "One doctor, one address, one email, sent by you. There is no bulk sending.",
+      "link": "Each link works once, for {days, plural, one {{daysLabel} day} other {{daysLabel} days}}. A new invite to the same doctor stops the earlier link.",
+      "opened": "Opened means the doctor opened the claim page from the link. Email opens are not tracked.",
+      "bounced": "Bounced means the address did not accept the email. Fix the address before inviting again.",
+      "limit": "A claim link can be opened {count, plural, one {once} other {{countLabel} times}} an hour from one connection. After that the page asks the doctor to wait an hour.",
+      "revoke": "Revoke stops a link at once. Undo stays in the bar for a moment, in case of a slip."
+    },
+    "compose": {
+      "breadcrumb": "You are here",
+      "title": "Invite {name}",
+      "lead": "The email links to the profile built from the registry. The doctor checks it and claims it, free.",
+      "registry": "From the registry",
+      "viewProfile": "Open the public profile",
+      "liveTitle": "{name} already has an open invite",
+      "liveBody": "Sent {date}. Sending a new invite stops the earlier link.",
+      "email": {
+        "label": "Doctor's email",
+        "hint": "Use an address the doctor published, such as on a hospital or practice page.",
+        "bounced": "The last invite to <addr>{email}</addr> bounced on {date}. Check the address before sending again.",
+        "error": {
+          "empty": "Enter the doctor's email address.",
+          "spaces": "Remove the spaces from the email address.",
+          "noAt": "Add an @ to the address, like name@example.com.",
+          "manyAt": "Use one @ only, like name@example.com.",
+          "noName": "Add the name before the @, like name@example.com.",
+          "noDomain": "Add the part after the @, like name@example.com.",
+          "noDot": "Check the part after the @. It needs a dot, like example.com."
+        }
+      },
+      "line": {
+        "label": "Personal line (optional)",
+        "hint": "Shown at the top of the email, signed with your name.",
+        "count": "{countLabel} of {maxLabel} characters",
+        "tooLong": "Shorten the line to {maxLabel} characters or fewer. It has {countLabel} now."
+      },
+      "language": {
+        "legend": "Email language",
+        "hint": "The claim page opens in the same language."
+      },
+      "preview": {
+        "title": "Email preview",
+        "lead": "What the doctor receives.",
+        "from": "From",
+        "to": "To",
+        "subject": "Subject",
+        "preheader": "Preview text",
+        "toEmpty": "The doctor's email"
+      },
+      "expires": "If sent now, the link works until {expires}.",
+      "send": "Send invite",
+      "sending": "Sending…",
+      "sendOff": "Send is off until counsel clears outreach emails.",
+      "back": "Back to outreach",
+      "errors": {
+        "doctor": "This doctor can no longer be invited: the profile was claimed or removed.",
+        "notCleared": "Sending is off until counsel clears it, so nothing was sent.",
+        "unavailable": "The invite did not go out. Your text is kept; try again in a minute."
+      },
+      "notFound": {
+        "title": "This doctor cannot be invited",
+        "body": "The profile was claimed or removed, or the link is wrong.",
+        "action": "Back to outreach"
+      }
+    },
+    "email": {
+      "fromName": "3affya",
+      "subject": "{name}, your 3affya profile is ready to claim",
+      "preheader": "Built from your public NPI record. Claiming is free; check the details and add your photo.",
+      "headline": "{name}, your profile is ready",
+      "noteFrom": "A note from {admin} at 3affya",
+      "intro": "Patients in the Gulf are looking for US-trained doctors who speak Arabic. We built a profile for you from public US records so they can find you on 3affya.",
+      "factsTitle": "What the registry lists",
+      "facts": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "city": "City",
+        "npi": "NPI"
+      },
+      "gives": "Claiming is free. You choose what shows, set your own fee and weekly hours, and can edit everything at any time.",
+      "scrutiny": "Once you claim it, patients see this profile as yours, so keep your fee and hours current.",
+      "button": "Check and claim your profile",
+      "expiry": "The link works once, until {expires}.",
+      "notMe": "Not you, or do not want a profile? The page has a link to have it removed.",
+      "why": "You received this because the public US NPI registry lists you as a practising doctor.",
+      "optOut": "To stop emails from 3affya, reply with the word STOP."
+    }
+  },
+  "adminRemovals": {
+    "metaTitle": "Removal requests",
+    "metaDescription": "Remove-me requests from doctors listed from public records, with the timer, the checks and the decision.",
+    "title": "Removal requests",
+    "lead": "Doctors listed from public records who asked us to take their profile down. Each was promised a decision {sla}.",
+    "sla": "{hours, plural, one {within one hour} other {within {count} hours}}",
+    "units": {
+      "hours": "{count, plural, one {{n} hour} other {{n} hours}}",
+      "hoursShort": "{count, plural, =0 {under 1 h} other {{n} h}}"
+    },
+    "tabs": {
+      "label": "Removal requests",
+      "open": "Open",
+      "decided": "Decided"
+    },
+    "legend": "Times in <z>{zone}</z>. The timer turns amber once a request is {warn} old, and red after {sla}.",
+    "legendDecided": "Times in <z>{zone}</z>. Time to decide runs from the request to the decision; the promise is {sla}.",
+    "columns": {
+      "listing": "Listing",
+      "askedBy": "Asked by",
+      "reason": "Reason",
+      "checks": "Checks",
+      "received": "Received",
+      "timeLeft": "Time left",
+      "decision": "Decision",
+      "decided": "Decided",
+      "taken": "Time to decide"
+    },
+    "npi": "NPI",
+    "reasons": {
+      "notListed": "Does not want to be listed",
+      "notPractising": "No longer sees patients",
+      "wrongDetails": "Says the details are wrong",
+      "other": "Another reason"
+    },
+    "status": {
+      "open": "Open",
+      "infoRequested": "Waiting on the doctor",
+      "confirmed": "Removed",
+      "refused": "Refused"
+    },
+    "timer": {
+      "left": "{count, plural, =0 {Under 1 h left} other {{n} h left}}",
+      "overdue": "{count, plural, =0 {Overdue} other {{n} h overdue}}",
+      "paused": "{count, plural, =0 {Paused, under 1 h left} other {Paused, {n} h left}}",
+      "taken": "{count, plural, =0 {Took under 1 h} other {Took {n} h}}",
+      "takenLate": "{count, plural, =0 {Took under 1 h, late} other {Took {n} h, late}}"
+    },
+    "checksCount": "{passed} of {total} checks",
+    "overdue": {
+      "title": "{count, plural, one {{countLabel} request missed the {slaLabel}-hour promise} other {{countLabel} requests missed the {slaLabel}-hour promise}}",
+      "body": "Each doctor was told the profile comes down {sla}. Decide these first.",
+      "filtered": "Showing only the requests that missed the promise.",
+      "show": "Show only these",
+      "showAll": "Show all open requests"
+    },
+    "empty": {
+      "open": {
+        "title": "No removal requests waiting",
+        "body": "New requests from the This is me page land here. Each must be decided {sla}.",
+        "action": "See decided requests"
+      },
+      "decided": {
+        "title": "No decisions yet",
+        "body": "Removed and refused requests show here, with who decided and when.",
+        "action": "See open requests"
+      }
+    },
+    "error": {
+      "title": "The queue did not load",
+      "body": "Nothing was changed. Try again in a minute.",
+      "action": "Try again"
+    },
+    "loading": "Loading removal requests",
+    "languages": {
+      "ar": "Arabic",
+      "en": "English"
+    },
+    "detail": {
+      "metaTitle": "Removal request",
+      "loading": "Loading the request",
+      "breadcrumb": "You are here",
+      "meta": "Request <code>{id}</code> · received {day}",
+      "decided": {
+        "confirmed": {
+          "title": "Profile removed",
+          "body": "Removed on {day} at <nowrap>{time}</nowrap> by {admin}, {taken} after the request. Its public link answers 410 Gone."
+        },
+        "refused": {
+          "title": "Request refused",
+          "body": "Refused on {day} at <nowrap>{time}</nowrap> by {admin}, {taken} after the request. The profile stays listed."
+        },
+        "inTime": "Within the promise of {sla}.",
+        "late": "Later than the promise of {sla}.",
+        "reasonLead": "We sent the doctor this reason:"
+      },
+      "seePublic": "See the public page",
+      "auditLog": "Open the audit log",
+      "backToQueue": "Back to removal requests",
+      "waiting": {
+        "title": "Waiting on the doctor",
+        "body": "{admin} asked on {day} at <nowrap>{time}</nowrap>:"
+      },
+      "request": {
+        "title": "The request",
+        "askedBy": "Asked by",
+        "email": "Email",
+        "npi": "NPI given",
+        "reason": "Reason",
+        "details": "Details",
+        "noDetails": "Nothing added.",
+        "language": "Language",
+        "received": "Received"
+      },
+      "checks": {
+        "title": "Checks",
+        "summary": "{passed} of {total} passed",
+        "lead": "A person decides. These are what the request can prove; the NPI is public, so the name and the email matter most.",
+        "given": "Request: <b>{value}</b>",
+        "record": "Record: <b>{value}</b>",
+        "npi": {
+          "pass": "NPI matches the public record",
+          "fail": "NPI does not match the public record"
+        },
+        "name": {
+          "pass": "Name matches the public record",
+          "fail": "Name differs from the public record"
+        },
+        "email": {
+          "pass": "Email confirmed",
+          "fail": "Email not confirmed",
+          "passDetail": "The confirmation link was opened on {day} at <nowrap>{time}</nowrap>.",
+          "failDetail": "The confirmation link we sent has not been opened."
+        },
+        "unclaimed": {
+          "pass": "Profile is still unclaimed",
+          "fail": "Profile was claimed since",
+          "failDetail": "A claimed profile is not removed from here: its owner can delete it from their portal."
+        }
+      },
+      "profile": {
+        "title": "Matching profile",
+        "source": "Listed from the CMS NPPES file of {date}.",
+        "practice": "Practice on record: <b>{name}</b>.",
+        "removedNote": "No longer public: its link answers 410 Gone."
+      },
+      "timer": {
+        "title": "Time left to decide",
+        "titleOverdue": "Past the promise",
+        "titlePaused": "Timer paused",
+        "late": "{value} late",
+        "of": "of {sla}",
+        "dueBy": "Decide by {day} at <nowrap>{time}</nowrap>.",
+        "dueWas": "It was due on {day} at <nowrap>{time}</nowrap>.",
+        "pausedSince": "Paused since {day} at <nowrap>{time}</nowrap>, when we asked the doctor a question. It runs again when they reply."
+      },
+      "notFound": {
+        "title": "This request is not in the queue",
+        "body": "The link may be old, or the request id mistyped.",
+        "action": "Back to removal requests"
+      }
+    },
+    "decision": {
+      "title": "Your decision",
+      "hint": "Each decision is written to the audit log, and the doctor gets an email in the language of the request.",
+      "confirm": "Confirm removal",
+      "askInfo": "Ask for more information",
+      "refuse": "Refuse with reason",
+      "cancel": "Cancel",
+      "working": "Saving…",
+      "confirmStep": {
+        "title": "Remove {name}'s profile?",
+        "body": "It comes down now: its link answers 410 Gone, search engines are told the page is gone, and we email the doctor that it is done.",
+        "checksWarning": "Only {passed} of {total} checks passed. You can still remove it; the audit entry records the checks as they stand.",
+        "submit": "Remove the profile",
+        "keep": "Keep it listed"
+      },
+      "refuseStep": {
+        "title": "Refuse the request",
+        "label": "Reason the doctor reads",
+        "hint": "We email it in {language}. Say what they can do next.",
+        "submit": "Refuse and email the doctor"
+      },
+      "askInfoStep": {
+        "title": "Ask for more information",
+        "label": "Your question",
+        "hint": "We email it in {language}. The timer pauses until they reply.",
+        "submit": "Send the question"
+      },
+      "errors": {
+        "refuse": {
+          "noteMissing": "Write why you are refusing. The doctor reads it in our email."
+        },
+        "askInfo": {
+          "noteMissing": "Write what you need from the doctor."
+        },
+        "noteTooShort": "{min, plural, one {Add a little more, at least {minLabel} character, so the doctor knows what to do next.} other {Add a little more, at least {minLabel} characters, so the doctor knows what to do next.}}",
+        "noteTooLong": "Shorten this to {maxLabel} characters or fewer. It has {countLabel} now."
+      },
+      "failed": {
+        "unavailable": {
+          "title": "That did not go through",
+          "body": "Nothing was changed. Try again in a minute."
+        },
+        "decided": {
+          "title": "Already decided",
+          "body": "Someone decided this request a moment ago. Reload the page to see the decision."
+        },
+        "notFound": {
+          "title": "This request is gone",
+          "body": "It is no longer in the queue. Go back to the list to see where it stands."
+        }
+      },
+      "done": {
+        "confirm": {
+          "title": "Profile removed",
+          "body": "{name}'s profile is down. Its link now answers 410 Gone, the audit log has the entry, and we emailed the doctor."
+        },
+        "refuse": {
+          "title": "Request refused",
+          "body": "{name}'s profile stays listed. We emailed the doctor your reason, and the audit log has the entry."
+        },
+        "askInfo": {
+          "title": "Question sent",
+          "body": "The timer is paused until the doctor replies. Their answer arrives on this page."
+        },
+        "seePublic": "See the public page",
+        "backToQueue": "Back to removal requests"
+      }
+    }
+  },
+  "adminMembers": {
+    "metaTitle": "Members and subscriptions",
+    "metaDescription": "Membership status, plan, renewal and grace period for every verified professional. The subscriptions themselves live in Stripe Billing.",
+    "title": "Members and subscriptions",
+    "lead": "Every verified professional and their membership. Stripe Billing holds the subscriptions, cards and invoices: change billing there.",
+    "loading": "Loading memberships",
+    "stripeBilling": "Open Stripe Billing",
+    "newTab": "opens in a new tab",
+    "zone": "Dates in",
+    "totals": {
+      "label": "Totals for all verified professionals",
+      "mrr": "Monthly recurring",
+      "mrrNote": "{count, plural, =0 {no renewing memberships} one {{countLabel} renewing membership} other {{countLabel} renewing memberships}}",
+      "pastDue": "Past due",
+      "pastDueNote": "{amount} a month at risk",
+      "ending": "Ending",
+      "endingNote": "{amount} a month stops",
+      "footnote": "Estimate at list prices, before tax and Stripe fees: yearly plans count a twelfth, free months nothing. Stripe Billing has the exact figures."
+    },
+    "filters": {
+      "label": "Show memberships",
+      "current": "Active and past due",
+      "cancelled": "Cancelled",
+      "none": "No membership",
+      "all": "All"
+    },
+    "table": {
+      "caption": "Professionals and their memberships",
+      "professional": "Professional",
+      "plan": "Plan",
+      "status": "Status",
+      "renewal": "Renewal or grace",
+      "stripe": "Stripe"
+    },
+    "status": {
+      "active": "Active",
+      "past_due": "Past due",
+      "cancelled": "Cancelled",
+      "none": "No membership"
+    },
+    "plan": {
+      "perMonth": "{price} per month",
+      "perYear": "{price} per year",
+      "free": "Free"
+    },
+    "renewal": {
+      "renews": "Renews {date}",
+      "freeUntil": "Free until {date}",
+      "then": "Then {price}",
+      "graceEnds": "Grace ends {date}",
+      "daysLeft": "{daysLabel} of {grace, plural, one {{graceLabel} day} other {{graceLabel} days}} left",
+      "graceOver": "Grace over: booking paused",
+      "ends": "Ends {date}",
+      "cancelledOn": "Cancelled {date}",
+      "none": "No subscription"
+    },
+    "row": {
+      "stripe": "Open in Stripe",
+      "stripeLabel": "{name}: subscription in Stripe, opens in a new tab",
+      "noStripe": "Not in Stripe",
+      "details": "Details for {name}",
+      "justChanged": "Just changed",
+      "waiting": "Waiting for Stripe"
+    },
+    "empty": {
+      "current": {
+        "title": "No active or past-due memberships",
+        "body": "A membership shows here once Stripe confirms its first payment."
+      },
+      "cancelled": {
+        "title": "No cancelled memberships",
+        "body": "Nobody has set their membership to end."
+      },
+      "none": {
+        "title": "Every verified professional is a member",
+        "body": "Professionals on the free Claimed plan show here."
+      },
+      "all": {
+        "title": "No verified professionals yet",
+        "body": "Professionals show here once their credentials are approved."
+      },
+      "showAll": "Show all professionals",
+      "review": "Open the review queue"
+    },
+    "error": {
+      "title": "Memberships did not load",
+      "body": "The list could not be read just now; the subscriptions in Stripe are not affected. Try again, or look one up in Stripe Billing.",
+      "action": "Try again"
+    },
+    "detail": {
+      "plan": "Plan",
+      "memberSince": "Member since",
+      "renewsOn": "Renews on",
+      "nextPayment": "Next payment",
+      "nextPaymentOn": "{price} on {date}",
+      "freeUntil": "Free months until",
+      "graceEnds": "Grace ends",
+      "cancelledOn": "Cancelled on",
+      "endsOn": "Ends on",
+      "lastInvoice": "Last invoice",
+      "invoicePaid": "Paid",
+      "invoiceFailed": "Payment failed",
+      "doctorZone": "Doctor's time zone",
+      "body": {
+        "active": "Patients can book this doctor. Stripe charges the card at each renewal.",
+        "comp": "Patients can book this doctor. Stripe charges nothing until the free months end.",
+        "past_due": "The last renewal did not go through. Patients can book until the grace period ends; Stripe retries the card on its own. After that, booking pauses until the payment goes through.",
+        "graceOver": "The grace period is over, so booking is paused until the payment goes through. The profile stays up.",
+        "cancelled": "It will not renew. Patients can book until it ends; then the profile stays up on the free Claimed plan.",
+        "none": "On the free Claimed plan: patients can read the profile but cannot book."
+      },
+      "links": "In Stripe",
+      "subscription": "Subscription",
+      "customer": "Customer",
+      "invoice": "Invoice {number}",
+      "profile": "Public profile",
+      "notFound": {
+        "title": "Not on this list",
+        "body": "Only verified professionals have a membership row. Check the listing in Listings.",
+        "action": "Open Listings",
+        "sheetTitle": "Membership"
+      },
+      "freeBadge": "Free months"
+    },
+    "change": {
+      "title": "Change this membership",
+      "pending": "Sending…",
+      "comp": {
+        "legend": "Give free months",
+        "legendStart": "Start a free membership",
+        "hint": "Stripe moves the next charge back. The doctor pays nothing until then.",
+        "hintStart": "Patients can book at once. It ends after the free months unless the doctor subscribes.",
+        "months": "{months, plural, one {{monthsLabel} month} other {{monthsLabel} months}}",
+        "until": "Free until {date}",
+        "submit": "Give {months, plural, one {{monthsLabel} free month} other {{monthsLabel} free months}}",
+        "submitStart": "Start {months, plural, one {{monthsLabel} free month} other {{monthsLabel} free months}}"
+      },
+      "extend": {
+        "legend": "Extend the grace period",
+        "hint": "Adds {days, plural, one {{daysLabel} day} other {{daysLabel} days}} for this doctor only. Patients keep booking while Stripe retries the card.",
+        "submit": "Extend grace to {date}"
+      },
+      "cancel": {
+        "legend": "Cancel at period end",
+        "hint": "Nothing renews after {date}. Patients can book until then, and you can undo it until then.",
+        "submit": "Cancel at period end"
+      },
+      "resume": {
+        "legend": "Resume renewal",
+        "hint": "It renews on {date} at {price}, as before.",
+        "submit": "Resume renewal"
+      },
+      "errors": {
+        "notFound": "This professional is not on the list any more. Reload the page.",
+        "notAllowed": "That change does not fit this membership any more. Reload the page.",
+        "badMonths": "Choose how many free months.",
+        "unavailable": "Stripe did not answer. Nothing changed; try again in a moment."
+      }
+    },
+    "changed": {
+      "comp": {
+        "title": "{name}: free until {date}",
+        "body": "Sent to Stripe. The doctor pays nothing until then; the row updates once Stripe confirms."
+      },
+      "extend": {
+        "title": "{name}: grace extended to {date}",
+        "body": "Patients can book until <nowrap>{time}</nowrap>. Stripe keeps retrying the card."
+      },
+      "cancel": {
+        "title": "{name}'s membership ends on {date}",
+        "body": "Sent to Stripe. Patients can book until then and nothing renews after. The row shows Cancelled once Stripe confirms."
+      },
+      "resume": {
+        "title": "{name}'s membership renews again",
+        "body": "Sent to Stripe. It renews on {date} at {price}."
+      },
+      "stub": "Prototype: nothing was sent to Stripe.",
+      "undo": "Undo",
+      "undoing": "Undoing…",
+      "undoFailed": "Could not undo. Nothing else changed; try again.",
+      "undone": {
+        "title": "Undone",
+        "body": "{name}'s membership is as it was before."
+      },
+      "stubSaved": "Prototype: nothing was saved."
+    }
+  },
+  "adminReview": {
+    "metaTitle": "Credential review queue",
+    "metaDescription": "Claims waiting for review, oldest first. Check each doctor's licence, board, sanctions and photo at the source, then approve, or reject with a reason the doctor sees.",
+    "title": "Review queue",
+    "breadcrumb": "Breadcrumb",
+    "loading": "Loading the review queue",
+    "leadLoading": "Claims waiting for a decision, oldest first.",
+    "npi": "NPI",
+    "lead": {
+      "waiting": "{count, plural, one {{countLabel} claim waiting.} other {{countLabel} claims waiting.}}",
+      "overdue": "{count, plural, one {{countLabel} is overdue.} other {{countLabel} are overdue.}}",
+      "noneOverdue": "None is overdue.",
+      "order": "Oldest first. A decision is due {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} after the doctor submits; a resubmission starts the clock again."
+    },
+    "error": {
+      "title": "The review queue did not load",
+      "body": "Something went wrong on our side. No claim and no decision has changed. Try again in a moment.",
+      "action": "Try again"
+    },
+    "empty": {
+      "title": "No claims waiting",
+      "body": "When a doctor submits a licence and board for review, the claim appears here, oldest first.",
+      "action": "Open listings"
+    },
+    "notFound": {
+      "title": "No claim to review here",
+      "body": "This profile has no credentials waiting for review. It may be unclaimed or already decided, or the link may be wrong.",
+      "action": "Back to the review queue"
+    },
+    "status": {
+      "new": "New",
+      "resubmitted": "Resubmitted",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "sla": {
+      "overdue": "Overdue by {duration}",
+      "dueSoon": "Due in {duration}",
+      "onTime": "Due in {duration}"
+    },
+    "duration": {
+      "underHour": "less than an hour",
+      "hours": "{count, plural, one {{countLabel} hour} other {{countLabel} hours}}",
+      "days": "{count, plural, one {{countLabel} day} other {{countLabel} days}}"
+    },
+    "queue": {
+      "licenceIn": "{state} licence",
+      "waiting": "Waiting {duration}"
+    },
+    "detail": {
+      "submittedAt": "Submitted {date}, <nowrap>{time}</nowrap>",
+      "resubmittedAt": "Resubmitted {date}, <nowrap>{time}</nowrap>",
+      "previousTitle": "Returned to the doctor on {date}",
+      "previousBody": "The doctor answered this reason and resubmitted. Check that the new file fixes it."
+    },
+    "fileKind": {
+      "licence": "Licence",
+      "board": "Board certificate",
+      "other": "Other file",
+      "photo": "Profile photo"
+    },
+    "viewer": {
+      "open": "Open in the viewer:",
+      "photoAlt": "The doctor's profile photo",
+      "prototype": "Prototype: only file names are kept here, never the files. In the live product the file opens from the private credentials store through a short-lived signed link.",
+      "kind": "Type",
+      "size": "Size",
+      "uploaded": "Uploaded",
+      "sizeMb": "{size} MB"
+    },
+    "links": {
+      "docinfo": "Open FSMB DocInfo",
+      "abms": "Open ABMS Certification Matters",
+      "npdb": "Open the NPDB"
+    },
+    "sources": {
+      "stateBoard": "{state} medical board",
+      "docinfo": "FSMB DocInfo",
+      "abms": "ABMS Certification Matters",
+      "aoa": "AOA board certification records",
+      "npdb": "NPDB query",
+      "visual": "Looked at the photo",
+      "reverseImage": "Reverse image search"
+    },
+    "checks": {
+      "title": "Verification checklist",
+      "progress": "{done} of {of} done",
+      "lead": "Check each item at its primary source before anything shows as verified. Each check is saved with its source, the time and your name ({name}).",
+      "result": "Result",
+      "source": "Checked at",
+      "stamp": "Checked {when} by {name}",
+      "filesLabel": "Uploaded files",
+      "noFiles": "No file for this check.",
+      "newTab": "(opens in a new tab)",
+      "licence": {
+        "title": "Licence at the state board",
+        "where": "The state medical board that issued it, or FSMB DocInfo. Match the name, number, status and expiry.",
+        "entry": "The doctor entered: {state} licence {number}",
+        "entryMissing": "The doctor entered no licence.",
+        "expiry": "Licence expires on",
+        "expiryHint": "As the board shows it. Re-verification is due at expiry or after {months, plural, one {{monthsLabel} month} other {{monthsLabel} months}}, whichever comes first.",
+        "expiryPast": "This date has passed. An expired licence does not match: choose Does not match.",
+        "expiresOn": "expires {date}"
+      },
+      "board": {
+        "title": "Board certification at ABMS or AOA",
+        "where": "ABMS Certification Matters for ABMS boards, the AOA for osteopathic boards. Match the board and that the certificate is current.",
+        "entryCertified": "The doctor entered: certified by the {board}",
+        "entryEligible": "The doctor entered: board eligible, not certified",
+        "notNamed": "No named ABMS or AOA board. A board certified claim needs one: reject with a reason.",
+        "eligibleNote": "Nothing to check at ABMS. Board eligible shows on the profile as text only, never as the US board certified badge."
+      },
+      "sanctions": {
+        "title": "Sanctions",
+        "where": "FSMB DocInfo for board actions; the NPDB for licensure actions, exclusions and malpractice reports.",
+        "entry": "Nothing to upload. Search by the doctor's name and NPI {npi}."
+      },
+      "photo": {
+        "title": "Photo",
+        "where": "Patients see this photo on the card. It should show the doctor alone, as patients will meet them.",
+        "entry": "Check that the photo shows:",
+        "fileName": "Profile photo",
+        "points": {
+          "coat": "A white coat (scrubs plus a coat for surgical and emergency doctors)",
+          "background": "A plain background",
+          "alone": "The doctor alone, not a group",
+          "stock": "A real photo of this doctor, not a stock photo"
+        }
+      }
+    },
+    "checkResult": {
+      "unchecked": "Not checked",
+      "match": "Matches",
+      "mismatch": "Does not match",
+      "eligible": "Board eligible: text only"
+    },
+    "gap": {
+      "unchecked": "not checked yet",
+      "mismatch": "does not match",
+      "expiryMissing": "add the licence expiry date",
+      "expiryPast": "the licence has expired or expires today",
+      "boardNotNamed": "no named ABMS or AOA board"
+    },
+    "compare": {
+      "title": "Registry and the doctor's entries",
+      "lead": "The registry column is the CMS file of {date}, joined on the NPI.",
+      "leadNoDate": "The registry column is the CMS file, joined on the NPI.",
+      "npiLink": "Open the NPI registry",
+      "newTab": "(opens in a new tab)",
+      "registry": "Registry",
+      "doctor": "The doctor entered",
+      "notInFile": "Not in the registry file",
+      "notEntered": "Not entered",
+      "differsCount": "{count, plural, one {{countLabel} difference} other {{countLabel} differences}}",
+      "licenceValue": "{state} · {number}",
+      "boardCertified": "Certified: {board}",
+      "boardEligible": "Board eligible",
+      "fields": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "city": "Practice city",
+        "npi": "NPI",
+        "school": "Medical school",
+        "licence": "Licence",
+        "board": "Board"
+      },
+      "agreement": {
+        "same": "Same",
+        "differs": "Differs",
+        "source": "Check at the source"
+      }
+    },
+    "decision": {
+      "title": "Decision",
+      "legend": "Choose the outcome",
+      "choose": "Choose an outcome. Neither is final: you can undo it straight after.",
+      "working": "Saving…",
+      "approve": {
+        "title": "Approve",
+        "description": "The doctor becomes verified. The card will read: {line}.",
+        "notReady": "Finish the checklist to approve",
+        "mismatchTitle": "A check does not match",
+        "mismatchBody": "Reject with a reason instead, so the doctor knows what to fix.",
+        "ready": {
+          "licence": "Every check matches. Re-verification will be due {date}, when the licence expires.",
+          "cycle": "Every check matches. Re-verification will be due {date}, {months, plural, one {{monthsLabel} month} other {{monthsLabel} months}} from today."
+        },
+        "eligible": "Board eligible: the card will not show the US board certified badge.",
+        "button": "Approve and mark verified"
+      },
+      "reject": {
+        "title": "Reject with a reason",
+        "description": "The claim goes back to the doctor with your reason. The doctor can replace the file and resubmit.",
+        "fixLegend": "What needs fixing",
+        "fix": {
+          "licence": "The licence",
+          "board": "The board certificate",
+          "other": "Something else"
+        },
+        "reasonEn": "Reason the doctor sees, in English",
+        "reasonEnHint": "Say what is wrong and what to upload instead, in at least {min} characters. The doctor sees it as you write it, on their profile page and by email.",
+        "reasonAr": "The same reason in Arabic (optional)",
+        "reasonArHint": "Doctors who use 3affya in Arabic see this version. Leave it empty and they see the English.",
+        "previewTitle": "What {name} sees on their profile page",
+        "previewEmpty": "Your reason shows here.",
+        "button": "Reject and send the reason"
+      }
+    },
+    "errors": {
+      "checks": "Approve needs every check to match. Finish the checklist first.",
+      "notFound": "This claim is no longer waiting. Another reviewer may have decided it. Go back to the queue.",
+      "unavailable": "The decision was not saved, and nothing changed for the doctor. Try again.",
+      "reasonMissing": "Write the reason the doctor will see.",
+      "reasonShort": "Say a little more: at least {min} characters, so the doctor knows what to fix.",
+      "reasonTooLong": "Keep the reason under {max} characters."
+    },
+    "result": {
+      "next": "Open the next claim: {name}",
+      "backToQueue": "Back to the review queue",
+      "logged": "Saved to the audit log with your name, the time and every check.",
+      "audit": "Open the audit log",
+      "checksTitle": "Checks as saved",
+      "approved": {
+        "title": "Approved: {name} is verified",
+        "by": "Approved {when} by {name}.",
+        "card": "The card and the profile now read: {line}.",
+        "reverify": {
+          "licence": "Re-verification due {date}, when the licence expires.",
+          "cycle": "Re-verification due {date}."
+        },
+        "eligible": "Board eligible: shown as text, with no US board certified badge.",
+        "cardTitle": "The card patients see now"
+      },
+      "rejected": {
+        "title": "Rejected: sent back to {name}",
+        "by": "Rejected {when} by {name}.",
+        "next": "{name} sees your reason on their profile page and by email, and can replace the file and resubmit. The claim then comes back to this queue.",
+        "builderLink": "See the doctor's profile page (prototype)"
+      }
+    },
+    "toast": {
+      "approved": "Approved {name}.",
+      "rejected": "Rejected and sent back to {name}.",
+      "undo": "Undo",
+      "undone": "Undone. {name} is back in review.",
+      "undoFailed": "Undo did not go through. Open the audit log to check the decision.",
+      "dismiss": "Close"
+    }
+  },
+  "adminPayments": {
+    "metaTitle": "Payments, refunds and payouts | 3affya admin",
+    "metaDescription": "Every payment with its three lines, every refund with who and why, and each doctor's Stripe payouts.",
+    "title": "Payments, refunds and payouts",
+    "lead": "As Stripe's webhooks stored them. Money here changes only when Stripe confirms it.",
+    "loading": "Loading payments",
+    "export": "Export CSV",
+    "zone": "Times in",
+    "currencyNote": "Amounts in {currency}, the currency each payment was charged in.",
+    "openStripe": "Open in Stripe",
+    "newTab": "(opens in a new tab)",
+    "tabs": {
+      "label": "Money views",
+      "payments": "Payments",
+      "refunds": "Refunds",
+      "payouts": "Payouts"
+    },
+    "filters": {
+      "title": "Filters",
+      "on": "{count, plural, one {{countLabel} on} other {{countLabel} on}}",
+      "status": "Status",
+      "reason": "Reason",
+      "account": "Stripe account",
+      "doctor": "Doctor",
+      "anyDoctor": "All doctors",
+      "period": "Period",
+      "anyTime": "Any time",
+      "lastDays": "Last {days} days",
+      "apply": "Show results",
+      "clear": "Clear filters",
+      "chipsLabel": "Filters on",
+      "remove": "Remove filter: {label}"
+    },
+    "status": {
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "partlyRefunded": "Partly refunded",
+      "refundPending": "Waiting for Stripe"
+    },
+    "visit": {
+      "upcoming": "Visit upcoming",
+      "done": "Visit done",
+      "cancelled": "Visit cancelled"
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "brand": {
+      "visa": "Visa",
+      "mastercard": "Mastercard"
+    },
+    "wallet": {
+      "applePay": "Apple Pay",
+      "googlePay": "Google Pay"
+    },
+    "card": "{brand} ending {last4}",
+    "columns": {
+      "paidOn": "Paid on",
+      "payment": "Payment",
+      "doctorFee": "Doctor's fee",
+      "platformFee": "Platform fee",
+      "cardProcessing": "Card processing",
+      "total": "Total",
+      "status": "Status",
+      "action": "Action",
+      "refundedOn": "Requested on",
+      "amount": "Amount",
+      "reason": "Reason",
+      "by": "By",
+      "doctor": "Doctor",
+      "account": "Stripe account",
+      "bank": "Bank",
+      "nextPayout": "Next payout",
+      "lastPayout": "Last payout"
+    },
+    "row": {
+      "refund": "Refund",
+      "refundLabel": "Refund payment {number}",
+      "lines": "The three lines",
+      "doctorFeeShort": "Doctor",
+      "platformFeeShort": "Platform",
+      "cardShort": "Card"
+    },
+    "refunds": {
+      "status": {
+        "pending": "Waiting for Stripe",
+        "succeeded": "Refunded"
+      },
+      "reason": {
+        "patientEarly": "Patient cancelled early",
+        "patientLate": "Patient cancelled late",
+        "doctor": "Doctor cancelled",
+        "platform": "Problem on our side",
+        "override": "In full, above the rule",
+        "byRule": "By the rule, visit still ahead"
+      },
+      "by": {
+        "patient": "Automatic, when the patient cancelled",
+        "doctor": "Automatic, when the doctor cancelled",
+        "platform": "Automatic"
+      },
+      "note": "Note: {note}"
+    },
+    "payouts": {
+      "lead": "Read from Stripe's API when this page opens. Stripe hosts each doctor's payouts and bank details.",
+      "status": {
+        "enabled": "Payouts on",
+        "inProgress": "Setting up",
+        "restricted": "Stripe needs details",
+        "notStarted": "Not set up"
+      },
+      "bookingsPaused": "Bookings paused until Stripe has what it needs.",
+      "needs": "Stripe needs: {items}",
+      "overdue": "{item} (overdue)",
+      "need": {
+        "idDocument": "photo ID",
+        "addressDocument": "proof of address",
+        "ssn": "Social Security number",
+        "dob": "date of birth",
+        "address": "home address",
+        "phone": "phone number",
+        "website": "practice website",
+        "bankAccount": "bank account",
+        "terms": "agreement to Stripe's terms",
+        "other": "other details"
+      },
+      "bank": "Ending {last4}",
+      "noBank": "Not added",
+      "noNext": "None scheduled",
+      "noLast": "None yet",
+      "record": {
+        "paid": "Paid",
+        "inTransit": "On the way",
+        "failed": "Failed"
+      }
+    },
+    "detail": {
+      "breadcrumb": "Breadcrumb",
+      "crumb": "Payment {number}",
+      "title": "Payment {number}",
+      "totalPaid": "Total paid",
+      "paidOn": "Paid",
+      "method": "Paid with",
+      "receipt": "Receipt number",
+      "patient": "Patient",
+      "lines": {
+        "caption": "What the patient paid, as on the receipt",
+        "doctorFee": "Doctor's fee",
+        "doctorFeeDetail": "Set by the doctor",
+        "platformFee": "Platform fee",
+        "platformFeeDetail": "{pct} of the doctor's fee, first visit only",
+        "cardProcessing": "Card processing",
+        "cardProcessingDetail": "Card networks and our payment provider",
+        "total": "Total paid"
+      },
+      "flow": {
+        "title": "Where the money went",
+        "doctor": "To {name}'s Stripe account",
+        "doctorDetail": "Destination charge, transfer {id}",
+        "platform": "3affya's application fee",
+        "platformDetail": "Platform fee plus the card processing line, which pays Stripe's fee",
+        "total": "Charged"
+      },
+      "refunds": {
+        "title": "Refunds",
+        "none": "No refund on this payment.",
+        "net": "Kept after refunds",
+        "byRule": "Refund by the rule",
+        "inFull": "Refund in full",
+        "inProgress": "A refund is waiting for Stripe. Refunding again would return the same refund, so the buttons are off until Stripe confirms."
+      },
+      "visit": {
+        "title": "The visit",
+        "patientTime": "Patient's time",
+        "doctorTime": "Doctor's time",
+        "cancelled": "Cancelled by the {by, select, patient {patient} doctor {doctor} other {platform}} on {date}, {hours} before the visit.",
+        "deadline": "Full refund if cancelled before <nowrap>{day}</nowrap> <nowrap>{time}</nowrap>."
+      },
+      "stripe": {
+        "title": "In Stripe",
+        "payment": "Payment",
+        "account": "Doctor's connected account",
+        "transfer": "Transfer",
+        "refund": "Refund",
+        "key": "Idempotency key",
+        "noAccount": "No connected account"
+      },
+      "notFound": {
+        "title": "We cannot find this payment",
+        "body": "The link may be incomplete, or Stripe never confirmed this payment.",
+        "action": "See all payments"
+      }
+    },
+    "rule": {
+      "patientEarly": "{patient} cancelled more than {cutoff} before the visit, so the whole total comes back.",
+      "patientLate": "{patient} cancelled {cutoff} or less before the visit, so the rule refunds nothing.",
+      "doctor": "The doctor cancelled, so the whole total comes back.",
+      "platform": "The visit could not happen because of a problem on our side, so the whole total comes back.",
+      "upcomingEarly": "The visit is more than {cutoff} away, so cancelling now refunds the whole total.",
+      "upcomingLate": "The visit is {cutoff} or less away, so cancelling now refunds nothing by the rule.",
+      "visitDone": "The visit took place, so the rule refunds nothing."
+    },
+    "drawer": {
+      "title": "Refund payment {number}",
+      "summary": "{patient} paid {total} with {method} for a visit with {doctor}.",
+      "legend": "How much to refund",
+      "byRule": "By the refund rule",
+      "inFull": "In full",
+      "inFullDetail": "All three lines, whatever the rule says.",
+      "outcome": "What happens",
+      "toPatient": "Back to the patient",
+      "toPatientDetail": "The refund goes to {method}",
+      "fromDoctor": "Taken back from {name}",
+      "fromDoctorDetail": "Transfer reversal on their Stripe balance",
+      "fromPlatform": "Returned by 3affya",
+      "fromPlatformDetail": "Platform fee and card processing",
+      "reversal": "If {name}'s Stripe balance is too low, it goes negative and Stripe recovers it from later payouts. Stripe keeps its own processing fee.",
+      "visit": "When Stripe confirms, the booking is marked refunded and the visit is cancelled.",
+      "noteRequired": "Why refund more than the rule?",
+      "noteOptional": "Note for the audit log (optional)",
+      "noteHint": "Saved in the audit log with your name.",
+      "once": "Stripe makes this refund once: the request carries the key {key}, so a second tap returns the same refund. The receipt and these tables change when Stripe confirms it.",
+      "keep": "Keep the payment",
+      "confirm": "Refund {amount}",
+      "working": "Asking Stripe…",
+      "error": {
+        "notFound": "This payment is no longer here. Reload the page.",
+        "alreadyRefunded": "This payment already has a refund. Reload the page to see it.",
+        "nothingToRefund": "The rule refunds nothing for this payment. Choose In full to refund anyway.",
+        "noteRequired": "Write why you are refunding more than the rule. It goes in the audit log.",
+        "unavailable": "Stripe did not answer. Nothing was refunded. Try again in a minute.",
+        "notAllowed": "Sign in again as an admin to refund."
+      }
+    },
+    "requested": {
+      "title": "Refund of {amount} requested",
+      "body": "Stripe has the request, with the key {key}. This payment, the patient's receipt and the booking change when Stripe confirms it with charge.refunded.",
+      "preview": "Preview: Stripe is not connected yet, so nothing was sent."
+    },
+    "pending": {
+      "title": "{count, plural, one {{countLabel} refund is waiting for Stripe} other {{countLabel} refunds are waiting for Stripe}}",
+      "body": "Stripe accepted it, but its confirmation (charge.refunded) has not been handled yet, so the receipt and the booking still show the payment as paid. Do not refund again: a second request returns the same refund. If it stays here, check the webhook deliveries in Stripe.",
+      "action": "Webhook deliveries"
+    },
+    "empty": {
+      "payments": {
+        "title": "No payments yet",
+        "body": "A payment appears here once a patient pays for a visit and Stripe confirms it.",
+        "action": "Open payments in Stripe"
+      },
+      "refunds": {
+        "title": "No refunds yet",
+        "body": "A refund appears here once Stripe confirms it, from a cancellation or from this page.",
+        "action": "See payments"
+      },
+      "payouts": {
+        "title": "No connected accounts yet",
+        "body": "A doctor's Stripe account appears here once they start setting up payouts.",
+        "action": "Open the review queue"
+      },
+      "filtered": {
+        "title": "Nothing matches these filters",
+        "body": "Try fewer filters or a longer period.",
+        "action": "Clear filters"
+      }
+    },
+    "error": {
+      "payments": {
+        "title": "Payments did not load",
+        "body": "The database did not answer. Nothing has changed. Try again in a moment."
+      },
+      "refunds": {
+        "title": "Refunds did not load",
+        "body": "The database did not answer. Nothing has changed. Try again in a moment."
+      },
+      "payouts": {
+        "title": "Stripe did not answer",
+        "body": "Payout details come straight from Stripe. Nothing has changed. Try again in a moment."
+      },
+      "action": "Try again"
+    },
+    "csv": {
+      "payments": {
+        "receipt": "Receipt number",
+        "paidAtUtc": "Paid at (UTC)",
+        "patient": "Patient",
+        "email": "Patient email",
+        "doctor": "Doctor",
+        "visitType": "Visit type",
+        "visitAtUtc": "Visit at (UTC)",
+        "currency": "Currency",
+        "doctorFee": "Doctor's fee",
+        "platformFee": "Platform fee",
+        "cardProcessing": "Card processing",
+        "total": "Total paid",
+        "refunded": "Refunded",
+        "net": "Kept after refunds",
+        "status": "Status",
+        "method": "Paid with",
+        "paymentIntent": "Stripe payment",
+        "transfer": "Stripe transfer"
+      },
+      "refunds": {
+        "refund": "Refund",
+        "atUtc": "Requested at (UTC)",
+        "receipt": "Receipt number",
+        "patient": "Patient",
+        "doctor": "Doctor",
+        "currency": "Currency",
+        "amount": "Amount",
+        "reason": "Reason",
+        "by": "By",
+        "note": "Note",
+        "status": "Status",
+        "key": "Idempotency key",
+        "paymentIntent": "Stripe payment"
+      },
+      "payouts": {
+        "doctor": "Doctor",
+        "account": "Stripe account",
+        "status": "Status",
+        "charges": "Card payments on",
+        "payouts": "Payouts on",
+        "needs": "Stripe needs",
+        "bank": "Bank last 4",
+        "nextAtUtc": "Next payout (UTC)",
+        "nextAmount": "Next payout amount",
+        "lastAtUtc": "Last payout (UTC)",
+        "lastAmount": "Last payout amount",
+        "lastStatus": "Last payout status",
+        "currency": "Currency"
+      },
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "adminSpecialties": {
+    "metaTitle": "Specialties | 3affya admin",
+    "metaDescription": "Edit the specialty groups: names in Arabic and English, search words, registry codes, body system and whether patients see them.",
+    "title": "Specialties",
+    "lead": "The specialty groups patients browse and search. What you save here shows on the directory and in search.",
+    "openDirectory": "Open the directory",
+    "add": "Add a specialty",
+    "find": {
+      "label": "Find a specialty",
+      "hint": "Looks in both names, the slug, the codes and the search words."
+    },
+    "summary": "{specialties} in {systems}",
+    "summaryHidden": "{specialties} in {systems} · {hidden}",
+    "specialties": "{count, plural, =0 {No specialties} one {{countLabel} specialty} other {{countLabel} specialties}}",
+    "systems": "{count, plural, =0 {no body systems} one {{countLabel} body system} other {{countLabel} body systems}}",
+    "hidden": "{countLabel} hidden",
+    "matches": "{count, plural, =0 {No specialty matches} one {{countLabel} specialty matches} other {{countLabel} specialties match}} “{query}”",
+    "orderNote": "Body systems show on the directory in this order. Inside each one, specialties run A to Z in each language, as they do on the directory.",
+    "group": {
+      "count": "{count, plural, =0 {No specialties} one {{countLabel} specialty} other {{countLabel} specialties}}",
+      "position": "Number {position} on the directory",
+      "moveUp": "Move {system} up",
+      "moveDown": "Move {system} down",
+      "other": "Not in a body system"
+    },
+    "columns": {
+      "nameAr": "Arabic name",
+      "nameEn": "English name",
+      "slugCodes": "Slug and codes",
+      "words": "Search words",
+      "doctors": "Doctors",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "caption": "Specialties in {system}",
+    "row": {
+      "edit": "Edit",
+      "editLabel": "Edit {name}",
+      "hide": "Hide",
+      "hideLabel": "Hide {name} from patients",
+      "show": "Show",
+      "showLabel": "Show {name} to patients",
+      "shown": "Shown",
+      "hidden": "Hidden",
+      "justSaved": "Just saved",
+      "doctors": "{count, plural, =0 {No verified doctors} one {{countLabel} verified doctor} other {{countLabel} verified doctors}}",
+      "codes": "{count, plural, =0 {No codes} one {{countLabel} code} other {{countLabel} codes}}",
+      "words": "{count, plural, =0 {No search words} one {{countLabel} search word} other {{countLabel} search words}}",
+      "none": "None yet",
+      "wordsAr": "Arabic",
+      "wordsEn": "English"
+    },
+    "emptySystem": {
+      "title": "No specialties in {system} yet",
+      "body": "Patients do not see this body system on the directory until it has at least one specialty.",
+      "action": "Add a specialty here"
+    },
+    "noMatch": {
+      "title": "No specialty matches “{query}”",
+      "body": "Search looks in both names, the slug, the codes and the search words. Check the spelling or try the other language.",
+      "action": "Clear the search"
+    },
+    "sheet": {
+      "addTitle": "Add a specialty",
+      "editTitle": "Edit {name}",
+      "context": "{doctors} · {status}",
+      "namesLegend": "Names",
+      "nameAr": "Arabic name",
+      "nameArHint": "Shown first on the Arabic site.",
+      "nameEn": "English name",
+      "nameEnHint": "Shown first on the English site, and under the Arabic name.",
+      "slug": "Slug",
+      "slugHint": "Lowercase English letters, digits and hyphens. It makes the link to this specialty's doctors:",
+      "slugFixed": "Fixed once added, so saved links to this specialty keep working:",
+      "system": "Body system",
+      "systemHint": "The group it sits under on the directory.",
+      "systemPick": "Choose a body system",
+      "wordsLegend": "Search words",
+      "wordsHint": "Words patients type for this specialty: everyday words, symptoms, common misspellings and transliterations. Separate them with commas.",
+      "synonymsAr": "Arabic search words",
+      "synonymsArHint": "In Arabic letters, including English terms written in Arabic, like {example}.",
+      "synonymsEn": "English search words",
+      "synonymsEnHint": "In English letters, including misspellings and Arabic words written in English, like {example}.",
+      "codesLegend": "Registry codes",
+      "codes": "NPPES taxonomy codes",
+      "codesHint": "Separate codes with commas, like {example}. Registry doctors with these codes are listed under this specialty.",
+      "save": "Save changes",
+      "saving": "Saving",
+      "create": "Add specialty",
+      "creating": "Adding",
+      "retry": "Try again",
+      "failedTitle": "Not saved",
+      "failedBody": "We could not reach the server. Your changes are still here, so try again."
+    },
+    "errors": {
+      "nameArMissing": "Enter the Arabic name. Patients on the Arabic site see it first.",
+      "nameArLatin": "Write the Arabic name in Arabic letters. The English name has its own field.",
+      "nameArLong": "Shorten the Arabic name to {max} characters or fewer.",
+      "nameArTaken": "{other} already has this Arabic name. Give this specialty a different one.",
+      "nameEnMissing": "Enter the English name.",
+      "nameEnArabic": "Write the English name in English letters. The Arabic name has its own field.",
+      "nameEnLong": "Shorten the English name to {max} characters or fewer.",
+      "nameEnTaken": "{other} already has this English name. Give this specialty a different one.",
+      "slugMissing": "Enter a slug in lowercase English letters and hyphens, like {suggestion}.",
+      "slugChars": "Use only lowercase English letters, digits and hyphens, with no spaces. Try {suggestion}.",
+      "slugEdges": "Start and end the slug with a letter or digit, not a hyphen. Try {suggestion}.",
+      "slugDoubleHyphen": "Use one hyphen between words, not two. Try {suggestion}.",
+      "slugLong": "Shorten the slug to {max} characters or fewer. It has {count}.",
+      "slugTaken": "{other} already uses this slug. Choose another one.",
+      "systemMissing": "Choose the body system this specialty sits under. The directory groups specialties by body system.",
+      "systemUnknown": "That body system is no longer on the list. Choose another one.",
+      "termLatin": "“{value}” is in English letters. Move it to the English search words.",
+      "termArabic": "“{value}” is in Arabic letters. Move it to the Arabic search words.",
+      "termLong": "“{value}” is longer than {max} characters. Shorten it, or split it into two words with a comma.",
+      "termRepeated": "“{value}” is in the list twice. Remove one.",
+      "termsMany": "Keep the list to {max} words or fewer. It has {count}.",
+      "codeLength": "{value} has {count} characters. A taxonomy code has {max}: letters and digits ending in X, like {example}.",
+      "codeChars": "{value} has a character that is not a letter or digit. A taxonomy code is {max} letters and digits, like {example}.",
+      "codeEnd": "{value} does not end in X. Every taxonomy code does, like {example}.",
+      "codeRepeated": "{value} is in the list twice. Remove one.",
+      "codeTaken": "{value} already maps to {other}. A code maps to one specialty only, so remove it there first.",
+      "codesMany": "Keep it to {max} codes or fewer. There are {count}."
+    },
+    "toast": {
+      "saved": "{name} saved. The directory and search show the change.",
+      "added": "{name} added under {system}.",
+      "hidden": "{name} is hidden. Patients no longer see it on the directory or in search.",
+      "shown": "{name} shows to patients again.",
+      "moved": "{system} is now number {position} on the directory.",
+      "savedUndone": "Undone. {name} is back as it was.",
+      "addUndone": "Undone. {name} was removed.",
+      "hiddenUndone": "Undone. {name} shows to patients again.",
+      "shownUndone": "Undone. {name} is hidden again.",
+      "movedUndone": "Undone. {system} is back at number {position}.",
+      "failed": "That change did not go through. Check the connection and try again.",
+      "undo": "Undo",
+      "dismiss": "Close"
+    },
+    "notes": {
+      "title": "How this list reaches patients",
+      "doctors": "Doctors counts verified doctors only. The directory shows the number from {min} up; below that it says “{open}”, and with none it says “{none}”.",
+      "hide": "Hiding a specialty takes it off the directory, out of the search box and out of the search filters. Its doctors' profiles stay up.",
+      "photo": "The photo on a directory tile is a verified doctor in that specialty. It changes with the doctors, not here.",
+      "codes": "Registry doctors are listed under the specialty their NPPES taxonomy code maps to. A code maps to one specialty only.",
+      "words": "Search words help a patient who types an everyday word, a symptom, a misspelling or a word in the other script reach the right specialty.",
+      "prototype": "Prototype: nothing is saved yet. Reloading the page resets the list."
+    },
+    "loading": "Loading specialties"
+  },
+  "adminListings": {
+    "metaTitle": "Listings · Admin · 3affya",
+    "metaDescription": "Every professional on 3affya, claimed or not, by status, specialty, name or NPI.",
+    "title": "Listings",
+    "lead": "Every professional on 3affya, claimed or not. Open a row to see what patients see, edit it or suspend it.",
+    "loading": "Loading listings",
+    "count": "{count, plural, =0 {No listings} one {{countLabel} listing} other {{countLabel} listings}}",
+    "showing": "Showing {shown} of {total}",
+    "zone": "Dates and times in <zone>{name}</zone>",
+    "status": {
+      "label": "Status",
+      "all": "All",
+      "unclaimed": "Unclaimed",
+      "claimed": "Claimed",
+      "inReview": "In review",
+      "verified": "Verified",
+      "rejected": "Rejected",
+      "suspended": "Suspended",
+      "removed": "Removed",
+      "chipLabel": "{label}: {countLabel}"
+    },
+    "filters": {
+      "label": "Find a listing",
+      "search": "Name or NPI",
+      "specialty": "Specialty",
+      "allSpecialties": "All specialties",
+      "option": "{name} · {countLabel}",
+      "submit": "Search",
+      "applied": "Applied filters",
+      "remove": "Remove filter: {label}",
+      "query": "“{query}”"
+    },
+    "table": {
+      "caption": "Listings",
+      "name": "Name",
+      "specialty": "Specialty",
+      "city": "City",
+      "verifiedOn": "Verified on",
+      "nextCheck": "Next re-verification",
+      "actions": "Actions",
+      "npi": "NPI",
+      "notVerified": "Not verified",
+      "noneScheduled": "None scheduled",
+      "editLabel": "Edit listing",
+      "viewProfileLabel": "View the public profile of {name}",
+      "openReview": "Open review",
+      "openReviewLabel": "Open the review of {name}",
+      "basis": {
+        "licence": "Licence expires",
+        "cycle": "Yearly check"
+      },
+      "dueSoon": "{days, plural, one {Due in {daysLabel} day} other {Due in {daysLabel} days}}",
+      "dueToday": "Due today",
+      "overdue": "{days, plural, one {Overdue by {daysLabel} day} other {Overdue by {daysLabel} days}}"
+    },
+    "line": {
+      "unclaimed": "Public US records ({source}), {date}",
+      "claimed": "Claimed on {date}. Credentials not sent yet",
+      "claimedNoDate": "Claimed. Credentials not sent yet",
+      "inReview": "In review since {date}",
+      "rejected": "Rejected on {date}. The doctor can send again",
+      "suspended": "Suspended on {date}",
+      "removed": "Removed on {date}"
+    },
+    "source": {
+      "cms": "CMS"
+    },
+    "empty": {
+      "title": "No listings match these filters",
+      "body": "Nothing matches: {filters}. Clear the filters to see all {totalLabel} listings.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "The listings did not load",
+      "body": "Something went wrong on our side. Nothing was changed. Try again in a moment.",
+      "action": "Try again"
+    },
+    "drawer": {
+      "details": "Details",
+      "npi": "NPI",
+      "specialty": "Specialty",
+      "city": "City",
+      "source": "Listed from",
+      "sourceValue": "Public US records ({source}), file of {date}",
+      "claimedOn": "Claimed on",
+      "sentOn": "Sent for review",
+      "decidedOn": "Rejected on",
+      "verifiedOn": "Verified on",
+      "nextCheck": "Next re-verification",
+      "nextCheckValue": "{date}, {basis}",
+      "licence": "Licence",
+      "licenceValue": "{state}, expires {date}",
+      "board": "Board",
+      "notice": {
+        "unclaimedTitle": "Not claimed by the doctor",
+        "unclaimedBody": "Patients see it labelled Unclaimed, with its source and date, and no price, times or booking.",
+        "claimedTitle": "Claimed, credentials not sent yet",
+        "claimedBody": "Patients see credentials pending verification until the doctor sends them and you approve.",
+        "inReviewTitle": "Waiting for review since {date}",
+        "inReviewBody": "Check the licence, board and sanctions at the source, then approve or reject on the review page.",
+        "rejectedTitle": "Rejected on {date}",
+        "rejectedBody": "What the doctor was told: {reason}",
+        "suspendedTitle": "Suspended on {date} by {name}",
+        "suspendedBody": "Patients cannot find this listing while it is suspended.",
+        "suspendedReason": "Reason: {reason}",
+        "dueSoonTitle": "{days, plural, one {Re-verification due in {daysLabel} day} other {Re-verification due in {daysLabel} days}}",
+        "dueTodayTitle": "Re-verification due today",
+        "overdueTitle": "{days, plural, one {Re-verification overdue by {daysLabel} day} other {Re-verification overdue by {daysLabel} days}}",
+        "dueBody": "{basis} on {date}. Check the licence and board again at the source."
+      },
+      "preview": "What patients see",
+      "previewHidden": "Nothing: search leaves a suspended listing out and its profile is not shown.",
+      "previewRemoved": "A page saying the profile was removed.",
+      "viewProfile": "View public profile",
+      "edit": {
+        "title": "Edit details",
+        "nameAr": "Name in Arabic",
+        "nameArHint": "As patients read it. The English name comes from the US registry and is not edited here.",
+        "specialty": "Specialty group",
+        "specialtyHint": "The group patients find this doctor under in search.",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "readOnly": "A removed listing cannot be edited.",
+        "errors": {
+          "required": "Enter the name in Arabic.",
+          "notArabic": "Write the name in Arabic letters only.",
+          "tooLong": "Keep the name to {max} characters or fewer.",
+          "specialty": "Choose a specialty group from the list.",
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing changed since you opened it. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was saved. Try again."
+        }
+      },
+      "suspend": {
+        "title": "Suspend listing",
+        "body": "Hides the listing from patients until you unsuspend it.",
+        "open": "Suspend this listing",
+        "confirmTitle": "Suspend {name}?",
+        "confirmBody": "Patients stop finding the listing in search and on its profile. This does not cancel visits already booked.",
+        "reason": "Reason",
+        "reasonHint": "Kept in the audit log with your name. Say what happened and what would end the suspension.",
+        "keep": "Keep listed",
+        "confirm": "Suspend listing",
+        "working": "Suspending…",
+        "errors": {
+          "required": "Write the reason for the audit log.",
+          "tooShort": "Write at least {min} characters, so the next admin knows what happened.",
+          "tooLong": "Keep the reason to {max} characters or fewer.",
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing is not verified any more, so it cannot be suspended. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was changed. Try again."
+        }
+      },
+      "unsuspend": {
+        "title": "Unsuspend listing",
+        "body": "Lists the doctor again: search, the profile and booking come back at once.",
+        "action": "Unsuspend listing",
+        "working": "Unsuspending…",
+        "errors": {
+          "notFound": "This listing is no longer there. Close this panel and reload the list.",
+          "state": "This listing is not suspended any more. Close this panel and open it again.",
+          "unavailable": "That did not go through. Nothing was changed. Try again."
+        }
+      }
+    },
+    "toast": {
+      "suspended": "{name} is suspended. Patients can no longer find the listing.",
+      "unsuspended": "{name} is listed again.",
+      "saved": "Changes to {name} saved.",
+      "undone": "Undone. {name} is back as it was.",
+      "undo": "Undo",
+      "dismiss": "Close",
+      "failed": "That did not go through. Nothing was changed. Try again."
+    }
+  },
+  "adminAiJobs": {
+    "metaTitle": "AI jobs and costs",
+    "metaDescription": "Records summary jobs, the tokens and cost each one used, and the price the patient paid.",
+    "title": "AI jobs and costs",
+    "lead": "Every records summary job: where it is now, the tokens and cost it used, and the price the patient paid for it.",
+    "zoneLine": "Times in <z>{zone}</z>",
+    "loading": "Loading AI jobs and costs",
+    "spend": {
+      "title": "AI spend",
+      "today": "Today",
+      "week": "Last 7 days",
+      "month": "Last 30 days",
+      "chargedShare": "{pct} of {amount} charged",
+      "nothingCharged": "Nothing charged yet",
+      "pending": "{amount} more when running jobs finish",
+      "alert": "Daily alert",
+      "alertBadge": "Passed",
+      "alertPassed": "Passed today at {time}",
+      "alertToday": "Today is at {pct} of it",
+      "alertLast": "Last passed on {date}",
+      "alertNever": "Not passed in 30 days"
+    },
+    "chart": {
+      "title": "AI cost per day, last {label} days",
+      "loadingTitle": "AI cost per day",
+      "legend": "The dashed line is the daily alert, {amount}. Days over it show in amber.",
+      "bar": "{date}: {amount}",
+      "over": "(over the alert)",
+      "today": "Today"
+    },
+    "jobs": {
+      "title": "Jobs",
+      "caption": "Records summary jobs, newest first",
+      "count": "Showing {label} of {all} jobs, newest first"
+    },
+    "config": {
+      "model": "Model",
+      "vendor": "vendor",
+      "notSet": "not set",
+      "source": "From {model} and {vendor} in the server settings. Every job runs on this one pinned model."
+    },
+    "filters": {
+      "label": "Filter jobs by status",
+      "all": "All",
+      "inProgress": "In progress",
+      "failed": "Failed",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "queued": "Queued",
+      "processing": "Running",
+      "failed": "Failed",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "retryQueued": "Retry queued"
+    },
+    "stepLine": {
+      "queued": "Paid, waiting to start: {pages}",
+      "processing": "{step}: {done} of {total} pages done",
+      "failed": "Stopped at {step}, page {page} of {total}",
+      "retryQueued": "Starts again at page {page} of {total}",
+      "cancelled": "Stopped at {step} after {done} of {total} pages",
+      "done": "All {steps} steps done in {duration}"
+    },
+    "steps": {
+      "validate": "Checking files",
+      "quote": "Setting the price",
+      "pay": "Payment",
+      "extract": "Reading each page",
+      "dedupe": "Joining repeated reports",
+      "summarise": "Writing the summary and timeline",
+      "flag": "Marking what is missing or unclear",
+      "store": "Saving it securely",
+      "notify": "Telling the patient"
+    },
+    "columns": {
+      "job": "Job",
+      "status": "Status",
+      "pages": "Pages",
+      "tokens": "Tokens",
+      "tokensPages": "Tokens, pages",
+      "cost": "AI cost",
+      "price": "Price",
+      "times": "Started, finished",
+      "retries": "Retries"
+    },
+    "row": {
+      "started": "Started {when}",
+      "finished": "finished {when}",
+      "perPage": "{amount} a page",
+      "notFinished": "Not finished",
+      "openLabel": "Open job {job}"
+    },
+    "price": {
+      "taken": "paid",
+      "pending": "taken when done",
+      "notTaken": "not taken"
+    },
+    "retry": {
+      "button": "Retry",
+      "pending": "Queuing retry…",
+      "label": "Retry job {job}",
+      "error": {
+        "notFound": "This job is no longer in the list. Reload the page.",
+        "state": "This job is not failed any more, so there is nothing to retry. Reload to see where it is.",
+        "unavailable": "The retry did not queue. Try again in a minute.",
+        "notAllowed": "Your admin session has ended. Sign in again, then retry."
+      }
+    },
+    "cancel": {
+      "button": "Stop job",
+      "title": "Stop this job?",
+      "body": "The pages read so far are thrown away and the patient is not charged. They see the set as stopped and can start it again.",
+      "stop": "Stop job",
+      "stopping": "Stopping…",
+      "keep": "Keep it running",
+      "error": {
+        "notFound": "This job is no longer in the list. Reload the page.",
+        "state": "This job has already finished or stopped. Reload to see where it is.",
+        "unavailable": "The job did not stop. Try again in a minute.",
+        "notAllowed": "Your admin session has ended. Sign in again, then stop the job."
+      }
+    },
+    "notices": {
+      "alert": {
+        "title": "Today's AI cost passed the daily alert",
+        "body": "It reached {amount} at {time}, over the {threshold} alert, and an email went to {email}. The biggest job today is {job} at {cost}.",
+        "action": "Open {job}"
+      },
+      "retryQueued": {
+        "title": "Retry queued for {job}",
+        "body": "Attempt {attempt} starts again from page {page} of {total} with the same quote. Nothing new is charged, and the patient sees the set waiting to start."
+      }
+    },
+    "empty": {
+      "title": "No AI jobs yet",
+      "body": "A job starts when a patient pays for a records summary. It reads every page, writes the summary and logs its tokens and cost here.",
+      "action": "See records payments"
+    },
+    "emptyFilter": {
+      "action": "Show all jobs",
+      "all": {
+        "title": "No jobs",
+        "body": "Jobs show here once a patient pays for a records summary."
+      },
+      "inProgress": {
+        "title": "Nothing in progress",
+        "body": "Queued and running jobs show here, and so does a retry until it starts."
+      },
+      "failed": {
+        "title": "No failed jobs",
+        "body": "A job fails when a page or call still fails after {attemptsLabel} tries. It shows here with Retry."
+      },
+      "done": {
+        "title": "No finished jobs",
+        "body": "A job shows here once the summary is saved and the patient is told."
+      },
+      "cancelled": {
+        "title": "No cancelled jobs",
+        "body": "Jobs a patient or an admin stopped show here. Nobody is charged for them."
+      }
+    },
+    "error": {
+      "title": "The job list did not load",
+      "body": "Only this page failed: jobs keep running and nothing about them has changed. Try again in a minute.",
+      "action": "Try again"
+    },
+    "duration": {
+      "s": "{s} s",
+      "ms": "{m} min {s} s",
+      "m": "{m} min",
+      "hm": "{h} h {m} min"
+    },
+    "counts": {
+      "files": "{count, plural, one {{label} file} other {{label} files}}",
+      "pages": "{count, plural, one {{label} page} other {{label} pages}}",
+      "calls": "{count, plural, one {{label} call} other {{label} calls}}",
+      "retries": "{count, plural, =0 {no retries} one {{label} retry} other {{label} retries}}"
+    },
+    "detail": {
+      "metaTitle": "AI job {job}",
+      "breadcrumbs": "Breadcrumbs",
+      "loading": "Loading the job",
+      "title": "Job",
+      "lead": "Record set {set} for {name}: {files}, {pages}, {size} MB.",
+      "notFound": {
+        "crumb": "Not found",
+        "title": "No job with this id",
+        "body": "The link may be mistyped, or the job was removed with the patient's records. Every job is in the list.",
+        "action": "Back to AI jobs"
+      },
+      "facts": {
+        "title": "Job facts",
+        "started": "Started",
+        "finished": "Finished",
+        "took": "Took {duration}",
+        "stoppedNow": "Stopped just now",
+        "pages": "Pages",
+        "pagesValue": "{done} of {total} done",
+        "tokens": "Tokens",
+        "tokensNote": "{input} in, {output} out; {pct} of the {cap} job cap",
+        "cost": "AI cost",
+        "price": "Price",
+        "share": "AI cost is {pct} of it",
+        "retries": "Retries",
+        "attempt": "Attempt {attempt}; up to {max} tries a page",
+        "model": "Model",
+        "vendorNote": "Vendor {vendor}, from {env}"
+      },
+      "failure": {
+        "title": "Stopped at page {page} of {total} after {attempts} tries",
+        "reason": {
+          "damaged": "Page {filePage} of {file} could not be opened. The patient was asked to upload that file again.",
+          "unavailable": "The reading service did not answer. Retry once it is back."
+        },
+        "charge": "Nothing was charged. Retry starts again from that page with the same quote."
+      },
+      "cancelled": {
+        "title": "Job stopped",
+        "body": "The patient is not charged and sees the set as stopped. They can start it again from their records page."
+      },
+      "steps": {
+        "title": "Steps and timings",
+        "lead": "The nine fixed steps, in order. The patient sees the same step on their progress page.",
+        "running": "Running",
+        "queueWait": "Waited {duration} for a free slot",
+        "usageLine": "{calls}, {tokens} tokens, {cost}, {retries}",
+        "noAi": "No AI call",
+        "state": {
+          "done": "Done",
+          "current": "Running",
+          "queuedHere": "Waiting to start",
+          "waiting": "Not started",
+          "failed": "Failed",
+          "stopped": "Stopped"
+        },
+        "columns": {
+          "step": "Step",
+          "started": "Started",
+          "took": "Took",
+          "calls": "Calls",
+          "tokens": "Tokens",
+          "cost": "AI cost",
+          "retries": "Retries"
+        }
+      },
+      "files": {
+        "title": "Cost per file",
+        "lead": "File names and sizes only. What a page says never shows here.",
+        "size": "{size} MB",
+        "unreadable": "{count, plural, one {{label} page unreadable} other {{label} pages unreadable}}",
+        "usageLine": "{tokens} tokens, {cost} ({perPage} a page), {retries}",
+        "columns": {
+          "file": "File",
+          "size": "Size",
+          "pages": "Pages",
+          "tokens": "Tokens",
+          "cost": "AI cost",
+          "perPage": "A page",
+          "retries": "Retries"
+        }
+      }
+    }
   }
 }

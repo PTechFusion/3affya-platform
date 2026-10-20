@@ -1011,3 +1011,725 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+
+/* ---------------- Audit log (screen 47) ---------------- */
+// Appended block. data/sample/audit.json holds the log oldest first, the way an append-only table grows; auditEntries reads it
+// newest first. Ids and first names only: no emails, no surnames for patients, no record content. Professionals resolve
+// through doctors.json; an id doctors.json no longer has (doc_021) is a removed profile, so its name is gone from the log too.
+// Instants are authored for 12 Oct to 8 Nov 2026 and shifted with sampleInstant, so the newest entries stay recent.
+import auditJson from "@/data/sample/audit.json";
+import type { AuditAction, AuditActorKind, AuditChange, AuditCheckKind, AuditCheckResult, AuditDetail, AuditTargetType } from "@/lib/audit";
+
+/** Who an entry names as its actor. Admins and patients carry a first name; professionals read their name from doctors.json. */
+export type AuditActor = { id: string; kind: AuditActorKind; firstNameEn?: string; firstNameAr?: string };
+
+type AuditCheckRow = { kind: AuditCheckKind; source: string; result: AuditCheckResult; checkedAtUtc: string; by: string };
+type AuditEntryRow = {
+  id: string;
+  atUtc: string;
+  actorId: string;
+  action: AuditAction;
+  target: { type: AuditTargetType; id: string; doctorId?: string };
+  changes: AuditChange[];
+  details: AuditDetail[];
+  verification: { reviewer: string | null; checks: AuditCheckRow[] } | null;
+  note: { en: string; ar: string } | null;
+  requestId: string;
+  stripeEventId: string | null;
+};
+
+/** One primary-source check (rule A1): what was checked, against which source, the result, when and by whom. */
+export type AuditCheck = Omit<AuditCheckRow, "checkedAtUtc"> & { checkedAt: Date };
+
+export type SampleAuditEntry = Omit<AuditEntryRow, "atUtc" | "verification"> & {
+  at: Date;
+  /** Verification events only: the checks behind the decision and the reviewer who made it (null while checks are recorded). */
+  verification: { reviewer: string | null; checks: AuditCheck[] } | null;
+};
+
+const auditData = auditJson as unknown as { actors: AuditActor[]; entries: AuditEntryRow[] };
+
+export const auditActors: readonly AuditActor[] = auditData.actors;
+
+export function auditActorById(id: string): AuditActor | undefined {
+  return auditData.actors.find((a) => a.id === id);
+}
+
+/** The whole log, newest first. An entry the sample clock would put after `now` is left out: a log never holds the future. */
+export function auditEntries(now: Date = new Date()): SampleAuditEntry[] {
+  return auditData.entries
+    .map(({ atUtc, verification, ...row }) => ({
+      ...row,
+      at: sampleInstant(atUtc),
+      verification: verification
+        ? {
+            reviewer: verification.reviewer,
+            checks: verification.checks.map(({ checkedAtUtc, ...c }) => ({ ...c, checkedAt: sampleInstant(checkedAtUtc) })),
+          }
+        : null,
+    }))
+    .filter((e) => e.at.getTime() <= now.getTime())
+    .sort((a, b) => b.at.getTime() - a.at.getTime() || b.id.localeCompare(a.id));
+}
+
+/* ---------------- Outreach and invites (screen 46, tasks 2.3 and 4.5) ---------------- */
+// Appended block. The admin view of data/sample/invites.json: every invite with its tracking facts and a derived status, plus
+// the unclaimed registry doctors still to invite. Rows inv_001..inv_003 are screen 9's claim demos and carry no tracking
+// fields; inv_004..inv_013 add them. Instants go through sampleInstant (authored up to 8 Nov, so they stay in the past);
+// screen 9 reads the same rows unshifted, which only moves its own three dates. inv_013 (`preview: "justSent"`) is the invite
+// the ?state=just-sent preview adds: left out otherwise, and dated now. Production derives the same facts from the invites
+// table (token stored as a hash), the Resend delivery webhook (bounces) and the claim page (opens).
+
+/** Why a send bounced, as the Resend webhook reports it: no such mailbox, or the receiving server refused the email. */
+export type OutreachBounce = "noMailbox" | "rejected";
+
+type OutreachInviteRow = SampleInvite & {
+  /** When the claim page was first opened from this link. Email opens are not tracked. */
+  openedAtUtc?: string | null;
+  bouncedAtUtc?: string | null;
+  bounce?: OutreachBounce | null;
+  revokedAtUtc?: string | null;
+  /** The language the email went out in; screen 9's rows predate the choice and went out in English. */
+  language?: "ar" | "en";
+  preview?: "justSent";
+};
+
+/** One status per invite, first match wins: revoked, claimed, bounced, expired, opened, else sent (not opened yet). */
+export type OutreachStatus = "sent" | "opened" | "claimed" | "expired" | "bounced" | "revoked";
+
+export type OutreachInvite = {
+  id: string;
+  doctor: SampleDoctor;
+  email: string;
+  language: "ar" | "en";
+  status: OutreachStatus;
+  sentAt: Date;
+  expiresAt: Date;
+  openedAt?: Date;
+  claimedAt?: Date;
+  bouncedAt?: Date;
+  bounce?: OutreachBounce;
+  revokedAt?: Date;
+};
+
+const outreachRows = invitesJson as unknown as OutreachInviteRow[];
+
+/** Sent and opened invites still work: the doctor can claim from them, and a new invite would replace them. */
+export const outreachIsLive = (i: Pick<OutreachInvite, "status">) => i.status === "sent" || i.status === "opened";
+
+function toOutreachInvite(row: OutreachInviteRow, now: Date, validDays: number): OutreachInvite | undefined {
+  const doctor = sampleDoctors.find((d) => d.id === row.doctorId);
+  if (!doctor) return undefined;
+  const at = (iso: string | null | undefined) => (iso ? sampleInstant(iso) : undefined);
+  // The preview invite goes out "now", so its link works for the full validity period from this moment.
+  const justSent = row.preview === "justSent";
+  const sentAt = justSent ? now : sampleInstant(row.sentAtUtc);
+  const expiresAt = justSent ? new Date(now.getTime() + validDays * 86_400_000) : sampleInstant(row.expiresAtUtc);
+  const claimedAt = at(row.usedAtUtc);
+  const bouncedAt = at(row.bouncedAtUtc);
+  const revokedAt = at(row.revokedAtUtc);
+  const status: OutreachStatus = revokedAt
+    ? "revoked"
+    : claimedAt
+      ? "claimed"
+      : bouncedAt
+        ? "bounced"
+        : expiresAt.getTime() <= now.getTime()
+          ? "expired"
+          : row.openedAtUtc
+            ? "opened"
+            : "sent";
+  return {
+    id: row.id,
+    doctor,
+    email: row.email,
+    language: row.language ?? "en",
+    status,
+    sentAt,
+    expiresAt,
+    openedAt: at(row.openedAtUtc),
+    claimedAt,
+    bouncedAt,
+    bounce: row.bounce ?? undefined,
+    revokedAt,
+  };
+}
+
+/**
+ * Every invite, newest first. `justSent` adds the ?state=just-sent preview invite at the top. `validDays` is
+ * outreach.inviteValidDays from config/business.ts, passed in so this block adds no import.
+ */
+export function outreachInvites(validDays: number, { justSent = false }: { justSent?: boolean } = {}, now: Date = new Date()): OutreachInvite[] {
+  return outreachRows
+    .filter((r) => r.preview !== "justSent" || justSent)
+    .flatMap((r) => toOutreachInvite(r, now, validDays) ?? [])
+    .sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+}
+
+/**
+ * Unclaimed registry doctors with no live invite, in registry order, each with their latest invite when one expired, bounced
+ * or was revoked (they come back here to be invited again). Doctors with a live invite are on the sent list instead.
+ */
+export function outreachCandidates(invites: OutreachInvite[]): Array<{ doctor: SampleDoctor; last?: OutreachInvite }> {
+  return sampleDoctors
+    .filter((d) => d.state === "unclaimed")
+    .flatMap((doctor) => {
+      const mine = invites.filter((i) => i.doctor.id === doctor.id);
+      if (mine.some(outreachIsLive)) return [];
+      return [{ doctor, last: mine[0] }];
+    });
+}
+
+/* ---------------- Removal requests (screen 41) ---------------- */
+// Appended block. Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+// The rows are what screen 10's remove branch would insert into the removal queue (task 2.8): the four fields the doctor typed,
+// the page language they used, when the request arrived, when the confirmation link was opened, and any admin question or
+// decision. Synthetic; emails use the reserved example.com domain.
+import removalsJson from "@/data/sample/removals.json";
+import type { RemovalReason } from "@/app/[locale]/doctors/[id]/this-is-me/validation";
+
+/** Stored status: open (waiting on us), infoRequested (we asked the doctor a question), confirmed (removed, 410) or refused. */
+export type RemovalStatus = "open" | "infoRequested" | "confirmed" | "refused";
+
+type RemovalRow = {
+  id: string;
+  doctorId: string;
+  requesterName: string;
+  requesterEmail: string;
+  npi: string;
+  reason: RemovalReason;
+  details: string;
+  locale: "ar" | "en";
+  receivedAtUtc: string;
+  emailConfirmedAtUtc: string | null;
+  status: RemovalStatus;
+  infoRequest: { askedAtUtc: string; askedBy: string; question: string } | null;
+  decision: { decidedAtUtc: string; decidedBy: string; reason: string | null } | null;
+};
+
+/** One removal request as the admin queue reads it, instants shifted with removalInstant. */
+export type SampleRemovalRequest = Omit<RemovalRow, "receivedAtUtc" | "emailConfirmedAtUtc" | "infoRequest" | "decision"> & {
+  doctor: SampleDoctorDetails;
+  receivedAt: Date;
+  emailConfirmedAt: Date | null;
+  infoRequest: { askedAt: Date; askedBy: string; question: string } | null;
+  decision: { decidedAt: Date; decidedBy: string; reason: string | null } | null;
+};
+
+const removalsData = removalsJson as unknown as { authoredNowUtc: string; requests: RemovalRow[] };
+
+/**
+ * Prototype clock for the removal queue only. sampleInstant shifts in whole days, which moves an hour-level SLA by up to 24 hours
+ * over a day, so a request could not stay amber (36 to 48 hours old) whenever the prototype is opened. Here the instant the rows
+ * were authored against (`authoredNowUtc`) maps to the real now, to the minute: rm_001 is always about 6 hours old, rm_002 about
+ * 40 and rm_003 about 53. Gone with task 1.5, when received_at comes from the database.
+ */
+export function removalInstant(iso: string, now: Date = new Date()): Date {
+  return new Date(Date.parse(iso) + (now.getTime() - Date.parse(removalsData.authoredNowUtc)));
+}
+
+/** Every removal request, newest first. Only rows whose doctor exists resolve. Production reads the queue under admin RLS. */
+export function removalRequests(now: Date = new Date()): SampleRemovalRequest[] {
+  const at = (iso: string) => removalInstant(iso, now);
+  return removalsData.requests
+    .flatMap((r): SampleRemovalRequest[] => {
+      const doctor = doctorById(r.doctorId);
+      if (!doctor) return [];
+      return [
+        {
+          ...r,
+          doctor,
+          receivedAt: at(r.receivedAtUtc),
+          emailConfirmedAt: r.emailConfirmedAtUtc ? at(r.emailConfirmedAtUtc) : null,
+          infoRequest: r.infoRequest ? { askedAt: at(r.infoRequest.askedAtUtc), askedBy: r.infoRequest.askedBy, question: r.infoRequest.question } : null,
+          decision: r.decision ? { decidedAt: at(r.decision.decidedAtUtc), decidedBy: r.decision.decidedBy, reason: r.decision.reason } : null,
+        },
+      ];
+    })
+    .sort((a, b) => b.receivedAt.getTime() - a.receivedAt.getTime());
+}
+
+/** One removal request by id, or undefined (the in-shell not-found state). */
+export function removalRequestById(id: string, now: Date = new Date()): SampleRemovalRequest | undefined {
+  return removalRequests(now).find((r) => r.id === id);
+}
+
+/* ---------------- Members and subscriptions, admin (screen 42) ---------------- */
+// Appended block (wave 5). The admin members list: every verified professional with their membership, if any, and the Stripe
+// facts the subscription webhooks store (data/sample/membership-billing.json): customer and subscription ids for the Dashboard
+// links, when it started, free months an admin granted, and the last invoice. No amounts are stored: the invoice amount is the
+// list price for the plan's interval (config/business.ts). doc_002 has one row per screen-33 preview state in memberships.json;
+// the admin list shows its active row (mem_active), the one /professional/membership?state=active shows. Imported here, not at
+// the top, so this section stays one appended block (ES imports are hoisted either way).
+import membershipBillingJson from "@/data/sample/membership-billing.json";
+
+export type MembershipInvoiceStatus = "paid" | "failed";
+
+/** Stripe facts per membership, instants shifted with sampleInstant. `compUntil`: no charge until then (free months). */
+export type SampleMemberBilling = {
+  stripeCustomerId: string;
+  stripeSubscriptionId: string;
+  startedAt: Date;
+  compUntil: Date | null;
+  lastInvoice: { id: string; number: string; status: MembershipInvoiceStatus; at: Date } | null;
+};
+
+/** One professional as the admin members list reads them. No membership row means the free Claimed plan (status none). */
+export type AdminMemberRow = {
+  doctor: SampleDoctor;
+  membership: SampleMembership | null;
+  billing: SampleMemberBilling | null;
+  /** The doctor's own zone: the one their membership page shows dates in. */
+  doctorTimeZone: string;
+};
+
+type SampleMemberBillingRow = {
+  membershipId: string;
+  stripeCustomerId: string;
+  stripeSubscriptionId: string;
+  startedAtUtc: string;
+  compUntilUtc: string | null;
+  lastInvoice: { id: string; number: string; status: MembershipInvoiceStatus; atUtc: string } | null;
+};
+const memberBillingRows = membershipBillingJson as unknown as SampleMemberBillingRow[];
+const ADMIN_LISTED_PROFESSIONAL_ROW = "mem_active";
+
+function shiftedMembership(row: SampleMembershipRow): SampleMembership {
+  const at = (iso: string | null) => (iso ? sampleInstant(iso) : null);
+  return {
+    id: row.id,
+    doctorId: row.doctorId,
+    status: row.status,
+    interval: row.interval,
+    currentPeriodEnd: at(row.currentPeriodEndUtc),
+    paymentFailedAt: at(row.paymentFailedAtUtc),
+    cancelledAt: at(row.cancelledAtUtc),
+    timeZone: row.timeZone,
+  };
+}
+
+function shiftedBilling(row: SampleMemberBillingRow): SampleMemberBilling {
+  const invoice = row.lastInvoice;
+  return {
+    stripeCustomerId: row.stripeCustomerId,
+    stripeSubscriptionId: row.stripeSubscriptionId,
+    startedAt: sampleInstant(row.startedAtUtc),
+    compUntil: row.compUntilUtc ? sampleInstant(row.compUntilUtc) : null,
+    lastInvoice: invoice ? { id: invoice.id, number: invoice.number, status: invoice.status, at: sampleInstant(invoice.atUtc) } : null,
+  };
+}
+
+/** Every verified professional with their membership, in doctor order. Production reads memberships joined to profiles (admin RLS). */
+export function adminMemberRows(): AdminMemberRow[] {
+  return verifiedDoctors().map((doctor) => {
+    const listed = (m: SampleMembershipRow) =>
+      m.doctorId === doctor.id && m.status !== "none" && (doctor.id !== sampleProfessional.id || m.id === ADMIN_LISTED_PROFESSIONAL_ROW);
+    const row = sampleMembershipRows.find(listed);
+    const billing = row ? memberBillingRows.find((b) => b.membershipId === row.id) : undefined;
+    return {
+      doctor,
+      membership: row ? shiftedMembership(row) : null,
+      billing: billing ? shiftedBilling(billing) : null,
+      doctorTimeZone: row?.timeZone ?? doctorTimeZone(doctor),
+    };
+  });
+}
+
+/** One professional's row on the admin list, or undefined when they are not on it (not verified, or no such id). */
+export function adminMemberRow(doctorId: string): AdminMemberRow | undefined {
+  return adminMemberRows().find((r) => r.doctor.id === doctorId);
+}
+/* ---------------- Credential review queue (screen 38) ---------------- */
+// Appended block (wave 5). The admin review reads the claims through the builder rows above (builderRowFor) and the doctor rows;
+// this adds what only the review needs (data/sample/credential-reviews.json): registry values that differ from the doctor's
+// entries, and the checks behind the decided previews. Imported here so the block stays one appended section.
+import credentialReviewsJson from "@/data/sample/credential-reviews.json";
+
+/** The four checks of a claim (rule A1): licence at the state board, board at ABMS or AOA, sanctions, and the photo (rule C4). */
+export type ReviewCheckKey = "licence" | "board" | "sanctions" | "photo";
+
+/** Registry fields as the CMS file had them, where they differ from the doctor's current entries. */
+export type RegistryAsFiled = { doctorId: string; cityEn?: string; cityAr?: string; specialtyEn?: string; specialtyAr?: string };
+
+/** The checks a decided preview shows: the decision instant, the licence expiry read at the source and the source per check. */
+export type SampleDecidedPreview = {
+  doctorId: string;
+  decidedAt: Date;
+  /** Calendar date (YYYY-MM-DD) as the primary source shows it; format it in UTC. */
+  licenceExpiresOn: string;
+  sources: Record<ReviewCheckKey, string>;
+};
+
+const credentialReviews = credentialReviewsJson as unknown as {
+  registryAsFiled: RegistryAsFiled[];
+  decidedPreviews: Array<Omit<SampleDecidedPreview, "decidedAt"> & { decidedAtUtc: string }>;
+};
+
+export function registryAsFiledFor(doctorId: string): RegistryAsFiled | undefined {
+  return credentialReviews.registryAsFiled.find((r) => r.doctorId === doctorId);
+}
+
+export function decidedPreviewFor(doctorId: string): SampleDecidedPreview | undefined {
+  const row = credentialReviews.decidedPreviews.find((r) => r.doctorId === doctorId);
+  if (!row) return undefined;
+  const { decidedAtUtc, ...rest } = row;
+  return { ...rest, decidedAt: sampleInstant(decidedAtUtc) };
+}
+/* ---------------- Admin payments, refunds and payouts (screen 43) ---------------- */
+// Appended block (screen 43, tasks 3.4 and 3.11). The admin's view of the same payments the patient's receipts read (23) and
+// the doctor's payouts page shows (35), so the three views of one payment agree: each payment is the receipt row mapped by
+// toReceipt above (lines as charged, the refund amount by the refund rule), plus the Stripe ids from data/sample/payments.json
+// and the doctor's connected account. doc_002's account is the "enabled" row of payouts.json, the one screen 35 shows.
+// Prototype: every payment is Noura's (receipts.json); production reads all patients' rows under the admin role (task 3.11)
+// and the payout lists from Stripe's API. Money state in these rows is written only by the webhook handlers (ADR-6).
+import adminPaymentsJson from "@/data/sample/payments.json";
+
+/** Who started a refund: the cancel action on a cancellation (task 3.6), or an admin from this screen (task 3.4). */
+export type AdminRefundBy = { kind: "automatic"; cancelledBy: CancelledBy } | { kind: "admin"; adminId: string };
+
+/**
+ * One refund of a payment. "succeeded" is what the charge.refunded webhook stored; "pending" is a request Stripe has accepted
+ * but whose webhook has not been handled yet, so the receipt and the booking do not show it yet. `reason` is the refund rule's
+ * reason for a cancellation, "byRule" for an admin's refund of a visit still ahead by the rule, or "override" for a refund in
+ * full that the rule would not give.
+ */
+export type AdminRefund = {
+  id: string;
+  paymentId: string;
+  at: Date;
+  amountCents: number;
+  status: "pending" | "succeeded";
+  reason: RefundReason | "byRule" | "override";
+  by: AdminRefundBy;
+  noteEn: string | null;
+  noteAr: string | null;
+  idempotencyKey: string;
+};
+
+export type AdminPayment = Omit<SampleReceipt, "refunds"> & {
+  doctor: SampleDoctor;
+  patient: { nameEn: string; nameAr: string; email: string };
+  stripe: { paymentIntentId: string; transferId: string; accountId: string | null };
+  refunds: AdminRefund[];
+};
+
+export type AdminPayoutAccount = PayoutAccount & { doctor: SampleDoctor };
+
+type AdminChargeRow = { bookingId: string; paymentIntentId: string; transferId: string };
+type AdminAccountRow = Omit<SamplePayoutRow, "sample" | "doctorTimeZone"> & { payoutsSample?: PayoutStatus };
+type AdminPendingRefundRow = {
+  bookingId: string;
+  kind: "full" | "rule";
+  requestedBy: string;
+  requestedAtUtc: string;
+  idempotencyKey: string;
+  noteEn: string | null;
+  noteAr: string | null;
+};
+
+const adminPaymentsData = adminPaymentsJson as unknown as {
+  charges: AdminChargeRow[];
+  accounts: AdminAccountRow[];
+  pendingRefund: AdminPendingRefundRow;
+};
+
+/** The one idempotency key per payment's refund: a second request for the same payment returns the same Stripe refund. */
+export const adminRefundKey = (paymentId: string) => `refund-${paymentId}`;
+
+/** Every connected account the admin sees, as the account.updated webhook stores it (payout lists come from Stripe's API). */
+export function adminPayoutAccounts(): AdminPayoutAccount[] {
+  return adminPaymentsData.accounts.flatMap((row): AdminPayoutAccount[] => {
+    const doctor = sampleDoctors.find((d) => d.id === row.doctorId);
+    if (!doctor) return [];
+    if (row.payoutsSample) {
+      // The signed-in doctor's own row, so this list and screen 35 show the same account, next payout and last payouts.
+      const shared = samplePayoutAccount(row.payoutsSample);
+      if (!shared) return [];
+      const { doctorId: _id, doctorTimeZone: _zone, ...account } = shared;
+      void _id;
+      void _zone;
+      return [{ ...account, doctor }];
+    }
+    const { doctorId: _doctorId, payoutsSample: _sample, nextPayout, recentPayouts, ...account } = row;
+    void _doctorId;
+    void _sample;
+    return [
+      {
+        ...account,
+        doctor,
+        nextPayout: nextPayout
+          ? { arrivesAt: sampleInstant(nextPayout.arrivalUtc), amountCents: nextPayout.amountCents, currency: nextPayout.currency }
+          : null,
+        recentPayouts: recentPayouts.map((p) => ({
+          id: p.id,
+          arrivesAt: sampleInstant(p.arrivalUtc),
+          amountCents: p.amountCents,
+          currency: p.currency,
+          status: p.status,
+        })),
+      },
+    ];
+  });
+}
+
+/**
+ * Every payment, newest first. `withPendingSample` adds the sample refund request on bk_009 (an admin's refund in full that
+ * Stripe accepted but whose charge.refunded webhook has not been handled): the ?state=webhook-pending preview.
+ */
+export function adminPayments({ withPendingSample = false }: { withPendingSample?: boolean } = {}): AdminPayment[] {
+  const settings = samplePatientSettings();
+  const accounts = adminPayoutAccounts();
+  const pending = adminPaymentsData.pendingRefund;
+  return receiptRows
+    .flatMap((row): AdminPayment[] => {
+      const receipt = toReceipt(row);
+      const doctor = receipt ? sampleDoctors.find((d) => d.id === receipt.doctorId) : undefined;
+      const charge = adminPaymentsData.charges.find((c) => c.bookingId === row.bookingId);
+      if (!receipt || !doctor || !charge) return [];
+      const reason = receipt.cancellation?.reason ?? "platform";
+      const by: AdminRefundBy = { kind: "automatic", cancelledBy: receipt.cancellation?.by ?? "platform" };
+      const refunds: AdminRefund[] = receipt.refunds.map((x) => ({
+        id: x.id,
+        paymentId: receipt.id,
+        at: x.at,
+        amountCents: x.amountCents,
+        status: x.status,
+        reason,
+        by,
+        noteEn: null,
+        noteAr: null,
+        idempotencyKey: adminRefundKey(receipt.id),
+      }));
+      if (withPendingSample && pending.bookingId === receipt.id && refunds.length === 0) {
+        // In full on a late patient cancellation, which the rule refunds nothing for: an override, so the note says why.
+        const byRule = reason === "patientLate" ? 0 : receipt.totalCents;
+        refunds.push({
+          id: pending.idempotencyKey,
+          paymentId: receipt.id,
+          at: sampleInstant(pending.requestedAtUtc),
+          amountCents: pending.kind === "full" ? receipt.totalCents : byRule,
+          status: "pending",
+          reason: pending.kind === "full" && byRule < receipt.totalCents ? "override" : reason,
+          by: { kind: "admin", adminId: pending.requestedBy },
+          noteEn: pending.noteEn,
+          noteAr: pending.noteAr,
+          idempotencyKey: pending.idempotencyKey,
+        });
+      }
+      return [
+        {
+          ...receipt,
+          doctor,
+          patient: { nameEn: settings.nameEn, nameAr: settings.nameAr, email: settings.email },
+          stripe: {
+            paymentIntentId: charge.paymentIntentId,
+            transferId: charge.transferId,
+            accountId: accounts.find((a) => a.doctor.id === doctor.id)?.stripeAccountId ?? null,
+          },
+          refunds,
+        },
+      ];
+    })
+    .sort((a, b) => b.paidAt.getTime() - a.paidAt.getTime());
+}
+
+/* ---------------- Screen 40, admin specialty list (appended block) ---------------- */
+// What /admin/specialties edits beyond the names and count in specialties.json: the NPPES taxonomy codes mapped to each group
+// (task 1.5 writes the real mapping) and the search words in each script (rule S2). The search box (screen 5) does not read the
+// search words yet; task 2.1 wires them in.
+import specialtyTermsJson from "@/data/sample/specialty-terms.json";
+
+export type SpecialtyTerms = { slug: string; taxonomyCodes: string[]; synonymsAr: string[]; synonymsEn: string[] };
+/** One row of the admin specialty list: the directory row plus its codes, search words, body system and whether patients see it. */
+export type SampleAdminSpecialty = SampleSpecialty & Omit<SpecialtyTerms, "slug"> & { systemId: string | null; shown: boolean };
+
+const specialtyTermsData = specialtyTermsJson as { terms: SpecialtyTerms[]; draftSystem: Omit<SampleBodySystem, "specialties"> };
+
+/** Every specialty as the admin list shows it, in specialties.json order. All are shown: the directory lists every one today. */
+export function adminSpecialties(): SampleAdminSpecialty[] {
+  const terms = new Map(specialtyTermsData.terms.map((t) => [t.slug, t]));
+  return sampleSpecialties.map((s) => {
+    const t = terms.get(s.slug);
+    return {
+      ...s,
+      taxonomyCodes: t?.taxonomyCodes ?? [],
+      synonymsAr: t?.synonymsAr ?? [],
+      synonymsEn: t?.synonymsEn ?? [],
+      systemId: sampleBodySystems.find((b) => b.specialties.includes(s.slug))?.id ?? null,
+      shown: true,
+    };
+  });
+}
+
+/** A body system drafted but not filled yet, for the admin list's empty-group preview (?state=empty). It is not in
+ *  body-systems.json, so the directory never shows it (the directory drops a group with no specialty). */
+export const sampleDraftBodySystem = specialtyTermsData.draftSystem;
+/* ---------------- Admin listings (screen 39, task 2.8) ---------------- */
+// Appended block. Every professional row as the admin listings table reads it. The status is derived, so it cannot disagree
+// with the public pages: the card state in doctors.json (unclaimed, pending, verified; "suspended" on the one suspended sample,
+// doc_391), then the claim invite (screen 9) and the builder's review decision (screen 29) split "pending" into claimed, in
+// review and rejected. data/sample/listings.json adds what only admin sees: licence expiry (rule A2), the claim and review
+// instants and the suspension. Instants and licence dates go through sampleInstant; verifiedOn stays a fixed calendar date.
+import listingsJson from "@/data/sample/listings.json";
+
+/** The planned professionals.status values (architecture, critical flow 3), plus "inReview" for a claim waiting on admin. */
+export type ListingStatus = "unclaimed" | "claimed" | "inReview" | "verified" | "rejected" | "suspended" | "removed";
+export const listingStatuses: readonly ListingStatus[] = ["unclaimed", "claimed", "inReview", "verified", "rejected", "suspended", "removed"];
+
+type ListingRow = {
+  id: string;
+  /** Calendar date the medical licence expires (YYYY-MM-DD). */
+  licenceExpiresOn: string | null;
+  claimedAtUtc: string | null;
+  submittedAtUtc: string | null;
+  suspension: { atUtc: string; byAdminId: string; reasonEn: string; reasonAr: string } | null;
+};
+
+const listingRows = listingsJson as unknown as ListingRow[];
+
+export type SampleListing = {
+  doctor: SampleDoctor;
+  status: ListingStatus;
+  /** Rows not yet verified: where the public facts came from, and the file date (UTC midnight). */
+  registry: { source: RegistrySource; asOf: Date } | null;
+  claimedAt: Date | null;
+  submittedAt: Date | null;
+  /** Rejected rows: when admin decided, and the reason the doctor sees (screen 29's rejected preview). */
+  decidedAt: Date | null;
+  rejection: { reasonEn: string; reasonAr: string } | null;
+  /** Verified and suspended rows (dates at UTC midnight). */
+  verifiedOn: Date | null;
+  licenceExpiresOn: Date | null;
+  board: string | null;
+  licenceStateEn: string | null;
+  licenceStateAr: string | null;
+  suspension: { at: Date; byEn: string; byAr: string; reasonEn: string | null; reasonAr: string | null } | null;
+  removedAt: Date | null;
+};
+
+const utcDate = (ymd: string) => new Date(`${ymd}T00:00:00Z`);
+
+function listingFor(d: SampleDoctor): SampleListing {
+  const row = listingRows.find((r) => r.id === d.id);
+  const profile = profileFor(d.id);
+  const builder = builderRowFor(d.id);
+  // Invites keep their authored instants (screen 9 compares them unshifted), so a claim date read from one does too.
+  const invite = sampleInvites.find((i) => i.doctorId === d.id && i.usedAtUtc);
+  const raw = d.state as string; // doctors.json may carry "suspended" or "removed", which the public card state does not name
+  const submittedAtUtc = row?.submittedAtUtc ?? builder?.submittedAtUtc ?? null;
+  const status: ListingStatus =
+    raw === "verified" || raw === "unclaimed" || raw === "suspended" || raw === "removed"
+      ? raw
+      : builder?.rejection
+        ? "rejected"
+        : submittedAtUtc
+          ? "inReview"
+          : "claimed";
+  const verifiedish = status === "verified" || status === "suspended";
+  const s = row?.suspension;
+  const by = s && s.byAdminId === sampleAdmin.id ? sampleAdmin : null;
+  return {
+    doctor: d,
+    status,
+    registry: !verifiedish && profile?.registrySource && profile.registryAsOf ? { source: profile.registrySource, asOf: utcDate(profile.registryAsOf) } : null,
+    claimedAt: row?.claimedAtUtc ? sampleInstant(row.claimedAtUtc) : invite?.usedAtUtc ? new Date(invite.usedAtUtc) : null,
+    submittedAt: (status === "inReview" || status === "rejected") && submittedAtUtc ? sampleInstant(submittedAtUtc) : null,
+    decidedAt: status === "rejected" && builder?.decidedAtUtc ? sampleInstant(builder.decidedAtUtc) : null,
+    rejection: status === "rejected" && builder?.rejection ? { reasonEn: builder.rejection.reasonEn, reasonAr: builder.rejection.reasonAr } : null,
+    verifiedOn: verifiedish && d.verifiedOn ? utcDate(d.verifiedOn) : null,
+    licenceExpiresOn: verifiedish && row?.licenceExpiresOn ? sampleInstant(`${row.licenceExpiresOn}T00:00:00Z`) : null,
+    board: verifiedish ? (profile?.board ?? null) : null,
+    licenceStateEn: verifiedish ? (profile?.licenceStateEn ?? null) : null,
+    licenceStateAr: verifiedish ? (profile?.licenceStateAr ?? null) : null,
+    suspension:
+      status === "suspended" && s
+        ? { at: sampleInstant(s.atUtc), byEn: by?.nameEn ?? s.byAdminId, byAr: by?.nameAr ?? s.byAdminId, reasonEn: s.reasonEn, reasonAr: s.reasonAr }
+        : null,
+    removedAt: null, // no removed sample yet: removals are confirmed on screen 41
+  };
+}
+
+/** Every listing, in data order. Production pages these from Postgres by status, specialty and name (indexed, see architecture). */
+export function sampleListings(): SampleListing[] {
+  return sampleDoctors.map(listingFor);
+}
+/* ---------------- AI jobs and costs (screen 45) ---------------- */
+// Appended block. data/sample/ai-jobs.json holds one records-pipeline job per record set: job_001..job_006 run rs_001..rs_006
+// above, and their status, step, files and times come from records.json, so the admin and the patient see the same job at the
+// same step. job_007..job_010 run `extraSets`, sets of other synthetic patients that only the admin sees (same row shape, pages
+// stored compactly). Usage is per step, and per file for the extract step: names and sizes only, never page content.
+import aiJobsJson from "@/data/sample/ai-jobs.json";
+
+/** What a step or a file cost, as lib/ai logs it to ai_calls (task 1.9). costMicros is in millionths of aiLimits.costCurrency. */
+export type AiUsage = { calls: number; retries: number; inputTokens: number; outputTokens: number; costMicros: number };
+export type AiFileUsage = AiUsage & { fileId: string };
+/** One pipeline step of a job. finishedAt is null while it runs; steps not reached yet are absent. */
+export type AiJobStep = { step: PipelineStep; startedAt: Date; finishedAt: Date | null; usage: AiUsage | null; files: AiFileUsage[] | null };
+export type SampleAiJob = {
+  id: string;
+  /** 1 for the first run; a retry after a failure runs attempt 2 from the failed page, with the same quote. */
+  attempt: number;
+  patientFirstNameEn: string;
+  patientFirstNameAr: string;
+  set: SampleRecordSet;
+  steps: AiJobStep[];
+};
+
+type AiExtraFileRow = Omit<RecordFile, "pages"> & { pageCount: number; otherPages: Record<string, PageStatus> };
+type AiExtraSetRow = Omit<RecordSetRow, "files"> & { files: AiExtraFileRow[] };
+type AiJobRow = {
+  id: string;
+  recordSetId: string;
+  patientFirstNameAr: string;
+  attempt: number;
+  steps: Array<{ step: PipelineStep; startedAtUtc: string; finishedAtUtc: string | null; usage?: AiUsage; files?: AiFileUsage[] }>;
+};
+
+const aiJobsData = aiJobsJson as unknown as { alertPreview: { jobId: string; shiftDays: number }; extraSets: AiExtraSetRow[]; jobs: AiJobRow[] };
+
+function expandAiExtraSet(row: AiExtraSetRow): RecordSetRow {
+  return {
+    ...row,
+    files: row.files.map(({ pageCount, otherPages, ...file }) => ({
+      ...file,
+      pages: Array.from({ length: pageCount }, (_, k) => ({ status: otherPages[String(k + 1)] ?? "read" })),
+    })),
+  };
+}
+
+/**
+ * Every job, newest first. `alertPreview` (the page's ?state=alert) moves the alertPreview job forward by its shiftDays, so the
+ * day that passed the daily spend alert is today. Production reads ai_jobs and ai_calls with the service role, admin only.
+ */
+export function sampleAiJobs({ alertPreview = false }: { alertPreview?: boolean } = {}): SampleAiJob[] {
+  const sets = new Map<string, RecordSetRow>([...recordsData.sets, ...aiJobsData.extraSets.map(expandAiExtraSet)].map((s) => [s.id, s]));
+  return aiJobsData.jobs
+    .flatMap((row): SampleAiJob[] => {
+      const setRow = sets.get(row.recordSetId);
+      if (!setRow) return [];
+      const shift = alertPreview && row.id === aiJobsData.alertPreview.jobId ? aiJobsData.alertPreview.shiftDays * DAY_MS : 0;
+      const at = (d: Date) => new Date(d.getTime() + shift);
+      const set = toRecordSet(setRow);
+      return [
+        {
+          id: row.id,
+          attempt: row.attempt,
+          patientFirstNameEn: setRow.patientFirstNameEn,
+          patientFirstNameAr: row.patientFirstNameAr,
+          set: { ...set, createdAt: at(set.createdAt), paidAt: set.paidAt && at(set.paidAt), finishedAt: set.finishedAt && at(set.finishedAt) },
+          steps: row.steps.map((s) => ({
+            step: s.step,
+            startedAt: at(sampleInstant(s.startedAtUtc)),
+            finishedAt: s.finishedAtUtc ? at(sampleInstant(s.finishedAtUtc)) : null,
+            usage: s.usage ?? null,
+            files: s.files ?? null,
+          })),
+        },
+      ];
+    })
+    .sort((a, b) => b.set.createdAt.getTime() - a.set.createdAt.getTime());
+}
+
+export function sampleAiJobById(id: string, options?: { alertPreview?: boolean }): SampleAiJob | undefined {
+  return sampleAiJobs(options).find((j) => j.id === id);
+}

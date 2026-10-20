@@ -115,3 +115,78 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Admin sign-in (screen 37, task 2.8) ---------------- */
+// Appended block. Three factors in a row: work email, a code emailed to it (business.otpDigits long), then the code from an
+// authenticator app (TOTP, RFC 6238) or one recovery code. No TOTP, no access: there is no route in without the third step.
+// A refusal never says which factor failed (rule F6); failures count per email address and per IP in the database, whether
+// or not the address belongs to a team account, and past attemptsMax sign-in pauses for lockMinutes. (default until Dr Ayman confirms)
+export const adminSignIn = {
+  emailCodeValidMinutes: 10, // the emailed code works this long after it is sent
+  resendAfterSeconds: 60, // the resend timer on the email-code step
+  totpDigits: 6, // authenticator code length (RFC 6238 default; every common app uses it)
+  totpPeriodSeconds: 30, // the authenticator code changes this often
+  recoveryCodeChars: 10, // letters and numbers per recovery code, shown in groups of five
+  attemptsMax: 5, // refused sign-ins in a row before sign-in pauses
+  lockMinutes: 30, // the pause, after which a new attempt may start
+} as const;
+
+/* ---------------- Outreach and invites (screen 46, tasks 2.3 and 4.5) ---------------- */
+// Appended block. Invites go one doctor, one address, one email at a time, each sent by Resend from an Inngest job; there is
+// no bulk sending and no fax (out of scope). Claim-link opens per connection are business.inviteRateLimitPerIpPerHour above.
+export const outreach = {
+  // (default until counsel clears sending) While false, Send and Resend are off on /admin/outreach AND the server actions
+  // refuse them, so flipping this one value is the switch. Revoke stays on: it sends nothing.
+  sendingCleared: false as boolean,
+  inviteValidDays: 14, // a claim link works once, for this many days after it is sent (task 2.3)
+  personalLineMaxChars: 300, // (default until Dr Ayman confirms) the optional note at the top of the invite email
+} as const;
+
+/* ---------------- Removal requests (screen 41, task 2.8) ---------------- */
+// Appended block. The promise to the doctor is business.removalSlaHours (48) from the request; the admin queue's timer turns
+// amber once a request is this many hours old and red once the promise is missed. (default until Dr Ayman confirms)
+export const removalRules = {
+  slaWarnAfterHours: 36,
+} as const;
+
+/* ---------------- Members and subscriptions, admin (screen 42, tasks 3.5 and 3.11) ---------------- */
+// Appended block. What an admin can grant from /admin/members. The grace period itself is business.membershipGraceDays above;
+// an extension adds graceExtendDays to it for one membership (3affya's own setting: Stripe keeps retrying the card meanwhile).
+// Free months are a 100% discount on that many renewals, applied in Stripe Billing. (default until Dr Ayman confirms)
+export const membershipAdmin = {
+  compMonthsOptions: [1, 2, 3] as readonly number[],
+  graceExtendDays: 7,
+} as const;
+
+/* ---------------- Credential review queue (screen 38, task 2.8) ---------------- */
+// Appended block. How long a submitted claim may wait for an admin decision, counted from the doctor's latest submission
+// (a resubmission restarts the clock), and how many hours before that the queue badge turns amber. The re-verification
+// cycle after approval is business.verifiedReverifyMonths above (rule A2). (default until Dr Ayman confirms)
+export const credentialReview = {
+  slaHours: 48,
+  dueSoonHours: 24,
+} as const;
+
+/* ---------------- Admin payments, refunds and payouts (screen 43, task 3.11) ---------------- */
+// Appended block. The period filter of the admin money tables, in days back from today, shortest first; no choice is all time.
+// The refund rule itself is business.fullRefundCutoffHours above (lib/refunds.ts).
+export const adminMoney = {
+  periodDaysOptions: [7, 30, 90] as readonly number[],
+} as const;
+
+/* ---------------- Admin listings (screen 39, task 2.8) ---------------- */
+// Appended block. Re-verification (rule A2): the next check is the licence expiry or the yearly cycle
+// (business.verifiedReverifyMonths after the verified-on date), whichever comes first.
+export const listingRules = {
+  reverifyDueSoonDays: 30, // (default until Dr Ayman confirms) the listings table flags a verified row this many days before its next check
+} as const;
+
+/* ---------------- AI jobs and costs (screen 45, tasks 1.9, 3.8 and 3.11) ---------------- */
+// Appended block. What the admin AI jobs page measures the records pipeline against. The AI vendor bills in USD, so costs are
+// in USD whatever the patient paid in. A "day" for the alert is a calendar day in business.defaultTimeZone.
+export const aiLimits = {
+  costCurrency: "USD" as const,
+  dailySpendAlertCents: 1000, // (default until Dr Ayman confirms) the day's ai_calls cost that emails the ops inbox (architecture: daily AI spend alert)
+  jobTokenCap: 3_000_000, // (default until the M1 extraction spike measures tokens per page) per-job token cap, enforced in lib/ai (task 1.9)
+  attemptsPerCall: 3, // task 3.8: three attempts per page or call, then the job fails with a reason
+} as const;

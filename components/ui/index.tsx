@@ -795,3 +795,70 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * The one notice box (PLAYBOOK §9): a boxed message in the page flow saying what happened or what needs attention. `info` for a
+ * standing note, `success` for something that worked, `warning` for something to act on, `danger` for a failure with the fix in
+ * the body or the action (rule L4). The tone tints the box and its start-edge bar (so it mirrors in RTL) and never carries the
+ * meaning alone: the title does. `role` (or `live`) "status" for a result that just appeared, "alert" for an error the person
+ * must hear now; leave it off for a standing note. `titleAs` or `headingLevel` makes the title a heading when the notice opens
+ * a section. `icon` sits at the reading start; `children` render under the body (a quoted note, a short list). Not for toasts
+ * (Toast) or empty lists (EmptyState).
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, { box: string; title: string }> = {
+  info: { box: "border-sea-500 bg-sky-100", title: "text-sea-900" },
+  success: { box: "border-success bg-[#E4F4EC]", title: "text-ink-900" },
+  warning: { box: "border-gold-500 bg-gold-100", title: "text-ink-900" },
+  danger: { box: "border-danger bg-[#FBE9E7]", title: "text-danger" },
+};
+export function Notice({
+  tone = "info",
+  title,
+  titleAs,
+  headingLevel,
+  body,
+  action,
+  icon,
+  role,
+  live,
+  id,
+  className,
+  children,
+}: {
+  tone?: NoticeTone;
+  title?: ReactNode;
+  titleAs?: "p" | "h2" | "h3";
+  /** Shorthand for titleAs: 2 → h2, 3 → h3. */
+  headingLevel?: 2 | 3;
+  body?: ReactNode;
+  action?: ReactNode;
+  icon?: ReactNode;
+  role?: "alert" | "status" | "note";
+  /** Alias of role for callers that think in live regions ("polite" reads as "status"). */
+  live?: "alert" | "status" | "polite";
+  id?: string;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const Title = titleAs ?? (headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "p");
+  const t = noticeTones[tone];
+  return (
+    <div
+      id={id}
+      role={role ?? (live === "polite" ? "status" : live)}
+      className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3.5 text-ink-900", t.box, className)}
+    >
+      {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+        <div className="min-w-0">
+          {title ? <Title className={cx("font-bold", t.title)}>{title}</Title> : null}
+          {body ? <div className={cx("text-[15px] text-ink-700", title ? "mt-0.5" : "")}>{body}</div> : null}
+          {children ? <div className="mt-2">{children}</div> : null}
+        </div>
+        {action ? <div className="flex shrink-0 flex-wrap items-center gap-3">{action}</div> : null}
+      </div>
+    </div>
+  );
+}
