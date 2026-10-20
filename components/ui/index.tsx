@@ -795,3 +795,71 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message about the page or about what just happened (PLAYBOOK §9 backlog: the one notice box). `tone`: info (a fact to
+ * know), success (something just done), warning (something waits or is off), danger (something failed or needs fixing). The
+ * title says it in words, so the tint is never the only signal (rule W1). One optional `action` (a LinkButton or Button) sits
+ * at the end. Pass role="status" for a message that appears after an action and role="alert" for a failure; a notice that is
+ * part of the page needs no role. The marks are symmetric glyphs and never mirror (rule R2).
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, { box: string; mark: string }> = {
+  info: { box: "border-sky-500/40 bg-sky-100", mark: "text-sea-800" },
+  success: { box: "border-success/30 bg-[#E4F4EC]", mark: "text-success" },
+  warning: { box: "border-gold-500/50 bg-gold-100", mark: "text-warning" },
+  danger: { box: "border-danger/30 bg-[#FBE9E7]", mark: "text-danger" },
+};
+
+function NoticeMark({ tone }: { tone: NoticeTone }) {
+  if (tone === "success") return <CheckIcon className="size-4" />;
+  // "i" for information, "!" for warning and danger.
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" style={{ transform: "none" }}>
+      {tone === "info" ? (
+        <path d="M8 7v5M8 4.25v.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      ) : (
+        <path d="M8 3.5v6M8 12.25v.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      )}
+    </svg>
+  );
+}
+
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  role,
+  id,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: ReactNode;
+  body?: ReactNode;
+  action?: ReactNode;
+  role?: "status" | "alert";
+  id?: string;
+  className?: string;
+}) {
+  const t = noticeTones[tone];
+  return (
+    <div
+      id={id}
+      role={role}
+      className={cx("flex flex-col gap-3 rounded-[var(--radius-field)] border px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-5", t.box, className)}
+    >
+      <div className="flex min-w-0 items-start gap-3">
+        <span aria-hidden="true" className={cx("mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-white", t.mark)}>
+          <NoticeMark tone={tone} />
+        </span>
+        <div className="min-w-0">
+          <p className="font-semibold text-ink-900">{title}</p>
+          {body ? <div className="mt-0.5 text-[15px] text-ink-700">{body}</div> : null}
+        </div>
+      </div>
+      {action ? <div className="shrink-0 ps-10 sm:ps-0">{action}</div> : null}
+    </div>
+  );
+}

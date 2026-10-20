@@ -1011,3 +1011,111 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+
+/* ---------------- Outreach and invites (screen 46, tasks 2.3 and 4.5) ---------------- */
+// Appended block. The admin view of data/sample/invites.json: every invite with its tracking facts and a derived status, plus
+// the unclaimed registry doctors still to invite. Rows inv_001..inv_003 are screen 9's claim demos and carry no tracking
+// fields; inv_004..inv_013 add them. Instants go through sampleInstant (authored up to 8 Nov, so they stay in the past);
+// screen 9 reads the same rows unshifted, which only moves its own three dates. inv_013 (`preview: "justSent"`) is the invite
+// the ?state=just-sent preview adds: left out otherwise, and dated now. Production derives the same facts from the invites
+// table (token stored as a hash), the Resend delivery webhook (bounces) and the claim page (opens).
+
+/** Why a send bounced, as the Resend webhook reports it: no such mailbox, or the receiving server refused the email. */
+export type OutreachBounce = "noMailbox" | "rejected";
+
+type OutreachInviteRow = SampleInvite & {
+  /** When the claim page was first opened from this link. Email opens are not tracked. */
+  openedAtUtc?: string | null;
+  bouncedAtUtc?: string | null;
+  bounce?: OutreachBounce | null;
+  revokedAtUtc?: string | null;
+  /** The language the email went out in; screen 9's rows predate the choice and went out in English. */
+  language?: "ar" | "en";
+  preview?: "justSent";
+};
+
+/** One status per invite, first match wins: revoked, claimed, bounced, expired, opened, else sent (not opened yet). */
+export type OutreachStatus = "sent" | "opened" | "claimed" | "expired" | "bounced" | "revoked";
+
+export type OutreachInvite = {
+  id: string;
+  doctor: SampleDoctor;
+  email: string;
+  language: "ar" | "en";
+  status: OutreachStatus;
+  sentAt: Date;
+  expiresAt: Date;
+  openedAt?: Date;
+  claimedAt?: Date;
+  bouncedAt?: Date;
+  bounce?: OutreachBounce;
+  revokedAt?: Date;
+};
+
+const outreachRows = invitesJson as unknown as OutreachInviteRow[];
+
+/** Sent and opened invites still work: the doctor can claim from them, and a new invite would replace them. */
+export const outreachIsLive = (i: Pick<OutreachInvite, "status">) => i.status === "sent" || i.status === "opened";
+
+function toOutreachInvite(row: OutreachInviteRow, now: Date, validDays: number): OutreachInvite | undefined {
+  const doctor = sampleDoctors.find((d) => d.id === row.doctorId);
+  if (!doctor) return undefined;
+  const at = (iso: string | null | undefined) => (iso ? sampleInstant(iso) : undefined);
+  // The preview invite goes out "now", so its link works for the full validity period from this moment.
+  const justSent = row.preview === "justSent";
+  const sentAt = justSent ? now : sampleInstant(row.sentAtUtc);
+  const expiresAt = justSent ? new Date(now.getTime() + validDays * 86_400_000) : sampleInstant(row.expiresAtUtc);
+  const claimedAt = at(row.usedAtUtc);
+  const bouncedAt = at(row.bouncedAtUtc);
+  const revokedAt = at(row.revokedAtUtc);
+  const status: OutreachStatus = revokedAt
+    ? "revoked"
+    : claimedAt
+      ? "claimed"
+      : bouncedAt
+        ? "bounced"
+        : expiresAt.getTime() <= now.getTime()
+          ? "expired"
+          : row.openedAtUtc
+            ? "opened"
+            : "sent";
+  return {
+    id: row.id,
+    doctor,
+    email: row.email,
+    language: row.language ?? "en",
+    status,
+    sentAt,
+    expiresAt,
+    openedAt: at(row.openedAtUtc),
+    claimedAt,
+    bouncedAt,
+    bounce: row.bounce ?? undefined,
+    revokedAt,
+  };
+}
+
+/**
+ * Every invite, newest first. `justSent` adds the ?state=just-sent preview invite at the top. `validDays` is
+ * outreach.inviteValidDays from config/business.ts, passed in so this block adds no import.
+ */
+export function outreachInvites(validDays: number, { justSent = false }: { justSent?: boolean } = {}, now: Date = new Date()): OutreachInvite[] {
+  return outreachRows
+    .filter((r) => r.preview !== "justSent" || justSent)
+    .flatMap((r) => toOutreachInvite(r, now, validDays) ?? [])
+    .sort((a, b) => b.sentAt.getTime() - a.sentAt.getTime());
+}
+
+/**
+ * Unclaimed registry doctors with no live invite, in registry order, each with their latest invite when one expired, bounced
+ * or was revoked (they come back here to be invited again). Doctors with a live invite are on the sent list instead.
+ */
+export function outreachCandidates(invites: OutreachInvite[]): Array<{ doctor: SampleDoctor; last?: OutreachInvite }> {
+  return sampleDoctors
+    .filter((d) => d.state === "unclaimed")
+    .flatMap((doctor) => {
+      const mine = invites.filter((i) => i.doctor.id === doctor.id);
+      if (mine.some(outreachIsLive)) return [];
+      return [{ doctor, last: mine[0] }];
+    });
+}
