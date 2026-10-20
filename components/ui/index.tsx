@@ -798,232 +798,31 @@ export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap"
 
 /* ---------------- Notice ---------------- */
 /**
- * A boxed message in the page flow (PLAYBOOK §9, the one notice box): `info` for a neutral fact, `success` after something
- * worked, `warning` for something that needs attention, `danger` for a failure. A title that says what happened, an optional
- * body with the fix (rule L4), at most one action. The tone is the tint and the start-edge bar, never colour alone: the title
- * carries the meaning. `role` "alert" for an error that appears after an action, "status" for a result; omit it for standing
- * notes. Tints are the Badge tones.
+ * The one notice box (PLAYBOOK §9): a boxed message in the page flow saying what happened or what needs attention. `info` for a
+ * standing note, `success` for something that worked, `warning` for something to act on, `danger` for a failure with the fix in
+ * the body or the action (rule L4). The tone tints the box and its start-edge bar (so it mirrors in RTL) and never carries the
+ * meaning alone: the title does. `role` (or `live`) "status" for a result that just appeared, "alert" for an error the person
+ * must hear now; leave it off for a standing note. `titleAs` or `headingLevel` makes the title a heading when the notice opens
+ * a section. `icon` sits at the reading start; `children` render under the body (a quoted note, a short list). Not for toasts
+ * (Toast) or empty lists (EmptyState).
  */
 export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, string> = {
-  info: "border-sea-500 bg-sky-100",
-  success: "border-success bg-[#E4F4EC]",
-  warning: "border-gold-500 bg-gold-100",
-  danger: "border-danger bg-[#FBE9E7]",
+const noticeTones: Record<NoticeTone, { box: string; title: string }> = {
+  info: { box: "border-sea-500 bg-sky-100", title: "text-sea-900" },
+  success: { box: "border-success bg-[#E4F4EC]", title: "text-ink-900" },
+  warning: { box: "border-gold-500 bg-gold-100", title: "text-ink-900" },
+  danger: { box: "border-danger bg-[#FBE9E7]", title: "text-danger" },
 };
 export function Notice({
   tone = "info",
   title,
-  body,
-  action,
-  role,
-  id,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: string;
-  body?: ReactNode;
-  action?: ReactNode;
-  role?: "alert" | "status";
-  id?: string;
-  className?: string;
-}) {
-  return (
-    <div
-      id={id}
-      role={role}
-      className={cx(
-        "flex flex-col items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
-        noticeTones[tone],
-        className,
-      )}
-    >
-      <div className="min-w-0">
-        <p className="font-semibold text-ink-900">{title}</p>
-        {body ? <div className="mt-0.5 text-ink-700">{body}</div> : null}
-      </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message about the page or about what just happened (PLAYBOOK §9 backlog: the one notice box). `tone`: info (a fact to
- * know), success (something just done), warning (something waits or is off), danger (something failed or needs fixing). The
- * title says it in words, so the tint is never the only signal (rule W1). One optional `action` (a LinkButton or Button) sits
- * at the end. Pass role="status" for a message that appears after an action and role="alert" for a failure; a notice that is
- * part of the page needs no role. The marks are symmetric glyphs and never mirror (rule R2).
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, { box: string; mark: string }> = {
-  info: { box: "border-sky-500/40 bg-sky-100", mark: "text-sea-800" },
-  success: { box: "border-success/30 bg-[#E4F4EC]", mark: "text-success" },
-  warning: { box: "border-gold-500/50 bg-gold-100", mark: "text-warning" },
-  danger: { box: "border-danger/30 bg-[#FBE9E7]", mark: "text-danger" },
-};
-
-function NoticeMark({ tone }: { tone: NoticeTone }) {
-  if (tone === "success") return <CheckIcon className="size-4" />;
-  // "i" for information, "!" for warning and danger.
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="size-4" style={{ transform: "none" }}>
-      {tone === "info" ? (
-        <path d="M8 7v5M8 4.25v.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      ) : (
-        <path d="M8 3.5v6M8 12.25v.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      )}
-    </svg>
-  );
-}
-
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
-  role,
-  id,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: ReactNode;
-  body?: ReactNode;
-  action?: ReactNode;
-  role?: "status" | "alert";
-  id?: string;
-  className?: string;
-}) {
-  const t = noticeTones[tone];
-  return (
-    <div
-      id={id}
-      role={role}
-      className={cx("flex flex-col gap-3 rounded-[var(--radius-field)] border px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-5", t.box, className)}
-    >
-      <div className="flex min-w-0 items-start gap-3">
-        <span aria-hidden="true" className={cx("mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-white", t.mark)}>
-          <NoticeMark tone={tone} />
-        </span>
-        <div className="min-w-0">
-          <p className="font-semibold text-ink-900">{title}</p>
-          {body ? <div className="mt-0.5 text-[15px] text-ink-700">{body}</div> : null}
-        </div>
-      </div>
-      {action ? <div className="shrink-0 ps-10 sm:ps-0">{action}</div> : null}
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * The one notice box (PLAYBOOK §9): a tinted panel with an optional bold title, a body and an optional action under it. Tones
- * reuse the Badge tints: info (sky), success, warning (gold), danger. The tone is never the only signal (rule F5): the title or
- * body says what happened. Pass `role="alert"` for an error the person must hear now, `role="status"` for a result that just
- * appeared; leave it off for a standing note. `icon` sits at the reading start, e.g. CheckIcon on a success.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, string> = {
-  info: "border-sky-500/40 bg-sky-100",
-  success: "border-success/35 bg-[#E4F4EC]",
-  warning: "border-gold-500/50 bg-gold-100",
-  danger: "border-danger/35 bg-[#FBE9E7]",
-};
-export function Notice({
-  tone = "info",
-  title,
+  titleAs,
+  headingLevel,
   body,
   action,
   icon,
   role,
-  id,
-  className,
-}: {
-  tone?: NoticeTone;
-  title?: ReactNode;
-  body?: ReactNode;
-  action?: ReactNode;
-  icon?: ReactNode;
-  role?: "alert" | "status" | "note";
-  id?: string;
-  className?: string;
-}) {
-  return (
-    <div id={id} role={role} className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border p-4 text-ink-900", noticeTones[tone], className)}>
-      {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}
-      <div className="min-w-0 flex-1">
-        {title ? <p className="font-bold">{title}</p> : null}
-        {body ? <div className={cx("text-[15px] text-ink-700", title ? "mt-1" : undefined)}>{body}</div> : null}
-        {action ? <div className="mt-3 flex flex-wrap gap-3">{action}</div> : null}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message in the page flow (PLAYBOOK §9): what just changed (success), something to act on (warning, e.g. a past-due
- * payment), a failure (danger) or a plain note (info). A title, an optional body and an optional action row. `live` makes it a
- * live region: "status" for a change the user just made, "alert" for an error; leave it off for a notice that is simply part of
- * the page. `headingLevel` keeps the outline right where the notice sits under an h2.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, string> = {
-  info: "border-sky-500/40 bg-sky-100",
-  success: "border-success/40 bg-success/10",
-  warning: "border-gold-500/50 bg-gold-100",
-  danger: "border-danger/40 bg-danger/10",
-};
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
   live,
-  headingLevel = 2,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: string;
-  body?: ReactNode;
-  action?: ReactNode;
-  live?: "status" | "alert";
-  headingLevel?: 2 | 3;
-  className?: string;
-}) {
-  const Heading = headingLevel === 3 ? "h3" : "h2";
-  return (
-    <div role={live} className={cx("rounded-[var(--radius-card)] border p-4 sm:p-5", noticeTones[tone], className)}>
-      <Heading className="text-lg font-bold text-ink-900">{title}</Heading>
-      {body ? <div className="mt-1 text-ink-900">{body}</div> : null}
-      {action ? <div className="mt-3 flex flex-wrap items-center gap-3">{action}</div> : null}
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message inside the page (PLAYBOOK §9, replaces the hand-rolled notice boxes): a title, a body and an optional action,
- * in one of four tones. info: a fact to know before acting; success: something just worked; warning: needs attention soon;
- * danger: something failed or was refused, with the fix in the body or the action (rule L4). Pass `role` when the notice
- * appears after an action ("status" for info and success, "alert" for danger) so screen readers hear it. `titleAs` makes the
- * title a heading when the notice opens a section. The tone mark is symmetric and never mirrored.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, { box: string; title: string; mark: string }> = {
-  info: { box: "border-sky-500/40 bg-sky-100", title: "text-sea-900", mark: "bg-white text-sea-800" },
-  success: { box: "border-lagoon-600/30 bg-lagoon-100", title: "text-lagoon-900", mark: "bg-white text-lagoon-900" },
-  warning: { box: "border-gold-500/50 bg-gold-100", title: "text-gold-700", mark: "bg-white text-warning" },
-  danger: { box: "border-danger/40 bg-white", title: "text-danger", mark: "bg-sand-100 text-danger" },
-};
-
-export function Notice({
-  tone = "info",
-  title,
-  titleAs: Title = "p",
-  body,
-  action,
-  role,
   id,
   className,
   children,
@@ -1031,212 +830,35 @@ export function Notice({
   tone?: NoticeTone;
   title?: ReactNode;
   titleAs?: "p" | "h2" | "h3";
+  /** Shorthand for titleAs: 2 → h2, 3 → h3. */
+  headingLevel?: 2 | 3;
   body?: ReactNode;
   action?: ReactNode;
-  role?: "status" | "alert" | "note";
+  icon?: ReactNode;
+  role?: "alert" | "status" | "note";
+  /** Alias of role for callers that think in live regions. */
+  live?: "alert" | "status";
   id?: string;
   className?: string;
-  /** Extra content under the body, e.g. a quoted note or a short list. */
   children?: ReactNode;
 }) {
+  const Title = titleAs ?? (headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "p");
   const t = noticeTones[tone];
-  return (
-    <div id={id} role={role} className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border p-4", t.box, className)}>
-      <span aria-hidden="true" className={cx("mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full", t.mark)}>
-        {tone === "success" ? (
-          <CheckIcon className="size-4" />
-        ) : (
-          <svg viewBox="0 0 16 16" className="size-4" style={{ transform: "none" }}>
-            {tone === "info" ? (
-              <>
-                <path d="M8 7.25v4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="8" cy="4.5" r="1.15" fill="currentColor" />
-              </>
-            ) : (
-              <>
-                <path d="M8 3.75v5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="8" cy="11.75" r="1.15" fill="currentColor" />
-              </>
-            )}
-          </svg>
-        )}
-      </span>
-      <div className="min-w-0 flex-1">
-        {title ? <Title className={cx("font-semibold leading-snug", Title === "p" ? "" : "text-lg font-bold", t.title)}>{title}</Title> : null}
-        {body ? <div className={cx("text-ink-700", title ? "mt-1" : "")}>{body}</div> : null}
-        {children}
-        {action ? <div className="mt-3 flex flex-wrap items-center gap-3">{action}</div> : null}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message inside the page flow (PLAYBOOK §9): what happened or what needs attention, one line of title, an optional
- * body and at most one action. The tone tints the box and its start-edge bar (so it mirrors in RTL); it never carries the
- * meaning alone, the title does. Pass `role="status"` when the notice appears after an action, `role="alert"` only for an
- * error the user must act on now. Not for toasts (Toast) or empty lists (EmptyState).
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, string> = {
-  info: "border-sky-500 bg-sky-100",
-  success: "border-success bg-success/10",
-  warning: "border-warning bg-gold-100",
-  danger: "border-danger bg-danger/10",
-};
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
-  role,
-  id,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: ReactNode;
-  body?: ReactNode;
-  action?: ReactNode;
-  role?: "status" | "alert";
-  id?: string;
-  className?: string;
-}) {
   return (
     <div
       id={id}
-      role={role}
-      className={cx(
-        "flex flex-col items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
-        noticeTones[tone],
-        className,
-      )}
+      role={role ?? live}
+      className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3.5 text-ink-900", t.box, className)}
     >
-      <div className="min-w-0">
-        <p className="font-semibold text-ink-900">{title}</p>
-        {body ? <div className="mt-0.5 text-sm text-ink-700">{body}</div> : null}
+      {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+        <div className="min-w-0">
+          {title ? <Title className={cx("font-bold", t.title)}>{title}</Title> : null}
+          {body ? <div className={cx("text-[15px] text-ink-700", title ? "mt-0.5" : "")}>{body}</div> : null}
+          {children ? <div className="mt-2">{children}</div> : null}
+        </div>
+        {action ? <div className="flex shrink-0 flex-wrap items-center gap-3">{action}</div> : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
     </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message in the page flow (PLAYBOOK §9): a title that says what happened, an optional line under it and an optional
- * action. `info` gives context, `success` confirms something done, `warning` needs attention soon, `danger` says something failed.
- * The tone is never the only signal: the title carries the meaning in words (rule F5). Pass role="alert" when the notice appears
- * in answer to an action (a failed save) so screen readers hear it; leave it off for a notice that is there when the page opens.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, string> = {
-  info: "border-sky-500/40 bg-sky-100",
-  success: "border-success/40 bg-[#E4F4EC]",
-  warning: "border-gold-300 bg-gold-100",
-  danger: "border-danger bg-white",
-};
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
-  role,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: string;
-  body?: ReactNode;
-  action?: ReactNode;
-  role?: "alert" | "status";
-  className?: string;
-}) {
-  return (
-    <div role={role} className={cx("flex flex-col gap-3 rounded-[var(--radius-field)] border p-4", noticeTones[tone], className)}>
-      <div>
-        <p className={cx("font-semibold", tone === "danger" ? "text-danger" : "text-ink-900")}>{title}</p>
-        {body ? <p className="mt-0.5 text-sm text-ink-700">{body}</p> : null}
-      </div>
-      {action ? <div className="flex flex-wrap items-center gap-2">{action}</div> : null}
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * A boxed message in the page flow (PLAYBOOK §9, the one notice box): a title, an optional body and at most one action. Tones:
- * info (sky), success (lagoon), warning (gold), danger (white with a danger border). Danger is announced at once (role alert,
- * e.g. a list that did not load); the others are polite status. For a change the person just made with Undo, use Toast.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeTones: Record<NoticeTone, { box: string; title: string }> = {
-  info: { box: "border-sky-500/40 bg-sky-100", title: "text-sea-900" },
-  success: { box: "border-lagoon-600/40 bg-lagoon-100", title: "text-lagoon-900" },
-  warning: { box: "border-gold-500/50 bg-gold-100", title: "text-ink-900" },
-  danger: { box: "border-danger/60 bg-white", title: "text-danger" },
-};
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: ReactNode;
-  body?: ReactNode;
-  action?: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div role={tone === "danger" ? "alert" : "status"} className={cx("rounded-[var(--radius-field)] border p-4", noticeTones[tone].box, className)}>
-      <p className={cx("font-semibold", noticeTones[tone].title)}>{title}</p>
-      {body ? <div className="mt-1 text-sm text-ink-700">{body}</div> : null}
-      {action ? <div className="mt-3">{action}</div> : null}
-    </div>
-  );
-}
-
-/* ---------------- Notice ---------------- */
-/**
- * The one notice box (PLAYBOOK §9): a short title, a line or two of body and an optional action, with the tone carried by a
- * bar on the start edge and by the words, never by colour alone. danger: something stopped and needs a fix (rule L4: say the
- * problem and the fix); warning: needs attention soon; success: what just happened; info: worth knowing. `live` makes it a
- * live region: "polite" for a status that just changed, "assertive" only for an error the user must act on.
- */
-export type NoticeTone = "info" | "success" | "warning" | "danger";
-const noticeBars: Record<NoticeTone, string> = {
-  info: "border-s-sea-500",
-  success: "border-s-success",
-  warning: "border-s-warning",
-  danger: "border-s-danger",
-};
-export function Notice({
-  tone = "info",
-  title,
-  body,
-  action,
-  live,
-  id,
-  className,
-}: {
-  tone?: NoticeTone;
-  title: string;
-  body?: ReactNode;
-  action?: ReactNode;
-  live?: "polite" | "assertive";
-  id?: string;
-  className?: string;
-}) {
-  return (
-    <section
-      id={id}
-      role={live === "assertive" ? "alert" : live === "polite" ? "status" : undefined}
-      aria-label={live ? undefined : title}
-      className={cx("rounded-[var(--radius-field)] border border-sand-300 border-s-4 bg-white p-4", noticeBars[tone], className)}
-    >
-      <p className="font-bold text-ink-900">{title}</p>
-      {body ? <div className="mt-1 text-ink-700">{body}</div> : null}
-      {action ? <div className="mt-3 flex flex-wrap items-center gap-2">{action}</div> : null}
-    </section>
   );
 }
