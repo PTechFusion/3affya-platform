@@ -1011,3 +1011,77 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+
+/* ---------------- Removal requests (screen 41) ---------------- */
+// Appended block. Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+// The rows are what screen 10's remove branch would insert into the removal queue (task 2.8): the four fields the doctor typed,
+// the page language they used, when the request arrived, when the confirmation link was opened, and any admin question or
+// decision. Synthetic; emails use the reserved example.com domain.
+import removalsJson from "@/data/sample/removals.json";
+import type { RemovalReason } from "@/app/[locale]/doctors/[id]/this-is-me/validation";
+
+/** Stored status: open (waiting on us), infoRequested (we asked the doctor a question), confirmed (removed, 410) or refused. */
+export type RemovalStatus = "open" | "infoRequested" | "confirmed" | "refused";
+
+type RemovalRow = {
+  id: string;
+  doctorId: string;
+  requesterName: string;
+  requesterEmail: string;
+  npi: string;
+  reason: RemovalReason;
+  details: string;
+  locale: "ar" | "en";
+  receivedAtUtc: string;
+  emailConfirmedAtUtc: string | null;
+  status: RemovalStatus;
+  infoRequest: { askedAtUtc: string; askedBy: string; question: string } | null;
+  decision: { decidedAtUtc: string; decidedBy: string; reason: string | null } | null;
+};
+
+/** One removal request as the admin queue reads it, instants shifted with removalInstant. */
+export type SampleRemovalRequest = Omit<RemovalRow, "receivedAtUtc" | "emailConfirmedAtUtc" | "infoRequest" | "decision"> & {
+  doctor: SampleDoctorDetails;
+  receivedAt: Date;
+  emailConfirmedAt: Date | null;
+  infoRequest: { askedAt: Date; askedBy: string; question: string } | null;
+  decision: { decidedAt: Date; decidedBy: string; reason: string | null } | null;
+};
+
+const removalsData = removalsJson as unknown as { authoredNowUtc: string; requests: RemovalRow[] };
+
+/**
+ * Prototype clock for the removal queue only. sampleInstant shifts in whole days, which moves an hour-level SLA by up to 24 hours
+ * over a day, so a request could not stay amber (36 to 48 hours old) whenever the prototype is opened. Here the instant the rows
+ * were authored against (`authoredNowUtc`) maps to the real now, to the minute: rm_001 is always about 6 hours old, rm_002 about
+ * 40 and rm_003 about 53. Gone with task 1.5, when received_at comes from the database.
+ */
+export function removalInstant(iso: string, now: Date = new Date()): Date {
+  return new Date(Date.parse(iso) + (now.getTime() - Date.parse(removalsData.authoredNowUtc)));
+}
+
+/** Every removal request, newest first. Only rows whose doctor exists resolve. Production reads the queue under admin RLS. */
+export function removalRequests(now: Date = new Date()): SampleRemovalRequest[] {
+  const at = (iso: string) => removalInstant(iso, now);
+  return removalsData.requests
+    .flatMap((r): SampleRemovalRequest[] => {
+      const doctor = doctorById(r.doctorId);
+      if (!doctor) return [];
+      return [
+        {
+          ...r,
+          doctor,
+          receivedAt: at(r.receivedAtUtc),
+          emailConfirmedAt: r.emailConfirmedAtUtc ? at(r.emailConfirmedAtUtc) : null,
+          infoRequest: r.infoRequest ? { askedAt: at(r.infoRequest.askedAtUtc), askedBy: r.infoRequest.askedBy, question: r.infoRequest.question } : null,
+          decision: r.decision ? { decidedAt: at(r.decision.decidedAtUtc), decidedBy: r.decision.decidedBy, reason: r.decision.reason } : null,
+        },
+      ];
+    })
+    .sort((a, b) => b.receivedAt.getTime() - a.receivedAt.getTime());
+}
+
+/** One removal request by id, or undefined (the in-shell not-found state). */
+export function removalRequestById(id: string, now: Date = new Date()): SampleRemovalRequest | undefined {
+  return removalRequests(now).find((r) => r.id === id);
+}

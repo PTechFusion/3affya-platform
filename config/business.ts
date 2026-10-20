@@ -115,3 +115,10 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Removal requests (screen 41, task 2.8) ---------------- */
+// Appended block. The promise to the doctor is business.removalSlaHours (48) from the request; the admin queue's timer turns
+// amber once a request is this many hours old and red once the promise is missed. (default until Dr Ayman confirms)
+export const removalRules = {
+  slaWarnAfterHours: 36,
+} as const;

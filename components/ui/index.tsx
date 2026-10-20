@@ -795,3 +795,48 @@ export function When({ instant, timeZone, locale }: { instant: Date; timeZone: s
 
 /** Tag for rich messages: keeps a time and its zone on one line. */
 export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
+
+/* ---------------- Notice ---------------- */
+/**
+ * The one notice box (PLAYBOOK §9): a tinted panel with an optional bold title, a body and an optional action under it. Tones
+ * reuse the Badge tints: info (sky), success, warning (gold), danger. The tone is never the only signal (rule F5): the title or
+ * body says what happened. Pass `role="alert"` for an error the person must hear now, `role="status"` for a result that just
+ * appeared; leave it off for a standing note. `icon` sits at the reading start, e.g. CheckIcon on a success.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, string> = {
+  info: "border-sky-500/40 bg-sky-100",
+  success: "border-success/35 bg-[#E4F4EC]",
+  warning: "border-gold-500/50 bg-gold-100",
+  danger: "border-danger/35 bg-[#FBE9E7]",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  icon,
+  role,
+  id,
+  className,
+}: {
+  tone?: NoticeTone;
+  title?: ReactNode;
+  body?: ReactNode;
+  action?: ReactNode;
+  icon?: ReactNode;
+  role?: "alert" | "status" | "note";
+  id?: string;
+  className?: string;
+}) {
+  return (
+    <div id={id} role={role} className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border p-4 text-ink-900", noticeTones[tone], className)}>
+      {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}
+      <div className="min-w-0 flex-1">
+        {title ? <p className="font-bold">{title}</p> : null}
+        {body ? <div className={cx("text-[15px] text-ink-700", title ? "mt-1" : undefined)}>{body}</div> : null}
+        {action ? <div className="mt-3 flex flex-wrap gap-3">{action}</div> : null}
+      </div>
+    </div>
+  );
+}
