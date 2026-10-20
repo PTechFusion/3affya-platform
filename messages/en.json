@@ -4246,5 +4246,238 @@
         "body": "Sign in again with your authenticator code, then export."
       }
     }
+  },
+  "adminOutreach": {
+    "metaTitle": "Outreach and invites | 3affya admin",
+    "metaDescription": "Invite registry doctors to claim their profile, one email at a time, and track each invite.",
+    "title": "Outreach and invites",
+    "lead": "Invite registry doctors to claim their profile, one email at a time, and see which invites were opened and claimed.",
+    "loading": "Loading invites",
+    "gate": {
+      "title": "Sending is off until counsel clears it",
+      "body": "You can prepare an invite and check the email. Send and Resend switch on once counsel approves outreach emails."
+    },
+    "funnel": {
+      "label": "Invite funnel. Each number filters the list.",
+      "sent": "Sent",
+      "opened": "Opened",
+      "claimed": "Claimed",
+      "expired": "Expired",
+      "sentNote": "All invites",
+      "share": "{pct} of sent",
+      "bounced": "{countLabel} bounced",
+      "revoked": "{countLabel} revoked"
+    },
+    "tabs": {
+      "label": "Invite lists",
+      "sent": "Sent invites",
+      "invite": "To invite"
+    },
+    "filters": {
+      "label": "Search and filter",
+      "searchSent": "Search by name, NPI or email",
+      "searchInvite": "Search by name or NPI",
+      "submit": "Search",
+      "more": "More filters",
+      "moreActive": "More filters ({countLabel} on)",
+      "specialty": "Specialty",
+      "anySpecialty": "Any specialty",
+      "apply": "Apply",
+      "applied": "Filters in use",
+      "remove": "Remove filter: {label}",
+      "query": "Search: {q}",
+      "status": {
+        "opened": "Opened",
+        "claimed": "Claimed",
+        "expired": "Expired",
+        "bounced": "Bounced",
+        "revoked": "Revoked"
+      }
+    },
+    "sent": {
+      "caption": "Invites, newest first",
+      "zone": "Times in <run>{zone}</run>",
+      "sentOn": "Sent {date}",
+      "columns": {
+        "doctor": "Doctor",
+        "status": "Status",
+        "sent": "Sent",
+        "actions": "Actions"
+      }
+    },
+    "status": {
+      "sent": "Not opened yet",
+      "opened": "Opened",
+      "claimed": "Claimed",
+      "expired": "Expired",
+      "bounced": "Bounced",
+      "revoked": "Revoked"
+    },
+    "latest": {
+      "sent": "Works until {expires}.",
+      "opened": "Opened {date}. Works until {expires}.",
+      "claimed": "Claimed {date}.",
+      "expired": "Expired {date}. Opened {opened}, not claimed.",
+      "expiredUnopened": "Expired {date}, never opened.",
+      "bounced": {
+        "noMailbox": "Bounced {date}: no mailbox at this address.",
+        "rejected": "Bounced {date}: the receiving server refused it."
+      },
+      "revoked": "Revoked {date}. The link no longer works.",
+      "justSent": "Sent just now. Works until {expires}."
+    },
+    "actions": {
+      "resend": "Resend",
+      "revoke": "Revoke",
+      "inviteAgain": "Invite again",
+      "fixAddress": "Fix the address",
+      "off": "Off until counsel clears sending"
+    },
+    "toast": {
+      "revoked": "Invite to {name} revoked. The link no longer works.",
+      "restored": "Invite to {name} restored. The link works again.",
+      "resent": "Invite sent again to {name}. The earlier link no longer works.",
+      "failed": "That did not go through, so nothing changed. Try again.",
+      "undo": "Undo"
+    },
+    "errors": {
+      "notCleared": "Sending is off until counsel clears it, so nothing was sent.",
+      "gone": "This invite changed in the meantime: it was claimed, expired or revoked. Reload the page to see it.",
+      "unavailable": "That did not go through, so nothing changed. Try again in a minute."
+    },
+    "justSent": {
+      "title": "Invite sent to {name}",
+      "body": "We emailed <addr>{email}</addr>. The link works until {expires}. This list shows when it is opened and claimed.",
+      "action": "Invite another doctor"
+    },
+    "bounced": {
+      "title": "The invite to {name} bounced",
+      "body": "<addr>{email}</addr> did not accept it on {date}: {reason} Find another address the doctor published, then invite again.",
+      "reason": {
+        "noMailbox": "there is no mailbox at this address.",
+        "rejected": "the receiving server refused it."
+      },
+      "action": "Fix the address"
+    },
+    "empty": {
+      "sentTitle": "No invites sent yet",
+      "sentBody": "Invite a registry doctor to claim their profile. Each invite goes to one doctor at one address.",
+      "sentAction": "Choose a doctor to invite",
+      "inviteTitle": "Every registry doctor has an invite",
+      "inviteBody": "Each unclaimed doctor has an open invite or has claimed the profile. Doctors come back here when an invite expires, bounces or is revoked.",
+      "inviteAction": "See sent invites"
+    },
+    "noMatch": {
+      "sentTitle": "No invites match",
+      "sentBody": "No invite matches these filters. Clear them to see every invite.",
+      "inviteTitle": "No doctors match",
+      "inviteBody": "No unclaimed doctor matches these filters. Clear them to see everyone left to invite.",
+      "action": "Clear filters"
+    },
+    "error": {
+      "title": "Invites did not load",
+      "body": "Something went wrong on our side. Your filters are kept; try again in a moment.",
+      "action": "Try again"
+    },
+    "invite": {
+      "liveNote": "Doctors with an open invite are on the Sent invites tab.",
+      "npi": "NPI <ltr>{npi}</ltr>",
+      "never": "Never invited",
+      "last": {
+        "expired": "Last invite expired {date}",
+        "bounced": "Last invite bounced {date}",
+        "revoked": "Last invite revoked {date}"
+      },
+      "action": "Invite",
+      "again": "Invite again"
+    },
+    "how": {
+      "title": "How invites work",
+      "oneByOne": "One doctor, one address, one email, sent by you. There is no bulk sending.",
+      "link": "Each link works once, for {days, plural, one {{daysLabel} day} other {{daysLabel} days}}. A new invite to the same doctor stops the earlier link.",
+      "opened": "Opened means the doctor opened the claim page from the link. Email opens are not tracked.",
+      "bounced": "Bounced means the address did not accept the email. Fix the address before inviting again.",
+      "limit": "A claim link can be opened {count, plural, one {once} other {{countLabel} times}} an hour from one connection. After that the page asks the doctor to wait an hour.",
+      "revoke": "Revoke stops a link at once. Undo stays in the bar for a moment, in case of a slip."
+    },
+    "compose": {
+      "breadcrumb": "You are here",
+      "title": "Invite {name}",
+      "lead": "The email links to the profile built from the registry. The doctor checks it and claims it, free.",
+      "registry": "From the registry",
+      "viewProfile": "Open the public profile",
+      "liveTitle": "{name} already has an open invite",
+      "liveBody": "Sent {date}. Sending a new invite stops the earlier link.",
+      "email": {
+        "label": "Doctor's email",
+        "hint": "Use an address the doctor published, such as on a hospital or practice page.",
+        "bounced": "The last invite to <addr>{email}</addr> bounced on {date}. Check the address before sending again.",
+        "error": {
+          "empty": "Enter the doctor's email address.",
+          "spaces": "Remove the spaces from the email address.",
+          "noAt": "Add an @ to the address, like name@example.com.",
+          "manyAt": "Use one @ only, like name@example.com.",
+          "noName": "Add the name before the @, like name@example.com.",
+          "noDomain": "Add the part after the @, like name@example.com.",
+          "noDot": "Check the part after the @. It needs a dot, like example.com."
+        }
+      },
+      "line": {
+        "label": "Personal line (optional)",
+        "hint": "Shown at the top of the email, signed with your name.",
+        "count": "{countLabel} of {maxLabel} characters",
+        "tooLong": "Shorten the line to {maxLabel} characters or fewer. It has {countLabel} now."
+      },
+      "language": {
+        "legend": "Email language",
+        "hint": "The claim page opens in the same language."
+      },
+      "preview": {
+        "title": "Email preview",
+        "lead": "What the doctor receives.",
+        "from": "From",
+        "to": "To",
+        "subject": "Subject",
+        "preheader": "Preview text",
+        "toEmpty": "The doctor's email"
+      },
+      "expires": "If sent now, the link works until {expires}.",
+      "send": "Send invite",
+      "sending": "Sending…",
+      "sendOff": "Send is off until counsel clears outreach emails.",
+      "back": "Back to outreach",
+      "errors": {
+        "doctor": "This doctor can no longer be invited: the profile was claimed or removed.",
+        "notCleared": "Sending is off until counsel clears it, so nothing was sent.",
+        "unavailable": "The invite did not go out. Your text is kept; try again in a minute."
+      },
+      "notFound": {
+        "title": "This doctor cannot be invited",
+        "body": "The profile was claimed or removed, or the link is wrong.",
+        "action": "Back to outreach"
+      }
+    },
+    "email": {
+      "fromName": "3affya",
+      "subject": "{name}, your 3affya profile is ready to claim",
+      "preheader": "Built from your public NPI record. Claiming is free; check the details and add your photo.",
+      "headline": "{name}, your profile is ready",
+      "noteFrom": "A note from {admin} at 3affya",
+      "intro": "Patients in the Gulf are looking for US-trained doctors who speak Arabic. We built a profile for you from public US records so they can find you on 3affya.",
+      "factsTitle": "What the registry lists",
+      "facts": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "city": "City",
+        "npi": "NPI"
+      },
+      "gives": "Claiming is free. You choose what shows, set your own fee and weekly hours, and can edit everything at any time.",
+      "scrutiny": "Once you claim it, patients see this profile as yours, so keep your fee and hours current.",
+      "button": "Check and claim your profile",
+      "expiry": "The link works once, until {expires}.",
+      "notMe": "Not you, or do not want a profile? The page has a link to have it removed.",
+      "why": "You received this because the public US NPI registry lists you as a practising doctor.",
+      "optOut": "To stop emails from 3affya, reply with the word STOP."
+    }
   }
 }

@@ -130,3 +130,14 @@ export const adminSignIn = {
   attemptsMax: 5, // refused sign-ins in a row before sign-in pauses
   lockMinutes: 30, // the pause, after which a new attempt may start
 } as const;
+
+/* ---------------- Outreach and invites (screen 46, tasks 2.3 and 4.5) ---------------- */
+// Appended block. Invites go one doctor, one address, one email at a time, each sent by Resend from an Inngest job; there is
+// no bulk sending and no fax (out of scope). Claim-link opens per connection are business.inviteRateLimitPerIpPerHour above.
+export const outreach = {
+  // (default until counsel clears sending) While false, Send and Resend are off on /admin/outreach AND the server actions
+  // refuse them, so flipping this one value is the switch. Revoke stays on: it sends nothing.
+  sendingCleared: false as boolean,
+  inviteValidDays: 14, // a claim link works once, for this many days after it is sent (task 2.3)
+  personalLineMaxChars: 300, // (default until Dr Ayman confirms) the optional note at the top of the invite email
+} as const;

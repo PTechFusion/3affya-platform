@@ -25,5 +25,115 @@
     "sentAtUtc": "2026-10-05T07:00:00Z",
     "expiresAtUtc": "2026-10-19T07:00:00Z",
     "usedAtUtc": "2026-10-08T15:20:00Z"
+  },
+  {
+    "id": "inv_004",
+    "token": "smp46-lina-k7q2",
+    "doctorId": "doc_015",
+    "email": "lina.farah@example.com",
+    "sentAtUtc": "2026-11-02T08:15:00Z",
+    "expiresAtUtc": "2026-11-16T08:15:00Z",
+    "usedAtUtc": null,
+    "openedAtUtc": "2026-11-03T14:40:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_005",
+    "token": "smp46-bassam-r4m8",
+    "doctorId": "doc_016",
+    "email": "b.nasser@example.com",
+    "sentAtUtc": "2026-11-04T09:00:00Z",
+    "expiresAtUtc": "2026-11-18T09:00:00Z",
+    "usedAtUtc": null,
+    "bouncedAtUtc": "2026-11-04T09:01:00Z",
+    "bounce": "noMailbox",
+    "language": "en"
+  },
+  {
+    "id": "inv_006",
+    "token": "smp46-amal-t2w9",
+    "doctorId": "doc_017",
+    "email": "amal.aziz@example.com",
+    "sentAtUtc": "2026-11-06T10:30:00Z",
+    "expiresAtUtc": "2026-11-20T10:30:00Z",
+    "usedAtUtc": null,
+    "language": "ar"
+  },
+  {
+    "id": "inv_007",
+    "token": "smp46-rania-p5x3",
+    "doctorId": "doc_009",
+    "email": "rania.hamdan@example.com",
+    "sentAtUtc": "2026-10-20T08:00:00Z",
+    "expiresAtUtc": "2026-11-03T08:00:00Z",
+    "usedAtUtc": "2026-10-21T16:12:00Z",
+    "openedAtUtc": "2026-10-21T16:05:00Z",
+    "language": "ar"
+  },
+  {
+    "id": "inv_008",
+    "token": "smp46-dina-h6c1",
+    "doctorId": "doc_011",
+    "email": "dina.haddad@example.com",
+    "sentAtUtc": "2026-10-22T08:00:00Z",
+    "expiresAtUtc": "2026-11-05T08:00:00Z",
+    "usedAtUtc": "2026-10-24T13:41:00Z",
+    "openedAtUtc": "2026-10-24T13:30:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_009",
+    "token": "smp46-yousef-z8n4",
+    "doctorId": "doc_012",
+    "email": "yousef.khalil@example.com",
+    "sentAtUtc": "2026-10-26T07:45:00Z",
+    "expiresAtUtc": "2026-11-09T07:45:00Z",
+    "usedAtUtc": "2026-10-30T15:05:00Z",
+    "openedAtUtc": "2026-10-27T18:20:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_010",
+    "token": "smp46-layla-b3v7",
+    "doctorId": "doc_003",
+    "email": "layla.mansour@example.com",
+    "sentAtUtc": "2026-10-12T09:00:00Z",
+    "expiresAtUtc": "2026-10-26T09:00:00Z",
+    "usedAtUtc": "2026-10-13T02:30:00Z",
+    "openedAtUtc": "2026-10-12T21:10:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_011",
+    "token": "smp46-salma-f9d2",
+    "doctorId": "doc_019",
+    "email": "salma.hamdan@example.com",
+    "sentAtUtc": "2026-10-15T08:30:00Z",
+    "expiresAtUtc": "2026-10-29T08:30:00Z",
+    "usedAtUtc": null,
+    "openedAtUtc": "2026-10-16T19:00:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_012",
+    "token": "smp46-hassan-m1j6",
+    "doctorId": "doc_018",
+    "email": "h.rahman@example.com",
+    "sentAtUtc": "2026-11-05T11:20:00Z",
+    "expiresAtUtc": "2026-11-19T11:20:00Z",
+    "usedAtUtc": null,
+    "revokedAtUtc": "2026-11-05T11:45:00Z",
+    "language": "en"
+  },
+  {
+    "id": "inv_013",
+    "token": "smp46-nabil-w4s5",
+    "doctorId": "doc_020",
+    "email": "nabil.baroudi@example.com",
+    "sentAtUtc": "2026-11-08T12:00:00Z",
+    "expiresAtUtc": "2026-11-22T12:00:00Z",
+    "usedAtUtc": null,
+    "language": "en",
+    "preview": "justSent"
   }
 ]
