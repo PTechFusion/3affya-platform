@@ -631,3 +631,89 @@ export function Sheet({
     </dialog>
   );
 }
+/* ---------------- File pick ---------------- */
+/**
+ * A native file input drawn as a Button. The input stays in the tab order and screen readers announce it as a file picker;
+ * the label is the visible button. `capture="environment"` opens the phone camera (rule T10). `onFiles` gets the chosen files
+ * and the input is cleared, so the same file can be chosen again. Use it from a client component (it takes a callback).
+ */
+export function FilePick({
+  id,
+  label,
+  accept,
+  multiple,
+  capture,
+  variant = "secondary",
+  icon,
+  describedBy,
+  disabled,
+  onFiles,
+  className,
+}: {
+  id: string;
+  label: string;
+  accept: string;
+  multiple?: boolean;
+  capture?: "environment" | "user";
+  variant?: Exclude<ButtonVariant, "danger">;
+  icon?: ReactNode;
+  describedBy?: string;
+  disabled?: boolean;
+  onFiles: (files: File[]) => void;
+  className?: string;
+}) {
+  return (
+    <label
+      htmlFor={id}
+      className={cx(
+        buttonBase,
+        buttonSizes.md,
+        buttonVariants[variant],
+        "cursor-pointer has-focus-visible:outline-3 has-focus-visible:outline-offset-2 has-focus-visible:outline-lagoon-500",
+        disabled && "pointer-events-none opacity-45",
+        className,
+      )}
+    >
+      <input
+        id={id}
+        type="file"
+        accept={accept}
+        multiple={multiple}
+        capture={capture}
+        disabled={disabled}
+        aria-describedby={describedBy}
+        className="sr-only"
+        onChange={(e) => {
+          const files = Array.from(e.currentTarget.files ?? []);
+          e.currentTarget.value = "";
+          if (files.length) onFiles(files);
+        }}
+      />
+      {icon}
+      {label}
+    </label>
+  );
+}
+
+/* ---------------- Progress bar ---------------- */
+/**
+ * Determinate progress for waits over 10 seconds (rule L1): a real count such as pages read, never a made-up percentage
+ * (rule T11). It fills from the start edge, so it mirrors in RTL (rule R2). `label` names it; `valueText` reads the count
+ * in words ("4 of 12 pages done").
+ */
+export function ProgressBar({ value, max, label, valueText }: { value: number; max: number; label: string; valueText: string }) {
+  const pct = max > 0 ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
+  return (
+    <div
+      role="progressbar"
+      aria-label={label}
+      aria-valuemin={0}
+      aria-valuemax={max}
+      aria-valuenow={value}
+      aria-valuetext={valueText}
+      className="h-2.5 w-full overflow-hidden rounded-[var(--radius-tag)] bg-sand-200"
+    >
+      <div className="h-full rounded-[var(--radius-tag)] bg-lagoon-600 transition-[width] duration-500" style={{ width: `${pct}%` }} />
+    </div>
+  );
+}

@@ -938,3 +938,63 @@ export function patientSharing(now: Date = new Date()): PatientSharing {
     });
   return { summary: summaryRow ? toSampleSummary(summaryRow) : undefined, shares, visits };
 }
+/* ---------------- Records upload and processing (screens 24 and 25) ---------------- */
+// Imported here so this section stays one appended block (ES imports are hoisted either way). Synthetic rows only
+// (data/sample/records.json): file names and sizes, never a file. rs_001..rs_003 are the sets behind sum_001..sum_003.
+import recordsJson from "@/data/sample/records.json";
+import type { DraftFile, FailureReason, PageStatus, PipelineStep, RecordFileKind, RecordSetStatus, UnreadableReason } from "@/lib/records";
+
+export type RecordPage = { status: PageStatus; reason?: UnreadableReason };
+export type RecordFile = { id: string; name: string; kind: RecordFileKind; sizeBytes: number; pages: RecordPage[] };
+
+type RecordSetRow = {
+  id: string;
+  patientFirstNameEn: string;
+  status: RecordSetStatus;
+  /** The step the set is on (queued and processing) or stopped at (failed); null once done. */
+  step: PipelineStep | null;
+  createdAtUtc: string;
+  paidAtUtc: string | null;
+  finishedAtUtc: string | null;
+  summaryId: string | null;
+  /** Failed sets: why, and the file and page (within that file) the pipeline stopped on. */
+  failure: { reason: FailureReason; fileId: string; filePage: number } | null;
+  files: RecordFile[];
+};
+
+/** A record set as the patient's pages read it, instants shifted with sampleInstant. Only accepted files are part of a set. */
+export type SampleRecordSet = Omit<RecordSetRow, "createdAtUtc" | "paidAtUtc" | "finishedAtUtc"> & {
+  createdAt: Date;
+  paidAt: Date | null;
+  finishedAt: Date | null;
+};
+
+const recordsData = recordsJson as unknown as { draft: { files: DraftFile[]; checking: string[] }; sets: RecordSetRow[] };
+
+function toRecordSet(row: RecordSetRow): SampleRecordSet {
+  const { createdAtUtc, paidAtUtc, finishedAtUtc, ...rest } = row;
+  return {
+    ...rest,
+    createdAt: sampleInstant(createdAtUtc),
+    paidAt: paidAtUtc ? sampleInstant(paidAtUtc) : null,
+    finishedAt: finishedAtUtc ? sampleInstant(finishedAtUtc) : null,
+  };
+}
+
+/** The signed-in patient's record sets, newest first. Production: RLS returns only the patient's own rows. */
+export function recordSetsFor(patientFirstNameEn: string = samplePatient.firstNameEn): SampleRecordSet[] {
+  return recordsData.sets
+    .filter((s) => s.patientFirstNameEn === patientFirstNameEn)
+    .map(toRecordSet)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+}
+
+/** One set, only for its own patient; another patient's set or an unknown id is undefined (the page answers 404). */
+export function recordSetFor(id: string, patientFirstNameEn: string = samplePatient.firstNameEn): SampleRecordSet | undefined {
+  return recordSetsFor(patientFirstNameEn).find((s) => s.id === id);
+}
+
+/** The upload flow's sample files (screen 24's previews): `checking` lists the ids still being checked in ?state=validating. */
+export function sampleUploadDraft(): { files: DraftFile[]; checking: string[] } {
+  return recordsData.draft;
+}
