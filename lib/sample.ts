@@ -1011,3 +1011,83 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+/* ---------------- AI jobs and costs (screen 45) ---------------- */
+// Appended block. data/sample/ai-jobs.json holds one records-pipeline job per record set: job_001..job_006 run rs_001..rs_006
+// above, and their status, step, files and times come from records.json, so the admin and the patient see the same job at the
+// same step. job_007..job_010 run `extraSets`, sets of other synthetic patients that only the admin sees (same row shape, pages
+// stored compactly). Usage is per step, and per file for the extract step: names and sizes only, never page content.
+import aiJobsJson from "@/data/sample/ai-jobs.json";
+
+/** What a step or a file cost, as lib/ai logs it to ai_calls (task 1.9). costMicros is in millionths of aiLimits.costCurrency. */
+export type AiUsage = { calls: number; retries: number; inputTokens: number; outputTokens: number; costMicros: number };
+export type AiFileUsage = AiUsage & { fileId: string };
+/** One pipeline step of a job. finishedAt is null while it runs; steps not reached yet are absent. */
+export type AiJobStep = { step: PipelineStep; startedAt: Date; finishedAt: Date | null; usage: AiUsage | null; files: AiFileUsage[] | null };
+export type SampleAiJob = {
+  id: string;
+  /** 1 for the first run; a retry after a failure runs attempt 2 from the failed page, with the same quote. */
+  attempt: number;
+  patientFirstNameEn: string;
+  patientFirstNameAr: string;
+  set: SampleRecordSet;
+  steps: AiJobStep[];
+};
+
+type AiExtraFileRow = Omit<RecordFile, "pages"> & { pageCount: number; otherPages: Record<string, PageStatus> };
+type AiExtraSetRow = Omit<RecordSetRow, "files"> & { files: AiExtraFileRow[] };
+type AiJobRow = {
+  id: string;
+  recordSetId: string;
+  patientFirstNameAr: string;
+  attempt: number;
+  steps: Array<{ step: PipelineStep; startedAtUtc: string; finishedAtUtc: string | null; usage?: AiUsage; files?: AiFileUsage[] }>;
+};
+
+const aiJobsData = aiJobsJson as unknown as { alertPreview: { jobId: string; shiftDays: number }; extraSets: AiExtraSetRow[]; jobs: AiJobRow[] };
+
+function expandAiExtraSet(row: AiExtraSetRow): RecordSetRow {
+  return {
+    ...row,
+    files: row.files.map(({ pageCount, otherPages, ...file }) => ({
+      ...file,
+      pages: Array.from({ length: pageCount }, (_, k) => ({ status: otherPages[String(k + 1)] ?? "read" })),
+    })),
+  };
+}
+
+/**
+ * Every job, newest first. `alertPreview` (the page's ?state=alert) moves the alertPreview job forward by its shiftDays, so the
+ * day that passed the daily spend alert is today. Production reads ai_jobs and ai_calls with the service role, admin only.
+ */
+export function sampleAiJobs({ alertPreview = false }: { alertPreview?: boolean } = {}): SampleAiJob[] {
+  const sets = new Map<string, RecordSetRow>([...recordsData.sets, ...aiJobsData.extraSets.map(expandAiExtraSet)].map((s) => [s.id, s]));
+  return aiJobsData.jobs
+    .flatMap((row): SampleAiJob[] => {
+      const setRow = sets.get(row.recordSetId);
+      if (!setRow) return [];
+      const shift = alertPreview && row.id === aiJobsData.alertPreview.jobId ? aiJobsData.alertPreview.shiftDays * DAY_MS : 0;
+      const at = (d: Date) => new Date(d.getTime() + shift);
+      const set = toRecordSet(setRow);
+      return [
+        {
+          id: row.id,
+          attempt: row.attempt,
+          patientFirstNameEn: setRow.patientFirstNameEn,
+          patientFirstNameAr: row.patientFirstNameAr,
+          set: { ...set, createdAt: at(set.createdAt), paidAt: set.paidAt && at(set.paidAt), finishedAt: set.finishedAt && at(set.finishedAt) },
+          steps: row.steps.map((s) => ({
+            step: s.step,
+            startedAt: at(sampleInstant(s.startedAtUtc)),
+            finishedAt: s.finishedAtUtc ? at(sampleInstant(s.finishedAtUtc)) : null,
+            usage: s.usage ?? null,
+            files: s.files ?? null,
+          })),
+        },
+      ];
+    })
+    .sort((a, b) => b.set.createdAt.getTime() - a.set.createdAt.getTime());
+}
+
+export function sampleAiJobById(id: string, options?: { alertPreview?: boolean }): SampleAiJob | undefined {
+  return sampleAiJobs(options).find((j) => j.id === id);
+}
