@@ -2997,5 +2997,141 @@
       "refunded": "Your visit with {name} is cancelled. {amount} goes back to the card you paid with.",
       "noRefund": "Your visit with {name} is cancelled. There is no refund because it was less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away."
     }
+  },
+  "booking": {
+    "metaTitle": "Your booking",
+    "metaDescription": "Your visit time in your zone and the doctor's, the join link, what to prepare and your receipt.",
+    "breadcrumb": "You are here",
+    "crumb": "Visit with {name}",
+    "title": "Your visit",
+    "loading": "Loading your booking",
+    "status": {
+      "upcoming": "Confirmed",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "confirmed": {
+      "title": "Your visit is booked",
+      "body": "The details and a calendar file are in your email."
+    },
+    "visitType": {
+      "video": "Video visit",
+      "phone": "Phone visit"
+    },
+    "card": {
+      "title": "Your appointment",
+      "yourTime": "Your time",
+      "doctorTime": "{gender, select, f {Doctor's time} other {Doctor's time}}",
+      "doctorTimeLoading": "Doctor's time",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "inDays": "{days, plural, one {In {daysLabel} day} other {In {daysLabel} days}}",
+      "length": "{minutes, plural, one {{minutesLabel} minute} other {{minutesLabel} minutes}}"
+    },
+    "join": {
+      "button": "Join the video visit",
+      "help": "Opens in your browser, nothing to install.",
+      "fallback": "If the video drops, {name} calls the backup phone number you gave at checkout.",
+      "phone": "{name} calls you at this time on the phone number you gave at checkout. Keep your phone close with the ringer on."
+    },
+    "calendar": {
+      "add": "Add to calendar",
+      "google": "Google Calendar"
+    },
+    "prepare": {
+      "title": "Before your visit",
+      "lead": "Three things that help the visit go well.",
+      "device": {
+        "title": "Test your camera and microphone",
+        "body": "It takes a minute, right here in your browser."
+      },
+      "phone": {
+        "title": "Keep your phone charged and close",
+        "body": "The call may come from a number outside your country. Answer it at the time of your visit."
+      },
+      "room": {
+        "title": "Find a private, quiet room",
+        "body": "Somewhere you can talk freely, with good light and a steady connection. Headphones help."
+      },
+      "id": {
+        "title": "Keep your ID and medicines close",
+        "body": "The doctor may ask to see a photo ID. List every medicine you take with the dose, and your questions."
+      }
+    },
+    "device": {
+      "start": "Test your device",
+      "asking": "Allow the camera and microphone when your browser asks.",
+      "ok": "Your camera and microphone work.",
+      "micHint": "Say something: the bar moves when the microphone hears you.",
+      "level": "Microphone level",
+      "preview": "Camera preview",
+      "stop": "End the test",
+      "again": "Test again",
+      "blocked": "Your browser blocked the camera or microphone. Allow both for this site in the browser settings, then test again.",
+      "missing": "We could not find a camera or microphone. Connect one or switch to your phone, then test again.",
+      "unsupported": "This browser cannot test your camera. Open this page in an up-to-date Chrome, Safari or Edge.",
+      "failed": "The test did not start. Close other apps that use the camera, then test again."
+    },
+    "share": {
+      "title": "Share your records with {name}",
+      "titleLoading": "Share your records",
+      "body": "Upload past reports, lab results or scans. We turn them into a one-page summary {name} can read before your visit.",
+      "aiLabel": "AI and your consent",
+      "ai": "AI writes the summary, and only after you agree to that on its own, apart from the privacy terms. You see where your files are stored and processed before you agree.",
+      "whoLabel": "Who sees it",
+      "who": "Only {name}, for {days, plural, one {{daysLabel} day} other {{daysLabel} days}}. You can stop sharing at any time.",
+      "priceLabel": "Price",
+      "price": "{price} {gb, plural, one {per GB} other {per {gbLabel} GB}} of files. You see the total before you pay.",
+      "action": "Upload records"
+    },
+    "receipt": {
+      "title": "Receipt",
+      "paid": "Paid {amount}, all fees included",
+      "view": "View receipt"
+    },
+    "change": {
+      "title": "Change or cancel",
+      "before": "Cancel before {day} at <nowrap>{time}</nowrap> to get the full {amount} back. That is {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} before your visit; after it, the visit is not refunded.",
+      "after": "Your visit is less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away, so cancelling now is not refunded.",
+      "move": "To move your visit, cancel it and book a new time."
+    },
+    "cancel": {
+      "start": "Cancel booking",
+      "confirmTitle": "Cancel this visit?",
+      "refund": "You get the full {amount} back on your card.",
+      "noRefund": "This visit is less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away, so the {amount} is not refunded.",
+      "confirm": "Cancel booking",
+      "keep": "Keep booking",
+      "working": "Cancelling",
+      "done": "Your booking is cancelled.",
+      "doneRefund": "We are refunding {amount} to your card.",
+      "bookAgain": "Find another time",
+      "error": {
+        "notFound": "We could not find this booking any more. Reload the page.",
+        "state": "This booking changed since the page loaded. Reload the page to see it.",
+        "unavailable": "That did not go through. Try again in a minute."
+      }
+    },
+    "cancelled": {
+      "on": "Cancelled on {date}.",
+      "refund": "You cancelled more than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} before the visit, so the full {amount} goes back to your card. The refund shows on your receipt.",
+      "noRefund": "You cancelled less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} before the visit, so it was not refunded.",
+      "action": "Find another time with {name}"
+    },
+    "done": {
+      "body": "This visit has ended."
+    },
+    "notFound": {
+      "title": "We could not find this booking",
+      "body": "The link may be incomplete, or the booking is on another account. Your bookings list has every visit you booked.",
+      "action": "Go to my bookings"
+    },
+    "ics": {
+      "title": "{visitType, select, phone {Phone visit with {name}} other {Video visit with {name}}}",
+      "join": "Join from your browser: {url}",
+      "phone": "{name} calls you on the phone number you gave at checkout.",
+      "booking": "Your booking: {url}",
+      "phoneLocation": "Phone call"
+    }
   }
 }

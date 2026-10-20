@@ -139,5 +139,18 @@
     "bookedAtUtc": "2026-10-09T19:45:00Z",
     "cancelledAtUtc": "2026-10-14T06:30:00Z",
     "cancelledBy": "patient"
+  },
+  {
+    "id": "bk_211",
+    "doctorId": "doc_003",
+    "patientFirstName": "Maryam",
+    "startsAtUtc": "2026-11-20T17:00:00Z",
+    "visitType": "phone",
+    "status": "upcoming",
+    "feeUsdCents": 22000,
+    "platformFeeUsdCents": 4400,
+    "cardProcessingUsdCents": 796,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Detroit"
   }
 ]
