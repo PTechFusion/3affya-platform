@@ -9,3 +9,7 @@ Rules for Arabic copy (from docs/screen-rules.md, group R and G):
 - Western digits in both locales; the formatter in `lib/format.ts` forces `nu-latn`.
 - Specialty names Arabic first, English in parentheses where the English term is the one patients know.
 - Never letter-space, never italicise, never justify Arabic.
+
+## Glossary pairs for Dr Ayman (wave 4)
+- Booking status, patient side (feminine, agrees with زيارة): مؤكدة / مكتملة / ملغاة / تم الاسترداد. Inbox (professional side) says مؤكد for a طلب/موعد. Confirm one pair.
+- "ملغاة" on the visit box vs "مسترد" on the receipt: the first is the visit, the second the money. Both appear for the same booking.

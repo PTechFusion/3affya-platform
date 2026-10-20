@@ -1,0 +1,26 @@
+[
+  {
+    "bookingId": "bk_001",
+    "durationMinutes": 30,
+    "joinUrl": "https://meet.example.com/sara-haddad",
+    "cancelledAtUtc": null
+  },
+  {
+    "bookingId": "bk_002",
+    "durationMinutes": 30,
+    "joinUrl": null,
+    "cancelledAtUtc": null
+  },
+  {
+    "bookingId": "bk_003",
+    "durationMinutes": 30,
+    "joinUrl": null,
+    "cancelledAtUtc": "2026-10-17T07:48:00Z"
+  },
+  {
+    "bookingId": "bk_211",
+    "durationMinutes": 30,
+    "joinUrl": null,
+    "cancelledAtUtc": null
+  }
+]

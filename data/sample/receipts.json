@@ -1,0 +1,149 @@
+[
+  {
+    "bookingId": "bk_001",
+    "receiptNumber": "1847-2210",
+    "currency": "USD",
+    "paidAtUtc": "2026-11-08T17:42:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_002",
+    "receiptNumber": "1847-1936",
+    "currency": "USD",
+    "paidAtUtc": "2026-09-29T08:05:00Z",
+    "paymentMethod": {
+      "wallet": null,
+      "brand": "mastercard",
+      "last4": "5520"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_003",
+    "receiptNumber": "1847-2054",
+    "currency": "USD",
+    "paidAtUtc": "2026-10-12T19:20:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": {
+      "atUtc": "2026-10-17T07:48:00Z",
+      "by": "patient"
+    },
+    "refund": {
+      "id": "re_sample_001",
+      "createdAtUtc": "2026-10-17T07:48:20Z",
+      "status": "succeeded"
+    }
+  },
+  {
+    "bookingId": "bk_004",
+    "receiptNumber": "1847-2216",
+    "currency": "USD",
+    "paidAtUtc": "2026-11-07T09:20:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_005",
+    "receiptNumber": "1847-2231",
+    "currency": "USD",
+    "paidAtUtc": "2026-11-08T18:05:00Z",
+    "paymentMethod": {
+      "wallet": "googlePay",
+      "brand": "mastercard",
+      "last4": "5520"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_006",
+    "receiptNumber": "1847-2101",
+    "currency": "USD",
+    "paidAtUtc": "2026-10-22T11:40:00Z",
+    "paymentMethod": {
+      "wallet": null,
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_007",
+    "receiptNumber": "1847-1988",
+    "currency": "USD",
+    "paidAtUtc": "2026-09-24T08:15:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": null,
+    "refund": null
+  },
+  {
+    "bookingId": "bk_008",
+    "receiptNumber": "1847-2188",
+    "currency": "USD",
+    "paidAtUtc": "2026-11-04T10:30:00Z",
+    "paymentMethod": {
+      "wallet": null,
+      "brand": "mastercard",
+      "last4": "5520"
+    },
+    "cancellation": {
+      "atUtc": "2026-11-08T13:10:00Z",
+      "by": "doctor"
+    },
+    "refund": {
+      "id": "re_sample_002",
+      "createdAtUtc": "2026-11-08T13:10:30Z",
+      "status": "succeeded"
+    }
+  },
+  {
+    "bookingId": "bk_009",
+    "receiptNumber": "1847-2047",
+    "currency": "USD",
+    "paidAtUtc": "2026-10-09T19:45:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": {
+      "atUtc": "2026-10-14T06:30:00Z",
+      "by": "patient"
+    },
+    "refund": null
+  },
+  {
+    "bookingId": "bk_272",
+    "receiptNumber": "1847-2240",
+    "currency": "USD",
+    "paidAtUtc": "2026-11-09T07:10:00Z",
+    "paymentMethod": {
+      "wallet": "applePay",
+      "brand": "visa",
+      "last4": "0341"
+    },
+    "cancellation": null,
+    "refund": null
+  }
+]

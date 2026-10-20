@@ -1,29 +1,63 @@
 "use client";
 // Hero search with live suggestions (rule S1): at most 8 suggestions, the predicted part in bold, arrow keys copy the
 // suggestion into the field, Enter submits. Rule S3: visible submit button, query persists in the URL.
+// Labels default to the patient search on home; other pages (Find your profile on /for-professionals) pass their own.
+// layout="inline" keeps field and button on one row for toolbars (the sticky bar on /search).
 import { useId, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui";
 
-export type SearchSuggestion = { kind: "specialty" | "doctor"; label: string; href: string };
+export type SearchSuggestion = {
+  kind: "specialty" | "doctor";
+  label: string;
+  href: string;
+  /** Extra text that matches but is not shown, e.g. the name in the other script or an NPI. */
+  keywords?: string;
+  /** Replaces the kind label at the end of the row, e.g. "Pediatrics · Unclaimed profile". */
+  meta?: string;
+};
+
+export type SearchBoxLabels = { label: string; placeholder: string; submit: string; noSuggestions: string };
 
 const MAX_VISIBLE = 8;
 
-export function SearchBox({ suggestions, initialQuery = "" }: { suggestions: SearchSuggestion[]; initialQuery?: string }) {
+export function SearchBox({
+  suggestions,
+  initialQuery = "",
+  initialOpen,
+  labels,
+  action = "/search",
+  layout = "stack",
+}: {
+  suggestions: SearchSuggestion[];
+  initialQuery?: string;
+  /** Open the suggestion list on load (default: when there is an initial query). */
+  initialOpen?: boolean;
+  labels?: Partial<SearchBoxLabels>;
+  /** Route the form submits to with ?q=. */
+  action?: string;
+  /** "stack" (hero): button under the field on phone. "inline" (toolbars): field and button on one row at every width. */
+  layout?: "stack" | "inline";
+}) {
+  const inline = layout === "inline";
   const t = useTranslations("home");
+  const label = labels?.label ?? t("searchLabel");
+  const placeholder = labels?.placeholder ?? t("searchPlaceholder");
+  const submit = labels?.submit ?? t("search");
+  const noSuggestions = labels?.noSuggestions ?? t("noSuggestions");
   const locale = useLocale();
   const router = useRouter();
   const listId = useId();
   const [typed, setTyped] = useState(initialQuery); // what the user typed; arrow keys change the field, not this
   const [value, setValue] = useState(initialQuery);
-  const [open, setOpen] = useState(initialQuery.length > 0);
+  const [open, setOpen] = useState(initialOpen ?? initialQuery.length > 0);
   const [active, setActive] = useState(-1);
 
   const matches = useMemo(() => {
     const q = typed.trim().toLocaleLowerCase();
     if (!q) return [];
-    return suggestions.filter((s) => s.label.toLocaleLowerCase().includes(q)).slice(0, MAX_VISIBLE);
+    return suggestions.filter((s) => `${s.label} ${s.keywords ?? ""}`.toLocaleLowerCase().includes(q)).slice(0, MAX_VISIBLE);
   }, [typed, suggestions]);
 
   const go = (href: string) => {
@@ -52,17 +86,17 @@ export function SearchBox({ suggestions, initialQuery = "" }: { suggestions: Sea
   return (
     <form
       role="search"
-      action={`/${locale}/search`}
+      action={`/${locale}${action}`}
       method="get"
-      className="flex flex-col gap-2 sm:flex-row"
+      className={inline ? "flex flex-row gap-2" : "flex flex-col gap-2 sm:flex-row"}
       onSubmit={(e) => {
         e.preventDefault();
-        go(`/search?q=${encodeURIComponent(value.trim())}`);
+        go(`${action}?q=${encodeURIComponent(value.trim())}`);
       }}
     >
       <div className="relative flex-1">
         <label htmlFor={`${listId}-input`} className="sr-only">
-          {t("searchLabel")}
+          {label}
         </label>
         <input
           id={`${listId}-input`}
@@ -71,7 +105,7 @@ export function SearchBox({ suggestions, initialQuery = "" }: { suggestions: Sea
           value={value}
           autoComplete="off"
           enterKeyHint="search"
-          placeholder={t("searchPlaceholder")}
+          placeholder={placeholder}
           role="combobox"
           aria-expanded={open && matches.length > 0}
           aria-controls={listId}
@@ -86,7 +120,10 @@ export function SearchBox({ suggestions, initialQuery = "" }: { suggestions: Sea
           onFocus={() => setOpen(true)}
           onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
-          className="w-full min-h-13 rounded-[var(--radius-field)] border-0 bg-white px-4 text-ink-900 shadow-[var(--shadow-nav)] placeholder:text-ink-500/70"
+          className={[
+            "w-full rounded-[var(--radius-field)] bg-white px-4 text-ink-900 placeholder:text-ink-500/70",
+            inline ? "min-h-12 border border-sand-300 focus:border-lagoon-600" : "min-h-13 border-0 shadow-[var(--shadow-nav)]",
+          ].join(" ")}
         />
         {open && typed.trim() ? (
           <ul
@@ -112,17 +149,17 @@ export function SearchBox({ suggestions, initialQuery = "" }: { suggestions: Sea
                   <span>
                     <Highlight label={m.label} typed={typed} />
                   </span>
-                  <span className="shrink-0 text-xs text-ink-500">{m.kind === "specialty" ? t("kindSpecialty") : t("kindDoctor")}</span>
+                  <span className="shrink-0 text-xs text-ink-500">{m.meta ?? (m.kind === "specialty" ? t("kindSpecialty") : t("kindDoctor"))}</span>
                 </li>
               ))
             ) : (
-              <li className="px-4 py-3 text-sm text-ink-700">{t("noSuggestions")}</li>
+              <li className="px-4 py-3 text-sm text-ink-700">{noSuggestions}</li>
             )}
           </ul>
         ) : null}
       </div>
-      <Button type="submit" className="min-h-13 sm:px-7">
-        {t("search")}
+      <Button type="submit" className={inline ? "shrink-0 px-4 sm:px-6" : "min-h-13 sm:px-7"}>
+        {submit}
       </Button>
     </form>
   );

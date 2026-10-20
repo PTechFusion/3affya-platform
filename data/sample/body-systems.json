@@ -1,0 +1,10 @@
+[
+  { "id": "general", "nameEn": "General care", "nameAr": "الرعاية العامة", "specialties": ["family-medicine", "internal-medicine"] },
+  { "id": "women-children", "nameEn": "Women and children", "nameAr": "صحة المرأة والطفل", "specialties": ["obgyn", "pediatrics"] },
+  { "id": "heart-chest", "nameEn": "Heart and chest", "nameAr": "القلب والصدر", "specialties": ["cardiology", "pulmonology"] },
+  { "id": "brain-mind", "nameEn": "Brain, nerves and mind", "nameAr": "الدماغ والأعصاب والصحة النفسية", "specialties": ["neurology", "neurosurgery", "psychiatry", "pain"] },
+  { "id": "hormones-digestion", "nameEn": "Hormones, digestion and kidneys", "nameAr": "الهرمونات والهضم والكلى", "specialties": ["endocrinology", "gastroenterology", "nephrology", "urology"] },
+  { "id": "bones-joints", "nameEn": "Bones, joints and muscles", "nameAr": "العظام والمفاصل والعضلات", "specialties": ["orthopedics", "rheumatology", "sports-medicine"] },
+  { "id": "blood-immunity", "nameEn": "Blood, cancer and immunity", "nameAr": "الدم والأورام والمناعة", "specialties": ["hematology", "oncology", "allergy", "infectious-disease"] },
+  { "id": "skin-senses", "nameEn": "Skin, eyes, ears, nose and throat", "nameAr": "الجلد والعين والأنف والأذن والحنجرة", "specialties": ["dermatology", "ophthalmology", "ent"] }
+]

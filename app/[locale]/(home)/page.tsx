@@ -10,11 +10,12 @@ import { SearchBox, type SearchSuggestion } from "@/components/brand/SearchBox";
 import { DoctorCard } from "@/components/brand/DoctorCard";
 import { DoctorCardSkeleton } from "@/components/brand/DoctorCardSkeleton";
 import { IntakeChatSheet } from "@/components/brand/IntakeChatSheet";
-import { Chip, ChevronDown, ChevronNext, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
+import { Chip, ChevronNext, CtaBand, Disclosure, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, type Locale } from "@/lib/format";
 import { featuredDoctors, lowestVerifiedFeeCents, sampleSpecialties, toDoctorCardData, verifiedDoctors } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
+import { feeLines } from "@/lib/fees";
 import { business } from "@/config/business";
 
 // Curated chips (rule X7): the four specialties patients ask for most, not the four largest counts.
@@ -52,7 +53,8 @@ export default async function Home({ params, searchParams }: Props) {
   const chips = HOME_CHIPS.map((slug) => sampleSpecialties.find((s) => s.slug === slug)).filter((s) => s !== undefined);
   const doctors = state === "empty" ? [] : featuredDoctors();
   const lowestFee = lowestVerifiedFeeCents();
-  const fromPrice = lowestFee != null ? formatMoney(lowestFee, business.currencyPresentment, loc) : undefined;
+  // Rule C5: the "from" price is the all-in total the patient pays, never the doctor fee with fees added later.
+  const fromPrice = lowestFee != null ? formatMoney(feeLines(lowestFee).totalCents, business.currencyPresentment, loc) : undefined;
   const steps = ["1", "2", "3"] as const;
   const faqs = ["1", "2", "3"] as const;
 
@@ -150,13 +152,7 @@ export default async function Home({ params, searchParams }: Props) {
                 <ul className="divide-y divide-sand-200">
                   {faqs.map((n) => (
                     <li key={n}>
-                      <details className="group py-3">
-                        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink-900">
-                          {t(`faq${n}Q`)}
-                          <ChevronDown className="size-4 shrink-0 text-sea-700 transition-transform group-open:rotate-180" />
-                        </summary>
-                        <p className="mt-2 text-ink-700">{t(`faq${n}A`)}</p>
-                      </details>
+                      <Disclosure summary={t(`faq${n}Q`)}>{t(`faq${n}A`)}</Disclosure>
                     </li>
                   ))}
                 </ul>
@@ -166,15 +162,15 @@ export default async function Home({ params, searchParams }: Props) {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-          <div className="flex flex-col items-start gap-4 rounded-[var(--radius-card)] bg-sea-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
-            <div>
-              <h2 className="text-2xl font-bold">{tc("tagline")}</h2>
-              <p className="mt-1 text-white/85">{t("ctaBody")}</p>
-            </div>
-            <LinkButton href="/search" size="lg" variant="secondary">
-              {tc("findDoctor")} <ChevronNext />
-            </LinkButton>
-          </div>
+          <CtaBand
+            title={tc("tagline")}
+            body={t("ctaBody")}
+            action={
+              <LinkButton href="/search" size="lg" variant="secondary">
+                {tc("findDoctor")} <ChevronNext />
+              </LinkButton>
+            }
+          />
         </section>
       </main>
 

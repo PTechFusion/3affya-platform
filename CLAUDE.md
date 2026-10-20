@@ -12,6 +12,7 @@ US-trained, Arabic-speaking doctors for patients in the Gulf. Launch build by Pr
 - `data/sample/` synthetic doctors, specialties, bookings for the prototype.
 
 ## How to build a screen (the loop)
+Full brief for a build agent: `docs/screens/PLAYBOOK.md` (route map, states, report format, wave review).
 1. Open the brief in `docs/screens/`. Read the layout call, the pointers and the states.
 2. Build the route under `app/[locale]/...` using only shared components and tokens. Every state reachable via sample data or a query param. Loading state is a content-shaped skeleton; empty state has one action.
 3. Run `npm run check` (lint, types, i18n). Then `npm run build && PORT=3100 npm run start` and `BASE_URL=http://localhost:3100 ROUTES=/your-route npm run screens`; look at the four PNGs in `scripts/screenshots/`.
@@ -19,7 +20,7 @@ US-trained, Arabic-speaking doctors for patients in the Gulf. Launch build by Pr
 5. Commit as `M1.6 home page` (one task id per commit). Note any deliberate deviation from the layout call in column N of `docs/programmx_aafia-screen-inventory_2026-10.xlsx`.
 
 ## Status (19 Oct 2026)
-Tasks 1.1 and 1.2 are done in this repo: scaffold, i18n and RTL, lint rule for logical CSS, tokens, DoctorCard, /brand. Next: 1.6 public site prototype pages, then 1.7 portal shells and builder prototype, then 1.11 deploy for Dr Ayman's approval on Fri 23 Oct. Tasks 1.3, 1.4, 1.5 (Supabase, schema, seed) run in parallel on the backend lane.
+Done in this repo: 1.1, 1.2 (scaffold, i18n and RTL, lint rule, tokens, DoctorCard, /brand), screen 1 home, portal shells and 404 (the shell half of 1.7). Branches: work on `dev`, release to `main`. Next: waves 1 to 3 of `docs/screens/PLAYBOOK.md`, then 1.11 deploy for Dr Ayman's approval on Fri 23 Oct. Tasks 1.3, 1.4, 1.5 (Supabase, schema, seed) run in parallel on the backend lane.
 
 Ten decisions from the 19 Oct research are listed at the top of `docs/screen-rules.md`. Four of them wait on Dr Ayman or his lawyer (Saudi cross-border rules, UAE data residency); none blocks the prototype.
 

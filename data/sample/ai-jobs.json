@@ -1,0 +1,405 @@
+{
+  "note": "Synthetic. One job per record set (job_001..job_006 run rs_001..rs_006 in records.json; job_007..job_010 run extraSets, other patients' sets only the admin sees). Usage per step and, for extract, per file; never page content.",
+  "alertPreview": {
+    "jobId": "job_007",
+    "shiftDays": 3
+  },
+  "extraSets": [
+    {
+      "id": "rs_007",
+      "patientFirstNameEn": "Hamad",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-11-06T00:02:00Z",
+      "paidAtUtc": "2026-11-06T00:05:10Z",
+      "finishedAtUtc": "2026-11-06T00:28:00Z",
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "hospital-file-part-1.pdf", "kind": "pdf", "sizeBytes": 38400000, "pageCount": 50, "otherPages": {} },
+        { "id": "f2", "name": "hospital-file-part-2.pdf", "kind": "pdf", "sizeBytes": 39131000, "pageCount": 50, "otherPages": {} },
+        { "id": "f3", "name": "hospital-file-part-3.pdf", "kind": "pdf", "sizeBytes": 39862000, "pageCount": 50, "otherPages": {} },
+        { "id": "f4", "name": "hospital-file-part-4.pdf", "kind": "pdf", "sizeBytes": 40593000, "pageCount": 50, "otherPages": { "17": "unreadable" } },
+        { "id": "f5", "name": "hospital-file-part-5.pdf", "kind": "pdf", "sizeBytes": 41324000, "pageCount": 50, "otherPages": {} },
+        { "id": "f6", "name": "hospital-file-part-6.pdf", "kind": "pdf", "sizeBytes": 42055000, "pageCount": 50, "otherPages": {} },
+        { "id": "f7", "name": "hospital-file-part-7.pdf", "kind": "pdf", "sizeBytes": 42786000, "pageCount": 50, "otherPages": {} },
+        { "id": "f8", "name": "hospital-file-part-8.pdf", "kind": "pdf", "sizeBytes": 43517000, "pageCount": 50, "otherPages": {} },
+        { "id": "f9", "name": "hospital-file-part-9.pdf", "kind": "pdf", "sizeBytes": 44248000, "pageCount": 50, "otherPages": {} }
+      ]
+    },
+    {
+      "id": "rs_008",
+      "patientFirstNameEn": "Maryam",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-10-26T15:10:00Z",
+      "paidAtUtc": "2026-10-26T15:13:00Z",
+      "finishedAtUtc": "2026-10-26T15:17:00Z",
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "IMG_2201.jpg", "kind": "jpg", "sizeBytes": 3211264, "pageCount": 1, "otherPages": {} },
+        { "id": "f2", "name": "IMG_2202.jpg", "kind": "jpg", "sizeBytes": 2998272, "pageCount": 1, "otherPages": {} },
+        { "id": "f3", "name": "IMG_2203.jpg", "kind": "jpg", "sizeBytes": 3084288, "pageCount": 1, "otherPages": {} },
+        { "id": "f4", "name": "thyroid-ultrasound.pdf", "kind": "pdf", "sizeBytes": 1048576, "pageCount": 2, "otherPages": {} }
+      ]
+    },
+    {
+      "id": "rs_009",
+      "patientFirstNameEn": "Latifa",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-10-19T11:30:00Z",
+      "paidAtUtc": "2026-10-19T11:36:00Z",
+      "finishedAtUtc": "2026-10-19T11:43:00Z",
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "cardiology-follow-up.pdf", "kind": "pdf", "sizeBytes": 2621440, "pageCount": 5, "otherPages": {} },
+        { "id": "f2", "name": "echo-2025.pdf", "kind": "pdf", "sizeBytes": 1887437, "pageCount": 3, "otherPages": {} }
+      ]
+    },
+    {
+      "id": "rs_010",
+      "patientFirstNameEn": "Abdullah",
+      "status": "cancelled",
+      "step": "extract",
+      "createdAtUtc": "2026-11-04T13:20:00Z",
+      "paidAtUtc": "2026-11-04T13:24:00Z",
+      "finishedAtUtc": "2026-11-04T13:25:00Z",
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "knee-mri-report.pdf", "kind": "pdf", "sizeBytes": 3355443, "pageCount": 6, "otherPages": { "3": "notRead", "4": "notRead", "5": "notRead", "6": "notRead" } }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job_001",
+      "recordSetId": "rs_001",
+      "patientFirstNameAr": "نورة",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-07T17:58:00Z", "finishedAtUtc": "2026-11-07T17:58:07Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-07T17:58:07Z", "finishedAtUtc": "2026-11-07T17:58:08Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-07T17:58:08Z", "finishedAtUtc": "2026-11-07T18:02:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-07T18:15:10Z",
+          "finishedAtUtc": "2026-11-07T18:17:02Z",
+          "files": [
+            { "fileId": "f1", "calls": 2, "retries": 0, "inputTokens": 7142, "outputTokens": 1549, "costMicros": 44661 },
+            { "fileId": "f2", "calls": 4, "retries": 1, "inputTokens": 14148, "outputTokens": 3113, "costMicros": 89139 },
+            { "fileId": "f3", "calls": 1, "retries": 0, "inputTokens": 2799, "outputTokens": 488, "costMicros": 15717 },
+            { "fileId": "f4", "calls": 1, "retries": 0, "inputTokens": 2677, "outputTokens": 60, "costMicros": 8931 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-11-07T18:17:02Z",
+          "finishedAtUtc": "2026-11-07T18:17:30Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2860, "outputTokens": 620, "costMicros": 17880 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-11-07T18:17:30Z",
+          "finishedAtUtc": "2026-11-07T18:19:05Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3640, "outputTokens": 1950, "costMicros": 40170 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-11-07T18:19:05Z",
+          "finishedAtUtc": "2026-11-07T18:19:40Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3100, "outputTokens": 580, "costMicros": 18000 }
+        },
+        { "step": "store", "startedAtUtc": "2026-11-07T18:19:40Z", "finishedAtUtc": "2026-11-07T18:19:50Z" },
+        { "step": "notify", "startedAtUtc": "2026-11-07T18:19:50Z", "finishedAtUtc": "2026-11-07T18:20:00Z" }
+      ]
+    },
+    {
+      "id": "job_002",
+      "recordSetId": "rs_002",
+      "patientFirstNameAr": "يوسف",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-02T19:40:00Z", "finishedAtUtc": "2026-11-02T19:40:07Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-02T19:40:07Z", "finishedAtUtc": "2026-11-02T19:40:08Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-02T19:40:08Z", "finishedAtUtc": "2026-11-02T19:44:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-02T20:05:30Z",
+          "finishedAtUtc": "2026-11-02T20:07:10Z",
+          "files": [
+            { "fileId": "f1", "calls": 2, "retries": 0, "inputTokens": 7099, "outputTokens": 1597, "costMicros": 45252 },
+            { "fileId": "f2", "calls": 1, "retries": 0, "inputTokens": 3623, "outputTokens": 635, "costMicros": 20394 },
+            { "fileId": "f3", "calls": 2, "retries": 0, "inputTokens": 7047, "outputTokens": 1574, "costMicros": 44751 },
+            { "fileId": "f4", "calls": 1, "retries": 0, "inputTokens": 2613, "outputTokens": 593, "costMicros": 16734 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-11-02T20:07:10Z",
+          "finishedAtUtc": "2026-11-02T20:07:35Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2580, "outputTokens": 560, "costMicros": 16140 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-11-02T20:07:35Z",
+          "finishedAtUtc": "2026-11-02T20:09:20Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3320, "outputTokens": 1800, "costMicros": 36960 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-11-02T20:09:20Z",
+          "finishedAtUtc": "2026-11-02T20:09:48Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2800, "outputTokens": 540, "costMicros": 16500 }
+        },
+        { "step": "store", "startedAtUtc": "2026-11-02T20:09:48Z", "finishedAtUtc": "2026-11-02T20:09:55Z" },
+        { "step": "notify", "startedAtUtc": "2026-11-02T20:09:55Z", "finishedAtUtc": "2026-11-02T20:10:00Z" }
+      ]
+    },
+    {
+      "id": "job_003",
+      "recordSetId": "rs_003",
+      "patientFirstNameAr": "فيصل",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-10-13T16:20:00Z", "finishedAtUtc": "2026-10-13T16:20:07Z" },
+        { "step": "quote", "startedAtUtc": "2026-10-13T16:20:07Z", "finishedAtUtc": "2026-10-13T16:20:08Z" },
+        { "step": "pay", "startedAtUtc": "2026-10-13T16:20:08Z", "finishedAtUtc": "2026-10-13T16:24:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-10-13T16:41:00Z",
+          "finishedAtUtc": "2026-10-13T16:41:40Z",
+          "files": [
+            { "fileId": "f1", "calls": 2, "retries": 0, "inputTokens": 7059, "outputTokens": 1424, "costMicros": 42537 },
+            { "fileId": "f2", "calls": 1, "retries": 0, "inputTokens": 1673, "outputTokens": 540, "costMicros": 13119 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-10-13T16:41:40Z",
+          "finishedAtUtc": "2026-10-13T16:42:00Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 1740, "outputTokens": 380, "costMicros": 10920 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-10-13T16:42:00Z",
+          "finishedAtUtc": "2026-10-13T16:44:10Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2360, "outputTokens": 1350, "costMicros": 27330 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-10-13T16:44:10Z",
+          "finishedAtUtc": "2026-10-13T16:44:40Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 1900, "outputTokens": 420, "costMicros": 12000 }
+        },
+        { "step": "store", "startedAtUtc": "2026-10-13T16:44:40Z", "finishedAtUtc": "2026-10-13T16:44:52Z" },
+        { "step": "notify", "startedAtUtc": "2026-10-13T16:44:52Z", "finishedAtUtc": "2026-10-13T16:45:00Z" }
+      ]
+    },
+    {
+      "id": "job_004",
+      "recordSetId": "rs_004",
+      "patientFirstNameAr": "نورة",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-09T00:12:00Z", "finishedAtUtc": "2026-11-09T00:12:06Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-09T00:12:06Z", "finishedAtUtc": "2026-11-09T00:12:07Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-09T00:12:07Z", "finishedAtUtc": "2026-11-09T00:15:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-09T00:15:40Z",
+          "finishedAtUtc": null,
+          "files": [
+            { "fileId": "f1", "calls": 1, "retries": 0, "inputTokens": 2768, "outputTokens": 584, "costMicros": 17064 },
+            { "fileId": "f2", "calls": 1, "retries": 0, "inputTokens": 2607, "outputTokens": 70, "costMicros": 8871 },
+            { "fileId": "f3", "calls": 2, "retries": 0, "inputTokens": 6960, "outputTokens": 1470, "costMicros": 42930 },
+            { "fileId": "f4", "calls": 0, "retries": 0, "inputTokens": 0, "outputTokens": 0, "costMicros": 0 },
+            { "fileId": "f5", "calls": 0, "retries": 0, "inputTokens": 0, "outputTokens": 0, "costMicros": 0 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "job_005",
+      "recordSetId": "rs_005",
+      "patientFirstNameAr": "نورة",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-08T19:05:00Z", "finishedAtUtc": "2026-11-08T19:05:09Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-08T19:05:09Z", "finishedAtUtc": "2026-11-08T19:05:10Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-08T19:05:10Z", "finishedAtUtc": "2026-11-08T19:08:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-08T19:08:30Z",
+          "finishedAtUtc": "2026-11-08T19:16:00Z",
+          "files": [
+            { "fileId": "f1", "calls": 3, "retries": 2, "inputTokens": 10760, "outputTokens": 2180, "costMicros": 64980 },
+            { "fileId": "f2", "calls": 0, "retries": 0, "inputTokens": 0, "outputTokens": 0, "costMicros": 0 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "job_006",
+      "recordSetId": "rs_006",
+      "patientFirstNameAr": "نورة",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-09T00:40:00Z", "finishedAtUtc": "2026-11-09T00:40:08Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-09T00:40:08Z", "finishedAtUtc": "2026-11-09T00:40:09Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-09T00:40:09Z", "finishedAtUtc": "2026-11-09T00:43:00Z" }
+      ]
+    },
+    {
+      "id": "job_007",
+      "recordSetId": "rs_007",
+      "patientFirstNameAr": "حمد",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-06T00:02:00Z", "finishedAtUtc": "2026-11-06T00:03:40Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-06T00:03:40Z", "finishedAtUtc": "2026-11-06T00:03:41Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-06T00:03:41Z", "finishedAtUtc": "2026-11-06T00:05:10Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-06T00:05:15Z",
+          "finishedAtUtc": "2026-11-06T00:19:30Z",
+          "files": [
+            { "fileId": "f1", "calls": 50, "retries": 0, "inputTokens": 177783, "outputTokens": 36722, "costMicros": 1084179 },
+            { "fileId": "f2", "calls": 53, "retries": 3, "inputTokens": 188247, "outputTokens": 38557, "costMicros": 1143096 },
+            { "fileId": "f3", "calls": 50, "retries": 0, "inputTokens": 178390, "outputTokens": 36933, "costMicros": 1089165 },
+            { "fileId": "f4", "calls": 52, "retries": 2, "inputTokens": 184521, "outputTokens": 37073, "costMicros": 1109658 },
+            { "fileId": "f5", "calls": 51, "retries": 1, "inputTokens": 180095, "outputTokens": 37536, "costMicros": 1103325 },
+            { "fileId": "f6", "calls": 50, "retries": 0, "inputTokens": 176833, "outputTokens": 36650, "costMicros": 1080249 },
+            { "fileId": "f7", "calls": 53, "retries": 3, "inputTokens": 188409, "outputTokens": 38842, "costMicros": 1147857 },
+            { "fileId": "f8", "calls": 50, "retries": 0, "inputTokens": 176864, "outputTokens": 37923, "costMicros": 1099437 },
+            { "fileId": "f9", "calls": 52, "retries": 2, "inputTokens": 184250, "outputTokens": 38612, "costMicros": 1131930 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-11-06T00:19:30Z",
+          "finishedAtUtc": "2026-11-06T00:21:10Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 126900, "outputTokens": 2500, "costMicros": 418200 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-11-06T00:21:10Z",
+          "finishedAtUtc": "2026-11-06T00:25:40Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 145400, "outputTokens": 3200, "costMicros": 484200 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-11-06T00:25:40Z",
+          "finishedAtUtc": "2026-11-06T00:27:00Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 136000, "outputTokens": 1200, "costMicros": 426000 }
+        },
+        { "step": "store", "startedAtUtc": "2026-11-06T00:27:00Z", "finishedAtUtc": "2026-11-06T00:27:30Z" },
+        { "step": "notify", "startedAtUtc": "2026-11-06T00:27:30Z", "finishedAtUtc": "2026-11-06T00:28:00Z" }
+      ]
+    },
+    {
+      "id": "job_008",
+      "recordSetId": "rs_008",
+      "patientFirstNameAr": "مريم",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-10-26T15:10:00Z", "finishedAtUtc": "2026-10-26T15:10:07Z" },
+        { "step": "quote", "startedAtUtc": "2026-10-26T15:10:07Z", "finishedAtUtc": "2026-10-26T15:10:08Z" },
+        { "step": "pay", "startedAtUtc": "2026-10-26T15:10:08Z", "finishedAtUtc": "2026-10-26T15:13:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-10-26T15:13:20Z",
+          "finishedAtUtc": "2026-10-26T15:14:00Z",
+          "files": [
+            { "fileId": "f1", "calls": 1, "retries": 0, "inputTokens": 2785, "outputTokens": 571, "costMicros": 16920 },
+            { "fileId": "f2", "calls": 1, "retries": 0, "inputTokens": 2727, "outputTokens": 610, "costMicros": 17331 },
+            { "fileId": "f3", "calls": 1, "retries": 0, "inputTokens": 2707, "outputTokens": 600, "costMicros": 17121 },
+            { "fileId": "f4", "calls": 2, "retries": 0, "inputTokens": 6858, "outputTokens": 1473, "costMicros": 42669 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-10-26T15:14:00Z",
+          "finishedAtUtc": "2026-10-26T15:14:20Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2300, "outputTokens": 500, "costMicros": 14400 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-10-26T15:14:20Z",
+          "finishedAtUtc": "2026-10-26T15:16:10Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3000, "outputTokens": 1650, "costMicros": 33750 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-10-26T15:16:10Z",
+          "finishedAtUtc": "2026-10-26T15:16:40Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 2500, "outputTokens": 500, "costMicros": 15000 }
+        },
+        { "step": "store", "startedAtUtc": "2026-10-26T15:16:40Z", "finishedAtUtc": "2026-10-26T15:16:50Z" },
+        { "step": "notify", "startedAtUtc": "2026-10-26T15:16:50Z", "finishedAtUtc": "2026-10-26T15:17:00Z" }
+      ]
+    },
+    {
+      "id": "job_009",
+      "recordSetId": "rs_009",
+      "patientFirstNameAr": "لطيفة",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-10-19T11:30:00Z", "finishedAtUtc": "2026-10-19T11:30:07Z" },
+        { "step": "quote", "startedAtUtc": "2026-10-19T11:30:07Z", "finishedAtUtc": "2026-10-19T11:30:08Z" },
+        { "step": "pay", "startedAtUtc": "2026-10-19T11:30:08Z", "finishedAtUtc": "2026-10-19T11:36:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-10-19T11:36:10Z",
+          "finishedAtUtc": "2026-10-19T11:39:50Z",
+          "files": [
+            { "fileId": "f1", "calls": 5, "retries": 2, "inputTokens": 17920, "outputTokens": 3888, "costMicros": 112080 },
+            { "fileId": "f2", "calls": 3, "retries": 0, "inputTokens": 10844, "outputTokens": 2126, "costMicros": 64422 }
+          ]
+        },
+        {
+          "step": "dedupe",
+          "startedAtUtc": "2026-10-19T11:39:50Z",
+          "finishedAtUtc": "2026-10-19T11:40:15Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3140, "outputTokens": 680, "costMicros": 19620 }
+        },
+        {
+          "step": "summarise",
+          "startedAtUtc": "2026-10-19T11:40:15Z",
+          "finishedAtUtc": "2026-10-19T11:42:10Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3960, "outputTokens": 2100, "costMicros": 43380 }
+        },
+        {
+          "step": "flag",
+          "startedAtUtc": "2026-10-19T11:42:10Z",
+          "finishedAtUtc": "2026-10-19T11:42:40Z",
+          "usage": { "calls": 1, "retries": 0, "inputTokens": 3400, "outputTokens": 620, "costMicros": 19500 }
+        },
+        { "step": "store", "startedAtUtc": "2026-10-19T11:42:40Z", "finishedAtUtc": "2026-10-19T11:42:52Z" },
+        { "step": "notify", "startedAtUtc": "2026-10-19T11:42:52Z", "finishedAtUtc": "2026-10-19T11:43:00Z" }
+      ]
+    },
+    {
+      "id": "job_010",
+      "recordSetId": "rs_010",
+      "patientFirstNameAr": "عبدالله",
+      "attempt": 1,
+      "steps": [
+        { "step": "validate", "startedAtUtc": "2026-11-04T13:20:00Z", "finishedAtUtc": "2026-11-04T13:20:06Z" },
+        { "step": "quote", "startedAtUtc": "2026-11-04T13:20:06Z", "finishedAtUtc": "2026-11-04T13:20:07Z" },
+        { "step": "pay", "startedAtUtc": "2026-11-04T13:20:07Z", "finishedAtUtc": "2026-11-04T13:24:00Z" },
+        {
+          "step": "extract",
+          "startedAtUtc": "2026-11-04T13:24:10Z",
+          "finishedAtUtc": "2026-11-04T13:25:00Z",
+          "files": [
+            { "fileId": "f1", "calls": 2, "retries": 0, "inputTokens": 7011, "outputTokens": 1613, "costMicros": 45228 }
+          ]
+        }
+      ]
+    }
+  ]
+}

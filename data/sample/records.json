@@ -1,0 +1,130 @@
+{
+  "draft": {
+    "files": [
+      { "id": "df_1", "name": "IMG_5102.jpg", "kind": "jpg", "sizeBytes": 3184302, "pages": 1, "status": "accepted" },
+      { "id": "df_2", "name": "IMG_5103.jpg", "kind": "jpg", "sizeBytes": 2876411, "pages": 1, "status": "accepted" },
+      { "id": "df_3", "name": "echo-report-2025.pdf", "kind": "pdf", "sizeBytes": 4718592, "pages": 6, "status": "accepted" },
+      { "id": "df_4", "name": "discharge-letter.docx", "kind": "docx", "sizeBytes": 286720, "pages": 4, "status": "accepted" },
+      { "id": "df_5", "name": "hospital-cd.zip", "kind": "other", "sizeBytes": 642000000, "pages": null, "status": "rejected", "reason": "archive" },
+      { "id": "df_6", "name": "ct-scan-full.pdf", "kind": "pdf", "sizeBytes": 72400000, "pages": null, "status": "rejected", "reason": "tooLarge" },
+      { "id": "df_7", "name": "insurance-letter.pdf", "kind": "pdf", "sizeBytes": 512000, "pages": null, "status": "rejected", "reason": "encrypted" }
+    ],
+    "checking": ["df_3", "df_4"]
+  },
+  "sets": [
+    {
+      "id": "rs_001",
+      "patientFirstNameEn": "Noura",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-11-07T17:58:00Z",
+      "paidAtUtc": "2026-11-07T18:02:00Z",
+      "finishedAtUtc": "2026-11-07T18:20:00Z",
+      "summaryId": "sum_001",
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "ent-clinic-letter.pdf", "kind": "pdf", "sizeBytes": 1843200, "pages": [{ "status": "read" }, { "status": "read" }] },
+        { "id": "f2", "name": "blood-test-oct-2026.pdf", "kind": "pdf", "sizeBytes": 2516582, "pages": [{ "status": "read" }, { "status": "read" }, { "status": "read" }] },
+        { "id": "f3", "name": "IMG_4471.jpg", "kind": "jpg", "sizeBytes": 3355443, "pages": [{ "status": "read" }] },
+        { "id": "f4", "name": "IMG_4472.jpg", "kind": "jpg", "sizeBytes": 3145728, "pages": [{ "status": "unreadable", "reason": "handwritten" }] }
+      ]
+    },
+    {
+      "id": "rs_002",
+      "patientFirstNameEn": "Yousef",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-11-02T19:40:00Z",
+      "paidAtUtc": "2026-11-02T19:44:00Z",
+      "finishedAtUtc": "2026-11-02T20:10:00Z",
+      "summaryId": "sum_002",
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "ent-letter-children.pdf", "kind": "pdf", "sizeBytes": 1205862, "pages": [{ "status": "read" }, { "status": "read" }] },
+        { "id": "f2", "name": "hearing-test.pdf", "kind": "pdf", "sizeBytes": 734003, "pages": [{ "status": "read" }] },
+        { "id": "f3", "name": "discharge-summary-2025.pdf", "kind": "pdf", "sizeBytes": 1572864, "pages": [{ "status": "read" }, { "status": "read" }] },
+        { "id": "f4", "name": "IMG_3310.jpg", "kind": "jpg", "sizeBytes": 2936012, "pages": [{ "status": "read" }] }
+      ]
+    },
+    {
+      "id": "rs_003",
+      "patientFirstNameEn": "Faisal",
+      "status": "done",
+      "step": null,
+      "createdAtUtc": "2026-10-13T16:20:00Z",
+      "paidAtUtc": "2026-10-13T16:24:00Z",
+      "finishedAtUtc": "2026-10-13T16:45:00Z",
+      "summaryId": "sum_003",
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "allergy-test.pdf", "kind": "pdf", "sizeBytes": 943718, "pages": [{ "status": "read" }, { "status": "read" }] },
+        { "id": "f2", "name": "family-doctor-letter.docx", "kind": "docx", "sizeBytes": 167936, "pages": [{ "status": "read" }] }
+      ]
+    },
+    {
+      "id": "rs_004",
+      "patientFirstNameEn": "Noura",
+      "status": "processing",
+      "step": "extract",
+      "createdAtUtc": "2026-11-09T00:12:00Z",
+      "paidAtUtc": "2026-11-09T00:15:00Z",
+      "finishedAtUtc": null,
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "IMG_5120.jpg", "kind": "jpg", "sizeBytes": 2936012, "pages": [{ "status": "read" }] },
+        { "id": "f2", "name": "IMG_5121.jpg", "kind": "jpg", "sizeBytes": 3460300, "pages": [{ "status": "unreadable", "reason": "blurry" }] },
+        { "id": "f3", "name": "cardiology-letter.pdf", "kind": "pdf", "sizeBytes": 1258291, "pages": [{ "status": "read" }, { "status": "read" }, { "status": "reading" }] },
+        { "id": "f4", "name": "lab-results-sept.pdf", "kind": "pdf", "sizeBytes": 2306867, "pages": [{ "status": "reading" }, { "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }] },
+        { "id": "f5", "name": "referral-letter.docx", "kind": "docx", "sizeBytes": 204800, "pages": [{ "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }] }
+      ]
+    },
+    {
+      "id": "rs_005",
+      "patientFirstNameEn": "Noura",
+      "status": "failed",
+      "step": "extract",
+      "createdAtUtc": "2026-11-08T19:05:00Z",
+      "paidAtUtc": "2026-11-08T19:08:00Z",
+      "finishedAtUtc": "2026-11-08T19:16:00Z",
+      "summaryId": null,
+      "failure": { "reason": "damaged", "fileId": "f1", "filePage": 4 },
+      "files": [
+        {
+          "id": "f1",
+          "name": "lab-results-2026.pdf",
+          "kind": "pdf",
+          "sizeBytes": 5872025,
+          "pages": [
+            { "status": "read" }, { "status": "read" }, { "status": "read" }, { "status": "failed" }, { "status": "notRead" },
+            { "status": "notRead" }, { "status": "notRead" }, { "status": "notRead" }, { "status": "notRead" }
+          ]
+        },
+        { "id": "f2", "name": "IMG_6001.jpg", "kind": "jpg", "sizeBytes": 3040870, "pages": [{ "status": "notRead" }] }
+      ]
+    },
+    {
+      "id": "rs_006",
+      "patientFirstNameEn": "Noura",
+      "status": "queued",
+      "step": "extract",
+      "createdAtUtc": "2026-11-09T00:40:00Z",
+      "paidAtUtc": "2026-11-09T00:43:00Z",
+      "finishedAtUtc": null,
+      "summaryId": null,
+      "failure": null,
+      "files": [
+        { "id": "f1", "name": "IMG_5102.jpg", "kind": "jpg", "sizeBytes": 3184302, "pages": [{ "status": "waiting" }] },
+        { "id": "f2", "name": "IMG_5103.jpg", "kind": "jpg", "sizeBytes": 2876411, "pages": [{ "status": "waiting" }] },
+        {
+          "id": "f3",
+          "name": "echo-report-2025.pdf",
+          "kind": "pdf",
+          "sizeBytes": 4718592,
+          "pages": [{ "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }]
+        },
+        { "id": "f4", "name": "discharge-letter.docx", "kind": "docx", "sizeBytes": 286720, "pages": [{ "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }, { "status": "waiting" }] }
+      ]
+    }
+  ]
+}

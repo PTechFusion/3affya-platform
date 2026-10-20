@@ -1,0 +1,116 @@
+[
+  {
+    "id": "int_001",
+    "doctorId": "doc_002",
+    "status": "confirmed",
+    "patientFirstNameEn": "Yousef",
+    "patientFirstNameAr": "يوسف",
+    "ageGroup": "teen",
+    "bookedBy": "parent",
+    "visitType": "video",
+    "startsAtUtc": "2026-11-10T16:00:00Z",
+    "receivedAtUtc": "2026-11-07T19:10:00Z",
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Chicago",
+    "concernEn": "Blocked nose and loud snoring for about a year. His teachers say he is tired in class.",
+    "concernAr": "انسداد في الأنف وشخير عالٍ منذ نحو سنة، ويقول معلموه إنه يبدو متعباً في الصف.",
+    "prepared": [
+      "medicines",
+      "questions",
+      "deviceTest"
+    ],
+    "joinUrl": "https://meet.example.com/omar-khalil",
+    "sharedSummaryId": null,
+    "doneAtUtc": null
+  },
+  {
+    "id": "int_002",
+    "doctorId": "doc_002",
+    "status": "confirmed",
+    "patientFirstNameEn": "Noura",
+    "patientFirstNameAr": "نورة",
+    "ageGroup": "child",
+    "bookedBy": "parent",
+    "visitType": "video",
+    "startsAtUtc": "2026-11-11T17:00:00Z",
+    "receivedAtUtc": "2026-11-08T18:30:00Z",
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Chicago",
+    "concernEn": "Ear infections keep coming back, four since the start of the year. Her paediatrician mentioned ear tubes and we want a second opinion.",
+    "concernAr": "التهابات الأذن تتكرر، أربع مرات منذ بداية السنة. ذكر طبيب الأطفال أنابيب الأذن ونريد رأياً ثانياً.",
+    "prepared": [
+      "records",
+      "questions"
+    ],
+    "joinUrl": "https://meet.example.com/omar-khalil",
+    "sharedSummaryId": "sh_001",
+    "doneAtUtc": null
+  },
+  {
+    "id": "int_003",
+    "doctorId": "doc_002",
+    "status": "request",
+    "patientFirstNameEn": "Hamad",
+    "patientFirstNameAr": "حمد",
+    "ageGroup": "child",
+    "bookedBy": "parent",
+    "visitType": "video",
+    "startsAtUtc": "2026-11-12T15:00:00Z",
+    "receivedAtUtc": "2026-11-08T21:30:00Z",
+    "patientTimeZone": "Asia/Kuwait",
+    "doctorTimeZone": "America/Chicago",
+    "concernEn": "Hoarse voice for about three months. He sings in the school choir and it is getting worse after practice.",
+    "concernAr": "بحة في الصوت منذ نحو ثلاثة أشهر. يغني في جوقة المدرسة وتزداد البحة بعد التدريب.",
+    "prepared": [
+      "questions"
+    ],
+    "joinUrl": null,
+    "sharedSummaryId": null,
+    "doneAtUtc": null
+  },
+  {
+    "id": "int_004",
+    "doctorId": "doc_002",
+    "status": "confirmed",
+    "patientFirstNameEn": "Faisal",
+    "patientFirstNameAr": "فيصل",
+    "ageGroup": "child",
+    "bookedBy": "parent",
+    "visitType": "video",
+    "startsAtUtc": "2026-11-08T16:00:00Z",
+    "receivedAtUtc": "2026-11-05T08:00:00Z",
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Chicago",
+    "concernEn": "Swollen tonsils several times a year, with snoring and breathing pauses at night.",
+    "concernAr": "تورم في اللوزتين عدة مرات في السنة، مع شخير وتوقف في التنفس أثناء النوم.",
+    "prepared": [
+      "records",
+      "medicines"
+    ],
+    "joinUrl": "https://meet.example.com/omar-khalil",
+    "sharedSummaryId": "sh_003",
+    "doneAtUtc": null
+  },
+  {
+    "id": "int_005",
+    "doctorId": "doc_002",
+    "status": "done",
+    "patientFirstNameEn": "Reem",
+    "patientFirstNameAr": "ريم",
+    "ageGroup": "teen",
+    "bookedBy": "parent",
+    "visitType": "phone",
+    "startsAtUtc": "2026-11-03T18:00:00Z",
+    "receivedAtUtc": "2026-10-31T10:45:00Z",
+    "patientTimeZone": "Asia/Qatar",
+    "doctorTimeZone": "America/Chicago",
+    "concernEn": "Ringing in the left ear since a concert two weeks ago.",
+    "concernAr": "طنين في الأذن اليسرى منذ حفلة موسيقية قبل أسبوعين.",
+    "prepared": [
+      "questions"
+    ],
+    "joinUrl": "https://meet.example.com/omar-khalil",
+    "sharedSummaryId": null,
+    "doneAtUtc": "2026-11-03T18:45:00Z"
+  }
+]

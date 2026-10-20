@@ -1,0 +1,256 @@
+[
+  {
+    "id": "doc_001",
+    "groupPractice": "Lakeside Sports Medicine Associates",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Family Medicine",
+    "licenceStateEn": "Ohio",
+    "licenceStateAr": "أوهايو",
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_002",
+    "groupPractice": "North Shore Ear, Nose and Throat Partners",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Otolaryngology - Head and Neck Surgery",
+    "licenceStateEn": "Illinois",
+    "licenceStateAr": "إلينوي",
+    "slotsUtc": [
+      "2026-11-15T18:00:00Z",
+      "2026-11-15T19:00:00Z",
+      "2026-11-16T17:00:00Z",
+      "2026-11-17T18:00:00Z",
+      "2026-11-17T19:30:00Z",
+      "2026-11-18T16:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_003",
+    "groupPractice": "Dearborn Family Physicians",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Family Medicine",
+    "licenceStateEn": "Michigan",
+    "licenceStateAr": "ميشيغان",
+    "slotsUtc": [
+      "2026-11-10T15:00:00Z",
+      "2026-11-10T16:00:00Z",
+      "2026-11-11T15:00:00Z",
+      "2026-11-12T17:00:00Z",
+      "2026-11-14T15:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_004",
+    "groupPractice": "Great Lakes Lung and Sleep Group",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Internal Medicine",
+    "licenceStateEn": "Ohio",
+    "licenceStateAr": "أوهايو",
+    "slotsUtc": [
+      "2026-11-16T16:00:00Z",
+      "2026-11-16T17:00:00Z",
+      "2026-11-18T16:00:00Z",
+      "2026-11-19T18:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_005",
+    "groupPractice": "Hudson Hematology Group",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Internal Medicine",
+    "licenceStateEn": "New York",
+    "licenceStateAr": "نيويورك",
+    "slotsUtc": [
+      "2026-11-23T15:00:00Z",
+      "2026-11-24T15:00:00Z",
+      "2026-11-24T16:00:00Z",
+      "2026-11-25T15:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_006",
+    "groupPractice": "Midtown Family Practice",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Family Medicine",
+    "licenceStateEn": "New York",
+    "licenceStateAr": "نيويورك",
+    "slotsUtc": [
+      "2026-11-10T17:00:00Z",
+      "2026-11-10T18:00:00Z",
+      "2026-11-11T17:00:00Z",
+      "2026-11-12T19:00:00Z",
+      "2026-11-14T17:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_007",
+    "groupPractice": "Gulf Coast Infectious Disease Consultants",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Internal Medicine",
+    "licenceStateEn": "Texas",
+    "licenceStateAr": "تكساس",
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_008",
+    "groupPractice": "Bayou Neurosurgery Group",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Neurological Surgery",
+    "licenceStateEn": "Texas",
+    "licenceStateAr": "تكساس",
+    "slotsUtc": [
+      "2026-11-15T13:00:00Z",
+      "2026-11-16T13:00:00Z",
+      "2026-11-16T14:00:00Z",
+      "2026-11-17T13:00:00Z"
+    ]
+  },
+  {
+    "id": "doc_009",
+    "groupPractice": "Fairlane Sports and Spine",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_010",
+    "groupPractice": "Michigan Brain and Spine Group",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_011",
+    "groupPractice": "Manhattan Eye Associates",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_012",
+    "groupPractice": "Westheimer Ear, Nose and Throat Clinic",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_013",
+    "groupPractice": "Dearborn Children's Physicians",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_014",
+    "groupPractice": "Heights Heart and Vascular",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_015",
+    "groupPractice": "Bellaire Ear, Nose and Throat Associates",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_016",
+    "groupPractice": "Westside Infectious Disease Medical Group",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_017",
+    "groupPractice": null,
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_018",
+    "groupPractice": "Valley Endocrine Medical Group",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_019",
+    "groupPractice": "Lakeview Neurology Associates",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_020",
+    "groupPractice": "Brooklyn Blood and Cancer Group",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_391",
+    "groupPractice": "Lakeshore Heart Associates",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Internal Medicine",
+    "licenceStateEn": "Illinois",
+    "licenceStateAr": "إلينوي",
+    "slotsUtc": []
+  },
+  {
+    "id": "doc_021",
+    "groupPractice": "Houston Rheumatology Associates",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
+  }
+]

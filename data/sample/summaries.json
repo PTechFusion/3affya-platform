@@ -1,0 +1,167 @@
+{
+  "summaries": [
+    {
+      "id": "sum_001",
+      "recordSetId": "rs_001",
+      "patient": { "firstNameEn": "Noura", "firstNameAr": "نورة", "gender": "f" },
+      "generatedAtUtc": "2026-11-07T18:20:00Z",
+      "reviewedBy": null,
+      "documents": [
+        { "id": "d1", "titleEn": "ENT clinic letter", "titleAr": "رسالة عيادة الأنف والأذن والحنجرة", "datedOn": "2026-08-20", "pages": 2 },
+        { "id": "d2", "titleEn": "Blood test report", "titleAr": "تقرير تحليل الدم", "datedOn": "2026-10-02", "pages": 3 },
+        { "id": "d3", "titleEn": "Prescription, phone photo", "titleAr": "وصفة طبية، صورة بالهاتف", "datedOn": "2026-09-01", "pages": 2 }
+      ],
+      "conditions": [
+        { "nameEn": "Chronic sinusitis", "nameAr": "التهاب الجيوب الأنفية المزمن", "notedOn": "2026-08-20", "sources": [{ "doc": "d1", "page": 1 }] },
+        { "nameEn": "Iron deficiency anaemia", "nameAr": "فقر الدم بسبب نقص الحديد", "notedOn": "2026-10-02", "sources": [{ "doc": "d2", "page": 1 }] }
+      ],
+      "medications": [
+        {
+          "nameEn": "Mometasone nasal spray",
+          "nameAr": "بخاخ موميتازون للأنف",
+          "dose": { "amount": 50, "decimals": 0, "unit": "mcg" },
+          "frequency": "onceDaily",
+          "sources": [{ "doc": "d1", "page": 2 }, { "doc": "d3", "page": 1 }]
+        },
+        {
+          "nameEn": "Ferrous sulfate",
+          "nameAr": "كبريتات الحديدوز",
+          "dose": { "amount": 325, "decimals": 0, "unit": "mg" },
+          "frequency": "onceDaily",
+          "sources": [{ "doc": "d3", "page": 1 }]
+        }
+      ],
+      "allergies": [
+        { "nameEn": "Penicillin", "nameAr": "البنسلين", "reactionEn": "Skin rash", "reactionAr": "طفح جلدي", "sources": [{ "doc": "d1", "page": 1 }] }
+      ],
+      "procedures": [
+        { "nameEn": "Nasal endoscopy", "nameAr": "تنظير الأنف", "doneOn": "2026-08-20", "sources": [{ "doc": "d1", "page": 1 }] }
+      ],
+      "results": [
+        { "nameEn": "Haemoglobin", "nameAr": "الهيموغلوبين", "value": 10.9, "decimals": 1, "unit": "g/dL", "low": 12, "high": 15.5, "takenOn": "2026-10-02", "sources": [{ "doc": "d2", "page": 1 }] },
+        { "nameEn": "Ferritin", "nameAr": "الفيريتين", "value": 8, "decimals": 0, "unit": "ng/mL", "low": 15, "high": 150, "takenOn": "2026-10-02", "sources": [{ "doc": "d2", "page": 2 }] },
+        { "nameEn": "Thyroid stimulating hormone", "nameAr": "الهرمون المنبه للغدة الدرقية", "value": 2.1, "decimals": 1, "unit": "mIU/L", "low": 0.4, "high": 4, "takenOn": "2026-10-02", "sources": [{ "doc": "d2", "page": 3 }] }
+      ],
+      "flags": [
+        {
+          "kind": "missing",
+          "textEn": "The ENT letter mentions a CT scan of the sinuses from July 2026. It was not uploaded.",
+          "textAr": "تذكر رسالة عيادة الأنف صورة مقطعية للجيوب الأنفية من يوليو 2026، ولم تُرفع.",
+          "sources": [{ "doc": "d1", "page": 2 }]
+        }
+      ],
+      "unreadable": [{ "doc": "d3", "page": 2, "reason": "handwritten" }]
+    },
+    {
+      "id": "sum_002",
+      "recordSetId": "rs_002",
+      "patient": { "firstNameEn": "Yousef", "firstNameAr": "يوسف", "gender": "m" },
+      "generatedAtUtc": "2026-11-02T20:10:00Z",
+      "reviewedBy": null,
+      "documents": [
+        { "id": "d1", "titleEn": "Children's ENT letter", "titleAr": "رسالة طبيب الأنف والأذن للأطفال", "datedOn": "2026-09-10", "pages": 2 },
+        { "id": "d2", "titleEn": "Hearing test", "titleAr": "اختبار السمع", "datedOn": "2026-09-10", "pages": 1 },
+        { "id": "d3", "titleEn": "Hospital discharge summary", "titleAr": "ملخص الخروج من المستشفى", "datedOn": "2025-03-14", "pages": 2 },
+        { "id": "d4", "titleEn": "Blood test report", "titleAr": "تقرير تحليل الدم", "datedOn": "2026-09-08", "pages": 1 }
+      ],
+      "conditions": [
+        { "nameEn": "Recurrent tonsillitis", "nameAr": "التهاب اللوزتين المتكرر", "notedOn": "2026-09-10", "sources": [{ "doc": "d1", "page": 1 }] },
+        {
+          "nameEn": "Fluid behind both eardrums (otitis media with effusion)",
+          "nameAr": "سوائل خلف طبلتي الأذنين (التهاب الأذن الوسطى الإفرازي)",
+          "notedOn": "2026-09-10",
+          "sources": [{ "doc": "d1", "page": 1 }, { "doc": "d2", "page": 1 }]
+        }
+      ],
+      "medications": [
+        {
+          "nameEn": "Cetirizine",
+          "nameAr": "سيتريزين",
+          "dose": { "amount": 5, "decimals": 0, "unit": "mg" },
+          "frequency": "onceDaily",
+          "sources": [{ "doc": "d1", "page": 2 }]
+        },
+        {
+          "nameEn": "Paracetamol",
+          "nameAr": "باراسيتامول",
+          "dose": { "amount": 250, "decimals": 0, "unit": "mg" },
+          "frequency": "asNeeded",
+          "sources": [{ "doc": "d3", "page": 2 }]
+        }
+      ],
+      "allergies": [
+        { "nameEn": "Amoxicillin", "nameAr": "أموكسيسيلين", "reactionEn": "Hives", "reactionAr": "شرى (طفح جلدي مع حكة)", "sources": [{ "doc": "d1", "page": 1 }] }
+      ],
+      "procedures": [
+        { "nameEn": "Adenoid removal (adenoidectomy)", "nameAr": "استئصال اللحمية", "doneOn": "2025-03-13", "sources": [{ "doc": "d3", "page": 1 }] }
+      ],
+      "results": [
+        { "nameEn": "Hearing level, right ear", "nameAr": "مستوى السمع، الأذن اليمنى", "value": 30, "decimals": 0, "unit": "dB HL", "low": 0, "high": 20, "takenOn": "2026-09-10", "sources": [{ "doc": "d2", "page": 1 }] },
+        { "nameEn": "Hearing level, left ear", "nameAr": "مستوى السمع، الأذن اليسرى", "value": 25, "decimals": 0, "unit": "dB HL", "low": 0, "high": 20, "takenOn": "2026-09-10", "sources": [{ "doc": "d2", "page": 1 }] },
+        { "nameEn": "C-reactive protein", "nameAr": "البروتين التفاعلي سي", "value": 4, "decimals": 0, "unit": "mg/L", "low": 0, "high": 5, "takenOn": "2026-09-08", "sources": [{ "doc": "d4", "page": 1 }] }
+      ],
+      "flags": [
+        {
+          "kind": "conflict",
+          "textEn": "The ENT letter lists an amoxicillin allergy. The discharge summary says no known drug allergies.",
+          "textAr": "تذكر رسالة طبيب الأنف حساسية من الأموكسيسيلين، بينما يذكر ملخص الخروج عدم وجود حساسية معروفة من الأدوية.",
+          "sources": [{ "doc": "d1", "page": 1 }, { "doc": "d3", "page": 2 }]
+        },
+        {
+          "kind": "missing",
+          "textEn": "The ENT letter mentions an earlier hearing test from March 2025. It was not uploaded.",
+          "textAr": "تذكر رسالة طبيب الأنف اختبار سمع سابقًا من مارس 2025، ولم يُرفع.",
+          "sources": [{ "doc": "d1", "page": 2 }]
+        }
+      ],
+      "unreadable": []
+    },
+    {
+      "id": "sum_003",
+      "recordSetId": "rs_003",
+      "patient": { "firstNameEn": "Faisal", "firstNameAr": "فيصل", "gender": "m" },
+      "generatedAtUtc": "2026-10-13T16:45:00Z",
+      "reviewedBy": { "professionalId": "doc_002", "reviewedAtUtc": "2026-10-16T19:30:00Z" },
+      "documents": [
+        { "id": "d1", "titleEn": "Allergy test report", "titleAr": "تقرير اختبار الحساسية", "datedOn": "2026-08-25", "pages": 2 },
+        { "id": "d2", "titleEn": "Family doctor letter", "titleAr": "رسالة طبيب الأسرة", "datedOn": "2026-09-03", "pages": 1 }
+      ],
+      "conditions": [
+        { "nameEn": "Allergic rhinitis", "nameAr": "التهاب الأنف التحسسي", "notedOn": "2026-09-03", "sources": [{ "doc": "d2", "page": 1 }] },
+        { "nameEn": "Mild asthma", "nameAr": "ربو خفيف", "notedOn": "2026-09-03", "sources": [{ "doc": "d2", "page": 1 }] }
+      ],
+      "medications": [
+        {
+          "nameEn": "Fluticasone nasal spray",
+          "nameAr": "بخاخ فلوتيكازون للأنف",
+          "dose": { "amount": 50, "decimals": 0, "unit": "mcg" },
+          "frequency": "twiceDaily",
+          "sources": [{ "doc": "d2", "page": 1 }]
+        },
+        {
+          "nameEn": "Salbutamol inhaler",
+          "nameAr": "بخاخ سالبوتامول",
+          "dose": { "amount": 100, "decimals": 0, "unit": "mcg" },
+          "frequency": "asNeeded",
+          "sources": [{ "doc": "d2", "page": 1 }]
+        }
+      ],
+      "allergies": [
+        { "nameEn": "House dust mite", "nameAr": "عث غبار المنزل", "reactionEn": "Sneezing and a blocked nose", "reactionAr": "عطاس وانسداد في الأنف", "sources": [{ "doc": "d1", "page": 1 }] },
+        { "nameEn": "Cat dander", "nameAr": "وبر القطط", "reactionEn": "Itchy eyes", "reactionAr": "حكة في العينين", "sources": [{ "doc": "d1", "page": 1 }] }
+      ],
+      "procedures": [],
+      "results": [
+        { "nameEn": "Total IgE", "nameAr": "الغلوبولين المناعي E الكلي", "value": 340, "decimals": 0, "unit": "kU/L", "low": 0, "high": 100, "takenOn": "2026-08-25", "sources": [{ "doc": "d1", "page": 2 }] },
+        { "nameEn": "Eosinophil count", "nameAr": "عدد الخلايا الحمضية", "value": 600, "decimals": 0, "unit": "cells/µL", "low": 30, "high": 350, "takenOn": "2026-08-25", "sources": [{ "doc": "d1", "page": 2 }] }
+      ],
+      "flags": [],
+      "unreadable": []
+    }
+  ],
+  "shares": [
+    { "id": "sh_001", "summaryId": "sum_001", "professionalId": "doc_002", "sharedAtUtc": "2026-11-08T07:15:00Z", "viewedAtUtc": null },
+    { "id": "sh_002", "summaryId": "sum_002", "professionalId": "doc_002", "sharedAtUtc": "2026-11-03T12:40:00Z", "viewedAtUtc": "2026-11-04T15:05:00Z" },
+    { "id": "sh_003", "summaryId": "sum_003", "professionalId": "doc_002", "sharedAtUtc": "2026-10-14T08:00:00Z", "viewedAtUtc": "2026-10-15T14:00:00Z" }
+  ]
+}

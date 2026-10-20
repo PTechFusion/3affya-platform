@@ -1,0 +1,107 @@
+{
+  "authoredNowUtc": "2026-11-09T12:00:00Z",
+  "requests": [
+    {
+      "id": "rm_001",
+      "doctorId": "doc_017",
+      "requesterName": "Amal Aziz",
+      "requesterEmail": "amal.aziz@example.com",
+      "npi": "1371092793",
+      "reason": "notListed",
+      "details": "",
+      "locale": "en",
+      "receivedAtUtc": "2026-11-09T06:20:00Z",
+      "emailConfirmedAtUtc": "2026-11-09T06:34:00Z",
+      "status": "open",
+      "infoRequest": null,
+      "decision": null
+    },
+    {
+      "id": "rm_002",
+      "doctorId": "doc_018",
+      "requesterName": "حسن رحمن",
+      "requesterEmail": "h.rahman@example.com",
+      "npi": "1674062150",
+      "reason": "notPractising",
+      "details": "تقاعدت في يونيو 2026 ولم أعد أستقبل المرضى.",
+      "locale": "ar",
+      "receivedAtUtc": "2026-11-07T20:30:00Z",
+      "emailConfirmedAtUtc": "2026-11-07T20:41:00Z",
+      "status": "open",
+      "infoRequest": null,
+      "decision": null
+    },
+    {
+      "id": "rm_003",
+      "doctorId": "doc_019",
+      "requesterName": "Salma Hamdan",
+      "requesterEmail": "salma.hamdan@example.com",
+      "npi": "1623450577",
+      "reason": "other",
+      "details": "I left Lakeview Neurology in 2024 and I am not taking new patients. Please take the page down.",
+      "locale": "en",
+      "receivedAtUtc": "2026-11-07T06:40:00Z",
+      "emailConfirmedAtUtc": "2026-11-07T06:52:00Z",
+      "status": "open",
+      "infoRequest": null,
+      "decision": null
+    },
+    {
+      "id": "rm_004",
+      "doctorId": "doc_014",
+      "requesterName": "Ziad Saleh",
+      "requesterEmail": "ziad.saleh@example.com",
+      "npi": "1962164928",
+      "reason": "notListed",
+      "details": "",
+      "locale": "en",
+      "receivedAtUtc": "2026-11-08T15:00:00Z",
+      "emailConfirmedAtUtc": null,
+      "status": "infoRequested",
+      "infoRequest": {
+        "askedAtUtc": "2026-11-08T19:30:00Z",
+        "askedBy": "adm_001",
+        "question": "The name on your request is spelled differently from the public record, and the confirmation link has not been opened yet. Please open the link we sent, or reply from the email address on your practice website."
+      },
+      "decision": null
+    },
+    {
+      "id": "rm_005",
+      "doctorId": "doc_021",
+      "requesterName": "Ziad Haddad",
+      "requesterEmail": "ziad.haddad@example.com",
+      "npi": "1497836250",
+      "reason": "notListed",
+      "details": "",
+      "locale": "en",
+      "receivedAtUtc": "2026-11-06T08:00:00Z",
+      "emailConfirmedAtUtc": "2026-11-06T08:09:00Z",
+      "status": "confirmed",
+      "infoRequest": null,
+      "decision": {
+        "decidedAtUtc": "2026-11-07T06:10:00Z",
+        "decidedBy": "adm_001",
+        "reason": null
+      }
+    },
+    {
+      "id": "rm_006",
+      "doctorId": "doc_015",
+      "requesterName": "Rami Farah",
+      "requesterEmail": "rami.f@example.com",
+      "npi": "1900257920",
+      "reason": "other",
+      "details": "This is my sister's page. She does not want to be online.",
+      "locale": "en",
+      "receivedAtUtc": "2026-11-06T19:30:00Z",
+      "emailConfirmedAtUtc": "2026-11-06T19:44:00Z",
+      "status": "refused",
+      "infoRequest": null,
+      "decision": {
+        "decidedAtUtc": "2026-11-07T14:15:00Z",
+        "decidedBy": "adm_001",
+        "reason": "We can only take a profile down when the doctor listed asks us. Dr Lina Farah can send the request herself from her profile page, using her own email address."
+      }
+    }
+  ]
+}
