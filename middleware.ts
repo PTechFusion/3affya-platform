@@ -1,4 +1,6 @@
-// Next 16 calls this file "proxy" (it replaced middleware.ts). It routes / to /ar and keeps the locale prefix on every page.
+// Locale routing: / goes to /ar and every page keeps its locale prefix. Kept as the deprecated "middleware" convention on purpose:
+// Next 16 "proxy" runs on Node and Netlify cannot package it yet (opennextjs-netlify issue 3575); "middleware" builds for the edge
+// runtime, which Netlify and Vercel both run. Switch back to proxy.ts once that issue is closed.
 import { NextResponse, type NextRequest } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
@@ -12,7 +14,7 @@ const intl = createMiddleware(routing);
 const PROFILE = new RegExp(`^/(${routing.locales.join("|")})/doctors/([^/]+)/?$`);
 const REMOVED = new Set(removals.requests.filter((r) => r.status === "confirmed").map((r) => r.doctorId));
 
-export default function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const response = intl(request);
   const { pathname, searchParams } = request.nextUrl;
   const profile = PROFILE.exec(pathname);
