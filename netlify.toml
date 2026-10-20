@@ -1,0 +1,12 @@
+# Netlify build for the prototype. Vercel is the planned host (task 1.11); this file exists so a Netlify preview also works.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
