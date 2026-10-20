@@ -1,7 +1,7 @@
 // Screen 20, checkout (docs/screens/20-checkout.md, tasks 3.2 and 3.3). One page, two blocks (layout call): Review (doctor, the
 // time in both zones, visit type, edit links) and Pay (the three lines and the total, then Stripe's payment box), with the
 // details and the two agreements between them and the hold timer pinned under the nav. Confirmation is a separate page
-// (rule P2): a successful Pay goes to /patient/bookings/bk_001?state=confirmed (screen 21).
+// (rule P2): a successful Pay goes to /patient/bookings/bk_004?state=confirmed (screen 21).
 // Reads ?slot=<ISO-8601 UTC instant> (the contract with the picker), ?visit= ?for= ?age= and ?heldUntil= (the hold's end; a
 // visit without it starts a fresh hold of business.slotHoldMinutes). Prototype switches:
 //   ?state=loading    the skeleton, same as loading.tsx

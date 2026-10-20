@@ -3,10 +3,9 @@
 // through one stretched link; Join is its own sibling link above it, so no interactive element is nested.
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { Badge, ChevronNext, LinkButton, Surface } from "@/components/ui";
+import { Badge, ChevronNext, LinkButton, Surface, When, nowrap } from "@/components/ui";
 import { formatNumber, formatSlotDay, formatTime, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
 import { inboxHref, patientName, statusTone, type InboxEntry, type InboxGroups } from "./inbox";
-import { When, nowrap } from "./When";
 
 const SECTIONS = ["requests", "upcoming", "past"] as const;
 

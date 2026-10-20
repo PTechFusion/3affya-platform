@@ -15,6 +15,11 @@ export function fullRefundDeadline(startsAt: Date): Date {
   return new Date(startsAt.getTime() - business.fullRefundCutoffHours * HOUR_MS);
 }
 
+/** True while a patient cancelling now still gets the whole total back (strictly before the deadline, as refundFor decides). */
+export function refundsInFull(startsAt: Date, now: Date = new Date()): boolean {
+  return now.getTime() < fullRefundDeadline(startsAt).getTime();
+}
+
 /** What a cancellation refunds, in minor units of the charge, and why. */
 export function refundFor(
   totalCents: number,

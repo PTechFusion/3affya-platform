@@ -1,6 +1,5 @@
 // Shared bits of the booking page (screen 21) and its .ics route: which view a booking shows, the patient's zone and country,
 // the free-cancellation cutoff, and the one calendar event both the page's Google link and the .ics file carry.
-import { business } from "@/config/business";
 import type { CalendarEvent } from "@/lib/ics";
 import { samplePatient, type PatientBooking } from "@/lib/sample";
 import { zonedParts } from "@/lib/slots";
@@ -12,14 +11,17 @@ export type SearchParams = Record<string, string | string[] | undefined>;
 export type BookingView = "confirmed" | "upcoming" | "done" | "cancelled";
 
 export function bookingView(b: PatientBooking, sp: SearchParams, now: Date = new Date()): BookingView {
-  if (b.status === "cancelled") return "cancelled";
+  if (b.status === "cancelled" || b.status === "refunded") return "cancelled";
   if (b.status === "done" || b.endsAt.getTime() <= now.getTime()) return "done";
   return sp.state === "confirmed" ? "confirmed" : "upcoming";
 }
 
-/** The patient's zone (rule P6): ?tz= when the prototype viewer sets one, otherwise the zone stored with the booking. */
-export function patientZone(b: PatientBooking, sp: SearchParams): string {
-  return typeof sp.tz === "string" ? viewerFrom(sp).timeZone : b.patientTimeZone;
+/**
+ * The patient's zone (rule P6): ?tz= when the prototype viewer sets one, otherwise the signed-in patient's current setting. The
+ * zone stored with the booking is the snapshot the doctor's inbox shows; the patient side recomputes every render.
+ */
+export function patientZone(sp: SearchParams): string {
+  return typeof sp.tz === "string" ? viewerFrom(sp).timeZone : samplePatient.timeZone;
 }
 
 /** The country for the emergency number (rule H14): ?country= when set, else the Gulf country of the patient's zone, else the
@@ -36,16 +38,6 @@ export function daysUntil(instant: Date, timeZone: string, now: Date = new Date(
     return Date.UTC(p.year, p.month - 1, p.day);
   };
   return Math.round((day(instant) - day(now)) / 86_400_000);
-}
-
-/** The last moment a cancellation is refunded in full: fullRefundCutoffHours before the visit (default until Q8). */
-export function refundCutoff(b: PatientBooking): Date {
-  return new Date(b.startsAt.getTime() - business.fullRefundCutoffHours * 3_600_000);
-}
-
-/** True while a cancellation still gets the full refund. */
-export function refundableAt(b: PatientBooking, now: Date = new Date()): boolean {
-  return now.getTime() <= refundCutoff(b).getTime();
 }
 
 /** Scheme and host of the request, for the absolute links a calendar entry needs. */

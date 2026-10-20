@@ -2,7 +2,7 @@
   {
     "id": "bk_001",
     "doctorId": "doc_001",
-    "patientFirstName": "Maryam",
+    "patientFirstName": "Noura",
     "startsAtUtc": "2026-11-14T15:00:00Z",
     "visitType": "video",
     "status": "upcoming",
@@ -15,28 +15,30 @@
   {
     "id": "bk_002",
     "doctorId": "doc_003",
-    "patientFirstName": "Maryam",
+    "patientFirstName": "Noura",
     "startsAtUtc": "2026-10-02T16:30:00Z",
     "visitType": "phone",
     "status": "done",
     "feeUsdCents": 15000,
     "platformFeeUsdCents": 3000,
     "cardProcessingUsdCents": 552,
-    "patientTimeZone": "Asia/Dubai",
+    "patientTimeZone": "Asia/Riyadh",
     "doctorTimeZone": "America/Detroit"
   },
   {
     "id": "bk_003",
     "doctorId": "doc_005",
-    "patientFirstName": "Maryam",
+    "patientFirstName": "Noura",
     "startsAtUtc": "2026-10-20T13:00:00Z",
     "visitType": "video",
-    "status": "cancelled",
+    "status": "refunded",
     "feeUsdCents": 22000,
     "platformFeeUsdCents": 4400,
     "cardProcessingUsdCents": 796,
     "patientTimeZone": "Asia/Riyadh",
-    "doctorTimeZone": "America/Los_Angeles"
+    "doctorTimeZone": "America/Los_Angeles",
+    "cancelledAtUtc": "2026-10-17T07:48:00Z",
+    "cancelledBy": "patient"
   },
   {
     "id": "bk_004",
@@ -143,7 +145,7 @@
   {
     "id": "bk_211",
     "doctorId": "doc_003",
-    "patientFirstName": "Maryam",
+    "patientFirstName": "Noura",
     "startsAtUtc": "2026-11-20T17:00:00Z",
     "visitType": "phone",
     "status": "upcoming",
@@ -152,19 +154,6 @@
     "cardProcessingUsdCents": 796,
     "patientTimeZone": "Asia/Riyadh",
     "doctorTimeZone": "America/Detroit"
-  },
-  {
-    "id": "bk_271",
-    "doctorId": "doc_002",
-    "patientFirstName": "Noura",
-    "startsAtUtc": "2026-11-11T17:00:00Z",
-    "visitType": "video",
-    "status": "upcoming",
-    "feeUsdCents": 25000,
-    "platformFeeUsdCents": 5000,
-    "cardProcessingUsdCents": 900,
-    "patientTimeZone": "Asia/Riyadh",
-    "doctorTimeZone": "America/Chicago"
   },
   {
     "id": "bk_272",
@@ -177,6 +166,7 @@
     "platformFeeUsdCents": 5000,
     "cardProcessingUsdCents": 900,
     "patientTimeZone": "Asia/Riyadh",
-    "doctorTimeZone": "America/New_York"
+    "doctorTimeZone": "America/New_York",
+    "bookedAtUtc": "2026-11-09T07:10:00Z"
   }
 ]

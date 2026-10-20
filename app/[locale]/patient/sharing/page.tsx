@@ -15,7 +15,7 @@ import { business, shareLengthDaysOptions } from "@/config/business";
 import { formatDate, formatNumber, type Locale } from "@/lib/format";
 import { patientSharing, samplePatient, type PatientShare } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
-import { DAY_MS, daysLeft } from "@/app/[locale]/professional/shared/_parts/status";
+import { DAY_MS, daysLeft } from "@/lib/format";
 import { SharingManager } from "./_parts/SharingManager";
 import { SharingSkeleton } from "./_parts/SharingSkeleton";
 import type { InitialChange, LengthView, ShareRowView, VisitView } from "./_parts/types";

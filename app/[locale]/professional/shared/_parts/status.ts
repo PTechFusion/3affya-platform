@@ -5,9 +5,5 @@ import type { ShareStatus } from "@/lib/sample";
 
 export const shareStatusTone: Record<ShareStatus, BadgeTone> = { new: "info", viewed: "pending", reviewed: "success" };
 
-export const DAY_MS = 24 * 60 * 60 * 1000;
-
-/** Whole days left before the share ends; 0 in its last 24 hours ("Ends today"). */
-export function daysLeft(expiresAt: Date, now: Date = new Date()): number {
-  return Math.max(0, Math.floor((expiresAt.getTime() - now.getTime()) / DAY_MS));
-}
+// Days left and DAY_MS live in lib/format (shared with the patient's sharing page and the membership grace banner).
+export { DAY_MS, daysLeft } from "@/lib/format";

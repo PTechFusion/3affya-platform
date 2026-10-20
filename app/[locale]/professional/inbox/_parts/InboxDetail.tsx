@@ -3,10 +3,9 @@
 // summary link labelled as AI-generated with its review state (T4), its expiry, who can open it and that the patient can
 // withdraw it (T7); then the reason for the visit and what the patient prepared.
 import { getTranslations } from "next-intl/server";
-import { Badge, Breadcrumbs, CheckIcon, LinkButton, Surface } from "@/components/ui";
+import { Badge, Breadcrumbs, CheckIcon, LinkButton, Surface, nowrap } from "@/components/ui";
 import { formatDate, formatSlotDay, formatTime, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
 import { InboxActions } from "./InboxActions";
-import { nowrap } from "./When";
 import { inboxHref, patientName, statusTone, type InboxEntry } from "./inbox";
 
 const sectionTitle = "text-lg font-bold text-sea-900";

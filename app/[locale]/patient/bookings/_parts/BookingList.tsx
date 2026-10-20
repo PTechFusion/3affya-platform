@@ -3,13 +3,13 @@
 // stretched link on the doctor's name; Join is its own sibling link above it, so no interactive element is nested.
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { Badge, ChevronNext, LinkButton, Surface } from "@/components/ui";
+import { Badge, ChevronNext, LinkButton, Surface, When, nowrap } from "@/components/ui";
 import { business } from "@/config/business";
 import { formatDate, formatMoney, formatNumber, formatSlotDay, formatTime, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
 import type { PatientBooking } from "@/lib/sample";
 // The inbox (screen 32) already renders a visit's day, time and named zone this way; one rendering for both portals.
-import { When, nowrap } from "@/app/[locale]/professional/inbox/_parts/When";
-import { bookingHref, doctorName, refundsInFull, specialtyName, statusTone, type SearchParams } from "./bookings";
+import { bookingHref, doctorName, specialtyName, statusTone, type SearchParams } from "./bookings";
+import { refundsInFull } from "@/lib/refunds";
 import { CancelBooking } from "./CancelBooking";
 
 type T = Awaited<ReturnType<typeof getTranslations>>;
@@ -103,7 +103,7 @@ export async function NextVisit({
                 </>
               }
               refundNote={
-                refundsInFull(b, now) ? t("cancel.refundFull", { amount }) : t("cancel.refundNone", hoursArgs(locale))
+                refundsInFull(b.startsAt, now) ? t("cancel.refundFull", { amount }) : t("cancel.refundNone", hoursArgs(locale))
               }
             />
           </div>

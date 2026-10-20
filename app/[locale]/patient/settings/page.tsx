@@ -20,9 +20,8 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { accountData } from "@/config/business";
-import { formatDate, formatHijri, formatTime, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
+import { DAY_MS, formatDate, formatHijri, formatTime, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
 import { samplePatientSettings } from "@/lib/sample";
-import { MINUTES_PER_DAY } from "@/lib/slots";
 import { GROUPS, PREVIEWS, type Preview, type When, type ZoneGroup } from "./_parts/model";
 import { SettingsScreen } from "./_parts/SettingsScreen";
 import { checkDetails, type DetailsInput } from "./_parts/validation";
@@ -37,7 +36,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
   return { title: t("metaTitle"), description: t("metaDescription"), robots: { index: false, follow: false } };
 }
 
-const DAY_IN_MS = MINUTES_PER_DAY * 60_000;
+const DAY_IN_MS = DAY_MS;
 
 export default async function SettingsPage({ params, searchParams }: Props) {
   const { locale } = await params;

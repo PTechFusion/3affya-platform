@@ -1,6 +1,6 @@
 // Shared bits of the bookings list (screen 22): which zone times render in, links that keep the prototype's params, how the
 // patient's bookings split into the Upcoming and Past tabs, and what cancelling one now would refund.
-import { business } from "@/config/business";
+import { refundsInFull } from "@/lib/refunds";
 import type { Locale } from "@/lib/format";
 import { bookingsForPatient, samplePatient, type PatientBooking, type SampleDoctor } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
@@ -42,11 +42,6 @@ export function bookingHref(id: string, sp: SearchParams): string {
   return typeof sp.tz === "string" ? `/patient/bookings/${id}?tz=${encodeURIComponent(sp.tz)}` : `/patient/bookings/${id}`;
 }
 
-/** Cancelling now refunds in full only while the visit is more than fullRefundCutoffHours away (refund policy, Q8). */
-export function refundsInFull(b: PatientBooking, now: Date): boolean {
-  return b.startsAt.getTime() - now.getTime() > business.fullRefundCutoffHours * 3_600_000;
-}
-
 /** A paid visit the patient can still cancel: confirmed and not started. */
 export const cancellable = (b: PatientBooking, now: Date) => b.status === "upcoming" && b.startsAt.getTime() > now.getTime();
 
@@ -64,7 +59,7 @@ export function patientBookings(sp: SearchParams, now: Date): { bookings: Patien
   if (target && cancellable(target, now)) {
     justCancelled = {
       ...target,
-      status: refundsInFull(target, now) ? "refunded" : "cancelled",
+      status: refundsInFull(target.startsAt, now) ? "refunded" : "cancelled",
       cancelledAt: now,
       cancelledBy: "patient",
       joinUrl: null,

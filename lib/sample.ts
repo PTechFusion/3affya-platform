@@ -633,9 +633,10 @@ import { refundFor, type CancelledBy, type RefundReason } from "@/lib/refunds";
 type ReceiptBookingRow = {
   id: string;
   doctorId: string;
+  patientFirstName: string;
   startsAtUtc: string;
   visitType: "video" | "phone";
-  status: "upcoming" | "done" | "cancelled";
+  status: "upcoming" | "done" | "cancelled" | "refunded";
   feeUsdCents: number;
   platformFeeUsdCents: number;
   cardProcessingUsdCents: number;
@@ -686,7 +687,8 @@ const receiptRows = receiptsJson as unknown as ReceiptRow[];
 
 function toReceipt(r: ReceiptRow): SampleReceipt | undefined {
   const b = receiptBookingRows.find((row) => row.id === r.bookingId);
-  if (!b) return undefined;
+  // Only the signed-in patient's bookings resolve (production: RLS); anyone else's receipt is simply not found.
+  if (!b || b.patientFirstName !== samplePatient.firstNameEn) return undefined;
   const startsAt = sampleInstant(b.startsAtUtc);
   const totalCents = b.feeUsdCents + b.platformFeeUsdCents + b.cardProcessingUsdCents;
   const cancelledAt = r.cancellation ? sampleInstant(r.cancellation.atUtc) : null;
@@ -696,7 +698,8 @@ function toReceipt(r: ReceiptRow): SampleReceipt | undefined {
     receiptNumber: r.receiptNumber,
     doctorId: b.doctorId,
     visitType: b.visitType,
-    visitStatus: b.status,
+    // The visit box says what happened to the visit; the money side (refunded or not) is the refunds list below.
+    visitStatus: b.status === "refunded" ? "cancelled" : b.status,
     startsAt,
     doctorTimeZone: b.doctorTimeZone,
     paidAt: sampleInstant(r.paidAtUtc),
@@ -714,10 +717,7 @@ function toReceipt(r: ReceiptRow): SampleReceipt | undefined {
   };
 }
 
-/**
- * The signed-in patient's receipts (samplePatient), newest payment first. Every sample booking is hers; the first name stored on
- * the booking rows predates samplePatient and is not read here. Production reads the session's bookings under RLS.
- */
+/** The signed-in patient's receipts (samplePatient), newest payment first. Production reads the session's bookings under RLS. */
 export function patientReceipts(): SampleReceipt[] {
   return receiptRows
     .map(toReceipt)
@@ -729,19 +729,23 @@ export function patientReceipts(): SampleReceipt[] {
 export function patientReceiptById(id: string): SampleReceipt | undefined {
   return patientReceipts().find((r) => r.id === id);
 }
-/* ---------------- Patient bookings (screen 22; screens 21 and 23 read the same rows) ---------------- */
+/* ---------------- Patient bookings (screens 21, 22, 23 and 27 read the same rows) ---------------- */
 // Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
 import bookingsJson from "@/data/sample/bookings.json";
+import bookingVisitsJson from "@/data/sample/booking-visits.json";
+import type { FeeLines } from "@/lib/fees";
 
-/** A booking as data/sample/bookings.json stores it: UTC instants, money in minor units, the three lines as charged. */
+/** Stored status. "upcoming" is paid and booked; "cancelled" was cancelled with no refund; "refunded" was cancelled and paid back. */
+export type PatientBookingStatus = "upcoming" | "done" | "cancelled" | "refunded";
+
+/** A booking as data/sample/bookings.json stores it: UTC instants, money in minor units, the three lines as charged (rule P1). */
 type PatientBookingRow = {
   id: string;
   doctorId: string;
   patientFirstName: string;
   startsAtUtc: string;
   visitType: "video" | "phone";
-  /** "upcoming" is paid and booked; "cancelled" was cancelled with no refund; "refunded" was cancelled and paid back in full. */
-  status: "upcoming" | "done" | "cancelled" | "refunded";
+  status: PatientBookingStatus;
   feeUsdCents: number;
   platformFeeUsdCents: number;
   cardProcessingUsdCents: number;
@@ -753,20 +757,27 @@ type PatientBookingRow = {
   cancelledBy?: "patient" | "doctor" | null;
 };
 
-/** What the patient sees. A paid visit stays upcoming (and joinable) until its slot has ended, then reads as done. */
-export type PatientBookingStatus = "upcoming" | "done" | "cancelled" | "refunded";
+/** What a row may leave to data/sample/booking-visits.json: the visit length, the meeting link and when it was cancelled. */
+type PatientBookingVisitRow = { bookingId: string; durationMinutes: number; joinUrl: string | null; cancelledAtUtc: string | null };
 
-/** A booking as the patient portal reads it. Every instant goes through sampleInstant, so upcoming visits stay ahead. */
+/**
+ * A booking as the patient portal reads it. Every instant goes through sampleInstant, so upcoming visits stay ahead. `paid` is
+ * what the payment charged, line by line, never recomputed from today's rates (rule P1); `totalCents` is its sum.
+ */
 export type PatientBooking = {
   id: string;
+  doctorId: string;
   doctor: SampleDoctor;
-  startsAt: Date;
-  visitType: "video" | "phone";
   status: PatientBookingStatus;
-  /** What the patient paid: the three stored lines summed (rule P1), never recomputed from today's rates. */
-  totalCents: number;
+  visitType: "video" | "phone";
+  startsAt: Date;
+  endsAt: Date;
+  durationMinutes: number;
+  patientTimeZone: string;
   doctorTimeZone: string;
-  /** The doctor's own meeting link (handoff: no hosted video). */
+  paid: FeeLines;
+  totalCents: number;
+  /** The doctor's own meeting link for a video visit (handoff: no hosted video); phone visits have none, the doctor rings. */
   joinUrl: string | null;
   bookedAt: Date | null;
   cancelledAt: Date | null;
@@ -774,30 +785,43 @@ export type PatientBooking = {
 };
 
 const patientBookingRows = bookingsJson as unknown as PatientBookingRow[];
+const patientBookingVisitRows = bookingVisitsJson as unknown as PatientBookingVisitRow[];
 
 function toPatientBooking(r: PatientBookingRow, doctor: SampleDoctor, now: Date): PatientBooking {
-  const startsAt = sampleInstant(r.startsAtUtc);
+  const visit = patientBookingVisitRows.find((v) => v.bookingId === r.id);
   // Prototype: the default slot length stands in for the doctor's own (availability settings) until task 3.3.
-  const endsAt = startsAt.getTime() + business.slotLengthMinutesDefault * 60_000;
-  const status: PatientBookingStatus = r.status === "upcoming" && endsAt <= now.getTime() ? "done" : r.status;
+  const durationMinutes = visit?.durationMinutes ?? business.slotLengthMinutesDefault;
+  const startsAt = sampleInstant(r.startsAtUtc);
+  const endsAt = new Date(startsAt.getTime() + durationMinutes * 60_000);
+  // A paid visit stays upcoming (and joinable) until its slot has ended, then reads as done.
+  const status: PatientBookingStatus = r.status === "upcoming" && endsAt.getTime() <= now.getTime() ? "done" : r.status;
+  const { feeUsdCents: doctorFeeCents, platformFeeUsdCents: platformFeeCents, cardProcessingUsdCents: cardProcessingCents } = r;
+  const totalCents = doctorFeeCents + platformFeeCents + cardProcessingCents;
+  const joinUrl = r.joinUrl ?? visit?.joinUrl ?? null;
+  const cancelledAtUtc = r.cancelledAtUtc ?? visit?.cancelledAtUtc ?? null;
   return {
     id: r.id,
+    doctorId: r.doctorId,
     doctor,
-    startsAt,
-    visitType: r.visitType,
     status,
-    totalCents: r.feeUsdCents + r.platformFeeUsdCents + r.cardProcessingUsdCents,
+    visitType: r.visitType,
+    startsAt,
+    endsAt,
+    durationMinutes,
+    patientTimeZone: r.patientTimeZone,
     doctorTimeZone: r.doctorTimeZone,
-    joinUrl: r.joinUrl ?? null,
+    paid: { doctorFeeCents, platformFeeCents, cardProcessingCents, totalCents },
+    totalCents,
+    joinUrl: r.visitType === "video" ? joinUrl : null,
     bookedAt: r.bookedAtUtc ? sampleInstant(r.bookedAtUtc) : null,
-    cancelledAt: r.cancelledAtUtc ? sampleInstant(r.cancelledAtUtc) : null,
+    cancelledAt: cancelledAtUtc ? sampleInstant(cancelledAtUtc) : null,
     cancelledBy: r.cancelledBy ?? null,
   };
 }
 
 /**
- * Every booking of one patient, earliest visit first. The prototype matches the patient's first name (samplePatient is Noura,
- * rows bk_004 to bk_009); production reads the signed-in patient's rows through RLS.
+ * Every booking of one patient, earliest visit first. The prototype matches the patient's first name (samplePatient is Noura);
+ * production reads the signed-in patient's rows through RLS.
  */
 export function bookingsForPatient(firstNameEn: string, now: Date = new Date()): PatientBooking[] {
   return patientBookingRows
@@ -808,90 +832,25 @@ export function bookingsForPatient(firstNameEn: string, now: Date = new Date()):
     })
     .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
 }
-/* ---------------- Patient bookings (screen 21, booking confirmation) ---------------- */
-// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
-import bookingsJson from "@/data/sample/bookings.json";
-import bookingVisitsJson from "@/data/sample/booking-visits.json";
-import type { FeeLines } from "@/lib/fees";
-
-/** Stored status: a paid visit still to come, a visit that took place, or a cancelled booking. */
-export type PatientBookingStatus = "upcoming" | "done" | "cancelled";
-
-type PatientBookingRow = {
-  id: string;
-  doctorId: string;
-  patientFirstName: string;
-  startsAtUtc: string;
-  visitType: "video" | "phone";
-  status: PatientBookingStatus;
-  feeUsdCents: number;
-  platformFeeUsdCents: number;
-  cardProcessingUsdCents: number;
-  patientTimeZone: string;
-  doctorTimeZone: string;
-};
-
-/** What a booking row does not carry (data/sample/booking-visits.json): the visit length, the doctor's meeting link for a video
- *  visit (phone visits have none: the doctor rings the patient), and when a cancelled booking was cancelled. */
-type PatientBookingVisitRow = { bookingId: string; durationMinutes: number; joinUrl: string | null; cancelledAtUtc: string | null };
-
-/** A patient's booking with every instant shifted by sampleInstant. `paid` is what the payment charged, line by line (rule P1). */
-export type PatientBooking = {
-  id: string;
-  doctorId: string;
-  status: PatientBookingStatus;
-  visitType: "video" | "phone";
-  startsAt: Date;
-  endsAt: Date;
-  durationMinutes: number;
-  patientTimeZone: string;
-  doctorTimeZone: string;
-  paid: FeeLines;
-  joinUrl: string | null;
-  cancelledAt: Date | null;
-};
-
-const patientBookingRows = bookingsJson as unknown as PatientBookingRow[];
-const patientBookingVisitRows = bookingVisitsJson as unknown as PatientBookingVisitRow[];
 
 /** One booking by id. Production reads it through RLS, so only the signed-in patient's own bookings resolve. */
-export function patientBookingById(id: string): PatientBooking | undefined {
+export function patientBookingById(id: string, now: Date = new Date()): PatientBooking | undefined {
   const row = patientBookingRows.find((b) => b.id === id);
-  if (!row) return undefined;
-  const visit = patientBookingVisitRows.find((v) => v.bookingId === id);
-  const durationMinutes = visit?.durationMinutes ?? business.slotLengthMinutesDefault;
-  const startsAt = sampleInstant(row.startsAtUtc);
-  const { feeUsdCents: doctorFeeCents, platformFeeUsdCents: platformFeeCents, cardProcessingUsdCents: cardProcessingCents } = row;
-  return {
-    id: row.id,
-    doctorId: row.doctorId,
-    status: row.status,
-    visitType: row.visitType,
-    startsAt,
-    endsAt: new Date(startsAt.getTime() + durationMinutes * 60_000),
-    durationMinutes,
-    patientTimeZone: row.patientTimeZone,
-    doctorTimeZone: row.doctorTimeZone,
-    paid: { doctorFeeCents, platformFeeCents, cardProcessingCents, totalCents: doctorFeeCents + platformFeeCents + cardProcessingCents },
-    joinUrl: row.visitType === "video" ? (visit?.joinUrl ?? null) : null,
-    cancelledAt: visit?.cancelledAtUtc ? sampleInstant(visit.cancelledAtUtc) : null,
-  };
+  const doctor = row && sampleDoctors.find((d) => d.id === row.doctorId);
+  return row && doctor ? toPatientBooking(row, doctor, now) : undefined;
 }
 /* ---------------- Sharing and consent (screen 27) ---------------- */
 // Appended block (screen 27, task 3.10). The patient's side of the same share rows screen 36 reads (summaries.json `shares`),
 // mapped by the same toSampleShare, so a share has the same dates and status on both sides and ends for the patient exactly when
 // it leaves the professional's list (expiresAt <= now). The doctors a patient can share with are the doctors of their upcoming
 // bookings: the rows in data/sample/bookings.json whose patientFirstName is the signed-in patient's.
-// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
-import bookingsJson from "@/data/sample/bookings.json";
-
 type SharingBookingRow = {
   id: string;
   doctorId: string;
   patientFirstName: string;
   startsAtUtc: string;
   visitType: "video" | "phone";
-  status: "upcoming" | "done" | "cancelled";
+  status: "upcoming" | "done" | "cancelled" | "refunded";
 };
 
 /** A visit the signed-in patient booked and has not had yet. Its doctor is someone they can share their summary with. */

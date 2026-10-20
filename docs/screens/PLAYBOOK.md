@@ -182,10 +182,32 @@ list. Returned screens get one more build pass, then come back to the reviewer w
   define `DAY_MS`: move to `lib/format.ts` when a third user appears.
 - 30: US city names appear in Latin inside Arabic copy ("Chicago"); add a `zones.*` map for the doctor time zones.
 
+- `Notice` primitive: seven hand-rolled notice boxes (19 Note, 20 Notice, 22 justCancelled, 24 handed-off box, 25 unreadable
+  line, 28 deletion banner, 33 past-due banner). Add `Notice` {tone: info|success|warning|danger, title, body, action} to
+  `components/ui`; migrate each page when next touched. New screens must use it.
+- `Sheet` (27, native `<dialog>`) is the one sheet/dialog primitive. Migrate in this order when touched: 22 CancelBooking
+  dialog, 29 builder card dialog, search filter sheet. 26's source sheet stays server-rendered and URL-driven.
+- Not-found inside a portal: an in-shell `EmptyState` with one action (200), as 21, 23 and the inbox detail do. 24/25 and 26
+  answer a layout 404 today; move them when next touched. "Not mine" and "unknown" must look the same (leaks nothing).
+- Gulf phone rules live twice (20 `details.ts`, 28 `validation.ts`) and country names in four namespaces: one `lib/phone.ts`
+  and a `common.countries` map before task 3.6.
+- `business.weekend` has no GB (or other non-Gulf) rows, so a London viewer gets no weekend shading on 19.
+- 29's local FilePick → the `FilePick` primitive (24/25). 22 rows show Join on every upcoming visit; reuse 21's `daysUntil`
+  (move to lib/format) so rows show View until the day.
+- 26: gate the summary with `recordSetFor(id)` and add a second Noura set with a conflict flag and a reviewed state so both
+  states stay demoable; add `print:hidden` to PortalShell for the summary print.
+- Receipts (23) must also list records payments (24/25) once records.json carries a payment row.
+
 Professional portal facts (wave 3): the signed-in doctor is `sampleProfessional` (doc_002, Chicago) on every portal page and
 dates about the doctor's own work show in that zone unless `?tz=` is set. The builder (29) deliberately opens on doc_013, the
 registry pre-fill that `/claim/[token]` hands over; `?doctor=doc_002` is the editing state. Card previews stay in the patient's
 zone. Do not "fix" either.
+
+Patient portal facts (wave 4): the signed-in patient is `samplePatient` (Noura, Riyadh, noura@example.com) on every patient
+page; every row in `data/sample/bookings.json` is hers. Patient pages render in `?tz=` else `samplePatient.timeZone`; the zone
+stored on a booking row is the snapshot the doctor's inbox shows. Refund wording and arithmetic come from `lib/refunds.ts`
+(`fullRefundDeadline`, `refundsInFull`, `refundFor`). One cancel flow: `patient/bookings/_parts/CancelBooking` + its action.
+19/20's demo success lands on `bk_004` (Noura with Dr Omar Khalil).
 
 ## 10. Waves
 

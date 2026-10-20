@@ -14,7 +14,7 @@
 import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { Badge, CheckIcon, ChevronNext, Skeleton, Surface } from "@/components/ui";
+import { Badge, CheckIcon, ChevronNext, Skeleton, Surface, TabLinks } from "@/components/ui";
 import { formatDate, formatNumber, type Locale } from "@/lib/format";
 
 /* ---------------- Data ---------------- */
@@ -107,7 +107,6 @@ function timelineOf(s: SummaryData) {
 
 const blockTitle = "text-xl font-bold text-sea-900";
 // Equal thirds on phone; on wider screens each tab hugs its label.
-const tabClass = "-mb-px flex min-h-12 flex-1 items-center justify-center gap-2 border-b-[3px] px-2 text-center font-semibold sm:flex-none sm:px-6";
 
 export function SummaryViewer({
   summary,
@@ -438,29 +437,15 @@ export function SummaryViewer({
 
       {tabHref ? (
         <>
-          <nav aria-label={t("tabs.label")} className="print:hidden">
-            <ul className="flex border-b border-sand-300">
-              {summaryViews.map((v) => {
-                const active = v === view;
-                const count = v === "flags" ? flagCount + unreadableCount : 0;
-                return (
-                  <li key={v} className="flex flex-1 sm:flex-none">
-                    <Link
-                      href={tabHref(v)}
-                      scroll={false}
-                      aria-current={active ? "page" : undefined}
-                      className={[tabClass, active ? "border-sea-700 text-sea-900" : "border-transparent text-ink-700 hover:text-sea-900"].join(" ")}
-                    >
-                      {t(`tabs.${v}`)}
-                      {count ? (
-                        <span className="tabular rounded-[var(--radius-tag)] bg-gold-100 px-2 text-sm text-warning">{num(count)}</span>
-                      ) : null}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          <TabLinks
+            label={t("tabs.label")}
+            scroll={false}
+            className="print:hidden"
+            items={summaryViews.map((v) => {
+              const count = v === "flags" ? flagCount + unreadableCount : 0;
+              return { href: tabHref(v), label: t(`tabs.${v}`), count: count ? num(count) : undefined, current: v === view };
+            })}
+          />
           {/* Closed tabs stay out of sight but print: a download always carries every block, flag and unreadable page. */}
           <div className={view === "overview" ? "" : "hidden print:block"}>
             <div className="grid gap-6 lg:grid-cols-2">
@@ -849,13 +834,7 @@ export function SummaryViewerSkeleton({ tabs = false }: { tabs?: boolean } = {})
         </div>
       </section>
       {tabs ? (
-        <div className="flex border-b border-sand-300">
-          {summaryViews.map((v) => (
-            <span key={v} className={[tabClass, v === "overview" ? "border-sea-700 text-sea-900" : "border-transparent text-ink-700"].join(" ")}>
-              {t(`tabs.${v}`)}
-            </span>
-          ))}
-        </div>
+        <TabLinks label={t("tabs.label")} items={summaryViews.map((v) => ({ href: "#", label: t(`tabs.${v}`) }))} />
       ) : null}
       <div className="grid gap-6 lg:grid-cols-2">
         {blocks.map((b) => (

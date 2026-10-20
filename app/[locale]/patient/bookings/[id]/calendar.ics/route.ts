@@ -5,7 +5,7 @@ import { hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { toIcs } from "@/lib/ics";
-import { doctorById, patientBookingById } from "@/lib/sample";
+import { doctorById, patientBookingById, samplePatient } from "@/lib/sample";
 import { emergencyNumberFor } from "@/lib/viewer";
 import { calendarEventFor, originFrom, patientCountry } from "../_parts/booking";
 
@@ -25,7 +25,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
     doctorName: locale === "ar" ? doctor.nameAr : doctor.nameEn,
     doctorGender: doctor.gender,
     pageUrl: `${originFrom(request.headers)}/${locale}/patient/bookings/${booking.id}`,
-    emergencyNumber: emergencyNumberFor(patientCountry(booking.patientTimeZone, {})),
+    emergencyNumber: emergencyNumberFor(patientCountry(samplePatient.timeZone, {})),
     t,
     tc,
   });

@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Badge, Surface, type BadgeTone } from "@/components/ui";
-import { formatDate, formatMoney, formatNumber, formatSlotDay, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
+import { DAY_MS, formatDate, formatMoney, formatNumber, formatSlotDay, formatTimeInZone, formatZone, type Locale } from "@/lib/format";
 import { sampleMembership, sampleProfessional, type BillingInterval, type MembershipStatus } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
@@ -17,7 +17,6 @@ import { PortalButton } from "./_parts/PortalButton";
 import { SubscribeForm, type IntervalOption } from "./_parts/SubscribeForm";
 import Loading from "./loading";
 
-const DAY_MS = 86_400_000;
 const STATES: Record<string, MembershipStatus> = { none: "none", active: "active", pastDue: "past_due", cancelled: "cancelled" };
 const STATUS_TONE: Record<Exclude<MembershipStatus, "none">, BadgeTone> = { active: "success", past_due: "warning", cancelled: "pending" };
 

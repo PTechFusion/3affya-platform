@@ -1,5 +1,6 @@
 // Shared UI primitives. Every product screen composes these; do not restyle them per page.
 import type { ReactNode } from "react";
+import { formatSlotDay, formatTime, formatZone, type Locale } from "@/lib/format";
 import { Link } from "@/i18n/navigation";
 
 const cx = (...parts: Array<string | false | undefined>) => parts.filter(Boolean).join(" ");
@@ -547,17 +548,23 @@ export function Toast({
 export function TabLinks({
   label,
   items,
+  scroll = true,
+  className,
 }: {
   label: string;
   items: Array<{ href: React.ComponentProps<typeof Link>["href"]; label: string; count?: string; current?: boolean }>;
+  /** false keeps the scroll position when a tab only swaps the content below it (Next's Link `scroll`). */
+  scroll?: boolean;
+  className?: string;
 }) {
   return (
-    <nav aria-label={label} className="border-b border-sand-300">
+    <nav aria-label={label} className={cx("border-b border-sand-300", className)}>
       <ul className="-mb-px flex">
         {items.map((item) => (
           <li key={item.label} className="flex flex-1 sm:flex-none">
             <Link
               href={item.href}
+              scroll={scroll}
               aria-current={item.current ? "page" : undefined}
               className={cx(
                 "flex min-h-12 flex-1 items-center justify-center gap-2 border-b-[3px] px-5 text-[15px] font-semibold transition-colors",
@@ -770,3 +777,21 @@ export function LockIcon({ className = "size-4" }: { className?: string }) {
     </svg>
   );
 }
+
+/* ---------------- When ---------------- */
+/**
+ * "Tue, Oct 20 · 11:00 AM Chicago (GMT−5)": a visit's day and time with the zone named (rule P6). The clock time and the zone
+ * each stay on one line (the zone as its own LTR run, rule R3), so a narrow row never splits them. Used by the inbox (32), the
+ * bookings list (22) and the booking page (21).
+ */
+export function When({ instant, timeZone, locale }: { instant: Date; timeZone: string; locale: Locale }) {
+  return (
+    <>
+      {formatSlotDay(instant, timeZone, locale)} · <span className="whitespace-nowrap">{formatTime(instant, timeZone, locale)}</span>{" "}
+      <span className="ltr-run">{formatZone(instant, timeZone)}</span>
+    </>
+  );
+}
+
+/** Tag for rich messages: keeps a time and its zone on one line. */
+export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;

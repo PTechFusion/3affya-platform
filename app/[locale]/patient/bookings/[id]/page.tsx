@@ -11,16 +11,17 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { Badge, Breadcrumbs, CheckIcon, ChevronNext, EmptyState, LinkButton, Surface } from "@/components/ui";
+import { Badge, Breadcrumbs, CheckIcon, ChevronNext, EmptyState, LinkButton, Surface, When, nowrap } from "@/components/ui";
 import { business } from "@/config/business";
 import { formatDate, formatMoney, formatNumber, formatSlotDay, formatTimeInZone, type Locale } from "@/lib/format";
 import { googleCalendarUrl } from "@/lib/ics";
+import { fullRefundDeadline, refundsInFull } from "@/lib/refunds";
 import { doctorById, patientBookingById } from "@/lib/sample";
 import { emergencyNumberFor } from "@/lib/viewer";
 import { Appointment } from "./_parts/Appointment";
-import { CancelBooking } from "./_parts/CancelBooking";
+import { CancelBooking } from "../_parts/CancelBooking";
 import { DeviceCheck } from "./_parts/DeviceCheck";
-import { bookingView, calendarEventFor, daysUntil, originFrom, patientCountry, patientZone, refundableAt, refundCutoff, type SearchParams } from "./_parts/booking";
+import { bookingView, calendarEventFor, daysUntil, originFrom, patientCountry, patientZone, type SearchParams } from "./_parts/booking";
 import Loading from "./loading";
 
 type Props = { params: Promise<{ locale: string; id: string }>; searchParams: Promise<SearchParams> };
@@ -32,7 +33,6 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
 }
 
 const sectionTitle = "text-lg font-bold text-sea-900";
-const nowrap = (chunks: React.ReactNode) => <span className="whitespace-nowrap">{chunks}</span>;
 
 export default async function BookingPage({ params, searchParams }: Props) {
   const { locale, id } = await params;
@@ -63,7 +63,7 @@ export default async function BookingPage({ params, searchParams }: Props) {
   }
 
   const view = bookingView(booking, sp);
-  const zone = patientZone(booking, sp);
+  const zone = patientZone(sp);
   const country = patientCountry(zone, sp);
   const emergencyNumber = emergencyNumberFor(country);
   const name = loc === "ar" ? doctor.nameAr : doctor.nameEn;
@@ -72,8 +72,8 @@ export default async function BookingPage({ params, searchParams }: Props) {
   const total = formatMoney(booking.paid.totalCents, business.currencyPresentment, loc);
   const hours = business.fullRefundCutoffHours;
   const hoursLabel = formatNumber(hours, loc);
-  const cutoff = refundCutoff(booking);
-  const refundable = refundableAt(booking);
+  const cutoff = fullRefundDeadline(booking.startsAt);
+  const refundable = refundsInFull(booking.startsAt);
   const bookAgainHref = `/book/${doctor.id}`;
 
   const pageUrl = `${originFrom(await headers())}/${loc}/patient/bookings/${booking.id}`;
@@ -97,7 +97,10 @@ export default async function BookingPage({ params, searchParams }: Props) {
         </header>
       ) : (
         <header>
-          <Breadcrumbs label={t("breadcrumb")} items={[{ label: bookingsLabel, href: "/patient/bookings" }, { label: t("crumb", { name }) }]} />
+          <Breadcrumbs
+            label={t("breadcrumb")}
+            items={[{ label: tp("patient.title"), href: "/patient" }, { label: bookingsLabel, href: "/patient/bookings" }, { label: t("crumb", { name }) }]}
+          />
           <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
             <h1 className="text-2xl font-bold leading-tight text-sea-900 sm:text-3xl">{t("title")}</h1>
             <Badge tone={statusTone[view]}>{t(`status.${view}`)}</Badge>
@@ -129,7 +132,7 @@ export default async function BookingPage({ params, searchParams }: Props) {
               <>
                 <p className="text-sm text-ink-700">
                   {booking.cancelledAt ? `${t("cancelled.on", { date: formatDate(booking.cancelledAt, zone, loc) })} ` : null}
-                  {booking.cancelledAt && booking.cancelledAt.getTime() <= cutoff.getTime()
+                  {booking.status === "refunded"
                     ? t("cancelled.refund", { amount: total, hours, hoursLabel })
                     : t("cancelled.noRefund", { hours, hoursLabel })}
                 </p>
@@ -246,21 +249,32 @@ export default async function BookingPage({ params, searchParams }: Props) {
                 <h2 id="change-title" className={sectionTitle}>
                   {t("change.title")}
                 </h2>
-                <CancelBooking id={booking.id} refundable={refundable} amount={total} hours={hours} hoursLabel={hoursLabel} bookAgainHref={bookAgainHref}>
-                  <p className="mt-1 text-sm text-ink-700">
-                    {refundable
-                      ? t.rich("change.before", {
-                          day: formatSlotDay(cutoff, zone, loc),
-                          time: formatTimeInZone(cutoff, zone, loc),
-                          amount: total,
-                          hours,
-                          hoursLabel,
-                          nowrap,
-                        })
-                      : t("change.after", { hours, hoursLabel })}
-                  </p>
-                  <p className="mt-2 text-sm text-ink-700">{t("change.move")}</p>
-                </CancelBooking>
+                <p className="mt-1 text-sm text-ink-700">
+                  {refundable
+                    ? t.rich("change.before", {
+                        day: formatSlotDay(cutoff, zone, loc),
+                        time: formatTimeInZone(cutoff, zone, loc),
+                        amount: total,
+                        hours,
+                        hoursLabel,
+                        nowrap,
+                      })
+                    : t("change.after", { hours, hoursLabel })}
+                </p>
+                <p className="mt-2 text-sm text-ink-700">{t("change.move")}</p>
+                {/* One cancel flow for the portal (screen 22's dialog and action): the result shows on the list. */}
+                <div className="mt-3 border-t border-sand-200 pt-2">
+                  <CancelBooking
+                    id={booking.id}
+                    doneHref={`/patient/bookings?cancelled=${booking.id}${typeof sp.tz === "string" ? `&tz=${encodeURIComponent(sp.tz)}` : ""}`}
+                    summary={
+                      <>
+                        {name} · <When instant={booking.startsAt} timeZone={zone} locale={loc} />
+                      </>
+                    }
+                    refundNote={refundable ? t("cancel.refund", { amount: total }) : t("cancel.noRefund", { amount: total, hours, hoursLabel })}
+                  />
+                </div>
               </Surface>
             </section>
           ) : null}

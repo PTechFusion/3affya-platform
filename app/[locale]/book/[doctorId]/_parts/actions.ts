@@ -71,7 +71,7 @@ export type PaymentResult =
   | { ok: false; error: "validation"; fields: DetailErrors }
   | { ok: false; error: "notBookable" | "missingAnswers" | "expired" | "passed" | "declined" | "unavailable" };
 
-/** The one Pay action. Prototype: every check passes to the sample booking bk_001 (screen 21 shows it). */
+/** The one Pay action. Prototype: every check passes to the sample booking bk_004 (screen 21 shows it). */
 export async function startPayment(raw: unknown): Promise<PaymentResult> {
   const src = (raw ?? {}) as Record<string, unknown>;
   const d = bookableDoctor(src.doctorId);
@@ -85,5 +85,5 @@ export async function startPayment(raw: unknown): Promise<PaymentResult> {
   if (!answers.visit || !answers.forWhom || !answers.ageGroup) return { ok: false, error: "missingAnswers" };
   const fields = validateDetails(detailsFrom(src));
   if (Object.keys(fields).length) return { ok: false, error: "validation", fields };
-  return { ok: true, bookingId: "bk_001" };
+  return { ok: true, bookingId: "bk_004" };
 }

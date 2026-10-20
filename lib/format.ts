@@ -113,3 +113,11 @@ export function formatClockRange(start: Date, end: Date, timeZone: string, local
   const one = (instant: Date) => formatTime(instant, timeZone, locale).replace(/\s/g, " ");
   return `${one(start)} – ${one(end)}`;
 }
+
+/** One day in milliseconds, for grace periods and "days left" counts (shares, membership grace, account deletion). */
+export const DAY_MS = 86_400_000;
+
+/** Whole days left before an instant; 0 in its last 24 hours ("Ends today"). */
+export function daysLeft(until: Date, now: Date = new Date()): number {
+  return Math.max(0, Math.floor((until.getTime() - now.getTime()) / DAY_MS));
+}

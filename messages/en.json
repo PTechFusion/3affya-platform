@@ -3128,21 +3128,8 @@
       "move": "To move your visit, cancel it and book a new time."
     },
     "cancel": {
-      "start": "Cancel booking",
-      "confirmTitle": "Cancel this visit?",
       "refund": "You get the full {amount} back on your card.",
-      "noRefund": "This visit is less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away, so the {amount} is not refunded.",
-      "confirm": "Cancel booking",
-      "keep": "Keep booking",
-      "working": "Cancelling",
-      "done": "Your booking is cancelled.",
-      "doneRefund": "We are refunding {amount} to your card.",
-      "bookAgain": "Find another time",
-      "error": {
-        "notFound": "We could not find this booking any more. Reload the page.",
-        "state": "This booking changed since the page loaded. Reload the page to see it.",
-        "unavailable": "That did not go through. Try again in a minute."
-      }
+      "noRefund": "This visit is less than {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} away, so the {amount} is not refunded."
     },
     "cancelled": {
       "on": "Cancelled on {date}.",
@@ -3335,7 +3322,7 @@
       "privacyLink": "Read the privacy notice (opens in a new tab)",
       "errorPrivacy": "Tick this box to go on. It confirms you have seen how your records are kept.",
       "ai": "I agree that an AI model reads these files to write my summary",
-      "aiHint": "Claude, an AI model made by Anthropic, reads each page. It does not diagnose and does not replace your visit.",
+      "aiHint": "An AI model reads each page. It does not diagnose and does not replace your visit.",
       "whereTitle": "Where your files are",
       "whereStored": "Stored on 3affya's private, encrypted server in {country}.",
       "whereStoredPending": "Stored on 3affya's private, encrypted server. Its country is named here before launch.",
