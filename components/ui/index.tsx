@@ -1120,3 +1120,43 @@ export function Notice({
     </div>
   );
 }
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message in the page flow (PLAYBOOK §9): a title that says what happened, an optional line under it and an optional
+ * action. `info` gives context, `success` confirms something done, `warning` needs attention soon, `danger` says something failed.
+ * The tone is never the only signal: the title carries the meaning in words (rule F5). Pass role="alert" when the notice appears
+ * in answer to an action (a failed save) so screen readers hear it; leave it off for a notice that is there when the page opens.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, string> = {
+  info: "border-sky-500/40 bg-sky-100",
+  success: "border-success/40 bg-[#E4F4EC]",
+  warning: "border-gold-300 bg-gold-100",
+  danger: "border-danger bg-white",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  role,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: string;
+  body?: ReactNode;
+  action?: ReactNode;
+  role?: "alert" | "status";
+  className?: string;
+}) {
+  return (
+    <div role={role} className={cx("flex flex-col gap-3 rounded-[var(--radius-field)] border p-4", noticeTones[tone], className)}>
+      <div>
+        <p className={cx("font-semibold", tone === "danger" ? "text-danger" : "text-ink-900")}>{title}</p>
+        {body ? <p className="mt-0.5 text-sm text-ink-700">{body}</p> : null}
+      </div>
+      {action ? <div className="flex flex-wrap items-center gap-2">{action}</div> : null}
+    </div>
+  );
+}
