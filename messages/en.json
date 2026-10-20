@@ -4897,5 +4897,254 @@
       },
       "stubSaved": "Prototype: nothing was saved."
     }
+  },
+  "adminReview": {
+    "metaTitle": "Credential review queue",
+    "metaDescription": "Claims waiting for review, oldest first. Check each doctor's licence, board, sanctions and photo at the source, then approve, or reject with a reason the doctor sees.",
+    "title": "Review queue",
+    "breadcrumb": "Breadcrumb",
+    "loading": "Loading the review queue",
+    "leadLoading": "Claims waiting for a decision, oldest first.",
+    "npi": "NPI",
+    "lead": {
+      "waiting": "{count, plural, one {{countLabel} claim waiting.} other {{countLabel} claims waiting.}}",
+      "overdue": "{count, plural, one {{countLabel} is overdue.} other {{countLabel} are overdue.}}",
+      "noneOverdue": "None is overdue.",
+      "order": "Oldest first. A decision is due {hours, plural, one {{hoursLabel} hour} other {{hoursLabel} hours}} after the doctor submits; a resubmission starts the clock again."
+    },
+    "error": {
+      "title": "The review queue did not load",
+      "body": "Something went wrong on our side. No claim and no decision has changed. Try again in a moment.",
+      "action": "Try again"
+    },
+    "empty": {
+      "title": "No claims waiting",
+      "body": "When a doctor submits a licence and board for review, the claim appears here, oldest first.",
+      "action": "Open listings"
+    },
+    "notFound": {
+      "title": "No claim to review here",
+      "body": "This profile has no credentials waiting for review. It may be unclaimed or already decided, or the link may be wrong.",
+      "action": "Back to the review queue"
+    },
+    "status": {
+      "new": "New",
+      "resubmitted": "Resubmitted",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "sla": {
+      "overdue": "Overdue by {duration}",
+      "dueSoon": "Due in {duration}",
+      "onTime": "Due in {duration}"
+    },
+    "duration": {
+      "underHour": "less than an hour",
+      "hours": "{count, plural, one {{countLabel} hour} other {{countLabel} hours}}",
+      "days": "{count, plural, one {{countLabel} day} other {{countLabel} days}}"
+    },
+    "queue": {
+      "licenceIn": "{state} licence",
+      "waiting": "Waiting {duration}"
+    },
+    "detail": {
+      "submittedAt": "Submitted {date}, <nowrap>{time}</nowrap>",
+      "resubmittedAt": "Resubmitted {date}, <nowrap>{time}</nowrap>",
+      "previousTitle": "Returned to the doctor on {date}",
+      "previousBody": "The doctor answered this reason and resubmitted. Check that the new file fixes it."
+    },
+    "fileKind": {
+      "licence": "Licence",
+      "board": "Board certificate",
+      "other": "Other file",
+      "photo": "Profile photo"
+    },
+    "viewer": {
+      "open": "Open in the viewer:",
+      "photoAlt": "The doctor's profile photo",
+      "prototype": "Prototype: only file names are kept here, never the files. In the live product the file opens from the private credentials store through a short-lived signed link.",
+      "kind": "Type",
+      "size": "Size",
+      "uploaded": "Uploaded",
+      "sizeMb": "{size} MB"
+    },
+    "links": {
+      "docinfo": "Open FSMB DocInfo",
+      "abms": "Open ABMS Certification Matters",
+      "npdb": "Open the NPDB"
+    },
+    "sources": {
+      "stateBoard": "{state} medical board",
+      "docinfo": "FSMB DocInfo",
+      "abms": "ABMS Certification Matters",
+      "aoa": "AOA board certification records",
+      "npdb": "NPDB query",
+      "visual": "Looked at the photo",
+      "reverseImage": "Reverse image search"
+    },
+    "checks": {
+      "title": "Verification checklist",
+      "progress": "{done} of {of} done",
+      "lead": "Check each item at its primary source before anything shows as verified. Each check is saved with its source, the time and your name ({name}).",
+      "result": "Result",
+      "source": "Checked at",
+      "stamp": "Checked {when} by {name}",
+      "filesLabel": "Uploaded files",
+      "noFiles": "No file for this check.",
+      "newTab": "(opens in a new tab)",
+      "licence": {
+        "title": "Licence at the state board",
+        "where": "The state medical board that issued it, or FSMB DocInfo. Match the name, number, status and expiry.",
+        "entry": "The doctor entered: {state} licence {number}",
+        "entryMissing": "The doctor entered no licence.",
+        "expiry": "Licence expires on",
+        "expiryHint": "As the board shows it. Re-verification is due at expiry or after {months, plural, one {{monthsLabel} month} other {{monthsLabel} months}}, whichever comes first.",
+        "expiryPast": "This date has passed. An expired licence does not match: choose Does not match.",
+        "expiresOn": "expires {date}"
+      },
+      "board": {
+        "title": "Board certification at ABMS or AOA",
+        "where": "ABMS Certification Matters for ABMS boards, the AOA for osteopathic boards. Match the board and that the certificate is current.",
+        "entryCertified": "The doctor entered: certified by the {board}",
+        "entryEligible": "The doctor entered: board eligible, not certified",
+        "notNamed": "No named ABMS or AOA board. A board certified claim needs one: reject with a reason.",
+        "eligibleNote": "Nothing to check at ABMS. Board eligible shows on the profile as text only, never as the US board certified badge."
+      },
+      "sanctions": {
+        "title": "Sanctions",
+        "where": "FSMB DocInfo for board actions; the NPDB for licensure actions, exclusions and malpractice reports.",
+        "entry": "Nothing to upload. Search by the doctor's name and NPI {npi}."
+      },
+      "photo": {
+        "title": "Photo",
+        "where": "Patients see this photo on the card. It should show the doctor alone, as patients will meet them.",
+        "entry": "Check that the photo shows:",
+        "fileName": "Profile photo",
+        "points": {
+          "coat": "A white coat (scrubs plus a coat for surgical and emergency doctors)",
+          "background": "A plain background",
+          "alone": "The doctor alone, not a group",
+          "stock": "A real photo of this doctor, not a stock photo"
+        }
+      }
+    },
+    "checkResult": {
+      "unchecked": "Not checked",
+      "match": "Matches",
+      "mismatch": "Does not match",
+      "eligible": "Board eligible: text only"
+    },
+    "gap": {
+      "unchecked": "not checked yet",
+      "mismatch": "does not match",
+      "expiryMissing": "add the licence expiry date",
+      "expiryPast": "the licence has expired or expires today",
+      "boardNotNamed": "no named ABMS or AOA board"
+    },
+    "compare": {
+      "title": "Registry and the doctor's entries",
+      "lead": "The registry column is the CMS file of {date}, joined on the NPI.",
+      "leadNoDate": "The registry column is the CMS file, joined on the NPI.",
+      "npiLink": "Open the NPI registry",
+      "newTab": "(opens in a new tab)",
+      "registry": "Registry",
+      "doctor": "The doctor entered",
+      "notInFile": "Not in the registry file",
+      "notEntered": "Not entered",
+      "differsCount": "{count, plural, one {{countLabel} difference} other {{countLabel} differences}}",
+      "licenceValue": "{state} · {number}",
+      "boardCertified": "Certified: {board}",
+      "boardEligible": "Board eligible",
+      "fields": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "city": "Practice city",
+        "npi": "NPI",
+        "school": "Medical school",
+        "licence": "Licence",
+        "board": "Board"
+      },
+      "agreement": {
+        "same": "Same",
+        "differs": "Differs",
+        "source": "Check at the source"
+      }
+    },
+    "decision": {
+      "title": "Decision",
+      "legend": "Choose the outcome",
+      "choose": "Choose an outcome. Neither is final: you can undo it straight after.",
+      "working": "Saving…",
+      "approve": {
+        "title": "Approve",
+        "description": "The doctor becomes verified. The card will read: {line}.",
+        "notReady": "Finish the checklist to approve",
+        "mismatchTitle": "A check does not match",
+        "mismatchBody": "Reject with a reason instead, so the doctor knows what to fix.",
+        "ready": {
+          "licence": "Every check matches. Re-verification will be due {date}, when the licence expires.",
+          "cycle": "Every check matches. Re-verification will be due {date}, {months, plural, one {{monthsLabel} month} other {{monthsLabel} months}} from today."
+        },
+        "eligible": "Board eligible: the card will not show the US board certified badge.",
+        "button": "Approve and mark verified"
+      },
+      "reject": {
+        "title": "Reject with a reason",
+        "description": "The claim goes back to the doctor with your reason. The doctor can replace the file and resubmit.",
+        "fixLegend": "What needs fixing",
+        "fix": {
+          "licence": "The licence",
+          "board": "The board certificate",
+          "other": "Something else"
+        },
+        "reasonEn": "Reason the doctor sees, in English",
+        "reasonEnHint": "Say what is wrong and what to upload instead, in at least {min} characters. The doctor sees it as you write it, on their profile page and by email.",
+        "reasonAr": "The same reason in Arabic (optional)",
+        "reasonArHint": "Doctors who use 3affya in Arabic see this version. Leave it empty and they see the English.",
+        "previewTitle": "What {name} sees on their profile page",
+        "previewEmpty": "Your reason shows here.",
+        "button": "Reject and send the reason"
+      }
+    },
+    "errors": {
+      "checks": "Approve needs every check to match. Finish the checklist first.",
+      "notFound": "This claim is no longer waiting. Another reviewer may have decided it. Go back to the queue.",
+      "unavailable": "The decision was not saved, and nothing changed for the doctor. Try again.",
+      "reasonMissing": "Write the reason the doctor will see.",
+      "reasonShort": "Say a little more: at least {min} characters, so the doctor knows what to fix.",
+      "reasonTooLong": "Keep the reason under {max} characters."
+    },
+    "result": {
+      "next": "Open the next claim: {name}",
+      "backToQueue": "Back to the review queue",
+      "logged": "Saved to the audit log with your name, the time and every check.",
+      "audit": "Open the audit log",
+      "checksTitle": "Checks as saved",
+      "approved": {
+        "title": "Approved: {name} is verified",
+        "by": "Approved {when} by {name}.",
+        "card": "The card and the profile now read: {line}.",
+        "reverify": {
+          "licence": "Re-verification due {date}, when the licence expires.",
+          "cycle": "Re-verification due {date}."
+        },
+        "eligible": "Board eligible: shown as text, with no US board certified badge.",
+        "cardTitle": "The card patients see now"
+      },
+      "rejected": {
+        "title": "Rejected: sent back to {name}",
+        "by": "Rejected {when} by {name}.",
+        "next": "{name} sees your reason on their profile page and by email, and can replace the file and resubmit. The claim then comes back to this queue.",
+        "builderLink": "See the doctor's profile page (prototype)"
+      }
+    },
+    "toast": {
+      "approved": "Approved {name}.",
+      "rejected": "Rejected and sent back to {name}.",
+      "undo": "Undo",
+      "undone": "Undone. {name} is back in review.",
+      "undoFailed": "Undo did not go through. Open the audit log to check the decision.",
+      "dismiss": "Close"
+    }
   }
 }

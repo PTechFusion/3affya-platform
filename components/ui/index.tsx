@@ -1000,3 +1000,73 @@ export function Notice({
     </div>
   );
 }
+
+/* ---------------- Notice ---------------- */
+/**
+ * A boxed message inside the page (PLAYBOOK §9, replaces the hand-rolled notice boxes): a title, a body and an optional action,
+ * in one of four tones. info: a fact to know before acting; success: something just worked; warning: needs attention soon;
+ * danger: something failed or was refused, with the fix in the body or the action (rule L4). Pass `role` when the notice
+ * appears after an action ("status" for info and success, "alert" for danger) so screen readers hear it. `titleAs` makes the
+ * title a heading when the notice opens a section. The tone mark is symmetric and never mirrored.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeTones: Record<NoticeTone, { box: string; title: string; mark: string }> = {
+  info: { box: "border-sky-500/40 bg-sky-100", title: "text-sea-900", mark: "bg-white text-sea-800" },
+  success: { box: "border-lagoon-600/30 bg-lagoon-100", title: "text-lagoon-900", mark: "bg-white text-lagoon-900" },
+  warning: { box: "border-gold-500/50 bg-gold-100", title: "text-gold-700", mark: "bg-white text-warning" },
+  danger: { box: "border-danger/40 bg-white", title: "text-danger", mark: "bg-sand-100 text-danger" },
+};
+
+export function Notice({
+  tone = "info",
+  title,
+  titleAs: Title = "p",
+  body,
+  action,
+  role,
+  id,
+  className,
+  children,
+}: {
+  tone?: NoticeTone;
+  title?: ReactNode;
+  titleAs?: "p" | "h2" | "h3";
+  body?: ReactNode;
+  action?: ReactNode;
+  role?: "status" | "alert" | "note";
+  id?: string;
+  className?: string;
+  /** Extra content under the body, e.g. a quoted note or a short list. */
+  children?: ReactNode;
+}) {
+  const t = noticeTones[tone];
+  return (
+    <div id={id} role={role} className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border p-4", t.box, className)}>
+      <span aria-hidden="true" className={cx("mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full", t.mark)}>
+        {tone === "success" ? (
+          <CheckIcon className="size-4" />
+        ) : (
+          <svg viewBox="0 0 16 16" className="size-4" style={{ transform: "none" }}>
+            {tone === "info" ? (
+              <>
+                <path d="M8 7.25v4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="8" cy="4.5" r="1.15" fill="currentColor" />
+              </>
+            ) : (
+              <>
+                <path d="M8 3.75v5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="8" cy="11.75" r="1.15" fill="currentColor" />
+              </>
+            )}
+          </svg>
+        )}
+      </span>
+      <div className="min-w-0 flex-1">
+        {title ? <Title className={cx("font-semibold leading-snug", Title === "p" ? "" : "text-lg font-bold", t.title)}>{title}</Title> : null}
+        {body ? <div className={cx("text-ink-700", title ? "mt-1" : "")}>{body}</div> : null}
+        {children}
+        {action ? <div className="mt-3 flex flex-wrap items-center gap-3">{action}</div> : null}
+      </div>
+    </div>
+  );
+}
