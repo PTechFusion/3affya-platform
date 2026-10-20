@@ -877,3 +877,64 @@ export function patientBookingById(id: string): PatientBooking | undefined {
     cancelledAt: visit?.cancelledAtUtc ? sampleInstant(visit.cancelledAtUtc) : null,
   };
 }
+/* ---------------- Sharing and consent (screen 27) ---------------- */
+// Appended block (screen 27, task 3.10). The patient's side of the same share rows screen 36 reads (summaries.json `shares`),
+// mapped by the same toSampleShare, so a share has the same dates and status on both sides and ends for the patient exactly when
+// it leaves the professional's list (expiresAt <= now). The doctors a patient can share with are the doctors of their upcoming
+// bookings: the rows in data/sample/bookings.json whose patientFirstName is the signed-in patient's.
+// Imported here, not at the top, so this section stays one appended block (ES imports are hoisted either way).
+import bookingsJson from "@/data/sample/bookings.json";
+
+type SharingBookingRow = {
+  id: string;
+  doctorId: string;
+  patientFirstName: string;
+  startsAtUtc: string;
+  visitType: "video" | "phone";
+  status: "upcoming" | "done" | "cancelled";
+};
+
+/** A visit the signed-in patient booked and has not had yet. Its doctor is someone they can share their summary with. */
+export type PatientUpcomingVisit = { bookingId: string; doctor: SampleDoctor; startsAt: Date; visitType: "video" | "phone" };
+
+/** A share of the patient's summary as the patient reads it: screen 36's share plus the doctor and when they first opened it. */
+export type PatientShare = SampleShare & { doctor: SampleDoctor; viewedAt: Date | null };
+
+export type PatientSharing = {
+  /** The patient's records summary; undefined until they have uploaded records and the summary is ready. */
+  summary: SampleSummary | undefined;
+  /** Every share of that summary, live or ended, newest first. Live means expiresAt > now, the same test sharesFor uses. */
+  shares: PatientShare[];
+  /** The patient's upcoming visits, one per doctor (the earliest), soonest first. */
+  visits: PatientUpcomingVisit[];
+};
+
+const isSignedInPatient = (firstNameEn: string) => firstNameEn === samplePatient.firstNameEn;
+
+/** Everything the sharing page (screen 27) reads for the signed-in patient. Production reads the session and RLS-scoped rows. */
+export function patientSharing(now: Date = new Date()): PatientSharing {
+  const summaryRow = summaryRows.find((s) => isSignedInPatient(s.patient.firstNameEn));
+  const shares = summaryRow
+    ? shareRows
+        .filter((row) => row.summaryId === summaryRow.id)
+        .flatMap((row): PatientShare[] => {
+          const share = toSampleShare(row);
+          const doctor = doctorById(row.professionalId);
+          return share && doctor ? [{ ...share, doctor, viewedAt: row.viewedAtUtc ? sampleInstant(row.viewedAtUtc) : null }] : [];
+        })
+        .sort((a, b) => b.sharedAt.getTime() - a.sharedAt.getTime())
+    : [];
+  const doctorsSeen = new Set<string>();
+  const visits = (bookingsJson as unknown as SharingBookingRow[])
+    .filter((b) => isSignedInPatient(b.patientFirstName) && b.status === "upcoming")
+    .map((b) => ({ row: b, startsAt: sampleInstant(b.startsAtUtc) }))
+    .filter((v) => v.startsAt > now)
+    .sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime())
+    .flatMap(({ row, startsAt }): PatientUpcomingVisit[] => {
+      const doctor = doctorById(row.doctorId);
+      if (!doctor || doctorsSeen.has(doctor.id)) return [];
+      doctorsSeen.add(doctor.id);
+      return [{ bookingId: row.id, doctor, startsAt, visitType: row.visitType }];
+    });
+  return { summary: summaryRow ? toSampleSummary(summaryRow) : undefined, shares, visits };
+}

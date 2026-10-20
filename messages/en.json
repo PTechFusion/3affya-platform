@@ -3133,5 +3133,96 @@
       "booking": "Your booking: {url}",
       "phoneLocation": "Phone call"
     }
+  },
+  "sharing": {
+    "metaTitle": "Sharing and consent | 3affya",
+    "metaDescription": "Who can see the summary of your records, until when, and how to stop sharing it.",
+    "title": "Sharing",
+    "lead": "You choose which doctor can read the summary of your records, and for how long.",
+    "loading": "Loading who can see your summary",
+    "days": "{count, plural, one {{label} day} other {{label} days}}",
+    "daysLeft": "{count, plural, =0 {Ends today} one {{label} day left} other {{label} days left}}",
+    "summaryLine": "Records summary · {files} · {pages}",
+    "panel": {
+      "title": "Who can see your summary",
+      "you": "You",
+      "always": "Always",
+      "until": "Until {date}",
+      "noDoctor": "No doctor can open it now.",
+      "private": "Your summary is private. Only the people listed here can open it, and we never put health details in marketing emails or messages."
+    },
+    "list": {
+      "title": "Your shares",
+      "share": "Share with a doctor",
+      "noneLive": "Not shared with any doctor now.",
+      "endedTitle": "Ended"
+    },
+    "row": {
+      "sharedOn": "Shared on",
+      "expiresOn": "Expires on",
+      "endedOn": "Ended on",
+      "status": {
+        "new": "Not opened yet",
+        "viewed": "Opened",
+        "reviewed": "Reviewed by the doctor"
+      },
+      "viewedOn": "First opened on {date}",
+      "justShared": "Shared just now",
+      "ended": "Ended",
+      "stop": "Stop sharing",
+      "stopLabel": "Stop sharing with {name}",
+      "endedStopped": "You stopped sharing. {name} can no longer open your summary.",
+      "endedExpired": "The time ran out. {name} can no longer open your summary."
+    },
+    "toast": {
+      "shared": "Shared with {name} until {date}.",
+      "stopped": "{name} can no longer open your summary.",
+      "undo": "Undo",
+      "dismiss": "Close",
+      "shareUndone": "Undone. {name} cannot open your summary.",
+      "stopUndone": "Undone. {name} can open your summary again until {date}.",
+      "failed": "That did not go through. Check your connection and try again."
+    },
+    "sheet": {
+      "title": "Share your summary",
+      "what": "The doctor sees the summary of your records ({files}, {pages}), written by AI, with the page each item came from.",
+      "doctorLegend": "Which doctor",
+      "doctorHint": "Only doctors you have a visit booked with.",
+      "visitOn": "{specialty} · visit on {date}",
+      "alreadyShared": "Already shared with {name} until {date}.",
+      "allShared": "Every doctor you have a visit booked with can already open your summary.",
+      "noVisits": "You have no visit booked, so there is no doctor to share with yet. Book a first visit, then share your summary with that doctor.",
+      "lengthLegend": "For how long",
+      "default": "{days} (default)",
+      "until": "Until {date}",
+      "consent": "When you share, {name} can open your summary until {date}, and no one else can. You can stop at any time; notes the doctor already wrote stay in their notes.",
+      "submit": "Share with {name}",
+      "submitting": "Sharing",
+      "pickDoctor": "Choose a doctor to share with.",
+      "errors": {
+        "noSummary": "Your summary is not ready yet, so there is nothing to share.",
+        "notBooked": "You can share only with a doctor you have a visit booked with.",
+        "badLength": "Choose how long to share for.",
+        "unavailable": "Your summary could not be shared just now. Try again in a moment."
+      }
+    },
+    "empty": {
+      "title": "You have not shared your summary",
+      "body": "Sharing lets the doctor you booked read the summary of your records before your visit. Only that doctor can open it, for up to {days}, and you can stop at any time.",
+      "action": "Share with your booked doctor"
+    },
+    "noRecords": {
+      "title": "No summary to share yet",
+      "body": "Sharing lets one doctor read the summary of your records. Upload your records first; once the summary is ready, you can share it here.",
+      "action": "Upload your records"
+    },
+    "how": {
+      "title": "How sharing works",
+      "one": "Each share is with one doctor, and only a doctor you have a visit booked with.",
+      "ends": "A share ends on its own after the time you choose, {days} at most. The doctor's link stops working that day.",
+      "stop": "You can stop sharing at any time. The doctor's access ends at once; what they already read or wrote in their visit notes stays with them.",
+      "seen": "You can see on this page whether the doctor has opened your summary.",
+      "delete": "Deleting your records also ends every share of them."
+    }
   }
 }

@@ -77,3 +77,8 @@ export const accountData = {
   backupRollOffDays: 30, // nightly encrypted backups are replaced after this many days (architecture file, operations checklist)
   exportAvailableDays: 7, // (default until Dr Ayman confirms) how long a prepared download of the patient's data stays available
 } as const;
+
+/* ---------------- Sharing and consent (screen 27, task 3.10) ---------------- */
+// Appended block. How long a patient can share their records summary with one doctor, in days, shortest first. The preselected
+// choice is business.shareDefaultDays, which must be one of these. (default until Q13)
+export const shareLengthDaysOptions = [7, 14, 30] as readonly number[];

@@ -582,3 +582,52 @@ export function TabLinks({
     </nav>
   );
 }
+/* ---------------- Sheet ---------------- */
+/**
+ * A modal panel on the native <dialog>: a bottom sheet on phone, a centred panel from sm up. The caller holds `ref` and calls
+ * showModal() to open it; Close, Escape and a tap on the backdrop close it, and `onClose` hears every close. A header with the
+ * title and Close, a body that scrolls, and an optional `footer` that stays put for the actions. Render it from a client
+ * component (it takes handlers). `id` names the title for aria-labelledby.
+ */
+export function Sheet({
+  ref,
+  id,
+  title,
+  closeLabel,
+  onClose,
+  footer,
+  children,
+}: {
+  ref: React.Ref<HTMLDialogElement>;
+  id: string;
+  title: string;
+  closeLabel: string;
+  onClose?: () => void;
+  footer?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby={`${id}-title`}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) e.currentTarget.close();
+      }}
+      className="inset-x-0 bottom-0 top-auto m-0 max-h-[92dvh] w-full max-w-none overflow-hidden rounded-t-[var(--radius-card)] border-0 bg-sand-50 p-0 text-ink-900 shadow-[var(--shadow-card)] backdrop:bg-sea-900/40 sm:inset-0 sm:m-auto sm:max-h-[85dvh] sm:max-w-lg sm:rounded-[var(--radius-card)]"
+    >
+      <div className="flex max-h-[92dvh] flex-col sm:max-h-[85dvh]">
+        <header className="flex items-center justify-between gap-3 border-b border-sand-200 bg-white px-4 py-2">
+          <h2 id={`${id}-title`} className="text-lg font-bold text-sea-900">
+            {title}
+          </h2>
+          <Button type="button" variant="ghost" className="px-3" onClick={(e) => e.currentTarget.closest("dialog")?.close()}>
+            {closeLabel}
+          </Button>
+        </header>
+        <div className="flex-1 overflow-y-auto px-4 py-4">{children}</div>
+        {footer ? <footer className="border-t border-sand-200 bg-white px-4 py-3">{footer}</footer> : null}
+      </div>
+    </dialog>
+  );
+}

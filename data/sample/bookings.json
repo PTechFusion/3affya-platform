@@ -152,5 +152,31 @@
     "cardProcessingUsdCents": 796,
     "patientTimeZone": "Asia/Riyadh",
     "doctorTimeZone": "America/Detroit"
+  },
+  {
+    "id": "bk_271",
+    "doctorId": "doc_002",
+    "patientFirstName": "Noura",
+    "startsAtUtc": "2026-11-11T17:00:00Z",
+    "visitType": "video",
+    "status": "upcoming",
+    "feeUsdCents": 25000,
+    "platformFeeUsdCents": 5000,
+    "cardProcessingUsdCents": 900,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/Chicago"
+  },
+  {
+    "id": "bk_272",
+    "doctorId": "doc_004",
+    "patientFirstName": "Noura",
+    "startsAtUtc": "2026-11-13T16:00:00Z",
+    "visitType": "video",
+    "status": "upcoming",
+    "feeUsdCents": 25000,
+    "platformFeeUsdCents": 5000,
+    "cardProcessingUsdCents": 900,
+    "patientTimeZone": "Asia/Riyadh",
+    "doctorTimeZone": "America/New_York"
   }
 ]
