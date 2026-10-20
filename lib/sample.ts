@@ -1011,3 +1011,35 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+
+/* ---------------- Screen 40, admin specialty list (appended block) ---------------- */
+// What /admin/specialties edits beyond the names and count in specialties.json: the NPPES taxonomy codes mapped to each group
+// (task 1.5 writes the real mapping) and the search words in each script (rule S2). The search box (screen 5) does not read the
+// search words yet; task 2.1 wires them in.
+import specialtyTermsJson from "@/data/sample/specialty-terms.json";
+
+export type SpecialtyTerms = { slug: string; taxonomyCodes: string[]; synonymsAr: string[]; synonymsEn: string[] };
+/** One row of the admin specialty list: the directory row plus its codes, search words, body system and whether patients see it. */
+export type SampleAdminSpecialty = SampleSpecialty & Omit<SpecialtyTerms, "slug"> & { systemId: string | null; shown: boolean };
+
+const specialtyTermsData = specialtyTermsJson as { terms: SpecialtyTerms[]; draftSystem: Omit<SampleBodySystem, "specialties"> };
+
+/** Every specialty as the admin list shows it, in specialties.json order. All are shown: the directory lists every one today. */
+export function adminSpecialties(): SampleAdminSpecialty[] {
+  const terms = new Map(specialtyTermsData.terms.map((t) => [t.slug, t]));
+  return sampleSpecialties.map((s) => {
+    const t = terms.get(s.slug);
+    return {
+      ...s,
+      taxonomyCodes: t?.taxonomyCodes ?? [],
+      synonymsAr: t?.synonymsAr ?? [],
+      synonymsEn: t?.synonymsEn ?? [],
+      systemId: sampleBodySystems.find((b) => b.specialties.includes(s.slug))?.id ?? null,
+      shown: true,
+    };
+  });
+}
+
+/** A body system drafted but not filled yet, for the admin list's empty-group preview (?state=empty). It is not in
+ *  body-systems.json, so the directory never shows it (the directory drops a group with no specialty). */
+export const sampleDraftBodySystem = specialtyTermsData.draftSystem;
