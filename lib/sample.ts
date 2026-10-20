@@ -1011,3 +1011,39 @@ export const sampleBookingAnswers = {
   phoneCountry: "SA",
   phoneNational: "501234567",
 } as const;
+/* ---------------- Credential review queue (screen 38) ---------------- */
+// Appended block (wave 5). The admin review reads the claims through the builder rows above (builderRowFor) and the doctor rows;
+// this adds what only the review needs (data/sample/credential-reviews.json): registry values that differ from the doctor's
+// entries, and the checks behind the decided previews. Imported here so the block stays one appended section.
+import credentialReviewsJson from "@/data/sample/credential-reviews.json";
+
+/** The four checks of a claim (rule A1): licence at the state board, board at ABMS or AOA, sanctions, and the photo (rule C4). */
+export type ReviewCheckKey = "licence" | "board" | "sanctions" | "photo";
+
+/** Registry fields as the CMS file had them, where they differ from the doctor's current entries. */
+export type RegistryAsFiled = { doctorId: string; cityEn?: string; cityAr?: string; specialtyEn?: string; specialtyAr?: string };
+
+/** The checks a decided preview shows: the decision instant, the licence expiry read at the source and the source per check. */
+export type SampleDecidedPreview = {
+  doctorId: string;
+  decidedAt: Date;
+  /** Calendar date (YYYY-MM-DD) as the primary source shows it; format it in UTC. */
+  licenceExpiresOn: string;
+  sources: Record<ReviewCheckKey, string>;
+};
+
+const credentialReviews = credentialReviewsJson as unknown as {
+  registryAsFiled: RegistryAsFiled[];
+  decidedPreviews: Array<Omit<SampleDecidedPreview, "decidedAt"> & { decidedAtUtc: string }>;
+};
+
+export function registryAsFiledFor(doctorId: string): RegistryAsFiled | undefined {
+  return credentialReviews.registryAsFiled.find((r) => r.doctorId === doctorId);
+}
+
+export function decidedPreviewFor(doctorId: string): SampleDecidedPreview | undefined {
+  const row = credentialReviews.decidedPreviews.find((r) => r.doctorId === doctorId);
+  if (!row) return undefined;
+  const { decidedAtUtc, ...rest } = row;
+  return { ...rest, decidedAt: sampleInstant(decidedAtUtc) };
+}

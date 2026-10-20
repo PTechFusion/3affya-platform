@@ -115,3 +115,12 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Credential review queue (screen 38, task 2.8) ---------------- */
+// Appended block. How long a submitted claim may wait for an admin decision, counted from the doctor's latest submission
+// (a resubmission restarts the clock), and how many hours before that the queue badge turns amber. The re-verification
+// cycle after approval is business.verifiedReverifyMonths above (rule A2). (default until Dr Ayman confirms)
+export const credentialReview = {
+  slaHours: 48,
+  dueSoonHours: 24,
+} as const;

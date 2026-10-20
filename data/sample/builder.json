@@ -32,5 +32,54 @@
       "reasonEn": "The licence file is a photo of a screen and the licence number is cut off. Upload the licence certificate, or a screenshot of the Michigan board lookup that shows the full number and the expiry date.",
       "reasonAr": "ملف الترخيص صورة لشاشة، ورقم الترخيص غير ظاهر بالكامل. ارفع شهادة الترخيص، أو لقطة من صفحة البحث في مجلس ميشيغان تُظهر الرقم كاملاً وتاريخ الانتهاء."
     }
+  },
+  {
+    "id": "doc_010",
+    "licenceState": "MI",
+    "licenceNumber": "4301076543",
+    "boardStatus": "certified",
+    "boardName": "American Board of Neurological Surgery",
+    "videoLink": "",
+    "files": [
+      { "id": "f_010_1", "name": "Michigan-licence-certificate.pdf", "kind": "licence", "sizeBytes": 612004, "uploadedAtUtc": "2026-11-07T22:40:00Z" },
+      { "id": "f_010_2", "name": "ABNS-diplomate-certificate.pdf", "kind": "board", "sizeBytes": 1048576, "uploadedAtUtc": "2026-11-07T22:44:00Z" }
+    ],
+    "submittedAtUtc": "2026-11-08T00:00:00Z",
+    "decidedAtUtc": null,
+    "rejection": null
+  },
+  {
+    "id": "doc_011",
+    "licenceState": "NY",
+    "licenceNumber": "312874",
+    "boardStatus": "eligible",
+    "boardName": null,
+    "videoLink": "",
+    "files": [
+      { "id": "f_011_1", "name": "NY-registration-certificate-2026.pdf", "kind": "licence", "sizeBytes": 538211, "uploadedAtUtc": "2026-11-08T21:05:00Z" },
+      { "id": "f_011_2", "name": "Residency-completion-letter.pdf", "kind": "other", "sizeBytes": 402113, "uploadedAtUtc": "2026-11-08T21:07:00Z" }
+    ],
+    "submittedAtUtc": "2026-11-09T00:00:00Z",
+    "decidedAtUtc": null,
+    "rejection": null
+  },
+  {
+    "id": "doc_012",
+    "licenceState": "TX",
+    "licenceNumber": "R4521",
+    "boardStatus": "certified",
+    "boardName": "American Board of Otolaryngology - Head and Neck Surgery",
+    "videoLink": "",
+    "files": [
+      { "id": "f_012_1", "name": "Texas-medical-licence.pdf", "kind": "licence", "sizeBytes": 701223, "uploadedAtUtc": "2026-11-05T15:10:00Z" },
+      { "id": "f_012_3", "name": "ABOto-certificate-2019.pdf", "kind": "board", "sizeBytes": 955120, "uploadedAtUtc": "2026-11-06T19:40:00Z" }
+    ],
+    "submittedAtUtc": "2026-11-06T20:00:00Z",
+    "decidedAtUtc": "2026-11-06T10:00:00Z",
+    "rejection": {
+      "fileId": "f_012_2",
+      "reasonEn": "The board was entered as Board certified, ENT and the file is a residency certificate. Name the ABMS member board, the American Board of Otolaryngology - Head and Neck Surgery, and upload its certificate.",
+      "reasonAr": "أُدخل البورد على أنه «بورد معتمد، أنف وأذن وحنجرة»، والملف شهادة إقامة. اذكر اسم البورد العضو في ABMS، وهو American Board of Otolaryngology - Head and Neck Surgery، وارفع شهادته."
+    }
   }
 ]
