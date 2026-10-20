@@ -4,11 +4,12 @@ Run: python -m unittest discover -s scripts -p "test_build_dev_seed.py" -v
 
 What they pin: the readable id scheme, the slug rule, the sample clock in SQL (run against the local database when it is
 up), parity of the Python fee and refund rules with lib/fees.ts and lib/refunds.ts (run with Node's type stripping when
-Node is installed), the specialty rows against seed_specialties.py and map_taxonomy.py, the round-2 columns
-(actor_system, concern_locale, a reasonless unreadable page, registry_as_filed against its trigger) and the round-3
-constraints (done_at on done bookings, no overlapping live bookings, storage paths inside the allowlists, receipt subjects,
-the share snapshot left to its trigger). The database and Node tests skip, with the reason, when their tool is not
-available; the database tests only read, or roll back what they write.
+Node is installed), the specialty rows against seed_specialties.py and map_taxonomy.py (every group named by its card
+title), the round-2 columns (actor_system, concern_locale, a reasonless unreadable page, registry_as_filed against its
+trigger), the round-3 constraints (done_at on done bookings, no overlapping live bookings, storage paths inside the
+allowlists, receipt subjects, the share snapshot left to its trigger) and the round-4 introduction request (int_003 as an
+open introduction_requests row whose patient snapshot its trigger copies). The database and Node tests skip, with the
+reason, when their tool is not available; the database tests only read, or roll back what they write.
 
 Optional settings (test-only): SEED_TEST_DB_CONTAINER (default supabase_db_3affya-platform) and SEED_TEST_DB_NAME
 (default postgres; e.g. a scratch database the seed was applied to).
@@ -122,6 +123,7 @@ class IdSchemeTest(unittest.TestCase):
         self.assertEqual(mapping["sh_001"], "5ba4e000-0000-4000-8000-000000000001")
         self.assertEqual(mapping["pat_001"], "ca5e0000-0000-4000-8000-000000000001")
         self.assertEqual(mapping["adm_001"], "ad000000-0000-4000-8000-000000000001")
+        self.assertEqual(mapping["int_003"], "4e900000-0000-4000-8000-000000000003")
 
     def test_ids_are_unique_rfc4122_version_4(self) -> None:
         ids = [uid for _, uid, _ in built().idmap]
@@ -299,10 +301,30 @@ class SpecialtyRowsTest(unittest.TestCase):
                 self.assertIn("order by u.n)", sql_text)
 
     def test_drafted_sample_codes_are_not_seeded(self) -> None:
-        # internal-medicine's drafted 208M00000X (hospitalist) is UNMAPPED in the reviewed mapping.
+        # cardiology's drafted 207RI0011X (interventional cardiology) is on its own card in the reviewed mapping;
+        # internal-medicine holds the hospitalist code since the decision of 20 Oct 2026.
         rows = {row["slug"]: row for row in built().specialty_rows()}
-        self.assertNotIn("208M00000X", rows["internal-medicine"]["taxonomy_codes"])
-        self.assertIn("internal-medicine", {slug for slug, _, _ in built().taxonomy_differences})
+        self.assertNotIn("207RI0011X", rows["cardiology"]["taxonomy_codes"])
+        self.assertIn("207RI0011X", rows["interventional-cardiology"]["taxonomy_codes"])
+        self.assertIn("208M00000X", rows["internal-medicine"]["taxonomy_codes"])
+        self.assertIn("cardiology", {slug for slug, _, _ in built().taxonomy_differences})
+
+    def test_every_group_is_named_by_its_card_title(self) -> None:
+        rows = built().specialty_rows()
+        self.assertEqual([(row["name_en"], row["name_ar"]) for row in rows],
+                         [(group["name_en"], group["name_ar"]) for group in SPECIALTY_GROUPS])
+        sql_text = built().sql()
+        self.assertIn("'cardiology', 'General & preventive cardiology', 'أمراض القلب والوقاية القلبية', ", sql_text)
+        # The prototype groups whose name now differs are listed for lane L6, and nothing else is.
+        differences = {slug: (sample, seeded) for slug, sample, seeded in built().name_differences}
+        self.assertEqual(differences["cardiology"],
+                         ("Cardiology / أمراض القلب", "General & preventive cardiology / أمراض القلب والوقاية القلبية"))
+        self.assertNotIn("gastroenterology", differences)  # the prototype already used the card title
+        sample = {s["slug"] for s in built().s["specialties"]}
+        self.assertLessEqual(set(differences), sample)
+        report = "\n".join(built().report_lines())
+        self.assertIn("## Specialty names vs the sample", report)
+        self.assertIn("| cardiology | Cardiology / أمراض القلب | General & preventive cardiology / ", report)
 
 
 class RoundTwoColumnsTest(unittest.TestCase):
@@ -530,6 +552,86 @@ class RoundThreeTest(unittest.TestCase):
             f"booking receipts|{counts['receipts']}",
             "overlaps|0",
         ])
+
+
+class IntroductionRequestTest(unittest.TestCase):
+    """int_003, the sample's one request (status request), is an open public.introduction_requests row."""
+
+    def request_line(self) -> str:
+        return next(line for line in built().sql().splitlines() if line.startswith("  ('4e900000-"))
+
+    def test_the_request_row(self) -> None:
+        sql_text = built().sql()
+        insert_line = next(line for line in sql_text.splitlines() if line.startswith("insert into public.introduction_requests"))
+        self.assertEqual(insert_line, "insert into public.introduction_requests (id, patient_id, professional_id, status, "
+                         "requested_start, visit_type, booked_by, age_group, concern, concern_locale, prepared, "
+                         "patient_time_zone, received_at) values")
+        hamad = built().patient_by_first_name["Hamad"]["uuid"]
+        self.assertEqual(hamad, "ca5e0000-0000-4000-8000-000000000005")  # pat_005, as seeded before the request
+        intro = next(i for i in built().s["introductions"] if i["id"] == "int_003")
+        concern, locale = seed.concern_sql(intro)
+        self.assertEqual(locale, "'ar'")
+        self.assertEqual(self.request_line(), (
+            f"  ('4e900000-0000-4000-8000-000000000003', '{hamad}', 'd0c00000-0000-4000-8000-000000000002', 'open', "
+            "pg_temp.si('2026-11-12T15:00:00Z'), 'video', 'parent', 'child', " + concern + ", 'ar', "
+            "array['questions']::text[], 'Asia/Kuwait', pg_temp.si('2026-11-08T21:30:00Z'));"))
+
+    def test_the_snapshot_is_left_to_the_trigger(self) -> None:
+        sql_text = built().sql()
+        insert_line = next(line for line in sql_text.splitlines() if line.startswith("insert into public.introduction_requests"))
+        self.assertNotIn("patient_first_name", insert_line)
+        self.assertNotIn("patient_gender", insert_line)
+        # Hamad's profile holds both first names and a gender, and is written before the request.
+        hamad = built().patient_by_first_name["Hamad"]["uuid"]
+        update = next(line for line in sql_text.splitlines()
+                      if line.startswith("update public.profiles set") and line.endswith(f"where id = '{hamad}';"))
+        for part in ("first_name_en = 'Hamad'", "first_name_ar = 'حمد'", "gender = 'm'", "time_zone = 'Asia/Kuwait'"):
+            self.assertIn(part, update)
+        self.assertLess(sql_text.index(update), sql_text.index(insert_line))
+        self.assertTrue(any(c.startswith("Introduction requests: 1;") for c in built().checks))
+
+    def test_counted_and_no_longer_skipped(self) -> None:
+        counts = dict((t, n) for t, n, _ in built().counts)
+        self.assertEqual(counts["introduction_requests"], 1)
+        self.assertFalse([item for item, _ in built().skipped if "int_003" in item or "status request" in item])
+        self.assertIn(("4e900000", "introduction_requests (\"req\"): an introductions.json request, int_NNN"),
+                      list(seed.ID_PREFIXES.values()))
+
+    def test_gender_fill_only_where_the_sample_has_none(self) -> None:
+        self.assertEqual(seed.PATIENT_GENDER_FILL, {"Hamad": "m"})
+        summaries = {s["patient"]["firstNameEn"] for s in built().s["summaries"]["summaries"]}
+        self.assertNotIn("Hamad", summaries)
+
+    def test_request_row_takes_the_profile_snapshot(self) -> None:
+        """On a database without the dev seed, applies seed.sql in a rolled-back transaction; on one whose dev seed
+        predates the request row, applies only Hamad's profile update and the request insert, rolled back; on a current
+        one, reads the row. The snapshot must be the profile's, and the request as authored."""
+        reason = psql_available()
+        if reason:
+            self.skipTest(reason)
+        b = built()
+        hamad = b.patient_by_first_name["Hamad"]["uuid"]
+        rid = "4e900000-0000-4000-8000-000000000003"
+        check = (
+            "select r.status, r.patient_first_name_en, r.patient_first_name_ar, r.patient_gender, r.concern_locale, "
+            "r.patient_time_zone, extract(epoch from r.requested_start - r.received_at)::int, "
+            "(r.patient_first_name_en, r.patient_first_name_ar, r.patient_gender) is not distinct from "
+            "(p.first_name_en, p.first_name_ar, p.gender) "
+            f"from public.introduction_requests r join public.profiles p on p.id = r.patient_id where r.id = '{rid}';"
+        )
+        present = run_psql("select count(*) from public.professionals where id::text like 'd0c00000-%';")
+        if present == ["0"]:
+            got = run_psql("begin;\n" + b.sql() + "\n" + check + "\nrollback;\n")
+        elif run_psql(f"select count(*) from public.introduction_requests where id = '{rid}';") == ["1"]:
+            got = run_psql(check)
+        else:
+            statements = [s for title, section in b.sections if title.startswith("Introduction requests") for s in section]
+            update = next(line for line in b.sql().splitlines()
+                          if line.startswith("update public.profiles set") and line.endswith(f"where id = '{hamad}';"))
+            got = run_psql("begin;\n" + "\n".join(b.helpers()) + "\n" + update + "\n" + "\n".join(statements) + "\n"
+                           + check + "\nrollback;\n")
+        # 2026-11-12T15:00Z less 2026-11-08T21:30Z: 3 days 17 h 30 min, whatever day the seed shifted to.
+        self.assertEqual(got, ["open|Hamad|حمد|m|ar|Asia/Kuwait|322200|t"])
 
 
 class DeterminismTest(unittest.TestCase):

@@ -53,8 +53,9 @@ FACILITY_COLUMNS = ("NPI", "facility_type", "Facility Affiliations Certification
 HOSPITAL_COLUMNS = ("Facility ID", "Facility Name")
 
 UNKNOWN_SCHOOLS = frozenset({"OTHER"})
-# Far below the shortlist import (65,985 rows, about 20,000 of them CMS-matchable) and far above the dev seed's 8 unclaimed
-# rows: a database under this has not had the registry import, so a run would only overwrite the report with zeros.
+# Far below the registry import (the doctor rows of the shortlist: 28,584 of its 28,587 pass the doctor guard) and far
+# above the dev seed's 8 unclaimed rows: a database under this has not had the registry import, so a run would only
+# overwrite the report with zeros.
 MIN_UNCLAIMED_NPPES = 1000
 EARLIEST_GRADUATION = 1900
 # Column limits from the professionals table (supabase/migrations/20261020000300_l1_directory.sql).

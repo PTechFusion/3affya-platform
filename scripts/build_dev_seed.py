@@ -12,13 +12,15 @@ Rules it keeps:
     lib/card-data.ts does (sampleInstant, sampleInstantExact, and the wall-clock shift for availability exceptions), so a
     `supabase db reset` on any day reproduces what the prototype shows that day.
   * Synthetic only: every person is invented and every address is on the reserved example.com domain.
-  * The 104 specialty rows are seed_specialties.specialty_rows() itself (imported, as is its slugify), with the taxonomy
-    codes scripts/map_taxonomy.py writes from scripts/taxonomy_map.py (sorted), so running either script after a reset
-    changes nothing.
+  * The 104 specialty rows are seed_specialties.specialty_rows() itself (imported, as is its slugify): every group named by
+    its card title (decided 20 Oct 2026, so the 24 prototype groups' names differ from data/sample/specialties.json; the
+    report lists them), with the taxonomy codes scripts/map_taxonomy.py writes from scripts/taxonomy_map.py (sorted), so
+    running either script after a reset changes nothing.
   * The rows pass the schema's checks as they are: a 'done' booking carries the doctor's mark (done_at), no two live
     bookings of one professional overlap (checked here; an overlap in the sample stops the build and is named, never
-    moved), every storage_path is inside the migrations' allowlist (storage_object_name), and a share's patient first
-    names and gender come from the profile through the database trigger.
+    moved), every storage_path is inside the migrations' allowlist (storage_object_name), and a share's or an introduction
+    request's patient first names and gender come from the profile through the database trigger.
+  * Introduction requests (introductions.json rows with status request) are public.introduction_requests rows (open).
 
 Usage:
   python scripts/build_dev_seed.py            writes supabase/seed.sql
@@ -73,6 +75,11 @@ REGISTRY_AS_FILED_KEYS = (
     ("registrySource", "p.registry_source"), ("registryAsOf", "p.registry_as_of"), ("cmsAsOf", "p.cms_as_of"),
 )
 
+# Patients whose gender a seeded row needs from the profile (an introduction request's snapshot is copied from it by
+# introduction_requests_copy_patient) where the sample gives none. Hamad (rs_007, int_003): int_003's concern speaks of
+# him ("He sings in the school choir").
+PATIENT_GENDER_FILL = {"Hamad": "m"}
+
 # Files with more pages than this are seeded with one generate_series insert (rs_007's 50-page parts) to keep seed.sql small.
 LONG_FILE_PAGES = 12
 
@@ -118,7 +125,14 @@ SAMPLE_VS_SCHEMA = [
     "Introductions: confirmed rows are bookings with status upcoming, done rows status done with done_at; int_002 is bk_004 "
     "(booked_at is bk_004's bookedAtUtc, not int_002's receivedAtUtc); concernEn/concernAr collapse into one `concern`, seeded "
     "with the Arabic text (what a Gulf patient types) and concern_locale 'ar' (null where no concern is stored); "
-    "sharedSummaryId is record_shares.booking_id. Requests (int_003) are not stored.",
+    "sharedSummaryId is record_shares.booking_id. The request (int_003) is an introduction_requests row (next item).",
+    "Requests: an introductions.json row with status request (int_003) is a public.introduction_requests row with status "
+    "open (screen 32's unpaid request); startsAtUtc is requested_start and receivedAtUtc is received_at (both shifted like "
+    "sampleInstant); visitType, bookedBy, ageGroup, prepared and patientTimeZone are columns; the concern is the Arabic "
+    "text with concern_locale 'ar', as on the bookings; patient_first_name_en/ar and patient_gender are the profile's, "
+    "copied by the trigger introduction_requests_copy_patient (the seed sends none); doctorTimeZone is the professional's "
+    "time_zone; joinUrl and sharedSummaryId are null on a request; specialty_id, transcript and consent_id are null (the "
+    "request did not come from the intake chat); booking_id, answered_at and withdrawn_at are null while it is open.",
     "Receipts: subject is 'booking' on every receipt and refund (record_set_id null); paymentMethod is wallet, card_brand, "
     "card_last4; refunds are rows with the amount refundFor gives, reason "
     "patientEarly/doctor, initiated_by automatic, idempotency_key refund-<booking uuid> (adminRefundKey of the uuid, not of bk_NNN).",
@@ -152,9 +166,16 @@ SAMPLE_VS_SCHEMA = [
     "seeded uuids as text where the target is seeded; target_professional_id is set only where the sample has target.doctorId; "
     "verification checks keep {kind, source, result, checkedAt, by} with by/reviewer as uuids; aud_NNN ids are not stored.",
     "Accounts: patients pat_001..pat_003 are Noura, Yousef, Faisal (the patients of rs_001..rs_003); pat_004..pat_008 are Reem, "
-    "Hamad, Maryam, Latifa, Abdullah; patient emails are <firstname>@example.com; the admin is ops@example.com.",
+    "Hamad, Maryam, Latifa, Abdullah; patient emails are <firstname>@example.com; the admin is ops@example.com. A patient's "
+    "profile takes the Arabic first name and time zone of their introductions.json row (int_003 gives Hamad Asia/Kuwait); "
+    "Hamad's gender is 'm' (the sample has no gender for him; int_003's concern says \"He sings in the school choir\"), so "
+    "the request's snapshot has one.",
     "Specialties: on a database where another seed already inserted the 104 groups, those rows win (on conflict do nothing), so "
     "their ids and taxonomy codes are that seed's; every reference here goes through the slug.",
+    "Specialty names: every group is named by its card title in the content document (decided 20 Oct 2026), so the 24 "
+    "prototype groups' name_en/name_ar differ from specialties.json nameEn/nameAr (and from doctors.json specialtyEn/"
+    "specialtyAr) where the prototype used a short name; the slugs, body systems and search words are the prototype's. "
+    "The groups that differ are listed under \"Specialty names vs the sample\".",
     "Taxonomy codes: specialties.taxonomy_codes is scripts/taxonomy_map.py TAXONOMY_MAP (the reviewed mapping, each group's "
     "codes sorted as map_taxonomy.py stores them), not specialty-terms.json taxonomyCodes (the drafted sample, which "
     "/admin/specialties shows today). The groups where the two differ are listed under \"Taxonomy codes vs the sample\".",
@@ -362,6 +383,7 @@ ID_PREFIXES: dict[str, tuple[str, str]] = {
     "availability_exception": ("a1e10000", "availability_exceptions: owner doc, x_NNN, or 5107000000NN for profile slot NN"),
     "booking": ("b0000000", "bookings: bk_NNN"),
     "intro_booking": ("b1000000", "bookings made from an introductions.json row: int_NNN"),
+    "introduction_request": ("4e900000", "introduction_requests (\"req\"): an introductions.json request, int_NNN"),
     "receipt": ("ec000000", "receipts: the booking's bk_NNN"),
     "refund": ("4ef00000", "refunds: re_sample_NNN"),
     "membership": ("3e300000", "memberships: mem_aNN -> a NN, mem_active -> a00"),
@@ -573,6 +595,7 @@ class SeedBuilder:
         self.file_ids: dict[tuple[str, str], str] = {}  # (set id, file id) -> uuid
         self.page_ids: dict[tuple[str, int], str] = {}  # (set id, set page number) -> uuid
         self.taxonomy_differences: list[tuple[str, str, str]] = []  # (slug, only in specialty-terms.json, only seeded)
+        self.name_differences: list[tuple[str, str, str]] = []  # (slug, specialties.json name, seeded card title)
         self.booking_parties: dict[str, tuple[str, str]] = {}  # sample booking id (bk_, int_) -> (doctor id, patient uuid)
         self.checks: list[str] = []  # what the round-3 constraints were checked against, for the report
         self.renamed_files: list[tuple[str, str, str]] = []  # (table, sample file, stored object name) when sanitised
@@ -654,6 +677,7 @@ class SeedBuilder:
         self.build_availability()
         self.build_memberships()
         self.build_bookings()
+        self.build_introduction_requests()
         self.build_outreach()
         self.build_records()
         self.build_ai_jobs()
@@ -661,9 +685,9 @@ class SeedBuilder:
         self.build_previews_skipped()
 
     def specialty_rows(self) -> list[dict[str, Any]]:
-        """The 104 groups in card order, exactly as seed_specialties.specialty_rows() gives them (the 24 prototype groups
-        keep the sample's slug, names, body system and search words; the other 80 take the card's names, a slug from the
-        English name and none of the rest), plus taxonomy_codes: each group's TAXONOMY_MAP codes, sorted
+        """The 104 groups in card order, exactly as seed_specialties.specialty_rows() gives them (every group named by
+        its card title; the 24 prototype groups keep the sample's slug, body system and search words; the other 80 take
+        a slug from the English title and none of the rest), plus taxonomy_codes: each group's TAXONOMY_MAP codes, sorted
         (map_taxonomy.py desired_codes). seed_specialties reads the repo's data/sample, the same files Sources reads."""
         try:
             groups = seed_specialty_rows()
@@ -694,6 +718,16 @@ class SeedBuilder:
                 out.append((row["slug"], ", ".join(sorted(drafted - seeded)) or "-", ", ".join(sorted(seeded - drafted)) or "-"))
         return out
 
+    def names_vs_sample(self, rows: list[dict[str, Any]]) -> list[tuple[str, str, str]]:
+        """Prototype groups whose seeded name (the card title) differs from specialties.json: (slug, sample, seeded)."""
+        sample = {s["slug"]: s for s in self.s["specialties"]}
+        out = []
+        for row in rows:
+            entry = sample.get(row["slug"])
+            if entry and (entry["nameEn"], entry["nameAr"]) != (row["name_en"], row["name_ar"]):
+                out.append((row["slug"], f"{entry['nameEn']} / {entry['nameAr']}", f"{row['name_en']} / {row['name_ar']}"))
+        return out
+
     def build_specialties(self) -> None:
         rows = self.specialty_rows()
         sql_rows = []
@@ -709,7 +743,8 @@ class SeedBuilder:
             sql_rows.append([q(sid), q(row["slug"]), q(row["name_en"]), q(row["name_ar"]), q(row["body_system"]),
                              str(row["position"]), "true", codes_sql, text_array(row["synonyms_ar"]),
                              text_array(row["synonyms_en"])])
-        self.section("Specialties: the 104 groups (24 keep the prototype slug and names; codes from scripts/taxonomy_map.py)",
+        self.section("Specialties: the 104 groups, named by their card titles (24 keep the prototype slug; codes from "
+                     "scripts/taxonomy_map.py)",
                      [insert(
                          "public.specialties",
                          ["id", "slug", "name_en", "name_ar", "body_system", "position", "shown", "taxonomy_codes",
@@ -720,9 +755,13 @@ class SeedBuilder:
         codes = sum(len(row["taxonomy_codes"]) for row in rows)
         with_codes = sum(1 for row in rows if row["taxonomy_codes"])
         self.count("specialties", len(rows),
-                   f"scripts/specialty_groups.py, specialties.json, body-systems.json, specialty-terms.json synonyms; "
-                   f"{codes} taxonomy codes on {with_codes} groups from scripts/taxonomy_map.py")
+                   f"scripts/specialty_groups.py (names), specialties.json (the 24 slugs), body-systems.json, "
+                   f"specialty-terms.json synonyms; {codes} taxonomy codes on {with_codes} groups from scripts/taxonomy_map.py")
         self.taxonomy_differences = self.taxonomy_vs_sample(rows)
+        self.name_differences = self.names_vs_sample(rows)
+        self.skip("specialties.json nameEn/nameAr",
+                  f"every group is named by its card title (decided 20 Oct 2026); {len(self.name_differences)} of the 24 "
+                  "differ, listed under \"Specialty names vs the sample\"")
         self.skip("specialty-terms.json taxonomyCodes",
                   f"superseded by scripts/taxonomy_map.py (the reviewed mapping); {len(self.taxonomy_differences)} groups "
                   "differ, listed under \"Taxonomy codes vs the sample\"")
@@ -738,10 +777,11 @@ class SeedBuilder:
         settings = self.s["patient-settings"]
         sp = self.src.sample_patient
         summary_patient = {s["patient"]["firstNameEn"]: s["patient"] for s in self.s["summaries"]["summaries"]}
+        # Profile details (Arabic first name, time zone) come from the patient's first introductions.json row, a request
+        # included; the order below (and so the pat_NNN numbers) follows the paid rows only.
         intro_patient = {}
         for row in self.s["introductions"]:
-            if row["status"] != "request":
-                intro_patient.setdefault(row["patientFirstNameEn"], row)
+            intro_patient.setdefault(row["patientFirstNameEn"], row)
         ai_ar = {}
         set_patient = {st["id"]: st["patientFirstNameEn"] for st in self.records_sets + self.extra_sets}
         for job in self.s["ai-jobs"]["jobs"]:
@@ -758,6 +798,10 @@ class SeedBuilder:
                 order.append(st["patientFirstNameEn"])
         if order[0] != sp["firstNameEn"]:
             raise SeedError("rs_001 is not the signed-in sample patient's set")
+        for name in PATIENT_GENDER_FILL:
+            given = (summary_patient.get(name) or {}).get("gender")
+            if name not in order or (given and given != PATIENT_GENDER_FILL[name]):
+                raise SeedError(f"PATIENT_GENDER_FILL {name}: not a seeded patient, or the sample now gives another gender")
 
         result = []
         for index, first_en in enumerate(order, start=1):
@@ -772,7 +816,7 @@ class SeedBuilder:
                 "email": f"{first_en.lower()}@example.com",
                 "nameEn": first_en,
                 "nameAr": first_ar,
-                "gender": (summary or {}).get("gender"),
+                "gender": (summary or {}).get("gender") or PATIENT_GENDER_FILL.get(first_en),
                 "timeZone": (intro or {}).get("patientTimeZone"),
                 "country": None,
                 "phone": None,
@@ -1216,9 +1260,7 @@ class SeedBuilder:
         intro_rows = []
         for intro in self.s["introductions"]:
             if intro["status"] == "request":
-                self.skip(f"introductions.json {intro['id']} (status request)",
-                          "an introduction request is not a booking; no table holds requests yet (see schemaFindings)")
-                continue
+                continue  # an introduction_requests row (build_introduction_requests)
             if any(i is intro for i in intro_for_booking.values()):
                 continue
             patient = self.patient_by_first_name[intro["patientFirstNameEn"]]
@@ -1312,6 +1354,46 @@ class SeedBuilder:
         self.skip("receipts and refunds of subject 'records' (record_set_id)",
                   "the sample has no records-processing payment; every seeded receipt and refund is subject 'booking'")
         self.skip("bookings patient_phone", "not in the sample")
+
+    # ---- introduction requests --------------------------------------------------------------------------------
+
+    def build_introduction_requests(self) -> None:
+        """introductions.json rows with status request: open public.introduction_requests rows (screen 32). The patient's
+        first names and gender are left to introduction_requests_copy_patient, which copies them from the profile the
+        accounts section has written."""
+        columns = [
+            "id", "patient_id", "professional_id", "status", "requested_start", "visit_type", "booked_by", "age_group",
+            "concern", "concern_locale", "prepared", "patient_time_zone", "received_at",
+        ]
+        rows = []
+        for intro in self.s["introductions"]:
+            if intro["status"] != "request":
+                continue
+            patient = self.patient_by_first_name.get(intro["patientFirstNameEn"])
+            if not patient:
+                raise SeedError(f"{intro['id']}: no seeded patient named {intro['patientFirstNameEn']}")
+            if not (patient.get("firstNameEn") and patient.get("firstNameAr") and patient.get("gender")):
+                raise SeedError(f"{intro['id']}: the patient's profile lacks a first name or gender for the request snapshot")
+            if patient["firstNameAr"] != intro["patientFirstNameAr"]:
+                raise SeedError(f"{intro['id']}: the profile's Arabic first name is not the request's")
+            # introduction_requests_insert_own: a request goes to a verified professional only.
+            if self.professional_status.get(intro["doctorId"]) != "verified":
+                raise SeedError(f"{intro['id']}: {intro['doctorId']} is not a verified listing")
+            rid = self.map_id(intro["id"], uid("introduction_request", sample_number(intro["id"])), "introduction_requests")
+            rows.append([
+                q(rid), q(patient["uuid"]), q(self.professional_id(intro["doctorId"])), "'open'", si(intro["startsAtUtc"]),
+                q(intro["visitType"]), q(intro["bookedBy"]), q(intro["ageGroup"]), *concern_sql(intro),
+                text_array(intro["prepared"]), q(intro["patientTimeZone"]), si(intro["receivedAtUtc"]),
+            ])
+            for key in ("joinUrl", "sharedSummaryId", "doneAtUtc"):
+                if intro.get(key):
+                    raise SeedError(f"{intro['id']}: a request with {key} (a request has no visit yet)")
+        self.section("Introduction requests: screen 32's unpaid requests (patient names and gender copied from the profile "
+                     "by the trigger)", [insert("public.introduction_requests", columns, rows)])
+        self.count("introduction_requests", len(rows),
+                   "introductions.json rows with status request (status open; instants shifted like sampleInstant)")
+        self.checks.append(f"Introduction requests: {len(rows)}; each goes to a verified professional, and each patient's "
+                           "profile holds both first names and the gender introduction_requests_copy_patient copies.")
 
     # ---- outreach and removals ---------------------------------------------------------------------------------
 
@@ -1769,6 +1851,11 @@ class SeedBuilder:
                   "`specialty-terms.json` taxonomyCodes that /admin/specialties shows today. The codes in the second column "
                   "are on another group in the reviewed mapping, or unmapped (scripts/taxonomy_map.py says why).", ""]
         lines += markdown_table(["Group", "Only in specialty-terms.json", "Only in the seed"], self.taxonomy_differences)
+        lines += ["", "## Specialty names vs the sample", "",
+                  "The prototype groups whose seeded name, the card title of the content document (decided 20 Oct 2026), "
+                  "differs from `data/sample/specialties.json`; the slug is the prototype's. A deliberate difference: the "
+                  "screens read the name from the specialties row once lane L6 wires them.", ""]
+        lines += markdown_table(["Group", "specialties.json (en / ar)", "Seeded card title (en / ar)"], self.name_differences)
         lines += ["", "## Ids", "", "Sample id to uuid map: the comment block at the top of `supabase/seed.sql`.", ""]
         lines += markdown_table(["Prefix", "Entity"], [(p, m) for p, m in ID_PREFIXES.values()])
         return lines

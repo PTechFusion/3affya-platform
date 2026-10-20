@@ -2,9 +2,9 @@
 
     python -m unittest scripts/test_specialties_taxonomy.py
 
-The shortlist coverage test reads the shortlist's codes extract (a CSV with a `code` column, one row per distinct code)
-from SHORTLIST_CODES_CSV and is skipped, saying so, when that variable is not set. The extract is registry-derived and
-lives outside the repo.
+The shortlist coverage tests read the shortlist's codes extract (a CSV with `code`, `count`, `profession` and the NUCC
+`grouping` and `classification` columns, one row per distinct code) from SHORTLIST_CODES_CSV and are skipped, saying so,
+when that variable is not set. The extract is registry-derived and lives outside the repo.
 """
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import map_taxonomy  # noqa: E402
 import seed_specialties  # noqa: E402
+import seed_professionals  # noqa: E402
 from seed_common import SAMPLE_DIR  # noqa: E402
 from specialty_groups import SPECIALTY_GROUPS  # noqa: E402
 from taxonomy_map import TAXONOMY_MAP, UNMAPPED  # noqa: E402
@@ -87,23 +88,47 @@ class SpecialtyRows(unittest.TestCase):
     def test_positions_follow_the_cards(self):
         self.assertEqual([row["position"] for row in self.rows], list(range(1, 105)))
 
-    def test_24_sample_slugs_and_names_kept(self):
+    def test_every_group_is_named_by_its_card_title(self):
+        # Decided 20 Oct 2026: the content document's card titles, the 24 prototype groups included.
+        for row, card in zip(self.rows, SPECIALTY_GROUPS, strict=True):
+            with self.subTest(position=card["position"]):
+                self.assertEqual((row["name_en"], row["name_ar"]), (card["name_en"], card["name_ar"]))
+
+    def test_24_sample_slugs_kept_with_the_prototype_name_beside_them(self):
         by_slug = {row["slug"]: row for row in self.rows}
         self.assertEqual(len(self.sample), 24)
         for entry in self.sample:
             with self.subTest(slug=entry["slug"]):
                 row = by_slug[entry["slug"]]
-                self.assertEqual((row["name_en"], row["name_ar"]), (entry["nameEn"], entry["nameAr"]))
-                self.assertEqual(row["name_source"], "sample")
+                self.assertEqual(row["slug_source"], "prototype")
+                self.assertEqual((row["prototype_name_en"], row["prototype_name_ar"]), (entry["nameEn"], entry["nameAr"]))
                 card = SPECIALTY_GROUPS[row["position"] - 1]
                 self.assertEqual(card["sample_slug"], entry["slug"])
+                self.assertEqual((row["name_en"], row["name_ar"]), (card["name_en"], card["name_ar"]))
+        # The report's last column shows the prototype name only where it differs from the card title.
+        cardiology = by_slug["cardiology"]
+        self.assertEqual(cardiology["name_en"], "General & preventive cardiology")
+        self.assertEqual(seed_specialties.prototype_name(cardiology), "Cardiology / أمراض القلب")
+        gastro = by_slug["gastroenterology"]  # the prototype already used the card title
+        self.assertEqual(seed_specialties.prototype_name(gastro), "")
+
+    def test_report_has_no_name_source_column(self):
+        result = {"inserted": [], "updated": [], "unchanged": 104, "extra": []}
+        lines = seed_specialties.report_lines(self.rows, result, True)
+        header = next(line for line in lines if line.startswith("| # | Slug |"))
+        self.assertIn("Prototype name (data/sample)", header)
+        self.assertIn("Slug from", header)
+        self.assertNotIn("Name from", header)
+        self.assertIn("| General & preventive cardiology | أمراض القلب والوقاية القلبية |", "\n".join(lines))
 
     def test_other_80_slugged_from_their_title(self):
-        others = [row for row in self.rows if row["name_source"] != "sample"]
+        others = [row for row in self.rows if row["slug_source"] != "prototype"]
         self.assertEqual(len(others), 80)
         for row in others:
             self.assertEqual(row["slug"], seed_specialties.slugify(row["name_en"]))
+            self.assertEqual(row["slug_source"], "card title")
             self.assertIsNone(row["body_system"])
+            self.assertIsNone(row["prototype_name_en"])
             self.assertEqual((row["synonyms_en"], row["synonyms_ar"]), ([], []))
 
     def test_sample_body_systems_and_search_words(self):
@@ -112,7 +137,7 @@ class SpecialtyRows(unittest.TestCase):
         system_of = {slug: system["id"] for system in systems for slug in system["specialties"]}
         terms_of = {term["slug"]: term for term in terms}
         for row in self.rows:
-            if row["name_source"] == "sample":
+            if row["slug_source"] == "prototype":
                 self.assertEqual(row["body_system"], system_of[row["slug"]])
                 self.assertEqual(row["synonyms_en"], terms_of[row["slug"]]["synonymsEn"])
                 self.assertEqual(row["synonyms_ar"], terms_of[row["slug"]]["synonymsAr"])
@@ -162,7 +187,8 @@ class TaxonomyMap(unittest.TestCase):
         self.assertEqual(len(wanted), 104)
 
     def test_every_drafted_sample_code_is_still_decided(self):
-        # A sample code stays mapped, or is UNMAPPED on purpose with a reason that says it corrects the sample.
+        # A sample code stays mapped (perhaps to another group), or is UNMAPPED on purpose with a reason that says it
+        # corrects the sample.
         terms = json.loads((SAMPLE_DIR / "specialty-terms.json").read_text(encoding="utf-8"))["terms"]
         for term in terms:
             for code in term["taxonomyCodes"]:
@@ -174,34 +200,58 @@ class TaxonomyMap(unittest.TestCase):
     REVIEWED = {
         "101YP1600X": "clinical-social-work-counseling-family-therapy",
         "103TS0200X": "clinical-counseling-health-psychology",
-        "104100000X": None,
-        "1041S0200X": None,
-        "106S00000X": None,
-        "146M00000X": None,
-        "146N00000X": None,
         "156FX1700X": "prosthetics-orthotics-assistive-technology",
         "163WM1400X": "registered-nursing-specialist-nursing",
-        "170100000X": None,
         "171M00000X": "paramedicine-community-health-patient-navigation",
-        "183500000X": None,
         "207PP0204X": "emergency-medicine-ems-toxicology-hyperbaric-medicine",
         "207QB0505X": "endocrinology",
-        "207RH0003X": None,
         "207SG0207X": "medical-genetics-genomics",
         "207YX0602X": "allergy",
         "2080P0203X": "pediatric-neurology-acute-complex-care",
         "2080P0204X": "emergency-medicine-ems-toxicology-hyperbaric-medicine",
         "2084D0003X": "diagnostic-radiology-subspecialty-imaging",
-        "208D00000X": None,
-        "208M00000X": None,
         "246ZX2200X": None,
     }
 
+    # Yasir's decision of 20 Oct 2026 (map every large group to its most logical card): these 16 codes moved from UNMAPPED
+    # to the block at the end of TAXONOMY_MAP. Six of them were None in REVIEWED above until then.
+    DECIDED_20_OCT = {
+        "208M00000X": "internal-medicine",  # hospitalist
+        "207RM1200X": "internal-medicine",  # MRI internal medicine
+        "207RP1002X": "internal-medicine",  # physician nutrition specialist
+        "208U00000X": "internal-medicine",  # clinical pharmacology
+        "208D00000X": "family-medicine",  # general practice
+        "207RH0003X": "oncology",  # haematology & oncology
+        "2084B0040X": "neurology",  # behavioural neurology & neuropsychiatry
+        "122400000X": "prosthodontics",  # denturist (not imported: not a doctor)
+        "183500000X": "clinical-pharmacy-pharmacy-specialties",  # pharmacist
+        "106S00000X": "behavior-analysis-developmental-support",  # behaviour technician
+        "104100000X": "clinical-social-work-counseling-family-therapy",  # social worker
+        "1041S0200X": "clinical-social-work-counseling-family-therapy",  # school social worker
+        "164W00000X": "registered-nursing-specialist-nursing",  # licensed practical nurse
+        "146M00000X": "paramedicine-community-health-patient-navigation",  # intermediate EMT
+        "146N00000X": "paramedicine-community-health-patient-navigation",  # basic EMT
+        "170100000X": "laboratory-genetics-biochemical-genetics",  # PhD medical genetics
+    }
+
     def test_reviewed_codes_keep_their_decision(self):
-        for code, slug in self.REVIEWED.items():
+        self.assertEqual(sorted(set(self.REVIEWED) & set(self.DECIDED_20_OCT)), [])
+        for code, slug in {**self.REVIEWED, **self.DECIDED_20_OCT}.items():
             with self.subTest(code=code):
                 self.assertEqual(TAXONOMY_MAP.get(code), slug)
                 self.assertEqual(code in UNMAPPED, slug is None)
+
+    def test_the_20_oct_block_holds_exactly_the_decided_codes(self):
+        # The decision block is the tail of the TAXONOMY_MAP literal, after its "Decided 20 Oct 2026" comment.
+        source = (SCRIPTS / "taxonomy_map.py").read_text(encoding="utf-8")
+        start = source.index("# Decided 20 Oct 2026")
+        block = source[start:source.index("\n}\n", start)]
+        self.assertEqual(sorted(re.findall(r'^    "([0-9A-Z]{10})": ', block, re.M)), sorted(self.DECIDED_20_OCT))
+        self.assertEqual(len(self.DECIDED_20_OCT), 16)
+
+    def test_mapped_and_unmapped_counts(self):
+        # 402 codes mapped and 187 unmapped of the shortlist's 589 after the decision of 20 Oct 2026.
+        self.assertEqual((len(TAXONOMY_MAP), len(UNMAPPED)), (402, 187))
 
     def test_all_shortlist_codes_covered(self):
         path = os.environ.get("SHORTLIST_CODES_CSV")
@@ -214,6 +264,71 @@ class TaxonomyMap(unittest.TestCase):
         self.assertEqual(sorted(set(codes) - covered), [], "codes in neither TAXONOMY_MAP nor UNMAPPED")
         both = [code for code in codes if code in TAXONOMY_MAP and code in UNMAPPED]
         self.assertEqual(both, [])
+        self.assertEqual(len(set(codes)), len(TAXONOMY_MAP) + len(UNMAPPED))
+
+    def shortlist_codes(self) -> list[dict[str, str]]:
+        path = os.environ.get("SHORTLIST_CODES_CSV")
+        if not path or not pathlib.Path(path).is_file():
+            self.skipTest("set SHORTLIST_CODES_CSV to the shortlist codes extract (CSV with a code column) to run this")
+        with open(path, encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        if not rows or not {"grouping", "classification"} <= set(rows[0]):
+            self.skipTest("the codes extract has no NUCC grouping and classification columns")
+        return rows
+
+    def test_every_doctor_code_has_a_card(self):
+        # Decision 1 of 20 Oct 2026: on the doctor rows (Physician and Dentist), every code a card covers is mapped. In
+        # the October shortlist that is every doctor code.
+        doctors = [row for row in self.shortlist_codes()
+                   if seed_professionals.doctor_problem(row.get("profession"), row["code"]) is None]
+        self.assertGreater(len(doctors), 0)
+        self.assertEqual(sorted(row["code"] for row in doctors if row["code"] not in TAXONOMY_MAP), [])
+
+    def test_the_doctor_code_rules_follow_nucc(self):
+        # seed_professionals.doctor_problem's prefixes against NUCC v26.1: Physician is the grouping Allopathic &
+        # Osteopathic Physicians, Dentist the classification Dentist.
+        for row in self.shortlist_codes():
+            code = row["code"].strip().upper()
+            with self.subTest(code=code):
+                physician = seed_professionals.doctor_problem("Physician", code) is None
+                dentist = seed_professionals.doctor_problem("Dentist", code) is None
+                self.assertEqual(physician, row["grouping"].strip() == "Allopathic & Osteopathic Physicians")
+                self.assertEqual(dentist, row["classification"].strip() == "Dentist")
+
+
+class ShortlistInput(unittest.TestCase):
+    """map_taxonomy.py reads the rows the registry import takes: the doctor sheets, less the rows that are not a doctor's."""
+
+    def test_reads_the_doctor_sheets_and_the_doctor_rows_only(self):
+        import openpyxl
+
+        header = ["NPI", "First Name", "Last Name", "Profession", "Taxonomy"]
+        sheets = {
+            "Physicians High": [["1000000004", "A", "B", "Physician", "207RC0000X"],
+                                ["1000000012", "C", "D", "Physician", " 207rc0000x "]],
+            "Physicians Medium": [["1000000020", "E", "F", "Physician", "208M00000X"]],
+            "Dentists": [["1000000038", "G", "H", "Dentist", "1223G0001X"],
+                         ["1000000046", "I", "J", "Dentist", "122400000X"]],  # a denturist: not a doctor
+            "Other Professions": [["1000000053", "K", "L", "Student", "390200000X"]],
+            "Low (review)": [["1000000061", "M", "N", "Physician", "207R00000X"]],
+        }
+        workbook = openpyxl.Workbook()
+        workbook.active.title = "Summary"
+        for name, rows in sheets.items():
+            sheet = workbook.create_sheet(name)
+            sheet.append(header)
+            for row in rows:
+                sheet.append(row)
+        with tempfile.TemporaryDirectory() as folder:
+            path = pathlib.Path(folder) / "shortlist.xlsx"
+            workbook.save(path)
+            counts, professions, not_doctors = map_taxonomy.read_shortlist(path)
+        self.assertEqual(map_taxonomy.SHORTLIST_SHEETS, ("Physicians High", "Physicians Medium", "Dentists"))
+        self.assertEqual(counts, Counter({"207RC0000X": 2, "208M00000X": 1, "1223G0001X": 1}))
+        self.assertEqual(not_doctors, Counter({("Dentist", "122400000X"): 1}))
+        self.assertNotIn("390200000X", counts)
+        self.assertNotIn("207R00000X", counts)
+        self.assertEqual(professions["207RC0000X"], Counter({"Physician": 2}))
 
 
 class Exceptions(unittest.TestCase):

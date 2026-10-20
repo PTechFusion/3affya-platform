@@ -1,9 +1,12 @@
 """Seeds public.specialties with the 104 specialty groups of the content document (task 1.5, lane L1).
 
-The groups come from scripts/specialty_groups.py, the committed snapshot of the content PDF's specialty directory. The
-24 groups the prototype already ships keep their slug, names, search words and body system from data/sample, so every
-screen and URL built on the sample keeps working; the other 80 get a slug from their English title and no body system
-yet (which body system a group sits under is Dr Ayman's editorial call; the report lists them for him).
+The groups come from scripts/specialty_groups.py, the committed snapshot of the content PDF's specialty directory. Every
+group is named by its card title in the content document, in English and Arabic (decided 20 Oct 2026), the 24 groups the
+prototype already ships included. Those 24 keep their slug (so every URL built on the sample keeps working), search words
+and body system from data/sample; the other 80 get a slug from their English title and no body system yet (which body
+system a group sits under is Dr Ayman's editorial call; the report lists them for him). The report shows the
+prototype's name beside the card title where the two differ (18 of the 24), the difference lane L6 sees against
+data/sample/specialties.json.
 
 Taxonomy codes are not written here: scripts/map_taxonomy.py owns specialties.taxonomy_codes.
 
@@ -82,7 +85,8 @@ def _load_json(name: str) -> Any:
 
 
 def load_sample() -> tuple[dict[str, dict], dict[str, str], dict[str, dict]]:
-    """The prototype's 24 groups: names by slug, body system by slug, search words by slug."""
+    """The prototype's 24 groups: their specialties.json rows (prototype names) by slug, body system by slug, search words
+    by slug."""
     names = {row["slug"]: row for row in _load_json("specialties.json")}
     body_system: dict[str, str] = {}
     for system in _load_json("body-systems.json"):
@@ -95,8 +99,9 @@ def load_sample() -> tuple[dict[str, dict], dict[str, str], dict[str, dict]]:
 
 
 def specialty_rows() -> list[dict[str, Any]]:
-    """The 104 rows to seed, in card order, with the content-document fields the report shows. Raises on any snapshot or
-    sample inconsistency, so nothing is written from a broken input."""
+    """The 104 rows to seed, in card order: names from the card titles, the 24 prototype groups' slug, body system and
+    search words from data/sample, plus the content-document fields the report shows. Raises on any snapshot or sample
+    inconsistency, so nothing is written from a broken input."""
     names, body_systems, terms = load_sample()
     if len(SPECIALTY_GROUPS) != EXPECTED_GROUPS:
         raise ValueError(f"scripts/specialty_groups.py has {len(SPECIALTY_GROUPS)} groups, expected {EXPECTED_GROUPS}")
@@ -119,30 +124,30 @@ def specialty_rows() -> list[dict[str, Any]]:
             term = terms.get(sample_slug, {})
             row = {
                 "slug": sample_slug,
-                "name_en": sample["nameEn"],
-                "name_ar": sample["nameAr"],
                 "body_system": body_systems[sample_slug],
                 "synonyms_en": list(term.get("synonymsEn", [])),
                 "synonyms_ar": list(term.get("synonymsAr", [])),
-                "name_source": "sample",
+                "slug_source": "prototype",
+                "prototype_name_en": sample["nameEn"],
+                "prototype_name_ar": sample["nameAr"],
             }
         else:
             row = {
                 "slug": slugify(group["name_en"]),
-                "name_en": group["name_en"],
-                "name_ar": group["name_ar"],
                 "body_system": None,
                 "synonyms_en": [],
                 "synonyms_ar": [],
-                "name_source": "content PDF",
+                "slug_source": "card title",
+                "prototype_name_en": None,
+                "prototype_name_ar": None,
             }
         row.update(
+            name_en=group["name_en"],
+            name_ar=group["name_ar"],
             position=group["position"],
             page=group["page"],
             section_en=group["section_en"],
             section_ar=group["section_ar"],
-            card_name_en=group["name_en"],
-            card_name_ar=group["name_ar"],
         )
         for key in ("name_en", "name_ar"):
             if not 1 <= len(row[key]) <= 120:
@@ -352,6 +357,14 @@ def write_report_section(key: str, lines: Iterable[str], path: pathlib.Path = RE
     return path
 
 
+def prototype_name(row: dict[str, Any]) -> str:
+    """The prototype's name of a group where it differs from the card title ("English / Arabic"), else ""."""
+    en, ar = row.get("prototype_name_en"), row.get("prototype_name_ar")
+    if en is None or (en, ar) == (row["name_en"], row["name_ar"]):
+        return ""
+    return f"{en} / {ar}"
+
+
 def report_lines(rows: Sequence[dict[str, Any]], result: dict[str, Any], dry_run: bool) -> list[str]:
     no_system = [row for row in rows if row["body_system"] is None]
     lines = [
@@ -374,25 +387,27 @@ def report_lines(rows: Sequence[dict[str, Any]], result: dict[str, Any], dry_run
         )
     lines += [
         "",
-        "Source: `scripts/specialty_groups.py` (the content PDF's specialty directory, pages 21 to 46). The 24 groups "
-        "the prototype ships keep their slug, names, search words and body system from `data/sample`; the other 80 "
-        "take their names from the PDF and a slug from the English title. Taxonomy codes: see the mapping section.",
+        "Source: `scripts/specialty_groups.py` (the content PDF's specialty directory, pages 21 to 46). Every group is "
+        "named by its card title, in English and Arabic (decided 20 Oct 2026), the 24 groups the prototype ships "
+        "included; those 24 keep their slug (the prototype's URLs), search words and body system from `data/sample`, and "
+        "the last column shows the name `data/sample/specialties.json` gives them where it differs. The other 80 take a "
+        "slug from the English title. Taxonomy codes: see the mapping section.",
         "",
         "### The 104 groups",
         "",
     ]
     lines += markdown_table(
-        ("#", "Slug", "Name (en)", "Name (ar)", "Card in the content document", "Section", "Body system", "Name from"),
+        ("#", "Slug", "Name (en)", "Name (ar)", "Section", "Body system", "Slug from", "Prototype name (data/sample)"),
         [
             (
                 row["position"],
                 f"`{row['slug']}`",
                 row["name_en"],
                 row["name_ar"],
-                "" if row["card_name_en"] == row["name_en"] else row["card_name_en"],
                 row["section_en"],
                 row["body_system"] or "(none yet)",
-                row["name_source"],
+                row["slug_source"],
+                prototype_name(row),
             )
             for row in rows
         ],

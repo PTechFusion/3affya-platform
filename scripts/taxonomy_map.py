@@ -20,6 +20,7 @@ How the codes were mapped, from each code's NUCC grouping, classification, speci
 - Students, generic classifications, administrative roles, facilities and suppliers, and professions no card covers
   (chiropractors, massage therapists...) are UNMAPPED with a one-line reason. Nothing goes to a nearest or catch-all
   group.
+- The block at the end of TAXONOMY_MAP maps large groups the strict rule left out (decided 20 Oct 2026).
 - "Judgement call" marks a mapping Dr Ayman should confirm; "Sample correction" marks where the drafted sample in
   data/sample/specialty-terms.json had a code on the wrong group.
 - Card N is position N in scripts/specialty_groups.py. Card 38 (metabolic and bariatric surgery) has no code: NUCC
@@ -34,7 +35,7 @@ TAXONOMY_MAP: dict[str, str] = {
     # Family physicians whose practice is adults only: still family-medicine training.
     "207QA0505X": "family-medicine",  # Adult Medicine Physician
     # 2 Internal medicine (Whole-person medicine)
-    # Sample correction: hospitalists (208M00000X) are UNMAPPED; the code does not say which base specialty.
+    # Hospitalists (208M00000X) are mapped here by the decision block at the end of this dict.
     "207R00000X": "internal-medicine",  # Internal Medicine Physician
     # 3 Geriatric medicine (Whole-person medicine)
     "207QG0300X": "geriatric-medicine",  # Geriatric Medicine (Family Medicine) Physician
@@ -86,7 +87,7 @@ TAXONOMY_MAP: dict[str, str] = {
     # 16 Infectious diseases (Lungs, immunity & infection)
     "207RI0200X": "infectious-disease",  # Infectious Disease Physician
     # 17 Medical oncology (Cancer & blood disorders)
-    # Sample correction: combined haematology and oncology (207RH0003X) is UNMAPPED; it spans cards 17 and 18.
+    # Combined haematology and oncology (207RH0003X) comes here by the decision block at the end of this dict.
     "207RX0202X": "oncology",  # Medical Oncology Physician
     # 18 Hematology (Cancer & blood disorders)
     "207RH0000X": "hematology",  # Hematology (Internal Medicine) Physician
@@ -490,8 +491,8 @@ TAXONOMY_MAP: dict[str, str] = {
     # counselling is not qualified as clinical (its Arabic title qualifies social work only).
     "101YP1600X": "clinical-social-work-counseling-family-therapy",  # Pastoral Counselor
     "101YP2500X": "clinical-social-work-counseling-family-therapy",  # Professional Counselor
-    # Social workers without the clinical specialisation (104100000X, 1041S0200X) are UNMAPPED: the card names
-    # clinical social work.
+    # Social workers without the clinical specialisation (104100000X, 1041S0200X) come here by the decision block at the
+    # end of this dict.
     "1041C0700X": "clinical-social-work-counseling-family-therapy",  # Clinical Social Worker
     "106H00000X": "clinical-social-work-counseling-family-therapy",  # Marriage & Family Therapist
     # 88 Behavior analysis & developmental support (Psychology & supportive care)
@@ -507,8 +508,7 @@ TAXONOMY_MAP: dict[str, str] = {
     "133VN1006X": "registered-dietitian-nutritionists",  # Metabolic Nutrition Registered Dietitian
     "133VN1201X": "registered-dietitian-nutritionists",  # Obesity and Weight Management Nutrition Registered Dietitian
     # 90 Clinical pharmacy & pharmacy specialties (Nutrition, pharmacy & genetics)
-    # Pharmacists without a specialisation (183500000X) are UNMAPPED: the card names clinical pharmacy and the
-    # specialties, with advanced training.
+    # Pharmacists without a specialisation (183500000X) come here by the decision block at the end of this dict.
     "1835C0205X": "clinical-pharmacy-pharmacy-specialties",  # Critical Care Pharmacist
     "1835C0206X": "clinical-pharmacy-pharmacy-specialties",  # Cardiology Pharmacist
     "1835C0207X": "clinical-pharmacy-pharmacy-specialties",  # Compounded Sterile Preparations Pharmacist
@@ -595,7 +595,7 @@ TAXONOMY_MAP: dict[str, str] = {
     "246ZE0600X": "perfusion-neurodiagnostics-procedural-support",  # Electroneurodiagnostic Specialist/Technologist
     "246ZS0410X": "perfusion-neurodiagnostics-procedural-support",  # Surgical Technologist
     # 100 Paramedicine, community health & patient navigation (Diagnostic, procedural & community support)
-    # Basic and intermediate EMTs (146N00000X, 146M00000X) are UNMAPPED: the card names paramedicine.
+    # Basic and intermediate EMTs (146N00000X, 146M00000X) come here by the decision block at the end of this dict.
     "146L00000X": "paramedicine-community-health-patient-navigation",  # Paramedic
     # Case managers help people reach medical, social and other services and coordinate them with other providers
     # (NUCC): the card names patient navigation and expects nonclinical navigators.
@@ -614,6 +614,41 @@ TAXONOMY_MAP: dict[str, str] = {
     "207ZF0201X": "forensic-neuropathology-pediatric-pathology",  # Forensic Pathology Physician
     "207ZN0500X": "forensic-neuropathology-pediatric-pathology",  # Neuropathology Physician
     "207ZP0213X": "forensic-neuropathology-pediatric-pathology",  # Pediatric Pathology Physician
+    # Decided 20 Oct 2026 (Yasir): every large group goes to its most logical card. These codes were UNMAPPED under the
+    # strict rule above; each comment says why the card fits. Students, generic or support roles and professions no card
+    # covers stay UNMAPPED. Only doctors (Physician and Dentist) are imported as listings (seed_professionals.py).
+    # Hospitalist Physician: most hospitalists train in internal medicine, and the card covers adult inpatient medicine.
+    "208M00000X": "internal-medicine",
+    # Magnetic Resonance Imaging (MRI) Internal Medicine Physician: an internal-medicine code; the base card takes it.
+    "207RM1200X": "internal-medicine",
+    # Physician Nutrition Specialist (Internal Medicine): an internal-medicine code; the base card takes it.
+    "207RP1002X": "internal-medicine",
+    # Clinical Pharmacology Physician: physicians in medication review and drug therapy; card 2 names medication review.
+    "208U00000X": "internal-medicine",
+    # General Practice Physician: general practice is first-contact care for all ages, what card 1 describes.
+    "208D00000X": "family-medicine",
+    # Hematology & Oncology Physician: combined fellowship; most practise cancer care, so card 17 (one group per code).
+    "207RH0003X": "oncology",
+    # Behavioral Neurology & Neuropsychiatry Physician: behavioural neurology is a neurology field; card 21.
+    "2084B0040X": "neurology",
+    # Denturist: dentures are the prosthodontics card's work (not imported: denturists are not doctors).
+    "122400000X": "prosthodontics",
+    # Pharmacist: the only pharmacy card.
+    "183500000X": "clinical-pharmacy-pharmacy-specialties",
+    # Behavior Technician: works under a behaviour analyst; the card is the behaviour-support family.
+    "106S00000X": "behavior-analysis-developmental-support",
+    # Social Worker: the only social-work card.
+    "104100000X": "clinical-social-work-counseling-family-therapy",
+    # School Social Worker: the only social-work card.
+    "1041S0200X": "clinical-social-work-counseling-family-therapy",
+    # Licensed Practical Nurse: the nursing card.
+    "164W00000X": "registered-nursing-specialist-nursing",
+    # Intermediate Emergency Medical Technician: emergency medical services; card 100 is paramedicine.
+    "146M00000X": "paramedicine-community-health-patient-navigation",
+    # Basic Emergency Medical Technician: emergency medical services; card 100 is paramedicine.
+    "146N00000X": "paramedicine-community-health-patient-navigation",
+    # Ph.D. Medical Genetics: laboratory and consulting genetics; card 103.
+    "170100000X": "laboratory-genetics-biochemical-genetics",
 }
 
 UNMAPPED: dict[str, str] = {
@@ -936,17 +971,6 @@ UNMAPPED: dict[str, str] = {
     "not the assessment and therapy card 85 describes",
     # Forensic Psychologist
     "103TF0200X": "forensic psychology (legal assessment); card 28 covers forensic psychiatry, physicians only",
-    # Social Worker
-    "104100000X": "social worker without the clinical specialisation (NUCC codes it separately, 1041C0700X); "
-    "card 87 names clinical social work",
-    # School Social Worker
-    "1041S0200X": "school social worker: not the clinical specialisation (1041C0700X) and NUCC gives no definition; "
-    "card 87 names clinical social work",
-    # Behavior Technician
-    "106S00000X": "behaviour technician: implements plans under close supervision and does not assess or design them "
-    "(NUCC); card 88 describes assessment and goal-setting and, unlike card 96, names no assistants",
-    # Denturist
-    "122400000X": "denturist: a separately licensed denture maker, not a prosthodontist (card 69)",
     # Dental Therapist
     "125J00000X": "dental therapist: a mid-level dental role no card names",
     # Advanced Practice Dental Therapist
@@ -957,25 +981,14 @@ UNMAPPED: dict[str, str] = {
     "133N00000X": "nutritionist, not a registered dietitian (NUCC); card 89 names registered dietitians",
     # Nutrition Education Nutritionist
     "133NN1002X": "nutritionist, not a registered dietitian (NUCC); card 89 names registered dietitians",
-    # Intermediate Emergency Medical Technician
-    "146M00000X": "intermediate EMT, not a paramedic (NUCC codes Paramedic separately, 146L00000X); "
-    "card 100 names paramedicine",
-    # Basic Emergency Medical Technician
-    "146N00000X": "basic EMT, not a paramedic (NUCC codes Paramedic separately, 146L00000X); "
-    "card 100 names paramedicine",
     # Ophthalmic Assistant
     "156FX1101X": "ophthalmic assistant: support role; no card covers it",
     # Optician
     "156FX1800X": "dispensing optician (eyewear); card 94 names optometry, orthoptics and low vision",
-    # Licensed Practical Nurse
-    "164W00000X": "licensed practical nurse; card 77 names registered and specialist nursing",
     # Licensed Vocational Nurse
     "164X00000X": "licensed vocational nurse; card 77 names registered and specialist nursing",
     # Licensed Psychiatric Technician
     "167G00000X": "licensed psychiatric technician: no card covers it",
-    # Ph.D. Medical Genetics
-    "170100000X": "PhD medical geneticist: NUCC describes a consultant to a clinical genetics programme and names no "
-    "laboratory work; card 60 and card 103 each fit part",
     # Health & Wellness Coach
     "171400000X": "health and wellness coaching: no card covers it",
     # Interpreter
@@ -988,9 +1001,6 @@ UNMAPPED: dict[str, str] = {
     "175T00000X": "peer support (lived-experience) role: no card covers it",
     # Midwife
     "176B00000X": "midwife who need not be a nurse (NUCC); card 79 names nurse midwifery",
-    # Pharmacist
-    "183500000X": "pharmacist without a specialisation (NUCC codes Clinical Pharmacy Specialist separately, "
-    "1835P0018X); card 90 names clinical pharmacy and the specialties, with advanced training",
     # Pharmacy Technician
     "183700000X": "pharmacy technician: support role; card 90 is pharmacists",
     # Independent Medical Examiner Physician
@@ -999,24 +1009,6 @@ UNMAPPED: dict[str, str] = {
     "202D00000X": "integrative medicine: no card names it",
     # Phlebology Physician
     "202K00000X": "phlebology (venous disease) is practised from several base specialties; card 46 is vascular surgery",
-    # Hematology & Oncology Physician
-    "207RH0003X": "combined haematology and oncology: card 17 (medical oncology) and card 18 (haematology, which names "
-    "blood cancers) each cover half; one group per code (sample correction: the sample had it on oncology)",
-    # Magnetic Resonance Imaging (MRI) Internal Medicine Physician
-    "207RM1200X": "NUCC recommends this code not be used; the practice it describes (MRI) has no clear card",
-    # Physician Nutrition Specialist (Internal Medicine)
-    "207RP1002X": "physician nutrition specialist: no card names clinical nutrition medicine",
-    # Behavioral Neurology & Neuropsychiatry Physician
-    "2084B0040X": "shared by neurologists and psychiatrists; no single card",
-    # General Practice Physician
-    "208D00000X": "general practice: its own NUCC classification with no residency or board; card 1 describes U.S. "
-    "family-medicine training",
-    # Hospitalist Physician
-    "208M00000X": "hospital medicine is a care setting with no board; hospitalists train in internal medicine, family "
-    "medicine or paediatrics and the code does not say which card (sample correction: the sample had it on internal "
-    "medicine)",
-    # Clinical Pharmacology Physician
-    "208U00000X": "clinical pharmacology (physicians): no card covers it (card 90 is pharmacists)",
     # Legal Medicine (M.D./D.O.) Physician
     "209800000X": "legal medicine spans forensic pathology and forensic psychiatry; no single card",
     # Podiatric Assistant

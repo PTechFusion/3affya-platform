@@ -5,8 +5,12 @@ writes output/taxonomy_exceptions.csv with every code it meets that TAXONOMY_MAP
 or "not yet in taxonomy_map.py" for a code in neither dict: an unmapped code is listed, never defaulted to a group),
 then writes each group's codes into the database in one transaction.
 
-Input is either the shortlist workbook (the Taxonomy column of its four outreach sheets) or a CSV with a code column and
-an optional count column. --nucc adds the NUCC grouping, classification and specialization to the exceptions file.
+Input is either the shortlist workbook or a CSV with a code column and an optional count column. From the workbook it
+reads the rows the registry import takes: the three doctor sheets ("Physicians High", "Physicians Medium", "Dentists",
+28,587 rows; only doctors get a card, decided 20 Oct 2026), less the rows seed_professionals.py does not import because
+their Profession and taxonomy code are not a doctor's (counted in the report, not in the mapping). The non-doctor codes
+of the full shortlist keep their UNMAPPED reasons in taxonomy_map.py; --codes-csv with the 589-code extract lists them.
+--nucc adds the NUCC grouping, classification and specialization to the exceptions file.
 
 Database: every code in TAXONOMY_MAP goes to its group when the group exists (run seed_specialties.py first). Each
 changed group is cleared before any is set, so a code can move between groups without tripping the one-group-per-code
@@ -37,11 +41,13 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 from seed_common import OUTPUT_DIR, add_database_argument, connect, markdown_table, utc_now  # noqa: E402
 import seed_specialties  # noqa: E402
+from seed_professionals import DOCTOR_SHEETS, doctor_problem  # noqa: E402
 from seed_specialties import specialty_rows, write_report_section  # noqa: E402
 from taxonomy_map import TAXONOMY_MAP, UNMAPPED  # noqa: E402
 
 EXCEPTIONS_PATH = OUTPUT_DIR / "taxonomy_exceptions.csv"
-SHORTLIST_SHEETS = ("Physicians High", "Physicians Medium", "Dentists", "Other Professions")
+# The sheets the registry import takes (seed_professionals.py): the doctor sheets.
+SHORTLIST_SHEETS = DOCTOR_SHEETS
 CODE_PATTERN = re.compile(r"^[0-9]{3}[0-9A-Z]{6}X$")
 NOT_IN_MAP = "not yet in taxonomy_map.py"
 BLANK = "(blank)"
@@ -76,12 +82,14 @@ def normalise_code(raw: object) -> str:
 # ---------------------------------------------------------------- inputs
 
 
-def read_shortlist(path: pathlib.Path) -> tuple[Counter, dict[str, Counter]]:
-    """Rows per code and the shortlist's Profession values per code, from the four outreach sheets."""
+def read_shortlist(path: pathlib.Path) -> tuple[Counter, dict[str, Counter], Counter]:
+    """Rows per code and the shortlist's Profession values per code, from the doctor sheets, counting only the rows
+    seed_professionals.py imports; the third value counts the other rows by (profession, code)."""
     import openpyxl  # imported here so the unit tests and --codes-csv runs do not need it
 
     counts: Counter = Counter()
     professions: dict[str, Counter] = {}
+    not_doctors: Counter = Counter()
     workbook = openpyxl.load_workbook(path, read_only=True, data_only=True)
     try:
         missing = [name for name in SHORTLIST_SHEETS if name not in workbook.sheetnames]
@@ -98,12 +106,17 @@ def read_shortlist(path: pathlib.Path) -> tuple[Counter, dict[str, Counter]]:
                 if row is None or all(cell is None for cell in row):
                     continue
                 code = normalise_code(row[code_at] if code_at < len(row) else None)
+                cell = row[profession_at] if profession_at is not None and profession_at < len(row) else None
+                profession = str(cell).strip() if cell is not None and str(cell).strip() else None
+                if doctor_problem(profession, None if code == BLANK else code):
+                    not_doctors[(profession or "(blank)", code)] += 1
+                    continue
                 counts[code] += 1
-                if profession_at is not None and profession_at < len(row) and row[profession_at]:
-                    professions.setdefault(code, Counter())[str(row[profession_at]).strip()] += 1
+                if profession:
+                    professions.setdefault(code, Counter())[profession] += 1
     finally:
         workbook.close()
-    return counts, professions
+    return counts, professions, not_doctors
 
 
 def read_codes_csv(path: pathlib.Path) -> tuple[Counter, dict[str, Counter], dict[str, dict[str, str]]]:
@@ -316,6 +329,7 @@ def report_lines(
     groups: Sequence[dict[str, Any]],
     db: dict[str, Any],
     dry_run: bool,
+    not_doctors: Counter | None = None,
 ) -> list[str]:
     wanted = desired_codes([group["slug"] for group in groups])
     outcome = "dry run (rolled back)" if dry_run else "committed"
@@ -325,6 +339,16 @@ def report_lines(
         f"Last run: {utc_now():%Y-%m-%d %H:%M} UTC, {outcome}. Input: {source}.",
         "",
     ]
+    if not_doctors is not None:
+        excluded = sum(not_doctors.values())
+        lines += [
+            "From the shortlist: the rows the registry import takes, i.e. the doctor sheets ("
+            + ", ".join(f'"{sheet}"' for sheet in SHORTLIST_SHEETS)
+            + f"), less {excluded} row(s) whose Profession and taxonomy code are not a doctor's"
+            + (" (" + "; ".join(f"{p} {c}: {n}" for (p, c), n in sorted(not_doctors.items())) + ")" if excluded else "")
+            + ". The other professions' codes keep their reasons in `scripts/taxonomy_map.py` UNMAPPED.",
+            "",
+        ]
     lines += markdown_table(
         ("", "Codes", "Rows", "Share of rows"),
         [
@@ -363,24 +387,29 @@ def report_lines(
         missing = ", ".join(db["missing_groups"])
         lines.append(f"Groups not in the database (run seed_specialties.py), codes not written: {missing}.")
     lines += ["", "### Top unmapped codes by rows", ""]
-    lines += markdown_table(
-        ("Code", "Rows", "Profession", "NUCC classification", "Reason"),
-        [
-            (
-                row["code"],
-                row["rows"],
-                row["profession"],
-                " / ".join(part for part in (row["classification"], row["specialization"]) if part),
-                row["reason"],
-            )
-            for row in exceptions[:20]
-        ],
-    )
+    if not exceptions:
+        lines.append("None: every taxonomy code of the input maps to a group (output/taxonomy_exceptions.csv holds the "
+                     "header only).")
+    else:
+        lines += markdown_table(
+            ("Code", "Rows", "Profession", "NUCC classification", "Reason"),
+            [
+                (
+                    row["code"],
+                    row["rows"],
+                    row["profession"],
+                    " / ".join(part for part in (row["classification"], row["specialization"]) if part),
+                    row["reason"],
+                )
+                for row in exceptions[:20]
+            ],
+        )
     lines += [
         "",
         "### Codes and rows per group",
         "",
-        "Rows are registry rows in the input whose code maps to the group; a group with no codes gets none.",
+        "Codes are the group's codes in `scripts/taxonomy_map.py`; rows are registry rows in the input whose code maps to "
+        "the group (from the shortlist: the doctors the import takes). A group with no codes gets none.",
         "",
     ]
     lines += markdown_table(
@@ -404,7 +433,10 @@ def report_lines(
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     source = parser.add_mutually_exclusive_group(required=True)
-    source.add_argument("--shortlist", type=pathlib.Path, help="the NPPES shortlist workbook (.xlsx)")
+    source.add_argument(
+        "--shortlist", type=pathlib.Path,
+        help="the NPPES shortlist workbook (.xlsx); its three doctor sheets are read, as the registry import reads them",
+    )
     source.add_argument("--codes-csv", type=pathlib.Path, help="a CSV of codes with an optional count column")
     parser.add_argument(
         "--nucc", type=pathlib.Path, help="the NUCC taxonomy CSV, for the exceptions file's descriptions"
@@ -429,8 +461,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"No such file: {path}", file=sys.stderr)
         return 2
     try:
+        not_doctors: Counter | None = None
         if args.shortlist:
-            counts, professions = read_shortlist(path)
+            counts, professions, not_doctors = read_shortlist(path)
             descriptions: dict[str, dict[str, str]] = {}
         else:
             counts, professions, descriptions = read_codes_csv(path)
@@ -467,9 +500,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     label = f"{'shortlist' if args.shortlist else 'codes CSV'} `{path.name}`" + (
         f", NUCC `{args.nucc.name}`" if args.nucc else ""
     )
-    lines = report_lines(label, summary, exceptions, counts, groups, db, args.dry_run)
+    lines = report_lines(label, summary, exceptions, counts, groups, db, args.dry_run, not_doctors)
     report = None if args.dry_run else write_report_section("map_taxonomy", lines)
 
+    if not_doctors is not None:
+        print(f"Doctor sheets: {summary['rows']} rows the import takes; {sum(not_doctors.values())} not a doctor's"
+              " (not counted).")
     for line in summary_lines(summary, exceptions):
         print(line)
     verb = "would change" if args.dry_run else "changed"

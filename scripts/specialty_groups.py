@@ -3,7 +3,7 @@
 Source: 3affya_Website_Content_and_AI_Platform.pdf, the specialty directory pages 21 to 46 (26 pages, four cards each). Each
 entry is one card: the page, the page's section heading and the card's title, in English and Arabic as printed (Arabic
 presentation forms normalised with NFKC). `sample_slug` pins the 24 groups the prototype already ships
-(data/sample/specialties.json) to their card, so the prototype's slugs and names survive; seed_specialties.py gives the
+(data/sample/specialties.json) to their card, so the prototype's slugs survive (every group is named by its card title, decided 20 Oct 2026); seed_specialties.py gives the
 other 80 a slug from their English title.
 
 Check against the PDF with: python scripts/seed_specialties.py --content-pdf PATH --check-snapshot (sample_slug is set by hand)

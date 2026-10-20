@@ -1,6 +1,6 @@
 """Unit tests for seed_professionals.py and enrich_cms.py (task 1.5, lane L1).
 
-Run: python -m unittest scripts/test_professionals_cms.py   (stdlib plus openpyxl)
+Run: python -m unittest discover -s scripts -p "test_professionals_cms.py"   (stdlib plus openpyxl)
 
 The fixtures are tiny synthetic files built in a temporary folder with the real headers of the NPPES shortlist and the
 CMS files; no registry row is copied here. The database test runs only when DATABASE_URL is set: it works inside one
@@ -129,19 +129,132 @@ class StateRuleTest(unittest.TestCase):
         for value in ("MAKKAH", "ONTARIO", "ON", "AE", "AP", "AA", "SA", "HAWAII", "APO  AE", "", None):
             self.assertIsNone(sp.us_state_code(value), value)
 
-    def test_practice_country_is_us_only_for_a_us_code(self):
+    def test_practice_country_is_us_for_a_us_code(self):
         for code in sorted(sp.US_STATE_CODES):
             self.assertEqual(sp.practice_country(code), "US", code)
+            self.assertEqual(sp.practice_country(code, "RIYADH", "Riyadh"), "US", code)  # the US code decides
         for value in (None, "MAKKAH", "AE", "ca", ""):
-            self.assertIsNone(sp.practice_country(value), value)
-        # Through the parser, the way the import computes it.
-        cases = (("TX", "US"), (" pr ", "US"), ("UM", "US"), ("RIYADH", None), ("AP", None), (None, None))
-        for state, country in cases:
+            self.assertIsNone(sp.practice_country(value), value)  # not a US code, and no raw State to read
+        # Through the parser, the way the import computes it: state_code is set only for a US code.
+        cases = (("TX", "X", "US"), (" pr ", "X", "US"), ("UM", "X", "US"), ("RIYADH", "Riyadh", "SA"),
+                 ("AP", "Fpo", None), (None, "X", None))
+        for state, city, country in cases:
             values = dict(zip(SHORTLIST_HEADER,
-                              shortlist_row("1000000004", "A", "B", "Physician", "207RC0000X", "X", state)))
+                              shortlist_row("1000000004", "A", "B", "Physician", "207RC0000X", city, state)))
             row, _ = sp.parse_row(values)
             self.assertEqual(row.practice_country, country, state)
-            self.assertEqual(row.state_code is not None, country is not None, state)
+            self.assertEqual(row.state_code is not None, country == "US", state)
+
+
+class CountryRuleTest(unittest.TestCase):
+    """The practice country of a doctor abroad: the explicit tables in seed_professionals.py, null when they name none."""
+
+    CASES = (
+        # (State, City, country, how it was found)
+        ("ONTARIO", "Toronto", "CA", "state"),
+        ("ON", "Toronto", "CA", "state"),
+        ("ONT.", "Lasalle", "CA", "state"),
+        ("QUEBEC", "Montreal", "CA", "state"),
+        ("MAKKAH", "Jeddah", "SA", "state"),
+        ("MAKKAH REGION", "Jeddah", "SA", "state"),
+        ("NEJD", "Riyadh", "SA", "state"),
+        ("SAUDI ARABIA", "Riyadh", "SA", "state"),
+        ("DUBAI", "Dubai", "AE", "state"),
+        ("UNITED ARAB EMIRATES", "Abu Dhabi", "AE", "state"),
+        ("  abu   dhabi ", " abu dhabi ", "AE", "state"),  # case and spacing do not matter
+        ("HAWALLI", "Jabriyah", "KW", "state"),
+        ("BEIRUT", "Beirut", "LB", "state"),
+        ("ALEXANDRIA", "Alexandria", "EG", "state"),
+        ("JORDAN", "Irbid", "JO", "state"),
+        ("HARARE", "Harare", "ZW", "state"),
+        # A State that names no one country: the City settles it, or nothing does.
+        ("CENTRAL", "Riyadh", "SA", "state_city"),
+        ("CENTRAL", "Colombo", None, "unknown"),
+        ("EASTERN PROVINCE", "Dhahran", "SA", "state_city"),
+        ("EASTERN PROVINCE", "Kenema", None, "unknown"),
+        ("SA", "Al-Khobar", "SA", "state_city"),
+        ("SA", "Riyadh", "SA", "state_city"),
+        ("SA", "Adelaide", None, "unknown"),  # South Australia
+        ("FOREIGN", "Dubai", "AE", "state_city"),
+        ("FOREIGN", "Paris", None, "unknown"),
+        ("NA", "Dubai", "AE", "state_city"),
+        ("KWI", "Kuwait City", "KW", "state_city"),
+        # US military mail: no country, whatever the city says, except AE with a real city (the UAE's ISO code).
+        ("AE", "Apo", None, "military"),
+        ("AE", "Dubai", "AE", "state_city"),
+        ("AP", "Fpo", None, "military"),
+        ("AA", "Dpo", None, "military"),
+        ("APO  AE", "Apo", None, "unknown"),
+        ("OMAN", "Muscat", None, "unknown"),  # not in the tables: null, never a guess
+        (None, "Riyadh", None, "blank"),
+    )
+
+    def test_cases(self):
+        for state, city, country, basis in self.CASES:
+            with self.subTest(state=state, city=city):
+                code = sp.us_state_code(state)
+                self.assertIsNone(code)
+                self.assertEqual(sp.country_basis(code, state, city), (country, basis))
+                self.assertEqual(sp.practice_country(code, state, city), country)
+
+    def test_tables_are_well_formed(self):
+        countries = list(sp.ABROAD_STATE_COUNTRY.values()) + list(sp.ABROAD_STATE_CITY_COUNTRY.values())
+        for country in countries:
+            self.assertRegex(country, r"^[A-Z]{2}$")
+        self.assertNotIn("US", countries)
+        for state in sp.ABROAD_STATE_COUNTRY:
+            # Keyed as the lookup keys them, and never a US code (that would be a US practice) or military mail.
+            self.assertEqual(state, sp._key(state))
+            self.assertNotIn(state, sp.US_STATE_CODES)
+            self.assertNotIn(state, sp.MILITARY_MAIL_STATES)
+        for state, city in sp.ABROAD_STATE_CITY_COUNTRY:
+            self.assertEqual((state, city), (sp._key(state), sp._key(city)))
+            self.assertNotIn(state, sp.US_STATE_CODES)
+            self.assertNotIn(state, sp.ABROAD_STATE_COUNTRY)  # a State the table settles alone needs no city entry
+        self.assertEqual(sp.MILITARY_MAIL_STATES, {"AA", "AE", "AP"})
+        self.assertEqual([key for key, _ in sp.COUNTRY_BASES], ["us", "state", "state_city", "military", "unknown", "blank"])
+
+
+class DoctorRuleTest(unittest.TestCase):
+    """Only doctors are imported: the doctor sheets, and in them only rows whose Profession and code are a doctor's."""
+
+    def test_doctor_rows(self):
+        for profession, code in (("Physician", "207RC0000X"), ("Physician", "208M00000X"), (" physician ", "208600000x"),
+                                 ("Physician", "209800000X"), ("Dentist", "1223G0001X"), ("Dentist", "122300000X"),
+                                 ("DENTIST", "1223S0112X"), ("Dentist", "125Q00000X")):
+            self.assertIsNone(sp.doctor_problem(profession, code), (profession, code))
+
+    def test_rows_that_are_not_a_doctors(self):
+        cases = (
+            ("Student", "390200000X", "profession"),
+            ("Pharmacist", "183500000X", "profession"),
+            ("Nurse Practitioner", "363L00000X", "profession"),
+            (None, "207RC0000X", "profession"),
+            ("Physician", None, "no taxonomy code"),
+            ("Physician", "1223G0001X", "Allopathic & Osteopathic Physicians"),  # a dentist's code
+            ("Physician", "363A00000X", "Allopathic & Osteopathic Physicians"),  # physician assistant
+            ("Dentist", "122400000X", "classification Dentist"),  # denturist
+            ("Dentist", "124Q00000X", "classification Dentist"),  # dental hygienist
+            ("Dentist", "207RC0000X", "classification Dentist"),
+        )
+        for profession, code, words in cases:
+            with self.subTest(profession=profession, code=code):
+                reason = sp.doctor_problem(profession, code)
+                self.assertIsNotNone(reason)
+                self.assertIn(words, reason)
+                self.assertNotIn(code or "-", reason.replace("125Q00000X", ""))  # fixed text: never the row's code
+
+    def test_sheet_rule(self):
+        self.assertEqual(sp.DEFAULT_SHEETS, ("Physicians High", "Physicians Medium", "Dentists"))
+        for sheet in sp.DOCTOR_SHEETS:
+            self.assertIsNone(sp.sheet_problem(sheet))
+        self.assertIn("students and non-doctors get no card and no profile", sp.sheet_problem("Other Professions"))
+        self.assertIn("manual check", sp.sheet_problem("Low (review)"))
+        for sheet in ("Summary", "physicians high", "Other"):
+            self.assertIn("not one of the doctor sheets", sp.sheet_problem(sheet), sheet)
+        for sheet in ("Other Professions", "Low (review)", "Summary"):
+            self.assertIn('Only the doctor sheets are imported: "Physicians High", "Physicians Medium", "Dentists".',
+                          sp.sheet_problem(sheet))
 
     def test_code_list_matches_the_database_function(self):
         codes = migration_us_state_codes()
@@ -190,11 +303,19 @@ class ShortlistReadTest(TempDirTest):
                               middle="  ", credential=" M.D. "),
                 shortlist_row("12345", "Bad", "Npi", "Physician", "207RC0000X", "Austin", "TX"),
                 shortlist_row("1000000012", "Haytham", "Alabbas", "Physician", "208600000X", "Jeddah", "MAKKAH"),
+                # A student's row in a doctor sheet: not a doctor's, never imported.
+                shortlist_row("1000000053", "Rami", "Odeh", "Student", "390200000X", "Chicago", "IL"),
             ],
             "Physicians Medium": [
                 shortlist_row("1000000004", "Sara", "Haddad", "Physician", "207RC0000X", "Houston", "TX"),
             ],
-            "Dentists": [shortlist_row("1000000020", "Omar", "Nasser", "Dentist", "1223G0001X", "Dearborn", "MI")],
+            "Dentists": [
+                shortlist_row("1000000020", "Omar", "Nasser", "Dentist", "1223G0001X", "Dearborn", "MI"),
+                # A denturist under the Dentist profession: not a doctor's code, never imported.
+                shortlist_row("1000000061", "Dana", "Hijazi", "Dentist", "122400000X", "Toronto", "ONTARIO"),
+                # A dentist on a US military base abroad: imported, no country.
+                shortlist_row("1000000079", "Karim", "Saad", "Dentist", "1223G0001X", "Apo", "AE"),
+            ],
             "Other Professions": [
                 shortlist_row("1000000038", "Lina", "Saleh", "Student", "390200000X", "Boston", "MA"),
                 [None] * len(SHORTLIST_HEADER),
@@ -210,16 +331,36 @@ class ShortlistReadTest(TempDirTest):
         workbook.save(path)
         return path
 
-    def test_reads_the_four_sheets_and_never_the_review_sheet(self):
+    def test_reads_the_three_doctor_sheets_and_their_doctor_rows_only(self):
         result = sp.read_shortlist(self.build(), sp.DEFAULT_SHEETS)
-        self.assertEqual(result.read_per_sheet,
-                         {"Physicians High": 3, "Physicians Medium": 1, "Dentists": 1, "Other Professions": 1})
-        self.assertEqual([r.npi for r in result.rows], ["1000000004", "1000000012", "1000000020", "1000000038"])
-        self.assertNotIn("1000000046", {r.npi for r in result.rows})
+        self.assertEqual(result.read_per_sheet, {"Physicians High": 4, "Physicians Medium": 1, "Dentists": 3})
+        self.assertEqual(result.accepted_per_sheet, {"Physicians High": 2, "Physicians Medium": 0, "Dentists": 2})
+        self.assertEqual([r.npi for r in result.rows], ["1000000004", "1000000012", "1000000020", "1000000079"])
+        # Neither the student of "Other Professions" nor the "Low (review)" row is read.
+        self.assertFalse({"1000000038", "1000000046"} & {r.npi for r in result.rows})
         reasons = {(r.sheet, r.row_number): r.reason for r in result.rejects}
         self.assertIn("NPI", reasons[("Physicians High", 3)])
         self.assertIn("duplicate", reasons[("Physicians Medium", 2)])
-        self.assertEqual(result.non_us_states, {"MAKKAH": 1})
+        # The rows of a doctor sheet that are not a doctor's are counted, never imported.
+        self.assertEqual(sorted((r.sheet, r.npi) for r in result.not_doctors),
+                         [("Dentists", "1000000061"), ("Physicians High", "1000000053")])
+        self.assertEqual(result.not_doctor_counts, collections.Counter({
+            ("Physicians High", "profession is not Physician or Dentist", "Student", "390200000X"): 1,
+            ("Dentists", sp.doctor_problem("Dentist", "122400000X"), "Dentist", "122400000X"): 1,
+        }))
+        self.assertEqual((result.not_doctors_per_sheet("Dentists"), result.not_doctors_per_sheet("Physicians Medium")),
+                         (1, 0))
+        self.assertEqual(result.non_us_states, {"MAKKAH": 1, "AE": 1})
+        self.assertEqual(result.countries(), collections.Counter({"US": 2, "SA": 1, None: 1}))
+        self.assertEqual(result.country_bases, collections.Counter({"us": 2, "state": 1, "military": 1}))
+        self.assertEqual(result.abroad_unsettled, collections.Counter())
+
+    def test_other_sheets_are_refused(self):
+        path = self.build()
+        for sheets in (["Other Professions"], ["Physicians High", "Low (review)"], ["Summary"]):
+            with self.assertRaises(SystemExit) as raised:
+                sp.read_shortlist(path, sheets)
+            self.assertIn("Only the doctor sheets are imported", str(raised.exception))
 
     def test_row_values_trimmed_and_no_contact_details(self):
         rows = {r.npi: r for r in sp.read_shortlist(self.build(), sp.DEFAULT_SHEETS).rows}
@@ -228,8 +369,9 @@ class ShortlistReadTest(TempDirTest):
         self.assertEqual((sara.city_en, sara.state_code, sara.taxonomy_code), ("Houston", "TX", "207RC0000X"))
         self.assertEqual(sara.practice_country, "US")
         self.assertEqual((sara.name_en, sara.registry_credential), ("Dr Sara Haddad", "M.D."))
-        self.assertEqual((rows["1000000012"].state_code, rows["1000000012"].practice_country), (None, None))
-        self.assertEqual(rows["1000000038"].name_en, "Lina Saleh")
+        self.assertEqual((rows["1000000012"].state_code, rows["1000000012"].practice_country), (None, "SA"))
+        self.assertEqual((rows["1000000079"].state_code, rows["1000000079"].practice_country), (None, None))
+        self.assertEqual(rows["1000000020"].name_en, "Dr Omar Nasser")
         self.assertEqual(set(sp.RegistryRow.__dataclass_fields__),
                          {"npi", "first_name", "middle_name", "last_name", "name_en", "registry_credential",
                           "registry_profession", "taxonomy_code", "city_en", "state_code", "practice_country"})
@@ -247,23 +389,35 @@ class ShortlistReadTest(TempDirTest):
         args = argparse.Namespace(shortlist=path, sheets=list(sp.DEFAULT_SHEETS), registry_as_of=dt.date(2026, 10, 1),
                                   database_url="postgresql://user:secret@127.0.0.1:55322/postgres", dry_run=False)
         stats = {
-            "inserted": 4, "updated": 0, "unchanged": 0, "skipped": [], "links_inserted": 2, "links_updated": 0,
-            "links_deleted": 0, "specialties": 2, "specialties_with_codes": 2, "mapped": 2, "unmapped": 2,
-            "top_unmapped": [("390200000X", "Student", 1)], "final_nppes_rows": 4, "final_country_us": 3,
-            "final_country_null": 1, "final_with_specialty": 2, "final_with_primary_link": 2,
+            "inserted": 4, "updated": 0, "unchanged": 0, "skipped": [], "links_inserted": 4, "links_updated": 0,
+            "links_deleted": 0, "specialties": 2, "specialties_with_codes": 2, "mapped": 4, "unmapped": 0,
+            "top_unmapped": [], "final_nppes_rows": 4, "final_country_us": 2, "final_country_null": 1,
+            "final_with_specialty": 4, "final_with_primary_link": 4, "final_countries": {"US": 2, "SA": 1, None: 1},
         }
         started = dt.datetime(2026, 10, 20, 9, 0, tzinfo=dt.timezone.utc)
         log = [sp.summary_line(args, shortlist, stats, started)]
         text = "\n".join(sp.report_lines(args, shortlist, stats, started, 1.0, log))
-        # No registry row: neither a rejected NPI nor an accepted one, no name, no password from the URL.
-        for npi in ("12345", "1000000004", "1000000012", "1000000020", "1000000038"):
+        # No registry row: no NPI (rejected, not a doctor's or imported), no name, no raw State or City, no password.
+        for npi in ("12345", "1000000004", "1000000012", "1000000020", "1000000038", "1000000053", "1000000061",
+                    "1000000079"):
             self.assertNotIn(npi, text)
-        for word in ("Haddad", "Sara", "secret"):
+        for word in ("Haddad", "Sara", "Hijazi", "Odeh", "secret", "MAKKAH", "Jeddah", "Toronto", "Apo"):
             self.assertNotIn(word, text)
         self.assertIn("| Physicians High | NPI is not 10 digits starting with 1 or 2 | 1 |", text)
         self.assertIn("| Physicians Medium | duplicate NPI (first sheet wins) | 1 |", text)
-        self.assertIn("| practice_country = US | 3 | 3 |", text)
+        self.assertIn("| Physicians High | 4 | 2 | 1 | 1 |", text)  # read, imported, not a doctor's, rejected
+        self.assertIn("| Dentists | 3 | 2 | 1 | 0 |", text)
+        self.assertIn("| Total | 8 | 4 | 2 | 2 |", text)
+        self.assertIn(f"| Dentists | {sp.doctor_problem('Dentist', '122400000X')} | Dentist | 122400000X | 1 |", text)
+        self.assertIn("| Physicians High | profession is not Physician or Dentist | Student | 390200000X | 1 |", text)
+        self.assertIn("| US | 2 | 2 |", text)
+        self.assertIn("| SA | 1 | 1 |", text)
+        self.assertIn("| (none) | 1 | 1 |", text)
+        self.assertIn("| abroad: US military mail code (AA, AE, AP), no country | 1 |", text)
+        self.assertIn("| practice_country = US | 2 | 2 |", text)
+        self.assertIn("| practice_country abroad (another country) | 1 | 1 |", text)
         self.assertIn("| practice_country null | 1 | 1 |", text)
+        self.assertIn("doctor rows of the shortlist that pass the guard: 4; equal: yes", text)
         self.assertEqual(log[0].count("|") - 1, len(sp.RUN_LOG_COLUMNS))
 
     def test_database_is_described_without_credentials(self):
@@ -304,10 +458,19 @@ class ShortlistReadTest(TempDirTest):
         self.assertEqual(sp.previous_run_log(report, 3), ["| 2026-10-20 08:04 | 1 | 2 |"])
         self.assertEqual(sp.previous_run_log(self.dir / "missing.md", 3), [])
 
-    def test_the_review_sheet_is_refused(self):
-        with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
-            sp.parse_args(["--shortlist", str(self.build()), "--registry-as-of", "2026-10-01",
-                           "--sheets", "Physicians High", "Low (review)"])
+    def test_the_review_and_other_sheets_are_refused(self):
+        path = str(self.build())
+        for sheets, words in ((["Physicians High", "Low (review)"], "manual check"),
+                              (["Other Professions"], "students and non-doctors get no card and no profile"),
+                              (["Dentists", "Summary"], "not one of the doctor sheets"),
+                              (["Dentists", "Dentists"], "twice")):
+            with self.subTest(sheets=sheets):
+                err = io.StringIO()
+                with self.assertRaises(SystemExit), contextlib.redirect_stderr(err):
+                    sp.parse_args(["--shortlist", path, "--registry-as-of", "2026-10-01", "--sheets", *sheets])
+                self.assertIn(words, err.getvalue())
+        args = sp.parse_args(["--shortlist", path, "--registry-as-of", "2026-10-01"])
+        self.assertEqual(args.sheets, ["Physicians High", "Physicians Medium", "Dentists"])
 
     def test_registry_date_is_required(self):
         with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
@@ -451,12 +614,12 @@ class EnrichGuardTest(TempDirTest):
 
     def test_guard_rule(self):
         floor = enrich_cms.MIN_UNCLAIMED_NPPES
-        self.assertIsNone(enrich_cms.guard_problem(65_985, None))
-        self.assertIsNone(enrich_cms.guard_problem(65_985, 20_351))
+        self.assertIsNone(enrich_cms.guard_problem(28_584, None))  # the doctor import
+        self.assertIsNone(enrich_cms.guard_problem(28_584, 14_000))
         self.assertIsNone(enrich_cms.guard_problem(floor, 1))
         self.assertIn("seed_professionals.py first", enrich_cms.guard_problem(8, None))  # a reset database: the dev seed only
         self.assertIn("seed_professionals.py first", enrich_cms.guard_problem(floor - 1, 500))
-        self.assertIn("no NPI", enrich_cms.guard_problem(65_985, 0))
+        self.assertIn("no NPI", enrich_cms.guard_problem(28_584, 0))
 
     def run_main(self, unclaimed: int, extra_args=()):
         """Runs enrich_cms.main on a tiny DAC file with the database calls replaced; returns (exit code, connection,
@@ -492,7 +655,7 @@ class EnrichGuardTest(TempDirTest):
         from unittest import mock
 
         with mock.patch.object(enrich_cms, "is_valid_npi", return_value=False):  # nothing in the database matches
-            code, conn, report, applied, _ = self.run_main(unclaimed=65_985)
+            code, conn, report, applied, _ = self.run_main(unclaimed=28_584)
         self.assertEqual(code, 1)
         self.assertFalse(report.exists())
         self.assertFalse(applied or conn.committed)
@@ -502,7 +665,7 @@ class EnrichGuardTest(TempDirTest):
         self.assertEqual(code, 0)
         self.assertTrue(applied and conn.committed and report.exists())
         report.unlink()
-        code, conn, report, applied, _ = self.run_main(unclaimed=65_985)
+        code, conn, report, applied, _ = self.run_main(unclaimed=28_584)
         self.assertEqual(code, 0)
         self.assertTrue(applied and conn.committed and report.exists())
 
@@ -576,7 +739,7 @@ class DatabaseTest(unittest.TestCase):
     def rows(self, first="Test", city="Houston", state="TX"):
         new = sp.RegistryRow(self.new_npi, first, None, "Alpha", sp.display_name(first, "Alpha", "Physician"), "MD",
                              "Physician", self.TEST_CODE, city, sp.us_state_code(state),
-                             sp.practice_country(sp.us_state_code(state)))
+                             sp.practice_country(sp.us_state_code(state), state, city))
         claimed = sp.RegistryRow(self.claimed_npi, "Changed", None, "Name", "Dr Changed Name", "DO", "Physician",
                                  self.TEST_CODE, "Dallas", "TX", "US")
         return [new, claimed]
@@ -637,11 +800,17 @@ class DatabaseTest(unittest.TestCase):
         sp.import_rows(self.conn, self.rows(), as_of)
         self.assertEqual(self.registry_columns(self.new_npi)[:2], ("TX", "US"))
 
-        # The registry moves the practice abroad: state and country both clear in one update; a re-run changes nothing.
-        moved = sp.import_rows(self.conn, self.rows(state="RIYADH"), as_of)
+        # The registry moves the practice abroad: the state clears and the country becomes the one the State names, in
+        # one update; a re-run changes nothing.
+        moved = sp.import_rows(self.conn, self.rows(state="RIYADH", city="Riyadh"), as_of)
         self.assertEqual((moved["updated"], moved["final_country_us"]), (1, 0))
+        self.assertEqual(moved["final_countries"], {"SA": 1, None: 1})  # the claimed row was never given one
+        self.assertEqual(self.registry_columns(self.new_npi)[:2], (None, "SA"))
+        self.assertEqual(sp.import_rows(self.conn, self.rows(state="RIYADH", city="Riyadh"), as_of)["updated"], 0)
+
+        # To a military base: no country.
+        self.assertEqual(sp.import_rows(self.conn, self.rows(state="AP", city="Fpo"), as_of)["updated"], 1)
         self.assertEqual(self.registry_columns(self.new_npi)[:2], (None, None))
-        self.assertEqual(sp.import_rows(self.conn, self.rows(state="RIYADH"), as_of)["updated"], 0)
 
         # Back in the US. A practice state always means a US practice: the trigger professionals_sync_practice_country
         # puts 'US' back when anything clears the country while state_code is set, so the import finds nothing to do.

@@ -7,7 +7,7 @@ instant is shifted at seed time the way `lib/card-data.ts` shifts it at read tim
 
 | Table | Rows | From |
 | --- | --- | --- |
-| specialties | 104 | scripts/specialty_groups.py, specialties.json, body-systems.json, specialty-terms.json synonyms; 386 taxonomy codes on 103 groups from scripts/taxonomy_map.py |
+| specialties | 104 | scripts/specialty_groups.py (names), specialties.json (the 24 slugs), body-systems.json, specialty-terms.json synonyms; 402 taxonomy codes on 103 groups from scripts/taxonomy_map.py |
 | auth.users + auth.identities | 22 | 8 patients, 1 admin, 13 professionals |
 | profiles (via trigger, then updated) | 22 | patient-settings.json, introductions.json, summaries.json, ai-jobs.json, lib/sample.ts sampleAdmin, doctors.json |
 | professionals | 22 | doctors.json, profiles.json, listings.json, builder.json, invites.json, removals.json, availability.json |
@@ -22,6 +22,7 @@ instant is shifted at seed time the way `lib/card-data.ts` shifts it at read tim
 | bookings | 14 | bookings.json (11), introductions.json confirmed/done rows of doc_002 without a bookings.json row (3, fee lines from feeLines at the doctor's fee) |
 | receipts | 10 | receipts.json, payments.json charges |
 | refunds | 2 | receipts.json refunds, amounts by refundFor (business.fullRefundCutoffHours) |
+| introduction_requests | 1 | introductions.json rows with status request (status open; instants shifted like sampleInstant) |
 | invites | 12 | invites.json (token_hash = sha256 hex of the demo token) |
 | removal_requests | 6 | removals.json (sampleInstantExact: authoredNowUtc maps to now) |
 | record_sets | 10 | records.json sets, ai-jobs.json extraSets (quote by quoteFor) |
@@ -37,7 +38,8 @@ instant is shifted at seed time the way `lib/card-data.ts` shifts it at read tim
 
 | Item | Reason |
 | --- | --- |
-| specialty-terms.json taxonomyCodes | superseded by scripts/taxonomy_map.py (the reviewed mapping); 18 groups differ, listed under "Taxonomy codes vs the sample" |
+| specialties.json nameEn/nameAr | every group is named by its card title (decided 20 Oct 2026); 18 of the 24 differ, listed under "Specialty names vs the sample" |
+| specialty-terms.json taxonomyCodes | superseded by scripts/taxonomy_map.py (the reviewed mapping); 17 groups differ, listed under "Taxonomy codes vs the sample" |
 | specialties.json doctorCount | a count of listings, derived from professionals; no column |
 | body-systems.json nameEn/nameAr and the order of slugs inside a system | copy lives in messages; specialties.body_system keeps the key and position is the card position |
 | specialty-terms.json draftSystem | preview of /admin/specialties?state=empty; not a body system |
@@ -61,7 +63,6 @@ instant is shifted at seed time the way `lib/card-data.ts` shifts it at read tim
 | memberships.json timeZone | the doctor's zone lives on professionals.time_zone |
 | introductions.json int_002 receivedAtUtc | int_002 is bk_004: the booking's bookedAtUtc is kept as booked_at |
 | bookings.json bk_211 bookedAtUtc | absent and no receipt: booked_at is the seed time |
-| introductions.json int_003 (status request) | an introduction request is not a booking; no table holds requests yet (see schemaFindings) |
 | introductions.json int_005 joinUrl | a phone visit has no meeting link (join_url null) |
 | bookings.json bk_006 joinUrl | a phone visit has no meeting link (toPatientBooking drops it) |
 | payments.json pendingRefund (bk_009) | preview of /admin/payments?state=webhook-pending |
@@ -90,6 +91,7 @@ What the builder checked before writing the seed (the round-3 constraints):
 
 - Live bookings (upcoming or done): 11 over 6 professionals; no two of one professional overlap (bookings_no_overlap).
 - Done bookings carry done_at, the doctor's mark (bookings_done_have_time): bk_002 (the end of the visit), bk_006 (the end of the visit), bk_007 (the end of the visit), int_005 (introductions.json doneAtUtc).
+- Introduction requests: 1; each goes to a verified professional, and each patient's profile holds both first names and the gender introduction_requests_copy_patient copies.
 - Shares: 3; each patient's profile holds both first names and the gender the trigger copies, and each booking link is the patient's booking with the share's professional.
 - Storage paths: every sample file name already fits the allowlist; no name was changed.
 
@@ -112,7 +114,8 @@ What the builder checked before writing the seed (the round-3 constraints):
 - Bookings: ids are uuids; patientFirstName is patient_id plus patient_first_name_en/ar; the three lines are doctor_fee_cents, platform_fee_cents, card_processing_cents with currency, and total_cents is generated; durationMinutes is ends_at - starts_at. Stored status stays as authored (upcoming); "done once the slot has ended" stays in code, as in toPatientBooking. A row stored 'done' (bk_002, bk_006, bk_007) carries done_at, the doctor's mark the schema requires: doneAtUtc where the sample has one, else the visit's ends_at.
 - Bookings booked_at: bookedAtUtc where the row has one, else the receipt's paid_at (bk_001..bk_003), else the seed time (bk_211).
 - Join links: only video visits carry join_url (bk_006's and int_005's phone links are dropped, as toPatientBooking drops them).
-- Introductions: confirmed rows are bookings with status upcoming, done rows status done with done_at; int_002 is bk_004 (booked_at is bk_004's bookedAtUtc, not int_002's receivedAtUtc); concernEn/concernAr collapse into one `concern`, seeded with the Arabic text (what a Gulf patient types) and concern_locale 'ar' (null where no concern is stored); sharedSummaryId is record_shares.booking_id. Requests (int_003) are not stored.
+- Introductions: confirmed rows are bookings with status upcoming, done rows status done with done_at; int_002 is bk_004 (booked_at is bk_004's bookedAtUtc, not int_002's receivedAtUtc); concernEn/concernAr collapse into one `concern`, seeded with the Arabic text (what a Gulf patient types) and concern_locale 'ar' (null where no concern is stored); sharedSummaryId is record_shares.booking_id. The request (int_003) is an introduction_requests row (next item).
+- Requests: an introductions.json row with status request (int_003) is a public.introduction_requests row with status open (screen 32's unpaid request); startsAtUtc is requested_start and receivedAtUtc is received_at (both shifted like sampleInstant); visitType, bookedBy, ageGroup, prepared and patientTimeZone are columns; the concern is the Arabic text with concern_locale 'ar', as on the bookings; patient_first_name_en/ar and patient_gender are the profile's, copied by the trigger introduction_requests_copy_patient (the seed sends none); doctorTimeZone is the professional's time_zone; joinUrl and sharedSummaryId are null on a request; specialty_id, transcript and consent_id are null (the request did not come from the intake chat); booking_id, answered_at and withdrawn_at are null while it is open.
 - Receipts: subject is 'booking' on every receipt and refund (record_set_id null); paymentMethod is wallet, card_brand, card_last4; refunds are rows with the amount refundFor gives, reason patientEarly/doctor, initiated_by automatic, idempotency_key refund-<booking uuid> (adminRefundKey of the uuid, not of bk_NNN).
 - Payout account: payouts.json/payments.json account facts are professional_private.stripe_*; next and recent payouts are Stripe API reads with no table.
 - Memberships: one row per professional (doc_002 is mem_active); membership-billing.json facts are columns on the same row (started_at, comp_until, stripe ids, last_invoice_*).
@@ -125,8 +128,9 @@ What the builder checked before writing the seed (the round-3 constraints):
 - Shares: expires_at is stored (shared_at + shareDefaultDays); patient_first_name_en/ar and patient_gender are the profile's, copied by the trigger record_shares_copy_patient (the seed sends none); status is derived: reviewed when the summary's reviewer is the share's professional, viewed when viewed_at is set, else new.
 - AI jobs: steps is a jsonb array of {step, startedAt, finishedAt, usage?, files?} with shifted ISO instants and fileId as the record_files uuid; totals are summed into input_tokens, output_tokens, cost_micros; status and step mirror the set.
 - Audit: actor ids are account uuids (adm_002 has the reserved uuid ad000000-0000-4000-8000-000000000002 and no account); a system actor sys_<name> is actor_id null, actor_kind system, actor_system <name> (sys_stripe is stripe, sys_pipeline pipeline, sys_scheduler scheduler, sys_registry registry); target ids are the seeded uuids as text where the target is seeded; target_professional_id is set only where the sample has target.doctorId; verification checks keep {kind, source, result, checkedAt, by} with by/reviewer as uuids; aud_NNN ids are not stored.
-- Accounts: patients pat_001..pat_003 are Noura, Yousef, Faisal (the patients of rs_001..rs_003); pat_004..pat_008 are Reem, Hamad, Maryam, Latifa, Abdullah; patient emails are <firstname>@example.com; the admin is ops@example.com.
+- Accounts: patients pat_001..pat_003 are Noura, Yousef, Faisal (the patients of rs_001..rs_003); pat_004..pat_008 are Reem, Hamad, Maryam, Latifa, Abdullah; patient emails are <firstname>@example.com; the admin is ops@example.com. A patient's profile takes the Arabic first name and time zone of their introductions.json row (int_003 gives Hamad Asia/Kuwait); Hamad's gender is 'm' (the sample has no gender for him; int_003's concern says "He sings in the school choir"), so the request's snapshot has one.
 - Specialties: on a database where another seed already inserted the 104 groups, those rows win (on conflict do nothing), so their ids and taxonomy codes are that seed's; every reference here goes through the slug.
+- Specialty names: every group is named by its card title in the content document (decided 20 Oct 2026), so the 24 prototype groups' name_en/name_ar differ from specialties.json nameEn/nameAr (and from doctors.json specialtyEn/specialtyAr) where the prototype used a short name; the slugs, body systems and search words are the prototype's. The groups that differ are listed under "Specialty names vs the sample".
 - Taxonomy codes: specialties.taxonomy_codes is scripts/taxonomy_map.py TAXONOMY_MAP (the reviewed mapping, each group's codes sorted as map_taxonomy.py stores them), not specialty-terms.json taxonomyCodes (the drafted sample, which /admin/specialties shows today). The groups where the two differ are listed under "Taxonomy codes vs the sample".
 
 ## Taxonomy codes vs the sample
@@ -135,14 +139,13 @@ The prototype groups whose seeded codes (scripts/taxonomy_map.py) differ from th
 
 | Group | Only in specialty-terms.json | Only in the seed |
 | --- | --- | --- |
-| family-medicine | - | 207QA0505X |
-| internal-medicine | 208M00000X | - |
+| family-medicine | - | 207QA0505X, 208D00000X |
+| internal-medicine | - | 207RM1200X, 207RP1002X, 208U00000X |
 | cardiology | 207RC0001X, 207RI0011X | - |
 | endocrinology | - | 207QB0505X |
 | pulmonology | 207RC0200X | - |
 | allergy | - | 207KI0005X, 207RA0201X, 207YX0602X, 2080I0007X, 2080P0201X |
-| oncology | 207RH0003X | - |
-| neurology | 2084N0402X | 2084V0102X |
+| neurology | 2084N0402X | 2084B0040X, 2084V0102X |
 | psychiatry | 2084P0804X | 2084P0015X |
 | pediatrics | 2080N0001X | 207QA0000X, 207RA0000X, 2080A0000X |
 | obgyn | 207VM0101X | - |
@@ -153,6 +156,31 @@ The prototype groups whose seeded codes (scripts/taxonomy_map.py) differ from th
 | ophthalmology | - | 207WX0009X, 207WX0107X, 207WX0108X, 207WX0109X, 207WX0110X, 207WX0120X, 207WX0200X |
 | ent | - | 207YP0228X, 207YS0123X, 207YX0007X, 207YX0901X, 207YX0905X |
 | pain | - | 207PH0002X, 207QH0002X, 207RH0002X, 207VH0002X, 2080H0002X, 2081P2900X, 2086H0002X, 208VP0000X, 208VP0014X |
+
+## Specialty names vs the sample
+
+The prototype groups whose seeded name, the card title of the content document (decided 20 Oct 2026), differs from `data/sample/specialties.json`; the slug is the prototype's. A deliberate difference: the screens read the name from the specialties row once lane L6 wires them.
+
+| Group | specialties.json (en / ar) | Seeded card title (en / ar) |
+| --- | --- | --- |
+| cardiology | Cardiology / أمراض القلب | General & preventive cardiology / أمراض القلب والوقاية القلبية |
+| endocrinology | Endocrinology / الغدد الصماء | Endocrinology, diabetes & metabolism / الغدد الصماء والسكري والتمثيل الغذائي |
+| pulmonology | Pulmonology / أمراض الصدر | Pulmonary medicine / الأمراض الصدرية |
+| allergy | Allergy and immunology / الحساسية والمناعة | Allergy & immunology / الحساسية والمناعة |
+| rheumatology | Rheumatology / الروماتيزم | Rheumatology / أمراض الروماتيزم |
+| infectious-disease | Infectious disease / الأمراض المعدية | Infectious diseases / الأمراض المعدية |
+| oncology | Oncology / الأورام | Medical oncology / طب الأورام |
+| neurology | Neurology / طب الأعصاب | Neurology & vascular neurology / طب الأعصاب والأعصاب الوعائية |
+| neurosurgery | Neurosurgery / جراحة الأعصاب | Neurosurgery / جراحة المخ والأعصاب |
+| psychiatry | Psychiatry / الطب النفسي | Adult psychiatry & consultation-liaison psychiatry / الطب النفسي للبالغين والطب النفسي الاستشاري |
+| pediatrics | Pediatrics / طب الأطفال | General pediatrics & adolescent medicine / طب الأطفال وطب المراهقين |
+| obgyn | Obstetrics and gynecology / النساء والتوليد | Obstetrics & gynecology / أمراض النساء والتوليد |
+| sports-medicine | Sports medicine / الطب الرياضي | Sports, joint reconstruction & orthopedic trauma / الطب الرياضي وترميم المفاصل وإصابات العظام |
+| urology | Urology / المسالك البولية | Urology & pediatric urology / المسالك البولية ومسالك الأطفال |
+| dermatology | Dermatology / الأمراض الجلدية | Dermatology & pediatric dermatology / الأمراض الجلدية وجلدية الأطفال |
+| ophthalmology | Ophthalmology / طب العيون | Ophthalmology / طب وجراحة العيون |
+| ent | Ear, nose and throat / الأنف والأذن والحنجرة | Otolaryngology & neurotology / الأنف والأذن والحنجرة وأعصاب الأذن |
+| pain | Pain medicine / طب الألم | Pain, palliative & hospice medicine / طب الألم والرعاية التلطيفية ورعاية نهاية الحياة |
 
 ## Ids
 
@@ -171,6 +199,7 @@ Sample id to uuid map: the comment block at the top of `supabase/seed.sql`.
 | a1e10000 | availability_exceptions: owner doc, x_NNN, or 5107000000NN for profile slot NN |
 | b0000000 | bookings: bk_NNN |
 | b1000000 | bookings made from an introductions.json row: int_NNN |
+| 4e900000 | introduction_requests ("req"): an introductions.json request, int_NNN |
 | ec000000 | receipts: the booking's bk_NNN |
 | 4ef00000 | refunds: re_sample_NNN |
 | 3e300000 | memberships: mem_aNN -> a NN, mem_active -> a00 |

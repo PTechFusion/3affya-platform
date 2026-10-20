@@ -9,7 +9,7 @@ row-level extract belongs outside the repo).
 
 Every connection has explicit timeouts (CLAUDE.md: every outbound call has one): 10 s to connect, TCP keepalives that
 notice a dead server in about a minute, a 10 s lock wait, and a statement timeout of 15 minutes (generous for the
-66k-row import; SEED_STATEMENT_TIMEOUT overrides it, e.g. 30min, 900s or 0 for none).
+registry import; SEED_STATEMENT_TIMEOUT overrides it, e.g. 30min, 900s or 0 for none).
 """
 
 from __future__ import annotations
