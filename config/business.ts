@@ -115,3 +115,12 @@ export const bookingRules = {
   /** The checkout hold bar turns amber, and screen readers hear it, once this many minutes are left. */
   holdWarnMinutes: 2,
 } as const;
+
+/* ---------------- Members and subscriptions, admin (screen 42, tasks 3.5 and 3.11) ---------------- */
+// Appended block. What an admin can grant from /admin/members. The grace period itself is business.membershipGraceDays above;
+// an extension adds graceExtendDays to it for one membership (3affya's own setting: Stripe keeps retrying the card meanwhile).
+// Free months are a 100% discount on that many renewals, applied in Stripe Billing. (default until Dr Ayman confirms)
+export const membershipAdmin = {
+  compMonthsOptions: [1, 2, 3] as readonly number[],
+  graceExtendDays: 7,
+} as const;
