@@ -1,6 +1,6 @@
 # 3affya (Aafia) project notes
 
-Last updated: 19 October 2026 (theme approved, calling research, design files added to the folder). Owner: Yasir (ProgrammX). Client: Dr Ayman Salem.
+Last updated: 20 October 2026 (schema lane decisions: doctors-only directory, account deletion, production sign-in; section 12). Before that 19 October 2026 (theme approved, calling research, design files added to the folder). Owner: Yasir (ProgrammX). Client: Dr Ayman Salem.
 
 Use this file as the starting context for any new chat about 3affya.
 
@@ -122,7 +122,7 @@ Yasir's raw notes: "Chatbot also needs to do intake. This would give us a chance
    - Source: CMS Provider Data Catalog, Doctors and Clinicians National Downloadable File (data.cms.gov/provider-data, dataset mj5m-pzi6), Medicare-enrolled clinicians, free download, keyed on NPI. Fields checked 16 Oct 2026 in the CMS data dictionary: credential, medical school name, graduation year, primary and secondary specialties, group practice name and size, practice address and phone, Medicare assignment, hospital affiliations (facility affiliation file, also joined on NPI); newer releases add a telehealth flag.
    - Not in the file: board certification and residency. Medical school alone does not prove "US-trained" (many Arabic-named US doctors went to medical school abroad and trained in US residencies), so the card shows medical school and graduation year as facts, and "US-trained" is only claimed after credential review.
    - One row per clinician, enrollment and address, so dedupe on NPI. CMS says general information refreshes monthly.
-   - Not every row in our 66k NPPES shortlist is Medicare-enrolled; the NPI join gives the real enriched count (Dr Ayman's 65,000 figure is his).
+   - Not every row in our 66k NPPES shortlist is Medicare-enrolled; the NPI join gives the real enriched count (Dr Ayman's 65,000 figure is his). Since 20 Oct only the 28,584 doctor rows get a page (section 12), so the join counts those.
    - No need to pay for Apify actors that resell this file; download it directly.
 
 3. **GCC mobile to US landline calling.** Owner: Yasir. Dr Ayman's framing: many US doctors are on landlines, Gulf patients live on WhatsApp; find the best way to connect them for a consultation by call. Research done 17 Oct 2026 (night).
@@ -146,7 +146,7 @@ Yasir's raw notes: "Chatbot also needs to do intake. This would give us a chance
 - Payments: Stripe through the US entity can accept GCC patients' cards. Stripe does not support Oman as an account country (UAE is the only GCC country it supports), so an Oman entity cannot be the Stripe account holder. Stripe pricing checked 14 Oct 2026: 2.9% + 30c per card payment, +1.5% international cards, +1% currency conversion; Connect: USD 2 per active connected account per month, 0.25% + 25c per payout. Recheck before quoting.
 - Practice ID card: Rasheed designed a practice ID card flow that was built into ikioo and MedBot Pro. Reference now: the ikioo sign-up PNGs (Rasheed's work, 17 Oct), the featured card on the theme board, and the banner ad PDF Dr Ayman sent on 14 Oct.
 - Visual direction (17 Oct): theme draft 1 from the 3affya logo (7b), with the ikioo sign-up flow for doctor onboarding and the practice ID card. MedBot Pro dropped. No Figma pass; designs are delivered as a clickable prototype plus an in-app brand system (see the handoff files).
-- Directory enrichment: CMS Doctors and Clinicians join on NPI added to the seed step (task 1.5); see section 7a.
+- Directory enrichment: CMS Doctors and Clinicians join on NPI added to the seed step (task 1.5); see section 7a. The directory lists doctors only (20 Oct, section 12).
 - Planning: full handoff written 16 Oct. Files: programmx_handoff-overview, -architecture, -milestones, -tasks (all 2026-10), in this folder and in the Claude Project. Start there for any build question. Overview, milestones and tasks carry the 16 Oct evening changes and the 17 Oct profile builder decision.
 
 ## 9. Files in this folder
@@ -162,7 +162,7 @@ Yasir's raw notes: "Chatbot also needs to do intake. This would give us a chance
 - `scripts/aafia_build_master.py`: merges Dr Ayman's lists into one scored master.
 - `scripts/aafia_nppes_refresh.py`: streams the NPPES zip in chunks (pass1 per chunk, then finalize), scores all individual providers and matches old emails.
 - `output/aafia_master_doctors.csv`, `output/aafia_scored_all.csv`, `output/aafia_shortlist.xlsx`: results from Dr Ayman's original lists.
-- `output/nppes_2026-10/aafia_registry_shortlist_2026-10.xlsx`: refreshed outreach list, about 66,000 Arabic-named professionals with current practice addresses, emails matched where available. Main outreach source.
+- `output/nppes_2026-10/aafia_registry_shortlist_2026-10.xlsx`: refreshed outreach list, about 66,000 Arabic-named professionals with current practice addresses, emails matched where available. Main outreach source. The directory imports only its three doctor sheets ("Physicians High", "Physicians Medium", "Dentists": 28,584 rows, 20 Oct).
 - `output/nppes_2026-10/_slim_*.csv`, `_counts_*.pkl`, `_nppes_individuals_slim.csv`: temporary processing files (about 1 GB), safe to delete.
 - `design/README.md`: what is in the design folder.
 - `design/theme-board/`: source of the theme board Dr Ayman approved on 17 Oct (canvas.json plus five .dc.html artboards).
@@ -176,7 +176,28 @@ Yasir's raw notes: "Chatbot also needs to do intake. This would give us a chance
 3. Design system, then first mockups (public site and doctor profile) for approval by 23 Oct.
 4. When the first USD 2,500 lands, confirm scope and payment plan in writing, including the light-intake trade.
 5. Set up the separate cloud account and billing for 3affya before build starts.
-6. Download the CMS Doctors and Clinicians file and run the NPI join against the 66k shortlist; report the matched count.
+6. Download the CMS Doctors and Clinicians file and run the NPI join against the shortlist's 28,584 doctor rows (doctors only since 20 Oct); report the matched count. The join script is built (task 1.5, `scripts/enrich_cms.py`, report in `output/cms_join_report.md`).
 7. Make the transparent and dark-background logo versions from Dr Ayman's two ChatGPT versions.
 8. Calling: research done 17 Oct (7a). Next: send Dr Ayman the options; get a Telnyx Gulf quote if he wants the callback bridge.
 9. Price options B and C as a re-scope once Dr Ayman picks.
+
+## 11. Added 19 to 20 Oct (evening session)
+
+- `programmx_aafia-screen-rules_2026-10.pdf` and `.md`: 156 evidence-backed screen rules from four research lanes (general UX, healthcare, Arabic and Gulf, marketplace), ten decisions the research forces, pointers and a layout call for every screen.
+- `programmx_aafia-screen-inventory_2026-10.xlsx` draft 2: columns L (Design pointers), M (Rule refs), N (Layout call) and a Rules sheet.
+- `design/brand-page/`: screenshots of /brand as built (phone ar and en, desktop ar).
+- Repo: https://github.com/PTechFusion/3affya-platform (tasks 1.1 and 1.2 done; 50 screen briefs under docs/screens; CLAUDE.md for Claude Code). How to begin: `programmx_aafia-repo-readme_2026-10.md`.
+- Open with counsel (from the research): Saudi cross-border consult rules (supervision, video, signed consent); UAE health data residency and DHA per-session consent. On the 26 Oct checkpoint agenda.
+
+## 12. Decided 20 Oct (Yasir, after the schema lane)
+
+The schema lane (L1, PR #4 into dev: tasks 1.4 and 1.5) asked eight questions; Yasir's answers:
+
+1. Taxonomy: every large group maps to its most logical card (for example general practice to family medicine, haematology and oncology to oncology). 402 of the 589 codes are mapped; students, support roles and professions no card covers stay unmapped. On doctor rows, every code that has a card is mapped.
+2. Specialty names: all 104 groups use the content document's card titles in Arabic and English; the 24 prototype slugs stay (they are URLs). Body systems for the 80 new groups are still open.
+3. Directory: only doctors get a card and a profile: physicians and dentists, the sheets "Physicians High", "Physicians Medium" and "Dentists": 28,584 doctors (the three doctor sheets hold 28,587 rows; 3 of them are denturists, who are not doctors). Students and other professions (the "Other Professions" sheet, 37,398 rows) are not imported. Doctors practising abroad do get a profile.
+4. Account deletion: a deleted professional account archives the listing (hidden from every public view; the row, bookings, credentials and history stay). A deleted patient account keeps every booking, receipt and refund line, without the patient's name or phone.
+5. Production sign-in by email code only: email autoconfirm off, password sign-up and password sign-in blocked at the reverse proxy, and a smoke check that proves it.
+6. The database functions for audit writes in the same transaction are not built now; they go into the data-wiring lane's plan (L6) as a prerequisite.
+7. The secret grep in the lane rules uses word boundaries (the old one matched column names).
+8. The gaps are built now: an `introduction_requests` table (unpaid requests and the intake chat transcript) and a busy-times function for slot pickers. Every project document updated the same day, and each other lane's brief carries its notes.

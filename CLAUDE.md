@@ -24,8 +24,10 @@ All 47 screens are built. The work behind them is cut into lanes that do not tou
 is the brief every lane agent receives, one brief per lane (L1 schema and RLS, L2 Stripe webhook, L3 AI client, L4 email
 templates, L5 quality and CI now; L6 data wiring and L7 auth after L1 merges). Branch `lane/<slug>`, PR into `dev`.
 
-## Status (19 Oct 2026)
-Done in this repo: 1.1, 1.2 (scaffold, i18n and RTL, lint rule, tokens, DoctorCard, /brand), screen 1 home, portal shells and 404 (the shell half of 1.7). Branches: work on `dev`, release to `main`. Next: waves 1 to 3 of `docs/screens/PLAYBOOK.md`, then 1.11 deploy for Dr Ayman's approval on Fri 23 Oct. Tasks 1.3, 1.4, 1.5 (Supabase, schema, seed) run in parallel on the backend lane.
+## Status (19 Oct 2026; L1 added 20 Oct)
+Done in this repo: 1.1, 1.2 (scaffold, i18n and RTL, lint rule, tokens, DoctorCard, /brand), screen 1 home, portal shells and 404 (the shell half of 1.7). Branches: work on `dev`, release to `main`. Next: waves 1 to 3 of `docs/screens/PLAYBOOK.md`, then 1.11 deploy for Dr Ayman's approval on Fri 23 Oct.
+
+20 Oct: L1 delivered tasks 1.4 and 1.5 in PR #4 (branch `lane/schema` into `dev`): schema v1 in ten migrations under `supabase/migrations` (27 tables, RLS on every one, `introduction_requests` and `professional_private` among them), `tests/rls`, `lib/db`, the dev seed and the task 1.5 registry scripts (`README.md`, Database). The directory lists doctors only: the shortlist's physicians and dentists, 28,584 rows; students and other professions get no profile, doctors practising abroad do. Specialty names are the content document's card titles. Task 1.3 (VPS Supabase) is L0's.
 
 Ten decisions from the 19 Oct research are listed at the top of `docs/screen-rules.md`. Four of them wait on Dr Ayman or his lawyer (Saudi cross-border rules, UAE data residency); none blocks the prototype.
 
@@ -43,6 +45,7 @@ Ten decisions from the 19 Oct research are listed at the top of `docs/screen-rul
 ## Rules
 - RLS default-deny on every table. Every new table ships with policies AND a cross-tenant test in tests/rls.
 - Authorisation is decided in RLS and server code. UI never decides access.
+- Records files are read only through signed URLs that server code mints after checking the share (10 minutes, storageRules.recordsSignedUrlSeconds). No client but the owning patient's reads the records bucket.
 - Logical CSS only: ms-, me-, ps-, pe-, start-, end-, text-start, text-end. ESLint fails the build on ml-, mr-, pl-, pr-, left-, right-, text-left, text-right.
 - All instants stored as timestamptz in UTC. Convert for display with the viewer's IANA timezone. Never store local times.
 - Every outbound network call has an explicit timeout. Every retried operation is idempotent on a key stored in the database.
@@ -57,6 +60,7 @@ Ten decisions from the 19 Oct research are listed at the top of `docs/screen-rul
 - Every page has a loading state that shows something useful (skeleton with real labels, cached content, or a next action). No blank spinners.
 - Brand tokens in app/brand and tailwind.config. Do not add ad hoc colours or font sizes. The ikioo screens are a flow reference only; never copy their colours or fonts.
 - One DoctorCard component renders the builder preview, search results, profile header and the ID card image. Do not fork it.
+- Only doctors (physicians and dentists) get a listing and a card. Students and other professions are never imported; doctors practising abroad are.
 
 ## Out of scope for this build (do not start)
 - Mobile apps. Hosted video. Fax or bulk email sending. Custom Stripe onboarding, payout, invoice or card UI (Stripe hosts these). AI agents other than records summary (1), missing-record checker (6), duplicate organiser (7) and the light intake chat (launch version of 12); the full website chatbot is a later batch. Medication substitution advice. Anything after the first visit. Booking reminders and the home banner carousel (January). From ikioo: peer-invite publishing gate, coins, paid ask-a-question, NFT minting, facial recognition, media on expertise tags.

@@ -35,3 +35,15 @@ rules: insert into `stripe_events` before handling; on conflict return 200 and s
 - `.env.example`: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PUBLISHABLE_KEY`.
 - Route handlers in the App Router must read `request.text()` for the raw body; set `export const runtime = "nodejs"`.
 - Until L1 merges, declare the `StripeEventRow` type in `lib/stripe/types.ts`; switch to `lib/db/types.ts` after.
+
+## Notes from L1 (20 Oct 2026)
+- `stripe_events` is this lane's own migration, with a timestamp after `20261020001000` (L1's run `20261020000100` to
+  `20261020001000`).
+- Money rows are written only by the webhook, through `createServiceClient({ kind: "system", name: "stripe-webhook" })`.
+- `receipts` and `refunds` have `subject` 'booking' | 'records' (records-processing payments, task 3.7): `booking_id`
+  only on 'booking', `record_set_id` only on 'records'.
+- `account.updated` writes `professional_private.stripe_*`; a trigger keeps `professionals.can_take_bookings` in step.
+- System audit rows must set `actor_system` (e.g. 'stripe').
+- A paid introduction request: set `introduction_requests.booking_id`, status 'booked' and `answered_at`.
+- Run the done-when key grep in the word-boundary form, `grep -rnE '\bsk_' --include=*.ts . | grep -v node_modules`
+  (README section 4); the plain `sk_` form matches `task_` in the `.netlify/` build output.

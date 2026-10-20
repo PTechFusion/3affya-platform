@@ -1,18 +1,18 @@
 # 3affya Launch Platform: Milestones
 `Confidential`
 
-**Start:** Monday 19 October 2026 · **Launch:** Friday 4 December 2026 · **Cadence:** demo to Dr Ayman at the end of each milestone; 30-minute checkpoint after M1; weekly written status from Yasir on Fridays · **Payments:** USD 2,500 in Oct, Nov, Jan, Feb · **Updated:** 17 Oct (light intake trade, profile builder)
+**Start:** Monday 19 October 2026 · **Launch:** Friday 4 December 2026 · **Cadence:** demo to Dr Ayman at the end of each milestone; 30-minute checkpoint after M1; weekly written status from Yasir on Fridays · **Payments:** USD 2,500 in Oct, Nov, Jan, Feb · **Updated:** 17 Oct (light intake trade, profile builder); 20 Oct (doctors-only directory, 28,584 listings)
 
 ## Milestone 1: Foundation, prototype and spikes (19 to 23 Oct)
 
-Spikes the riskiest assumptions: Arabic scan extraction quality, RTL layout across the component set, ISR build and sitemap behaviour at 66k pages.
+Spikes the riskiest assumptions: Arabic scan extraction quality, RTL layout across the component set, ISR build and sitemap behaviour at the 28,584 directory pages (doctors only since 20 Oct).
 
 - **Deliverables:**
   - Repo with Next.js, TypeScript, Tailwind, `next-intl` (`/ar` default, `/en`), `dir` switching, logical CSS only, ESLint rule banning physical direction utilities.
   - Brand system at `/brand`: theme draft 1 (17 Oct) with tokens from the 3affya logo (deep sea, aqua, gold, sand, ink), Readex Pro type scale, Arabic and Latin font pairing, components (button, input, card, table, dialog, nav, empty state, loading state, and the doctor card used by the builder preview, search and ID card). The ikioo sign-up screens are the reference for the onboarding flow only; their colours and type are not used.
   - Deployed clickable prototype: home, why US training, how it works, specialty directory, search results, doctor profile (claimed and unclaimed states), AI tools teaser, for professionals, FAQ, about, contact; patient, professional and admin portal shells with navigation and empty states; the professional profile builder as a clickable flow (form plus live card). Every page has something to look at while it loads and a reason to stay (standing design rule).
   - Self-hosted Supabase dev stack on the VPS via Docker Compose; schema v1 migrations; RLS policies for every table with cross-tenant tests.
-  - Seed: 66k shortlist imported; NPPES taxonomy mapped to the 104 groups; mapping exceptions listed for Dr Ayman.
+  - Seed: the shortlist's 28,584 doctor rows imported (physicians and dentists; students and other professions get no profile, 20 Oct); NPPES taxonomy mapped to the 104 groups, named with the content document's card titles; mapping exceptions listed for Dr Ayman.
   - Stripe account created under Dr Ayman, test mode, Connect enabled; webhook endpoint stub with `stripe_events` idempotency.
   - Anthropic HIPAA-ready API organisation requested in Dr Ayman's name; `lib/ai` client with vendor switch, pinned model, schema validation and cost logging.
   - Spike report: five real documents (two Arabic, two English, one low-resolution scan) run through extraction; written verdict on accuracy, cost per page, latency, and whether a dedicated OCR step is needed.
@@ -21,7 +21,7 @@ Spikes the riskiest assumptions: Arabic scan extraction quality, RTL layout acro
   - Given the prototype URL, When Dr Ayman opens it on phone and desktop in both languages, Then every listed page renders with no clipped or mixed-direction text and he records approval in writing by 23 Oct.
   - Given `npm run lint`, When run, Then zero physical direction utilities exist in the codebase.
   - Given the dev Supabase stack, When the RLS test suite runs, Then every cross-tenant read and write returns a permission error.
-  - Given the seed script, When run twice, Then the second run changes zero rows (idempotent) and the row count equals the shortlist.
+  - Given the seed script, When run twice, Then the second run changes zero rows (idempotent) and the row count equals the shortlist's doctor rows (28,584).
   - Given an unmapped NPPES taxonomy code, When the mapping runs, Then it lands in an exceptions file rather than defaulting silently.
   - Given a Stripe test event sent twice, When the webhook receives both, Then one `stripe_events` row exists and both requests return 200.
   - Given the five spike documents, When processed, Then the report lists per-document accuracy against a hand check, tokens, cost and latency, and names the pipeline shape for M3.
@@ -90,9 +90,9 @@ Spikes the riskiest assumptions: Arabic scan extraction quality, RTL layout acro
 - **Deliverables:**
   - Production server in Dr Ayman's name with the hardening checklist passed; Supabase stack and data migrated (no real PHI exists before this point); Vercel production pointed at it; `3affya.com` live with SSL.
   - Bilingual QA pass with a scripted walkthrough per portal; defect list closed.
-  - Security review: RLS tests, dependency scan, secrets review, rate limits, OTP abuse test, signed URL expiry test.
+  - Security review: RLS tests, dependency scan, secrets review, rate limits, OTP abuse test, signed URL expiry test, password sign-up refused in production (email code sign-in only, 20 Oct).
   - Legal pages (privacy, terms, fees, refunds) in both languages for Dr Ayman's lawyer; analytics; uptime monitoring; alerts.
-  - Runbook, handover checklist, account transfer plan (Vercel, Inngest, Resend, repo), outreach pack (66k list, invite template, invite tracking).
+  - Runbook, handover checklist, account transfer plan (Vercel, Inngest, Resend, repo), outreach pack (66k list, of which the 28,584 doctors have a listing to claim; invite template, invite tracking).
   - Launch on Friday 4 December.
 - **Definition of done:**
   - Given the hardening checklist, When executed on the production host, Then every item passes and the output is attached to the handover.

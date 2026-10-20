@@ -5,6 +5,8 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 
 **Updated 17 Oct:** light intake chat added (3.12); reminders and home carousel moved to January (3.4, 3.5); onboarding, credentials, profile editor and card preview merged into the profile builder modelled on the ikioo sign-up flow (2.4, 2.5, 2.7).
 
+**Updated 20 Oct:** Yasir's decisions after the schema lane (L1, PR #4): the directory imports doctors only, 28,584 rows, with specialty names from the content document's card titles (1.5, 4.5); introduction requests and the intake transcript stored in `introduction_requests` (1.4, 2.9, 3.3, 3.12); busy times for slot pickers (3.2); account deletion (3.6); records files only through server-minted signed URLs (3.10); production auth by email code only (4.1, 4.2).
+
 ## CLAUDE.md constraint block (paste into the project repo root)
 
 ```
@@ -22,6 +24,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 ## Rules
 - RLS default-deny on every table. Every new table ships with policies AND a cross-tenant test in tests/rls.
 - Authorisation is decided in RLS and server code. UI never decides access.
+- Records files are read only through signed URLs that server code mints after checking the share (10 minutes, storageRules.recordsSignedUrlSeconds). No client but the owning patient's reads the records bucket.
 - Logical CSS only: ms-, me-, ps-, pe-, start-, end-, text-start, text-end. ESLint fails the build on ml-, mr-, pl-, pr-, left-, right-, text-left, text-right.
 - All instants stored as timestamptz in UTC. Convert for display with the viewer's IANA timezone. Never store local times.
 - Every outbound network call has an explicit timeout. Every retried operation is idempotent on a key stored in the database.
@@ -36,6 +39,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - Every page has a loading state that shows something useful (skeleton with real labels, cached content, or a next action). No blank spinners.
 - Brand tokens in app/brand and tailwind.config. Do not add ad hoc colours or font sizes. The ikioo screens are a flow reference only; never copy their colours or fonts.
 - One DoctorCard component renders the builder preview, search results, profile header and the ID card image. Do not fork it.
+- Only doctors (physicians and dentists) get a listing and a card. Students and other professions are never imported; doctors practising abroad are.
 
 ## Out of scope for this build (do not start)
 - Mobile apps. Hosted video. Fax or bulk email sending. Custom Stripe onboarding, payout, invoice or card UI (Stripe hosts these). AI agents other than records summary (1), missing-record checker (6), duplicate organiser (7) and the light intake chat (launch version of 12); the full website chatbot is a later batch. Medication substitution advice. Anything after the first visit. Booking reminders and the home banner carousel (January). From ikioo: peer-invite publishing gate, coins, paid ask-a-question, NFT minting, facial recognition, media on expertise tags.
@@ -80,7 +84,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Depends on:** 1.3
 - **Not in this task:** seed data, Stripe, records pipeline logic
 - **Done when:**
-  - [ ] Migrations create every table listed in the architecture Data section, plus `expertise_tags` (professional_id, title max 30, nugget max 500, position, locale), with foreign keys and the indexes named in the rigor review
+  - [ ] Migrations create every table listed in the architecture Data section (among them `professional_private` and `introduction_requests`, added 20 Oct; `stripe_events` and `ai_calls` are lanes L2 and L3), plus `expertise_tags` (professional_id, title max 30, nugget max 500, position, locale), with foreign keys and the indexes named in the rigor review (27 tables in L1's migrations)
   - [ ] `profiles.role` mirrors `app_metadata.role` via trigger
   - [ ] RLS enabled on every table; `tests/rls` attempts a cross-tenant read and write on each table as patient, professional and anonymous, and every attempt is refused
   - [ ] `audit_log` has insert-only grants; an update attempt fails in the test
@@ -90,9 +94,9 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Depends on:** 1.4; `output/nppes_2026-10/aafia_registry_shortlist_2026-10.xlsx`; the 104 groups from the content PDF (pages listing specialties); the CMS Doctors and Clinicians National Downloadable File
 - **Not in this task:** profile pages
 - **Done when:**
-  - [ ] `scripts/seed_specialties.py` inserts 104 rows with Arabic and English names and slugs
-  - [ ] `scripts/map_taxonomy.py` maps NPPES taxonomy codes to groups; unmapped codes are written to `output/taxonomy_exceptions.csv`, never defaulted
-  - [ ] `scripts/seed_professionals.py` imports the shortlist as `status = unclaimed`, `source = nppes`, idempotent on NPI; running twice changes zero rows; count equals the shortlist
+  - [ ] `scripts/seed_specialties.py` inserts 104 rows with Arabic and English names and slugs; the names are the content document's card titles, the 24 prototype slugs stay (20 Oct)
+  - [ ] `scripts/map_taxonomy.py` maps NPPES taxonomy codes to groups; unmapped codes are written to `output/taxonomy_exceptions.csv`, never defaulted. Every large group maps to its most logical card, and on doctor rows every code that has a card is mapped; students, support roles and professions no card covers stay unmapped (20 Oct)
+  - [ ] `scripts/seed_professionals.py` imports the shortlist's doctor rows (sheets "Physicians High", "Physicians Medium" and "Dentists"; students and other professions are not imported, 20 Oct) as `status = unclaimed`, `source = nppes`, idempotent on NPI; running twice changes zero rows; count equals the doctor rows (28,584: the three doctor sheets hold 28,587 rows; 3 of them are denturists, who are not doctors). Doctors practising abroad are imported, with a practice country where the registry's state or city makes it unambiguous
   - [ ] `scripts/enrich_cms.py` joins the CMS file on NPI (deduped on NPI) and fills medical school, graduation year, group practice and hospital affiliations; matched count written to `output/cms_join_report.md`
   - [ ] Each row has a stable slug `firstname-lastname-city-npiSuffix`
 
@@ -221,7 +225,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Depends on:** 2.5, 1.10
 - **Not in this task:** booking emails
 - **Done when:**
-  - [ ] Professional sees introduction requests (placeholder until M3 bookings exist) with empty state
+  - [ ] Professional sees introduction requests (`introduction_requests` rows: open, booked, declined, withdrawn; the professional declines an open one; placeholder until M3 bookings exist) with empty state
   - [ ] Templates in both locales: invite, OTP, claim received, approved, rejected, removal confirmed; each renders RTL correctly in Gmail and Outlook test sends
 
 ## Milestone 3: Booking, payments, memberships, records AI, intake
@@ -240,7 +244,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Done when:**
   - [ ] Selecting a slot inserts `slot_holds` with a unique constraint on (professional_id, slot_start) and expiry 10 minutes **(default until Q-8)**
   - [ ] PaymentIntent created with destination charge, `application_fee_amount` = platform fee 10% **(default until Q-8)**, metadata `hold_id`; checkout shows doctor fee, platform fee and card processing as separate lines that sum to the intent amount
-  - [ ] A second patient selecting the held slot sees it unavailable
+  - [ ] A second patient selecting the held slot sees it unavailable; the slot picker takes busy times from `rpc('professional_busy_times')` (live holds and bookings, no patient details)
   - [ ] Minute cron releases expired holds; an expired hold refuses payment and Stripe shows no charge
 
 ### Task 3.3: Booking confirmation from webhook
@@ -249,7 +253,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Done when:**
   - [ ] `payment_intent.succeeded` handler, inside one transaction: verify hold unexpired, create booking, consume hold, write receipt; duplicate delivery produces exactly one of each (test)
   - [ ] Confirmation emails to both parties with .ics and the professional's video link; local times correct across the four timezone test cases
-  - [ ] Introduction inbox now shows real bookings
+  - [ ] Introduction inbox now shows real bookings beside the open `introduction_requests`; when a request is paid, the handler sets its `booking_id`, status `booked` and `answered_at`
 
 ### Task 3.4: Cancellations and refunds
 - **Depends on:** 3.3
@@ -272,6 +276,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Not in this task:** records
 - **Done when:**
   - [ ] OTP sign-up and login; bookings list with status; receipts with itemised lines; settings (locale, timezone, delete account)
+  - [ ] Delete account keeps every booking, receipt, refund and introduction request line without who it was (first names, phone and transcript removed; the concern stays) and is refused while an upcoming visit is not cancelled and refunded (20 Oct; test)
   - [ ] A patient cannot fetch another patient's booking or receipt (test returns 404)
 
 ### Task 3.7: Records upload, validation and quote
@@ -307,7 +312,8 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Not in this task:** other agents
 - **Done when:**
   - [ ] Viewer shows overview, timeline, flags, and opens the source page on click; loading state shows file list and progress per page
-  - [ ] Share creates a signed link for one chosen professional with expiry **(default until Q-13: 30 days)**; a different professional or an expired link is refused (test)
+  - [ ] Share creates a share for one chosen professional with expiry **(default until Q-13: 30 days)**; a different professional or an expired share is refused (test)
+  - [ ] Records files open only through signed URLs that server code mints after checking the share is live (10 minutes, `storageRules.recordsSignedUrlSeconds`); a professional's own client reads no records object (test)
   - [ ] Professional's shared-summaries viewer lists shares received
   - [ ] Delete removes files, items, summaries and shares; `audit_log` keeps only the event (test asserts no content remains)
 
@@ -325,7 +331,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
   - [ ] Chat on the public site in both locales asks a short guided set of questions (concern, age group, preferred language, video or in person) and returns one to three of the 104 specialty groups with matching verified doctors
   - [ ] Ends by opening the introduction request pre-filled; the patient can edit before sending
   - [ ] System prompt and output schema forbid diagnosis, treatment or medication advice; a fixture set of 20 prompts asking for advice returns the referral path only (test)
-  - [ ] Consent shown before the first question; transcript stored with the request, deletable by the patient; `audit_log` row per session
+  - [ ] Consent shown before the first question; transcript stored with the request in `introduction_requests.transcript` (the consent in `consent_id`), deletable by the patient; `audit_log` row per session
   - [ ] Token cap per session from `config/business.ts`; calls logged to `ai_calls`
   - [ ] Fallback: if the model call fails, the same questions run as a guided form with no model
 
@@ -336,6 +342,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Not in this task:** feature work
 - **Done when:**
   - [ ] Supabase stack running on the production host; app pointed at it; `3affya.com` on SSL
+  - [ ] Auth (20 Oct): email autoconfirm off; the reverse proxy refuses `POST /auth/v1/signup` and `POST /auth/v1/token?grant_type=password`; the app signs in by email code only
   - [ ] Hardening checklist from the architecture file executed; output committed to `ops/hardening_2026-12.md`
   - [ ] Nightly encrypted backup to object storage in a separate account; restore drill passed and logged
 
@@ -345,6 +352,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Done when:**
   - [ ] `tests/rls` passes against production config; dependency scan shows zero critical; secrets review finds none in repo or bundle (`grep` and bundle analysis)
   - [ ] Rate limits verified on OTP, claim, upload, checkout, intake chat; signed URL expiry verified at 10 minutes
+  - [ ] Smoke check against production: a password sign-up is refused
 
 ### Task 4.3: Bilingual QA script
 - **Depends on:** 4.1
@@ -366,7 +374,7 @@ Each task is sized for one Claude Code session. Tasks are dependency-ordered ins
 - **Done when:**
   - [ ] `ops/runbook.md`: restart, restore, rotate secrets, scale, alerts, who to call
   - [ ] Handover checklist signed by Dr Ayman: owner access on every account, ProgrammX operator access under the retainer, transfer plan for Vercel, Inngest, Resend and the repo
-  - [ ] Outreach pack: 66k list, invite email template in both locales (leading with "your card is already made"), invite tracking screen, and the note that sending waits on counsel (open question 6)
+  - [ ] Outreach pack: 66k list (its 28,584 doctors have a listing and a card to claim; students and other professions have none since 20 Oct), invite email template in both locales (leading with "your card is already made"), invite tracking screen, and the note that sending waits on counsel (open question 6)
 
 ### Task 4.6: Launch
 - **Depends on:** 4.5

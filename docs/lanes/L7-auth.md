@@ -36,3 +36,16 @@ see its header), `components/brand/PortalShell.tsx` and the three portal layouts
 - Allowed additions: `@supabase/ssr` (pinned). No other auth library.
 - Cookies: `httpOnly`, `secure` outside dev, `sameSite=lax`. Session refresh in `middleware.ts` only if Supabase SSR needs it;
   keep the locale routing exactly as it is.
+
+## Notes from L1 (20 Oct 2026)
+- A claim sets `user_id` and status `claimed` in ONE statement (constraint `professionals_unclaimed_no_account`); the
+  registry snapshot (`professional_private.registry_as_filed`) is taken then.
+- Seeded accounts have no password: sign in by email code (Mailpit on port 55324 locally;
+  `supabase/templates/magic_link.html` shows the code).
+- Admin RLS needs `aal2` (TOTP); an admin without it sees nothing extra.
+- Production auth (Yasir's decision 5): email autoconfirm off; the reverse proxy refuses password sign-up and password
+  sign-in (`POST /auth/v1/signup`, `POST /auth/v1/token?grant_type=password`); the app signs in by email OTP only, so build
+  no password path; a production smoke check proves a password sign-up is refused (tasks 4.1 and 4.2). Password sign-in
+  stays a local test convenience for `tests/rls` only.
+- Deleting a patient who has an upcoming visit is refused (55000) until it is cancelled and refunded; deleting a
+  professional archives the listing (`removed`).

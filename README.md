@@ -103,13 +103,20 @@ local Supabase project: API `http://127.0.0.1:55321`, Postgres `127.0.0.1:55322`
 - Schema: one migration per table group, `supabase/migrations/<timestamp>_<lane>_<what>.sql`. RLS is on every table and
   every privilege starts revoked; policy helpers live in the unexposed `private` schema. Admin access needs the admin
   role and a TOTP session (aal2). `audit_log` is insert-only for every role.
+- L1's ten migrations (`20261020000100` to `20261020001000`) create 27 tables. Among them `introduction_requests`
+  (screen 32's unpaid requests and the intake chat transcript) and `professional_private` (video link, licence number,
+  Stripe account: owner and admin only). `rpc('professional_busy_times')` returns a verified professional's busy
+  intervals (live holds and bookings) for slot pickers. Records files are read through 10-minute signed URLs that server
+  code mints after checking the share.
 - Server code reaches the database only through `lib/db/client.ts` (`createUserClient`, `createServiceClient`).
 - `supabase/seed.sql` is generated from `data/sample/*.json` by `python scripts/build_dev_seed.py`; it is synthetic, so
   dev data equals prototype data. Seeded accounts have no password: sign in by email code (Mailpit on port 55324).
 - Registry import (task 1.5, once, idempotent; `DATABASE_URL` from `.env.example`), in this order:
-  `scripts/seed_specialties.py` (the 104 groups), `scripts/map_taxonomy.py --shortlist ...` (NPPES codes to groups;
+  `scripts/seed_specialties.py` (the 104 groups, named with the content document's card titles),
+  `scripts/map_taxonomy.py --shortlist ...` (NPPES codes to groups;
   unmapped codes to `output/taxonomy_exceptions.csv`), `scripts/seed_professionals.py --shortlist ... --registry-as-of ...`
-  (unclaimed listings, idempotent on NPI), `scripts/enrich_cms.py --dac ... --as-of ...` (report in
+  (unclaimed listings, idempotent on NPI: the three doctor sheets, 28,584 doctors (3 denturists there are not doctors); "Other Professions" and "Low (review)"
+  are refused, so students and other professions get no listing), `scripts/enrich_cms.py --dac ... --as-of ...` (report in
   `output/cms_join_report.md`). The shortlist and the CMS files are not in the repo. Python 3.10+,
   `pip install -r scripts/requirements-seed.txt`.
 

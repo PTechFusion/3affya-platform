@@ -10,7 +10,7 @@
 
 ## Data shown
 
-Booking time, patient first name, video link, shared summary
+Booking time, patient first name, video link, shared summary; requests are `introduction_requests` rows (20 Oct 2026): requested time, visit type, concern, status (open, booked, declined, withdrawn), and the booking once paid
 
 ## Layout call (phone first)
 

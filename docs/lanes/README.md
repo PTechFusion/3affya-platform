@@ -21,8 +21,10 @@ Shared files every lane may append to, never rewrite: `.env.example`, `package.j
 (append a block under your lane's comment), `README.md`. Resolve a conflict in these by keeping both sides.
 
 Table ownership for migrations (so two lanes never create the same table): L1 creates every table in the architecture Data
-section except `stripe_events` (L2) and `ai_calls` (L3). Each of those lanes ships its own migration file. Migration file
-names are `supabase/migrations/<YYYYMMDDHHMMSS>_<lane>_<what>.sql` so they sort and never collide.
+section except `stripe_events` (L2) and `ai_calls` (L3): 27 tables, `introduction_requests` and `professional_private`
+among them (delivered in PR #4, 20 Oct 2026). Each of those two lanes ships its own migration file. Migration file names are
+`supabase/migrations/<YYYYMMDDHHMMSS>_<lane>_<what>.sql` so they sort and never collide. L1's run from `20261020000100` to
+`20261020001000`; every other lane uses a later timestamp (a migration that references an L1 table must sort after it).
 
 ## 2. Read, in this order
 
@@ -50,7 +52,9 @@ Commit as `M<milestone>.<task> <what>` (one task id per commit, from the brief h
 ## 4. Rules of the road
 
 - **Secrets only in env.** `.env` is gitignored. Add every new variable to `.env.example` with a one-line comment and a
-  `# lane L<n>` tag. `grep -rn 'sk_\|service_role\|re_[A-Za-z0-9]' --include=*.ts . | grep -v node_modules` must print nothing.
+  `# lane L<n>` tag. `grep -rnE '\bsk_|service_role|\bre_[A-Za-z0-9]' --include=*.ts . | grep -v node_modules` must print
+  nothing (word boundaries since 20 Oct 2026: the old form matched column names such as `failure_reason` in the generated
+  `lib/db/types.ts`).
 - **Synthetic only.** No real patient document, no real patient name, nowhere. Fixtures under `fixtures/` are generated or
   Yasir's own. The NPPES shortlist is public registry data and is fine.
 - **Timeouts and idempotency.** Every outbound call has an explicit timeout (Stripe 20 s, AI 120 s per page, Resend 10 s).
@@ -60,7 +64,8 @@ Commit as `M<milestone>.<task> <what>` (one task id per commit, from the brief h
 - **Types from the database.** `lib/db/types.ts` is generated (`supabase gen types`); nobody edits it by hand. Until L1
   merges, other lanes declare the one or two row types they need in their own folder and switch to the generated file after.
 - **No new majors.** Pin exact versions. Allowed additions are listed per brief; anything else goes in your report as a
-  question, not in `package.json`.
+  question, not in `package.json`. Already pinned by L1: `vitest@5.0.3` and `vite@8.3.4` (vite explicit so the lockfile
+  keeps rolldown's native bindings), `@supabase/supabase-js@2.117.2`, `supabase@2.119.0`; keep the same versions.
 - **Docker may be absent.** If `supabase start` or Docker cannot run on your machine, build everything, write the tests, mark
   the unverified done-when items `[ ] not run here: <reason>` in your report. Never fake a green result.
 - **Keep the screens green.** `npm run build` must pass; the screens must still render from sample data until L6 switches

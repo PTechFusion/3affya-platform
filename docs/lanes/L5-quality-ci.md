@@ -39,3 +39,11 @@ The pure modules under `lib/`: `format.ts`, `refunds.ts`, `slots.ts`, `otp.ts`, 
 - The DST test dates are fixed instants; do not use `new Date()` without injecting it.
 - If an e2e journey cannot pass because a page has a defect, record it and mark that step skipped with the defect id;
   do not change the page.
+
+## Notes from L1 (20 Oct 2026)
+- `vitest@5.0.3` and `vite@8.3.4` are pinned (vite explicit so the lockfile keeps rolldown's native bindings); keep the
+  same versions.
+- RLS tests are `tests/rls/**/*.rls.ts` with their own config (`npm run test:rls`) and need a running Supabase stack:
+  keep them out of the unit config, or run them in CI after `supabase start`.
+- The secret grep is the word-boundary form in `docs/lanes/README.md` section 4.
+- Vite warns that `tests/rls/vitest.config.ts` is ESM loaded as CommonJS (harmless for now).

@@ -9,7 +9,7 @@
 
 ## Data shown
 
-Arabic and English names, slug, taxonomy codes
+Arabic and English names (the content document's card titles; the 24 prototype slugs kept, 20 Oct 2026), slug, taxonomy codes
 
 ## Layout call (phone first)
 

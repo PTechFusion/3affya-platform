@@ -37,3 +37,23 @@ before `sampleProfessional`; the portals follow their blocks). The generated typ
 - Where the schema and a sample shape differed (L1's report lists them), adapt the accessor, not the page, unless the page
   shows a field the schema does not have: then say so in the report and leave the field reading from a constant.
 - Query timeouts come from the client factory; do not add per-call timeouts.
+
+## Notes from L1 (20 Oct 2026)
+- **Prerequisite (Yasir's decision 6).** Audit rows written in the same transaction as the change they record, and an
+  atomic expertise-tag save and reorder, need RPC functions that do not exist yet. Before wiring those actions, list each
+  action and the function signature it needs; L1 adds them in a follow-up migration (timestamp after `20261020001000`).
+  Until then those actions are not done.
+- Records files are read only through signed URLs that server code mints after checking the share is live:
+  `createServiceClient({ kind: "system", name: "records-signer" })`, lifetime `storageRules.recordsSignedUrlSeconds`
+  (600) in `config/business.ts`. A professional's own client gets no records object.
+- Anon reads the tags, specialty links and availability of public listings on purpose (public profile, booking).
+- Ambiguous PostgREST embeds need hints: `specialties!professionals_specialty_id_fkey`,
+  `specialties!professional_specialties`, `profiles!professionals_user_id_fkey`, `record_files!record_files_set_fkey`.
+- Every sample-shape difference is in `output/dev_seed_report.md`: specialty names are now the content document's card
+  titles; `cityEn` is split into `city_en` and `state_code`; `languages` plus `arabic_dialect`; bookings carry first
+  names; fee lines; ids are fixed uuids documented at the top of `supabase/seed.sql`.
+- Screen 32's request rows read `public.introduction_requests` (the sample `int_003` goes there in the dev seed).
+- Busy times for slot pickers: `rpc('professional_busy_times')`.
+- The directory has doctors only (physicians and dentists); students and other professions have no listing.
+- A deleted patient account keeps its lines without name or phone (the concern stays); a deleted professional account
+  leaves the listing `removed`.

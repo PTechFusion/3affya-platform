@@ -1,7 +1,7 @@
 # 3affya Launch Platform: Architecture
 `Confidential`
 
-**Date:** 2026-10-16 (ADR-7 and ADR-9 updated 19 Oct) · **Architect:** Yasir · **Builder:** Yasir, solo, with Claude Code · **Read with:** overview, milestones, tasks
+**Date:** 2026-10-16 (ADR-7 and ADR-9 updated 19 Oct; ADR-5, ADR-8, Data, Rigor review and the hardening checklist updated 20 Oct after the schema lane) · **Architect:** Yasir · **Builder:** Yasir, solo, with Claude Code · **Read with:** overview, milestones, tasks
 
 ## System overview
 
@@ -105,13 +105,13 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 | Next.js app (App Router, TS, Tailwind) | Public site, patient/professional/admin portals, route handlers for Stripe webhooks and server actions | `next-intl` with `[locale]` segment, `dir` attribute per locale, logical CSS properties only |
 | Supabase Postgres | All relational data, RLS default-deny, audit log | Self-hosted via Supabase's Docker Compose; never exposed on a public port |
 | Supabase Auth | Patients and professionals by email OTP; admin by email plus TOTP | Role in `app_metadata`; a trigger mirrors it to `profiles.role` |
-| Supabase Storage | Records (private), credentials (private), ID cards and banners (public) | Signed URLs, 10-minute expiry for records |
+| Supabase Storage | Records (private), credentials (private), ID cards and banners (public) | Records files only through signed URLs that server code mints (10-minute expiry) after checking the share; only the owning patient's own client reads the records bucket |
 | Inngest | Records pipeline, reminders, hold expiry sweep, payout reconciliation, invite batches | Each function idempotent on its key; concurrency caps |
 | Stripe | Express accounts, destination charges, refunds, payouts, Billing for memberships and banner, Customer Portal | Platform fee as `application_fee_amount` |
 | AI client (`lib/ai`) | One module wrapping the model; pinned model id, schema validation, cost logging, per-job token cap | Vendor behind an env switch: Anthropic HIPAA org or Bedrock |
 | Resend | Transactional email, both languages | `mail.3affya.com` subdomain; 3affya.com root stays clean |
 | Sentry | Errors and traces with correlation id | PII scrubbing rules on |
-| Seed and mapping scripts | Import 66k shortlist, map NPPES taxonomy to 104 groups | Python, run once, reproducible |
+| Seed and mapping scripts | Import the shortlist's 28,584 doctor rows, map NPPES taxonomy to 104 groups | Python, run once, reproducible |
 
 ## Decisions (ADR-style; the team must not relitigate these)
 
@@ -138,10 +138,10 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 - **Rejected alternative:** agentic loop with tools.
 
 ### ADR-5: Directory seeding
-- **Decision:** import the 66k shortlist as `professionals` rows with `status = unclaimed`, `source = nppes`, mapped to the 104 specialty groups. Pages render via ISR with a "listed from public registry, not yet verified" label, no fee, no availability, no checkout, no contact details, an "invite this doctor" button and a "this is me / remove me" flow. Claimed-and-verified rows get the full profile and booking.
+- **Decision:** import the shortlist's doctors as `professionals` rows with `status = unclaimed`, `source = nppes`, mapped to the 104 specialty groups. Doctors are the physician and dentist professions: the sheets "Physicians High", "Physicians Medium" and "Dentists": 28,584 doctors (the three doctor sheets hold 28,587 rows; 3 of them are denturists, who are not doctors; decided 20 Oct). Students and other professions (the "Other Professions" sheet, 37,398 rows) get no card and no profile and are not imported; nor is the "Low (review)" sheet. Doctors practising abroad are listed, with a practice country where the registry's state or city makes it unambiguous. Each taxonomy code maps to the group whose card fits it best; codes no card covers stay in the exceptions file, never defaulted. Specialty names are the content document's card titles in Arabic and English; the 24 prototype slugs stay. Pages render via ISR with a "listed from public registry, not yet verified" label, no fee, no availability, no checkout, no contact details, an "invite this doctor" button and a "this is me / remove me" flow. Claimed-and-verified rows get the full profile and booking.
 - **Why:** SEO surface and the outreach line "your page is already live". NPPES is public domain and the practice is standard among US directories.
 - **Rejected alternative:** hidden until claimed (loses both benefits).
-- **Consequence:** removal requests get a 48-hour admin SLA; sitemap generated in batches of 5,000.
+- **Consequence:** removal requests get a 48-hour admin SLA; sitemap generated in batches of 5,000. A professional who deletes their account archives the listing (status `removed`, see Data: Retention), so it leaves every public view the same way a removal does.
 
 ### ADR-6: Money
 - **Decision:** Stripe Connect Express accounts for professionals; destination charges with `application_fee_amount`; 3affya is merchant of record; Stripe Billing with hosted Checkout and Customer Portal for memberships and the banner add-on; all money state written from webhooks only.
@@ -155,7 +155,7 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 - **Rejected alternative:** hosted video (vendor cost, more screens); request-based booking (patients and doctors route around 3affya).
 
 ### ADR-8: Auth and roles
-- **Decision:** Supabase Auth, email OTP for patients and professionals, email plus mandatory TOTP for admin. Roles `patient`, `professional`, `admin` in `app_metadata`. Authorisation enforced in RLS and in server actions; the UI never decides access.
+- **Decision:** Supabase Auth, email OTP for patients and professionals, email plus mandatory TOTP for admin. Roles `patient`, `professional`, `admin` in `app_metadata`. Authorisation enforced in RLS and in server actions; the UI never decides access. In production (decided 20 Oct), email autoconfirm stays off and the reverse proxy refuses password sign-up and password sign-in (`POST /auth/v1/signup` and `POST /auth/v1/token?grant_type=password`), so the app signs in by email code only; a production smoke check proves a password sign-up is refused.
 - **Why:** broken access control is the top risk in a three-role app holding medical data.
 - **Rejected alternative:** Clerk (another vendor and another transfer at handover).
 
@@ -191,11 +191,12 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 
 ## Data
 
-**In:** patient uploads (PDF, DOCX, JPG, PNG; max 50 MB per file, 2 GB per set), professional credentials (PDF, images), NPPES shortlist (66k rows), Stripe webhooks.
-**Stored:** Postgres tables `profiles`, `professionals`, `specialties` (104), `professional_specialties`, `credentials`, `availability_rules`, `availability_exceptions`, `slot_holds`, `bookings`, `receipts`, `refunds`, `memberships`, `banners`, `invites`, `record_sets`, `record_files`, `record_pages`, `record_items` (typed, with `source_page_id`), `record_summaries`, `record_shares`, `consents`, `ai_jobs`, `ai_calls`, `stripe_events`, `audit_log`, `removal_requests`. Files in Storage buckets `records` (private), `credentials` (private), `cards` (public).
-**Out:** summaries shared to the chosen professional via signed link with expiry; receipts; .ics; emails.
-**Volume at launch:** tens of bookings per week, tens of record sets per week; 66k directory rows; 10x growth changes nothing in this design.
-**Retention:** credentials kept while the profile is live; record sets kept until the patient deletes, pending open question 13; audit log append-only; Stripe is the system of record for money.
+**In:** patient uploads (PDF, DOCX, JPG, PNG; max 50 MB per file, 2 GB per set), professional credentials (PDF, images), NPPES shortlist (65,985 rows in four outreach sheets, of which the 28,584 doctor rows are imported; ADR-5), Stripe webhooks.
+**Stored:** Postgres tables `profiles`, `professionals`, `professional_private` (owner and admin only: video link, licence number, Stripe account; added 20 Oct), `specialties` (104), `professional_specialties`, `credentials`, `availability_rules`, `availability_exceptions`, `slot_holds`, `bookings`, `introduction_requests` (unpaid requests to a professional and the intake chat transcript; added 20 Oct), `receipts`, `refunds`, `memberships`, `banners`, `invites`, `record_sets`, `record_files`, `record_pages`, `record_items` (typed, with `source_page_id`), `record_summaries`, `record_shares`, `consents`, `ai_jobs`, `ai_calls`, `stripe_events`, `audit_log`, `removal_requests`. Database function `professional_busy_times(professional, from_at, to_at)`: the busy intervals (live holds and bookings) of a verified professional over at most 100 days, with nothing about who booked, for slot pickers. Files in Storage buckets `records` (private; only the owning patient's own client reads it, everyone else through signed URLs that server code mints for 10 minutes after checking the share), `credentials` (private), `cards` (public).
+**Out:** summaries shared to the chosen professional through a share with expiry (`record_shares`; the source files through 10-minute signed URLs); receipts; .ics; emails.
+**Volume at launch:** tens of bookings per week, tens of record sets per week; 28,584 directory rows (doctors only, ADR-5); 10x growth changes nothing in this design.
+**Retention:** credentials kept with the listing, also after the professional deletes their account; record sets kept until the patient deletes, pending open question 13 (deleting a set queues its files for purge, so storage follows the rows); audit log append-only; Stripe is the system of record for money.
+**Account deletion (decided 20 Oct):** a deleted professional account archives the listing: status `removed` with `removed_at`, hidden from every public view; the row, bookings, credentials and history stay. A deleted patient account keeps every line (bookings, receipts, refunds, introduction requests) without who it was: first names, phone, gender and the intake transcript are removed, the concern stays, for `accountData.paymentRecordsKeepYears` in `config/business.ts` (default until counsel). Deleting a patient who has an upcoming visit is refused until it is cancelled and refunded.
 **Residency:** patients in the GCC, professionals in the US; data on the production server in Dr Ayman's name; no data on ProgrammX machines after handover.
 **Synthetic only:** every environment except production uses synthetic or Yasir's own documents.
 
@@ -217,9 +218,9 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 
 ## Rigor review
 
-- **Scalability:** stateless app on Vercel; all state in Postgres, Storage, Stripe or Inngest; ISR for 66k pages with sitemap batches; indexes on `professionals(status, specialty, language, location)`, `slot_holds(slot_start, professional_id)`, `record_items(set_id)`; bottleneck is the single Postgres instance, fine at 10x.
+- **Scalability:** stateless app on Vercel; all state in Postgres, Storage, Stripe or Inngest; ISR for 28,584 directory pages with sitemap batches; indexes on `professionals(status, specialty, language, location)`, `slot_holds(slot_start, professional_id)`, `record_items(set_id)`; bottleneck is the single Postgres instance, fine at 10x.
 - **Reliability:** timeouts on every outbound call (Stripe 20s, AI 120s per page, Resend 10s); retries with backoff and jitter in Inngest; circuit on AI after 5 consecutive failures; holds swept by cron; backups nightly, restore tested in M4; Stripe down means checkout shows a plain message and the hold stays for its window.
-- **Security:** Supabase Auth, no custom password handling; RLS default-deny with tests that attempt cross-tenant reads for every table; admin TOTP; secrets in env only, rotation documented; signed URLs 10 minutes; parameterised queries via PostgREST and typed client; dependencies pinned and scanned; no public Postgres port; SSH keys only; fail2ban; automatic security updates; PII scrubbed from Sentry; rate limits on OTP, claim and upload endpoints.
+- **Security:** Supabase Auth, no custom password handling; in production email code sign-in only, with password sign-up and password sign-in refused at the reverse proxy (ADR-8); RLS default-deny with tests that attempt cross-tenant reads for every table; admin TOTP; secrets in env only, rotation documented; records files only through signed URLs that server code mints for 10 minutes after checking the share; parameterised queries via PostgREST and typed client; dependencies pinned and scanned; no public Postgres port; SSH keys only; fail2ban; automatic security updates; PII scrubbed from Sentry; rate limits on OTP, claim and upload endpoints.
 - **Data:** SQL with foreign keys; money and bookings strongly consistent in one transaction; expand and contract migrations; audit log append-only; single source of truth per datum (Stripe for money, Postgres for everything else).
 - **Cost:** Dr Ayman's running costs are the server, Vercel, AI usage at cost, Stripe per transaction, and Inngest or Resend if volume exceeds free tiers; nothing scales nonlinearly except AI tokens, which are quoted before every job.
 - **Observability:** structured logs with a request id that flows into Inngest run ids; Sentry; `ai_calls` with model, tokens, cost, latency, pass or fail; alerts on checkout error rate, pipeline failure rate, server disk and CPU, daily AI spend.
@@ -234,6 +235,7 @@ Single endpoint, signature verified, `stripe_events` table with `event_id` prima
 - [ ] No long-lived service account keys; all secrets in the host env; rotation dates recorded.
 - [ ] Budget alerts on the server provider, the AI vendor and Stripe.
 - [ ] Audit log verified append-only (no update or delete grants).
+- [ ] Auth: email autoconfirm off; the reverse proxy refuses `POST /auth/v1/signup` and `POST /auth/v1/token?grant_type=password`; smoke check shows a password sign-up refused.
 - [ ] Runbook in the repo: restart, restore, rotate, scale, who to call.
 
 ---

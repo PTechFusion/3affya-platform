@@ -2,6 +2,8 @@
 
 **Area:** Patient · **Purpose:** Language, timezone, delete account · **Build:** M3 · **Task:** 3.6 · **In prototype (23 Oct):** Yes
 
+**Notes:** Delete account keeps bookings, receipts and refunds as lines without the patient's name or phone (the concern stays); refused while an upcoming visit is not cancelled and refunded (20 Oct 2026)
+
 ## States to design
 
 - Default

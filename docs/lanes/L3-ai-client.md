@@ -49,3 +49,11 @@ never a partial write; unsupported items omitted or flagged, unreadable pages fl
   fixture generator under `scripts/`, if used.
 - `.env.example`: `AI_VENDOR`, `AI_MODEL`, `ANTHROPIC_API_KEY`, `AWS_REGION`, `AWS_BEDROCK_MODEL_ID`.
 - Default to the latest Claude model ids; the model id is configuration, never a literal in code.
+
+## Notes from L1 (20 Oct 2026)
+- `ai_calls` must use a migration timestamp later than `20261020001000` if it references `ai_jobs` (L1's run
+  `20261020000100` to `20261020001000`).
+- `ai_jobs.set_id` is nullable (`on delete set null`): a job and its cost history outlive a deleted set.
+- System audit rows must set `actor_system` (lower snake case, only with `actor_kind` 'system').
+- The `record_items.type` enum is condition | medication | allergy | procedure | result | immunization | vital |
+  unreadable | other: align the zod `RecordItem` types with it, or ask L1 to change the enum.

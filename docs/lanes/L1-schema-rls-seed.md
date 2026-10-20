@@ -59,3 +59,33 @@ Architecture: Data section, ADR-5 (seeding), ADR-7 (calendar), ADR-8 (auth and r
   comments).
 - Where a sample shape and the architecture disagree, the architecture wins; list each such change in your report so L6
   knows which accessors must adapt.
+
+## Delivered (20 Oct 2026, PR #4)
+Branch `lane/schema` into `dev`, commits M1.4 and M1.5 plus the 20 Oct round on the same branch. The lane report on the PR
+gives the verification per done-when line.
+- Ten migrations, `20261020000100_l1_foundation.sql` to `20261020001000_l1_introduction_requests.sql`: 27 tables in
+  `public` (the 25 above plus `professional_private` and `introduction_requests`), RLS and column grants on each, guard
+  triggers, the Storage buckets `records`, `credentials`, `cards` with their object policies, and
+  `public.schema_security_report()` for the suite and the M4 checklist.
+- `tests/rls/` (`npm run test:rls`), `lib/db/types.ts`, `lib/db/client.ts` (`createUserClient`, `createServiceClient`),
+  `supabase/seed.sql` built from `data/sample/*.json` by `scripts/build_dev_seed.py`, and the four task 1.5 scripts with
+  their reports in `output/`.
+
+## Decisions that changed this lane's scope (Yasir, 20 Oct 2026)
+- `introduction_requests` (file 10 of 10): screen 32's unpaid requests and the task 3.12 intake transcript. Open,
+  booked, declined or withdrawn; the patient withdraws or deletes the transcript, the professional declines, the Stripe
+  webhook links `booking_id` when a request is paid.
+- `public.professional_busy_times(professional, from_at, to_at)` in file 4: live holds and bookings of a verified
+  professional as bare intervals, for slot pickers; anon may call it.
+- Doctors only: `seed_professionals.py` imports the sheets "Physicians High", "Physicians Medium" and "Dentists" (28,584
+  doctors; the three doctor sheets hold 28,587 rows; 3 of them are denturists, who are not doctors), not "Other Professions" (37,398 rows, the 7,593 students among them) or "Low (review)". Doctors practising
+  abroad are imported, with `practice_country` where the registry's state or city makes the country unambiguous.
+- Taxonomy: every large group maps to its most logical card (402 of 589 codes mapped, the 20 Oct block at the end of
+  `TAXONOMY_MAP` in `scripts/taxonomy_map.py`); on doctor rows every code that has a card is mapped.
+- Specialty names: all 104 groups use the content document's card titles (`scripts/specialty_groups.py`); the 24
+  prototype slugs stay. Body systems for the 80 new groups are still open.
+- Account deletion: a professional's archives the listing (`removed`, `removed_at`; records kept); a patient's keeps
+  every line without first names, phone, gender or transcript (the concern stays) and is refused while an upcoming visit
+  stands.
+- Not built: the RPC functions L6 needs for audit writes in the same transaction and an atomic tag save and reorder. L6
+  lists the actions and signatures; L1 adds them in a follow-up migration.

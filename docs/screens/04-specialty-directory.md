@@ -11,7 +11,7 @@
 
 ## Data shown
 
-104 groups, Arabic and English names, doctor counts
+104 groups, Arabic and English names (the content document's card titles, 20 Oct 2026), doctor counts
 
 ## Layout call (phone first)
 
