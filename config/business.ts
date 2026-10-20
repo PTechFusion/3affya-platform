@@ -173,3 +173,10 @@ export const credentialReview = {
 export const adminMoney = {
   periodDaysOptions: [7, 30, 90] as readonly number[],
 } as const;
+
+/* ---------------- Admin listings (screen 39, task 2.8) ---------------- */
+// Appended block. Re-verification (rule A2): the next check is the licence expiry or the yearly cycle
+// (business.verifiedReverifyMonths after the verified-on date), whichever comes first.
+export const listingRules = {
+  reverifyDueSoonDays: 30, // (default until Dr Ayman confirms) the listings table flags a verified row this many days before its next check
+} as const;

@@ -232,5 +232,15 @@
     "licenceStateEn": null,
     "licenceStateAr": null,
     "slotsUtc": []
+  },
+  {
+    "id": "doc_391",
+    "groupPractice": "Lakeshore Heart Associates",
+    "registrySource": null,
+    "registryAsOf": null,
+    "board": "American Board of Internal Medicine",
+    "licenceStateEn": "Illinois",
+    "licenceStateAr": "إلينوي",
+    "slotsUtc": []
   }
 ]
