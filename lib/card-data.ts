@@ -16,6 +16,16 @@ export function sampleInstant(iso: string): Date {
   return new Date(Date.parse(iso) + (today - SAMPLE_ANCHOR_UTC));
 }
 
+/**
+ * The minute-precise shift for hour-level demos (SLA timers, durations): the authored "now" of a sample file maps onto the real
+ * now, so a request authored 40 h before `authoredNowIso` always reads 40 h old. sampleInstant shifts by whole days and keeps
+ * clock times, which is right for dates and slots but drifts up to 24 h for an SLA. PLAYBOOK §4: dates use sampleInstant,
+ * hour-level spans use sampleInstantExact.
+ */
+export function sampleInstantExact(iso: string, authoredNowIso: string, now: Date = new Date()): Date {
+  return new Date(Date.parse(iso) + (now.getTime() - Date.parse(authoredNowIso)));
+}
+
 /** Translator for the `languages` namespace: language codes and dialect names. */
 export type LanguageLabels = (key: string) => string;
 

@@ -12,7 +12,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { MissingPage } from "@/components/brand/MissingPage";
-import { doctorById } from "@/lib/sample";
+import { doctorById, removedDoctorIds, suspendedDoctorIds } from "@/lib/sample";
 import { viewerFrom } from "@/lib/viewer";
 import type { Locale } from "@/lib/format";
 import { ProfileSkeleton } from "./_parts/ProfileSkeleton";
@@ -27,7 +27,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const sp = await searchParams;
   const t = await getTranslations({ locale, namespace: "profile" });
   const d = doctorById(id);
-  if (!d) return {};
+  if (!d || suspendedDoctorIds().has(id)) return {};
   if (sp.state === "removed") return { title: t("metaTitleRemoved"), robots: { index: false } };
   const ar = locale === "ar";
   const values = {
@@ -52,7 +52,8 @@ export default async function DoctorProfile({ params, searchParams }: Props) {
   const state = typeof sp.state === "string" ? sp.state : undefined;
 
   if (state === "loading") return <ProfileSkeleton />;
-  if (state === "removed") return <MissingPage variant="removed" country={viewer.country} specialtySlug={doctor.specialty} />;
+  // A confirmed removal (screen 41) answers 410 from proxy.ts; a suspension is reversible and must look like an unknown id.
+  if (state === "removed" || removedDoctorIds().has(doctor.id)) return <MissingPage variant="removed" country={viewer.country} specialtySlug={doctor.specialty} />;
   if (doctor.state === "verified") {
     return <VerifiedProfile doctor={doctor} locale={locale as Locale} viewer={viewer} payoutsReady={state !== "payoutsNotReady"} />;
   }

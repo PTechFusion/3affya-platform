@@ -12,7 +12,7 @@ import { DoctorCard } from "@/components/brand/DoctorCard";
 import { Badge, Button, CheckIcon, ChevronDown, ChevronNext, EmptyState, LinkButton, SectionHeading, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, formatNumber, type Locale, formatPercent } from "@/lib/format";
-import { sampleDoctors, toDoctorCardData } from "@/lib/sample";
+import { publicDoctors, sampleDoctors, toDoctorCardData } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
 import { PLANS, PLAN_FEATURES, planIncludes, type PlanId } from "./plans";
@@ -59,7 +59,7 @@ export default async function ForProfessionals({ params, searchParams }: Props) 
   const pct = formatPercent(business.firstVisitPlatformFeePct, loc);
 
   // Find your profile: every listing, matched on both scripts and the NPI; the row says the specialty and the claim state.
-  const suggestions: SearchSuggestion[] = sampleDoctors.map((d) => ({
+  const suggestions: SearchSuggestion[] = publicDoctors().map((d) => ({
     kind: "doctor",
     label: loc === "ar" ? d.nameAr : d.nameEn,
     href: `/doctors/${d.id}`,

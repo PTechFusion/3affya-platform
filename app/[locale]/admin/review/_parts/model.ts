@@ -4,7 +4,7 @@
 // reviewer. Rule A2: the licence expiry read at the source sets the re-verification date, or the cycle in config, whichever
 // is first. Rule B7: a certified claim needs a named ABMS or AOA board, and board eligible never becomes the badge.
 import type { ReviewCheckKey } from "@/lib/sample";
-import { boardIsNamed } from "@/app/[locale]/professional/builder/_parts/model";
+import { boardIsNamed } from "@/lib/credentials";
 
 export type { ReviewCheckKey };
 export const CHECK_KEYS: readonly ReviewCheckKey[] = ["licence", "board", "sanctions", "photo"];

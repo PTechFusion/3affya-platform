@@ -14,7 +14,7 @@ import { verifiers, reviewVerifiers } from "@/config/verifiers";
 import { devRoleSwitchEnabled } from "@/lib/dev-role";
 import { formatDate, formatNumber, formatTimeInZone, type Locale } from "@/lib/format";
 import { decidedPreviewFor, sampleInstant, toDoctorCardData } from "@/lib/sample";
-import { toMb } from "@/app/[locale]/professional/builder/_parts/model";
+import { toMb } from "@/lib/credentials";
 import type { DecidedRow, DecidedView } from "../_parts/DecisionResult";
 import type { ThumbFile } from "../_parts/DocumentThumb";
 import { Comparison } from "../_parts/Comparison";

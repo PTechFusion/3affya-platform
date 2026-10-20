@@ -187,13 +187,13 @@ export default async function AiJobPage({ params, searchParams }: Props) {
       {status === "retryQueued" ? (
         <Notice
           tone="success"
-          live="polite"
+          role="status"
           title={t("notices.retryQueued.title", { job: isolate(job.id) })}
           body={t("notices.retryQueued.body", { attempt: n(job.attempt + 1), page: n(failedPage), total: n(pages.total) })}
         />
       ) : null}
       {status === "cancelled" && job.set.status !== "cancelled" ? (
-        <Notice tone="info" live="polite" title={t("detail.cancelled.title")} body={t("detail.cancelled.body")} />
+        <Notice tone="info" role="status" title={t("detail.cancelled.title")} body={t("detail.cancelled.body")} />
       ) : null}
 
       <Surface className="flex flex-col gap-4">

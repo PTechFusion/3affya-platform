@@ -1,7 +1,7 @@
 // Server side of screen 5: sample doctors to facet rows, query scores and ranked results. Only verified doctors are listed
 // (task 2.1); pending and unclaimed rows appear only in the zero-results "not on 3affya yet" block with a Request path (rule U3).
 // Reads sample data through lib/sample.ts only; prices are the all-in total from lib/fees.ts (rule C5).
-import { sampleDoctors, sampleSpecialties, verifiedDoctors, type SampleDoctor, sampleInstant } from "@/lib/sample";
+import { publicDoctors, sampleInstant, sampleSpecialties, type SampleDoctor, verifiedDoctors } from "@/lib/sample";
 import { feeLines } from "@/lib/fees";
 import { business } from "@/config/business";
 import { FILTER_KEYS, matches, type FacetRow, type FilterKey, type Selection, type SortKey } from "./search-model";
@@ -113,7 +113,7 @@ export const specialtyBySlug = new Map(sampleSpecialties.map((s) => [s.slug, s])
 
 /** Values each filter accepts from the URL. Unknown values are dropped rather than producing an empty list. */
 export function allowedValues(bands: PriceBand[]): Record<FilterKey, ReadonlySet<string>> {
-  const dialects = new Set(sampleDoctors.flatMap((d) => d.languages.map((l) => l.dialect?.toLowerCase()).filter((x): x is string => !!x)));
+  const dialects = new Set(publicDoctors().flatMap((d) => d.languages.map((l) => l.dialect?.toLowerCase()).filter((x): x is string => !!x)));
   return {
     specialty: new Set(sampleSpecialties.map((s) => s.slug)),
     within: new Set(business.searchAvailableWithinHours.map(String)),
@@ -122,7 +122,7 @@ export function allowedValues(bands: PriceBand[]): Record<FilterKey, ReadonlySet
     visit: new Set(["video", "phone"]),
     age: new Set(["adults", "children"]),
     price: new Set(bands.map((b) => b.id)),
-    city: new Set(sampleDoctors.map(citySlug)),
+    city: new Set(publicDoctors().map(citySlug)),
   };
 }
 
@@ -162,7 +162,7 @@ export function nearbySpecialties(from: string[], all: SearchItem[]): string[] {
 
 /** Unclaimed doctors from public US records in these specialties (any, when none are given): the invite path (rule U3). */
 export const notYetListed = (specialties?: string[]) =>
-  sampleDoctors.filter((d) => d.state === "unclaimed" && (!specialties || specialties.includes(d.specialty))).slice(0, 3);
+  publicDoctors().filter((d) => d.state === "unclaimed" && (!specialties || specialties.includes(d.specialty))).slice(0, 3);
 
 /** Count with every filter except one, for the "Without X" alternatives on zero results. */
 export const countWithout = (items: SearchItem[], sel: Selection, key: FilterKey) =>

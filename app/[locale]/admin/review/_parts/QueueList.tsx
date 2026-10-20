@@ -15,7 +15,7 @@ export function spanLabel(t: T, span: Span, locale: Locale): string {
 }
 
 export function slaLabel(t: T, claim: Claim, now: Date, locale: Locale): string {
-  return t(`sla.${claim.sla}`, { duration: spanLabel(t, spanOf(claim.dueAt.getTime() - now.getTime()), locale) });
+  return t(`sla.${claim.sla}`, { duration: spanLabel(t, spanOf(claim.dueAt.getTime() - now.getTime(), "left"), locale) });
 }
 
 export async function QueueList({

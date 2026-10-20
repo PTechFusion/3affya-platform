@@ -92,6 +92,10 @@ Commit as `M<milestone>.<task> <screen name>` (one task id, from the brief heade
 - **Shared components only.** Build from `components/ui` and `components/brand`. Need a new primitive? Add it to
   `components/ui/index.tsx` at the end, generic (no page-specific copy or data), and name it in your report with one line of
   why. Never restyle a primitive inside a page; never add a colour, radius or font size that is not a token.
+- **Sample clocks.** Dates and slots go through `sampleInstant` (whole-day shift, keeps clock times). Hour-level spans (SLA
+  timers, durations) go through `sampleInstantExact(iso, authoredNowIso)` so a request authored 40 h ago always reads 40 h old.
+- **Cross-page `_parts` imports are not a pattern.** Anything two routes need lives in `lib/` (e.g. `lib/credentials.ts`,
+  `lib/refunds.ts`, `lib/membership.ts`).
 - **One `DoctorCard`.** Never fork it. `toDoctorCardData` in `lib/card-data.ts` (re-exported from `lib/sample.ts`; no JSON
   imports, so client components may use it) is the only mapping.
 - **Links vs buttons.** Navigation is `<Link>` or `LinkButton`; actions are `<Button>`. Never nest interactive elements
@@ -203,6 +207,19 @@ dates about the doctor's own work show in that zone unless `?tz=` is set. The bu
 registry pre-fill that `/claim/[token]` hands over; `?doctor=doc_002` is the editing state. Card previews stay in the patient's
 zone. Do not "fix" either.
 
+- `StatTile` {label, value, note?, href?, current?, size "md"|"lg"} on a Surface with a tabular value: 45's spend tiles and 46's
+  funnel tiles are the two page-local copies. `StepMarker` {state}: extract from patient/records/_parts/StepList.tsx and
+  delete 45's JobDetail copy. One commit, after wave 5.
+- `formatZone` should render the city from a `zones.*` map in both locales (every admin screen shows "Riyadh (GMT+3)" in Latin
+  inside Arabic); 28's `settings.timeZone.places` is the seed.
+- Badge and Notice share the hex tints #E4F4EC / #FBE9E7: add `--color-success-100` / `--color-danger-100` tokens and use them in both.
+- 33 computes grace inline; switch to `lib/membership.ts` (42) when touched. 45 switches its job instants to `sampleInstantExact`
+  when touched (its "today" tile is empty before ~03:40 Riyadh). Screen 49 (email templates) must import 46's
+  `_parts/email-copy.ts` (move it to `lib/email-templates` then), not write a second claim-invite email.
+- `lib/audit.ts` vocabulary gaps for the real actions (task 2.8/3.11): listing.suspended/unsuspended, specialty.*,
+  removal.infoRequested, membership.*, refund.requested, aiJob.retried/stopped, invite.sent/revoked, account.deleted,
+  data.exported, share.revoked, admin.signedOut (each with adminAudit.actions.* in both languages).
+
 Patient portal facts (wave 4): the signed-in patient is `samplePatient` (Noura, Riyadh, noura@example.com) on every patient
 page; every row in `data/sample/bookings.json` is hers. Patient pages render in `?tz=` else `samplePatient.timeZone`; the zone
 stored on a booking row is the snapshot the doctor's inbox shows. Refund wording and arithmetic come from `lib/refunds.ts`
@@ -221,3 +238,10 @@ stored on a booking row is the snapshot the doctor's inbox shows. Refund wording
 | 5 | 37, 38, 39, 40, 41, 42, 43, 45, 46, 47 | admin shell |
 
 Waves 0 to 3 are the 23 Oct prototype (tasks 1.6, 1.7, then 1.11 deploy).
+
+Admin portal facts (wave 5): the signed-in admin is `sampleAdmin` (Sara Al-Rashid, Riyadh) on every admin page; dates show in
+`?tz=` else `sampleAdmin.timeZone`. A removal confirmed on 41 (`removedDoctorIds()`) makes the profile answer 410, hides the
+doctor from `publicDoctors()`, lists them as Removed on 39 and blocks invites on 46; a suspended doctor (`state: "suspended"`)
+answers 404 and is hidden the same way (reversible, so it must look unknown). `builder.json` owns claim submission and decision
+dates; a claim is rejected only while the decision is newer than the submission. Admin-side numbers are named config exports next
+to `business` (adminSignIn, credentialReview, listingRules, removalRules, membershipAdmin, adminMoney, aiLimits, outreach).

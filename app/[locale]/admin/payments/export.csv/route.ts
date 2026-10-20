@@ -55,14 +55,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
   if (tab === "payments") {
     const h = (k: string) => t(`csv.payments.${k}`);
     rows = [
-      ["receipt", "paidAtUtc", "patient", "email", "doctor", "visitType", "visitAtUtc", "currency", "doctorFee", "platformFee", "cardProcessing", "total", "refunded", "net", "status", "method", "paymentIntent", "transfer"].map(h),
+      ["receipt", "paidAtUtc", "patient", "doctor", "visitType", "visitAtUtc", "currency", "doctorFee", "platformFee", "cardProcessing", "total", "refunded", "net", "status", "method", "paymentIntent", "transfer"].map(h),
       ...filterPayments(payments, filters, now).map((p) => {
         const back = refundedCents(p);
         return [
           p.receiptNumber,
           iso(p.paidAt),
           patientName(p, locale),
-          p.patient.email,
           doctorName(p.doctor, locale),
           t(`visitType.${p.visitType}`),
           iso(p.startsAt),

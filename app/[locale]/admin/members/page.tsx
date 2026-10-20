@@ -46,7 +46,7 @@ export default async function MembersPage({ params, searchParams }: Props) {
         <MembersHeader />
         <Notice
           tone="danger"
-          live="alert"
+          role="alert"
           title={t("error.title")}
           body={<p>{t("error.body")}</p>}
           action={<LinkButton href={membersHref(query)}>{t("error.action")}</LinkButton>}
@@ -67,7 +67,7 @@ export default async function MembersPage({ params, searchParams }: Props) {
       {notice ? (
         <Notice
           tone={notice.tone}
-          live="status"
+          role="status"
           title={notice.title}
           body={
             <p>

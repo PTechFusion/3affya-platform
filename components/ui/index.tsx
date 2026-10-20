@@ -801,8 +801,8 @@ export const nowrap = (chunks: ReactNode) => <span className="whitespace-nowrap"
  * The one notice box (PLAYBOOK §9): a boxed message in the page flow saying what happened or what needs attention. `info` for a
  * standing note, `success` for something that worked, `warning` for something to act on, `danger` for a failure with the fix in
  * the body or the action (rule L4). The tone tints the box and its start-edge bar (so it mirrors in RTL) and never carries the
- * meaning alone: the title does. `role` (or `live`) "status" for a result that just appeared, "alert" for an error the person
- * must hear now; leave it off for a standing note. `titleAs` or `headingLevel` makes the title a heading when the notice opens
+ * meaning alone: the title does. `role` "status" for a result that just appeared, "alert" for an error the person
+ * must hear now; leave it off for a standing note. `titleAs` makes the title a heading when the notice opens
  * a section. `icon` sits at the reading start; `children` render under the body (a quoted note, a short list). Not for toasts
  * (Toast) or empty lists (EmptyState).
  */
@@ -816,13 +816,11 @@ const noticeTones: Record<NoticeTone, { box: string; title: string }> = {
 export function Notice({
   tone = "info",
   title,
-  titleAs,
-  headingLevel,
+  titleAs = "p",
   body,
   action,
   icon,
   role,
-  live,
   id,
   className,
   children,
@@ -830,24 +828,20 @@ export function Notice({
   tone?: NoticeTone;
   title?: ReactNode;
   titleAs?: "p" | "h2" | "h3";
-  /** Shorthand for titleAs: 2 → h2, 3 → h3. */
-  headingLevel?: 2 | 3;
   body?: ReactNode;
   action?: ReactNode;
   icon?: ReactNode;
   role?: "alert" | "status" | "note";
-  /** Alias of role for callers that think in live regions ("polite" reads as "status"). */
-  live?: "alert" | "status" | "polite";
   id?: string;
   className?: string;
   children?: ReactNode;
 }) {
-  const Title = titleAs ?? (headingLevel === 2 ? "h2" : headingLevel === 3 ? "h3" : "p");
+  const Title = titleAs;
   const t = noticeTones[tone];
   return (
     <div
       id={id}
-      role={role ?? (live === "polite" ? "status" : live)}
+      role={role}
       className={cx("flex items-start gap-3 rounded-[var(--radius-field)] border-s-4 px-4 py-3.5 text-ink-900", t.box, className)}
     >
       {icon ? <span className="mt-0.5 shrink-0">{icon}</span> : null}

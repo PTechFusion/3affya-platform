@@ -835,7 +835,7 @@
   {
     "id": "doc_391",
     "npi": "1391047226",
-    "state": "suspended",
+    "state": "verified",
     "gender": "m",
     "nameEn": "Dr Jamal Qasem",
     "nameAr": "د. جمال قاسم",
@@ -877,5 +877,41 @@
     "nextAvailableUtc": null,
     "bioEn": "Board certified cardiologist trained in the United States, seeing patients from the Gulf by video.",
     "bioAr": "طبيب قلب حاصل على البورد الأمريكي ومدرَّب في الولايات المتحدة، يستقبل مرضى الخليج عبر الفيديو."
+  },
+  {
+    "id": "doc_021",
+    "npi": "1497836250",
+    "state": "unclaimed",
+    "gender": "m",
+    "nameEn": "Dr Ziad Haddad",
+    "nameAr": "د. زياد حداد",
+    "specialty": "rheumatology",
+    "specialtyEn": "Rheumatology",
+    "specialtyAr": "الروماتيزم",
+    "cityEn": "Houston, Texas",
+    "cityAr": "هيوستن، تكساس",
+    "medicalSchool": "Baylor College of Medicine",
+    "graduationYear": 2001,
+    "hospitalAffiliation": "Houston Methodist",
+    "photoUrl": null,
+    "languages": [
+      {
+        "code": "ar"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "visitTypes": [],
+    "ages": "adults",
+    "tags": [],
+    "training": [],
+    "yearsInPractice": null,
+    "boardCertified": false,
+    "verifiedOn": null,
+    "feeUsdCents": null,
+    "nextAvailableUtc": null,
+    "bioEn": "",
+    "bioAr": ""
   }
 ]

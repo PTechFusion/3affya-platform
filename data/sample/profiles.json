@@ -242,5 +242,15 @@
     "licenceStateEn": "Illinois",
     "licenceStateAr": "إلينوي",
     "slotsUtc": []
+  },
+  {
+    "id": "doc_021",
+    "groupPractice": "Houston Rheumatology Associates",
+    "registrySource": "cms",
+    "registryAsOf": "2026-10-01",
+    "board": null,
+    "licenceStateEn": null,
+    "licenceStateAr": null,
+    "slotsUtc": []
   }
 ]

@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { AUDIT_ENUM_KINDS, type AuditEnumKind, type AuditValue, type AuditValueKind } from "@/lib/audit";
 import { formatDate, formatMoney, formatNumber, type Locale } from "@/lib/format";
-import { auditActorById, doctorById, sampleSpecialties, type SampleAuditEntry } from "@/lib/sample";
+import { auditActorById, doctorById, removedDoctorIds, sampleSpecialties, type SampleAuditEntry } from "@/lib/sample";
 
 export type T = (key: string, values?: Record<string, string | number>) => string;
 
@@ -21,6 +21,8 @@ export function actorName(id: string, locale: Locale, t: T): string {
   if (!a) return id;
   if (a.kind === "system") return t(`systemActors.${id}`);
   if (a.kind === "professional") return doctorName(id, locale) ?? id;
+  // Patients appear by id only (PII minimisation; settings promises deletion leaves a date-only row). Admins keep first names.
+  if (a.kind === "patient") return id;
   return (locale === "ar" ? a.firstNameAr : a.firstNameEn) ?? id;
 }
 
@@ -35,7 +37,7 @@ export function actorRole(id: string, t: T): string {
 export function targetName(target: SampleAuditEntry["target"], locale: Locale, t: T): ReactNode | null {
   switch (target.type) {
     case "professional": {
-      const name = doctorName(target.id, locale);
+      const name = removedDoctorIds().has(target.id) ? undefined : doctorName(target.id, locale);
       if (name) return name;
       return (
         <>

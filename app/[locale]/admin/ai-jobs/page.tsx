@@ -120,7 +120,7 @@ export default async function AiJobsPage({ params, searchParams }: Props) {
       {retried && retriedPages ? (
         <Notice
           tone="success"
-          live="polite"
+          role="status"
           title={t("notices.retryQueued.title", { job: isolate(retried.job.id) })}
           body={t("notices.retryQueued.body", {
             attempt: n(retried.job.attempt + 1),

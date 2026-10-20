@@ -147,9 +147,13 @@ function Row({ row: r, labels }: { row: RowView; labels: TableLabels }) {
             <ChevronNext className="size-4 shrink-0" />
           </Link>
         ) : (
-          <span aria-hidden="true" className="hidden min-h-11 items-center justify-end text-sea-700 lg:inline-flex">
-            <ChevronNext className="size-4" />
-          </span>
+          <Link
+            href={r.editHref}
+            className="relative z-10 inline-flex min-h-11 items-center gap-1 whitespace-nowrap rounded-[var(--radius-field)] font-semibold text-sea-700 hover:underline"
+          >
+            {labels.editLabel}
+            <ChevronNext className="size-4 shrink-0" />
+          </Link>
         )}
       </td>
     </tr>

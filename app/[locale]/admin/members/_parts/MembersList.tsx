@@ -86,10 +86,11 @@ function StripeLink({ row, className = "" }: { row: MemberRowView; className?: s
       href={row.stripeHref}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={t("row.stripeLabel", { name: row.name })}
       className={`inline-flex min-h-11 items-center ${linkClass} ${className}`}
     >
       {t("row.stripe")}
+      {/* The accessible name starts with the visible text (WCAG 2.5.3); the rest says whose subscription and that it opens a new tab. */}
+      <span className="sr-only"> · {t("row.stripeLabel", { name: row.name })}</span>
     </a>
   );
 }

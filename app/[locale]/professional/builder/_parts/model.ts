@@ -4,6 +4,7 @@
 // Required to submit is only what admin verifies (rule B2): photo, name, specialty, NPI, licence, board and the files that
 // back them. Everything else is "complete later" and never blocks Save and continue.
 import { business } from "@/config/business";
+import { MB, boardIsNamed, toMb } from "@/lib/credentials";
 import type { BoardStatus, CredentialKind } from "@/lib/sample";
 
 /* ---------------- Steps ---------------- */
@@ -139,10 +140,8 @@ export const STEP_FIELDS: Record<StepId, readonly TextField[]> = {
 
 const ARABIC_LETTER = /[؀-ۿ]/;
 const LATIN_LETTER = /[A-Za-z]/;
-/** ABMS member boards are "American Board of ..."; AOA boards are "American Osteopathic Board of ..." (rule B7). */
-const NAMED_BOARD = /^American (Osteopathic )?Board of \S/i;
-
-export const boardIsNamed = (name: string) => NAMED_BOARD.test(name.trim());
+// boardIsNamed and toMb live in lib/credentials (shared with the credential review, screen 38) and are re-exported here.
+export { boardIsNamed, toMb };
 export const digitsOnly = (raw: string) => raw.trim().replace(/[\s,]/g, "");
 export const normaliseLicence = (raw: string) => raw.trim().replace(/\s+/g, "");
 
@@ -239,7 +238,6 @@ export function validateTag(raw: string, tags: string[]): ErrorCode | undefined 
   return undefined;
 }
 
-const MB = 1024 * 1024;
 const PHOTO_TYPES = ["image/jpeg", "image/png"];
 const CREDENTIAL_TYPES = ["application/pdf", "image/jpeg", "image/png"];
 /** Prototype check for obvious stock photos by file name (rule C4); admin review is the real check (screen 38). */
@@ -256,8 +254,6 @@ export function validateCredentialFile(file: { type: string; size: number }): Er
   return file.size > business.credentialMaxMb * MB ? "fileSize" : undefined;
 }
 
-/** File size in megabytes for messages and file rows; format it with lib/format. */
-export const toMb = (bytes: number) => bytes / MB;
 
 /* ---------------- Publish checklist ---------------- */
 

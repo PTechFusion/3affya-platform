@@ -138,12 +138,16 @@ export function reviewHref(id: string | undefined, sp: SearchParams): string {
 export const doctorName = (d: { nameEn: string; nameAr: string }, locale: Locale) => (locale === "ar" ? d.nameAr : d.nameEn);
 export const reviewerName = (locale: Locale) => (locale === "ar" ? sampleAdmin.nameAr : sampleAdmin.nameEn);
 
-/** A wait or a time left, in the unit the queue shows: under an hour, whole hours below a day, whole days from there. */
+/**
+ * A wait or a time left, in the unit the queue shows: under an hour, whole hours, whole days from there. Time left counts in
+ * hours up to the 48 h SLA (47 h left is "47 hours", not "1 day"); a wait switches to days after one day.
+ */
 export type Span = { unit: "underHour" | "hours" | "days"; count: number };
-export function spanOf(ms: number): Span {
+export function spanOf(ms: number, kind: "left" | "waiting" = "waiting"): Span {
   const hours = Math.floor(Math.abs(ms) / HOUR_MS);
   if (hours < 1) return { unit: "underHour", count: 0 };
-  return hours < 24 ? { unit: "hours", count: hours } : { unit: "days", count: Math.floor(hours / 24) };
+  const dayFrom = kind === "left" ? 48 : 24;
+  return hours < dayFrom ? { unit: "hours", count: hours } : { unit: "days", count: Math.floor(hours / 24) };
 }
 
 export const statusTone = { new: "pending", resubmitted: "info" } as const;

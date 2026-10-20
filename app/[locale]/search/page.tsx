@@ -12,7 +12,7 @@ import { DoctorCard } from "@/components/brand/DoctorCard";
 import { Breadcrumbs, ChevronNext, Chip, CloseIcon, EmptyState, LinkButton, Surface } from "@/components/ui";
 import { Link } from "@/i18n/navigation";
 import { formatMoney, formatNumber, type Locale } from "@/lib/format";
-import { sampleDoctors, sampleSpecialties, toDoctorCardData, verifiedDoctors, type SampleDoctor } from "@/lib/sample";
+import { publicDoctors, sampleSpecialties, toDoctorCardData, verifiedDoctors, type SampleDoctor } from "@/lib/sample";
 import { emergencyNumberFor, viewerFrom } from "@/lib/viewer";
 import { business } from "@/config/business";
 import { FilterPanel, FilterSheet, ResultsRegion, SearchProvider, SortSelect, type FilterGroupView } from "./SearchControls";
@@ -98,7 +98,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
     const arabic = other ? loc !== "ar" : loc === "ar";
     return arabic ? s.nameAr : s.nameEn;
   };
-  const cityOf = new Map(sampleDoctors.map((d) => [citySlug(d), d] as const));
+  const cityOf = new Map(publicDoctors().map((d) => [citySlug(d), d] as const));
   const money = (cents: number) => formatMoney(cents, business.currencyPresentment, loc);
   const capital = (v: string) => v.charAt(0).toUpperCase() + v.slice(1);
   const labelFor = (key: FilterKey, value: string): string => {

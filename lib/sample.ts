@@ -12,7 +12,7 @@ import { business } from "@/config/business";
 import { addDays, zonedInstant, zonedParts, type StoredException, type StoredRule } from "@/lib/slots";
 import builderJson from "@/data/sample/builder.json";
 import usStatesJson from "@/data/sample/us-states.json";
-import { sampleInstant, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
+import { sampleInstant, sampleInstantExact, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
 import payoutsJson from "@/data/sample/payouts.json";
 import type { PayoutAccount, PayoutRecordStatus, PayoutStatus } from "@/lib/payouts";
 import membershipsJson from "@/data/sample/memberships.json";
@@ -22,11 +22,12 @@ import type { SummaryData } from "@/components/brand/SummaryViewer";
 
 // The card mapping and the sample clock live in lib/card-data.ts (no JSON imports, so client components can use them);
 // pages keep importing them from here.
-export { sampleInstant, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
+export { sampleInstant, sampleInstantExact, toDoctorCardData, type LanguageLabels } from "@/lib/card-data";
 
 export type SampleDoctor = {
   id: string;
   npi: string;
+  /** The public card state. A suspension (admin, screen 39) is a listings.json row, read through suspendedDoctorIds(). */
   state: DoctorCardState;
   gender: "f" | "m";
   nameEn: string;
@@ -55,7 +56,8 @@ export const sampleDoctors = doctorsJson as unknown as SampleDoctor[];
 
 export const sampleSpecialties = specialtiesJson as SampleSpecialty[];
 
-export const verifiedDoctors = () => sampleDoctors.filter((d) => d.state === "verified");
+/** Verified doctors a public page may show: a suspended or removed one is left out (publicDoctors). */
+export const verifiedDoctors = () => publicDoctors().filter((d) => d.state === "verified");
 
 /** Two verified doctors for the home strip, one of each gender (rule G2). */
 export function featuredDoctors(): SampleDoctor[] {
@@ -123,7 +125,20 @@ export type SampleInvite = {
 
 export type InviteStatus = "valid" | "expired" | "used";
 
-export const sampleInvites = invitesJson as SampleInvite[];
+// Invite instants are authored around the sample anchor and shifted like every other instant, so the claim screen (9) and the
+// outreach screen (46) agree on when an invite was sent, used or expired.
+export const sampleInvites: SampleInvite[] = (invitesJson as SampleInvite[]).map((i) => ({
+  ...i,
+  sentAtUtc: sampleInstant(i.sentAtUtc).toISOString(),
+  expiresAtUtc: sampleInstant(i.expiresAtUtc).toISOString(),
+  usedAtUtc: i.usedAtUtc ? sampleInstant(i.usedAtUtc).toISOString() : null,
+}));
+
+/** Doctors a public page may list: never a suspended or removed one (suspended is reversible and must look unknown). */
+export function publicDoctors(): SampleDoctor[] {
+  const hidden = new Set([...removedDoctorIds(), ...suspendedDoctorIds()]);
+  return sampleDoctors.filter((d) => !hidden.has(d.id));
+}
 
 /** Looks a token up and derives its status at `now`. Undefined means forged: no such token, or its doctor row is gone. */
 export function inviteByToken(
@@ -1123,6 +1138,7 @@ function toOutreachInvite(row: OutreachInviteRow, now: Date, validDays: number):
   const at = (iso: string | null | undefined) => (iso ? sampleInstant(iso) : undefined);
   // The preview invite goes out "now", so its link works for the full validity period from this moment.
   const justSent = row.preview === "justSent";
+  // sampleInvites already carries shifted instants; this block reads the same rows raw, so it shifts them once here.
   const sentAt = justSent ? now : sampleInstant(row.sentAtUtc);
   const expiresAt = justSent ? new Date(now.getTime() + validDays * 86_400_000) : sampleInstant(row.expiresAtUtc);
   const claimedAt = at(row.usedAtUtc);
@@ -1171,8 +1187,9 @@ export function outreachInvites(validDays: number, { justSent = false }: { justS
  * or was revoked (they come back here to be invited again). Doctors with a live invite are on the sent list instead.
  */
 export function outreachCandidates(invites: OutreachInvite[]): Array<{ doctor: SampleDoctor; last?: OutreachInvite }> {
+  const blocked = doctorsWithRemovalRequests();
   return sampleDoctors
-    .filter((d) => d.state === "unclaimed")
+    .filter((d) => d.state === "unclaimed" && !blocked.has(d.id))
     .flatMap((doctor) => {
       const mine = invites.filter((i) => i.doctor.id === doctor.id);
       if (mine.some(outreachIsLive)) return [];
@@ -1225,7 +1242,17 @@ const removalsData = removalsJson as unknown as { authoredNowUtc: string; reques
  * 40 and rm_003 about 53. Gone with task 1.5, when received_at comes from the database.
  */
 export function removalInstant(iso: string, now: Date = new Date()): Date {
-  return new Date(Date.parse(iso) + (now.getTime() - Date.parse(removalsData.authoredNowUtc)));
+  return sampleInstantExact(iso, removalsData.authoredNowUtc, now);
+}
+
+/** Doctors whose removal was confirmed (screen 41): their profile answers 410 and no public or admin list offers them. */
+export function removedDoctorIds(): Set<string> {
+  return new Set(removalsData.requests.filter((r) => r.status === "confirmed").map((r) => r.doctorId));
+}
+
+/** Doctors with a removal request open, waiting on them, or confirmed: outreach (46) never invites them. */
+export function doctorsWithRemovalRequests(): Set<string> {
+  return new Set(removalsData.requests.filter((r) => r.status !== "refused").map((r) => r.doctorId));
 }
 
 /** Every removal request, newest first. Only rows whose doctor exists resolve. Production reads the queue under admin RLS. */
@@ -1587,6 +1614,11 @@ type ListingRow = {
 
 const listingRows = listingsJson as unknown as ListingRow[];
 
+/** Doctors under an admin suspension (screen 39): hidden from every public surface while it lasts, listed as Suspended for admin. */
+export function suspendedDoctorIds(): Set<string> {
+  return new Set(listingRows.filter((r) => r.suspension).map((r) => r.id));
+}
+
 export type SampleListing = {
   doctor: SampleDoctor;
   status: ListingStatus;
@@ -1613,14 +1645,18 @@ function listingFor(d: SampleDoctor): SampleListing {
   const row = listingRows.find((r) => r.id === d.id);
   const profile = profileFor(d.id);
   const builder = builderRowFor(d.id);
-  // Invites keep their authored instants (screen 9 compares them unshifted), so a claim date read from one does too.
   const invite = sampleInvites.find((i) => i.doctorId === d.id && i.usedAtUtc);
-  const raw = d.state as string; // doctors.json may carry "suspended" or "removed", which the public card state does not name
-  const submittedAtUtc = row?.submittedAtUtc ?? builder?.submittedAtUtc ?? null;
-  const status: ListingStatus =
-    raw === "verified" || raw === "unclaimed" || raw === "suspended" || raw === "removed"
-      ? raw
-      : builder?.rejection
+  const removal = removalsData.requests.find((r) => r.doctorId === d.id && r.status === "confirmed");
+  // builder.json owns submission and decision dates; a claim is rejected only while the decision is newer than the submission.
+  const submittedAtUtc = builder?.submittedAtUtc ?? row?.submittedAtUtc ?? null;
+  const rejected = !!builder?.rejection && !!builder.decidedAtUtc && !!submittedAtUtc && builder.decidedAtUtc > submittedAtUtc;
+  const status: ListingStatus = removal
+    ? "removed"
+    : row?.suspension
+      ? "suspended"
+      : d.state === "verified" || d.state === "unclaimed"
+        ? d.state
+        : rejected
         ? "rejected"
         : submittedAtUtc
           ? "inReview"
@@ -1645,7 +1681,7 @@ function listingFor(d: SampleDoctor): SampleListing {
       status === "suspended" && s
         ? { at: sampleInstant(s.atUtc), byEn: by?.nameEn ?? s.byAdminId, byAr: by?.nameAr ?? s.byAdminId, reasonEn: s.reasonEn, reasonAr: s.reasonAr }
         : null,
-    removedAt: null, // no removed sample yet: removals are confirmed on screen 41
+    removedAt: removal?.decision ? removalInstant(removal.decision.decidedAtUtc) : null,
   };
 }
 

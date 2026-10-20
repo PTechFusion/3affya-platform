@@ -77,7 +77,8 @@ export default async function AuditPage({ params, searchParams }: Props) {
   const parsed = filtersFrom(sp);
   const { dateError } = parsed;
   const filters = sp.state === "empty" && appliedCount(parsed.filters) === 0 ? EMPTY_DEMO_FILTERS : parsed.filters;
-  const filtered = appliedCount(filters) > 0;
+  // A from > to range is not applied (L4: the error says so), so it does not count as a filter either.
+  const filtered = appliedCount(dateError ? { ...filters, from: undefined, to: undefined } : filters) > 0;
   const all = auditEntries(now);
   const matching = sp.state === "empty" ? [] : applyFilters(all, filters, zone, dateError);
   const openId = typeof sp.open === "string" ? sp.open : undefined;

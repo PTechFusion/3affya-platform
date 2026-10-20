@@ -195,5 +195,6 @@ export function durationParts(ms: number): { h: number; m: number; s: number } {
 export function aiConfig(): { vendor: string | null; model: string | null } {
   const vendor = process.env.AI_VENDOR?.trim();
   const model = process.env.AI_MODEL?.trim();
-  return { vendor: vendor === "anthropic" || vendor === "bedrock" ? vendor : null, model: model || null };
+  // Shown as set; which vendors are valid is lib/ai's business (ADR 3), not this page's.
+  return { vendor: vendor || null, model: model || null };
 }

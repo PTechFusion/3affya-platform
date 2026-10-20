@@ -1,6 +1,6 @@
 // Links from the admin screens into the Stripe Dashboard (ADR-6: Stripe hosts billing, invoices, refunds and payouts, so admin
 // pages read status here and change things there). Test mode until live mode is switched on (handoff risk: Stripe live mode):
-// set STRIPE_DASHBOARD_URL=https://dashboard.stripe.com (or STRIPE_DASHBOARD_LIVE=1) on the server for live. Server only: the base
+// set STRIPE_DASHBOARD_URL=https://dashboard.stripe.com (or STRIPE_DASHBOARD_LIVE=1) on the server for live; STRIPE_DASHBOARD_URL wins. Server only: the base
 // comes from env and never ships to the client. Sample ids (cus_sample_*, pi_sample_*) are fake, so prototype links open Stripe on
 // a not-found page.
 

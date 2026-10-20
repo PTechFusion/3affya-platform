@@ -2,10 +2,11 @@
 // inside the streamed page would arrive after the 200 was sent. The (profile) group keeps this layout and loading.tsx off the
 // sibling routes under /doctors/[id] (this-is-me, screen 10).
 import { notFound } from "next/navigation";
-import { doctorById } from "@/lib/sample";
+import { doctorById, suspendedDoctorIds } from "@/lib/sample";
 
 export default async function ProfileLayout({ children, params }: { children: React.ReactNode; params: Promise<{ id: string }> }) {
   const { id } = await params;
-  if (!doctorById(id)) notFound();
+  // A suspended doctor (admin, screen 39) is unknown to the public while the suspension lasts: same 404, same body, no name.
+  if (!doctorById(id) || suspendedDoctorIds().has(id)) notFound();
   return children;
 }
