@@ -180,3 +180,13 @@ export const adminMoney = {
 export const listingRules = {
   reverifyDueSoonDays: 30, // (default until Dr Ayman confirms) the listings table flags a verified row this many days before its next check
 } as const;
+
+/* ---------------- AI jobs and costs (screen 45, tasks 1.9, 3.8 and 3.11) ---------------- */
+// Appended block. What the admin AI jobs page measures the records pipeline against. The AI vendor bills in USD, so costs are
+// in USD whatever the patient paid in. A "day" for the alert is a calendar day in business.defaultTimeZone.
+export const aiLimits = {
+  costCurrency: "USD" as const,
+  dailySpendAlertCents: 1000, // (default until Dr Ayman confirms) the day's ai_calls cost that emails the ops inbox (architecture: daily AI spend alert)
+  jobTokenCap: 3_000_000, // (default until the M1 extraction spike measures tokens per page) per-job token cap, enforced in lib/ai (task 1.9)
+  attemptsPerCall: 3, // task 3.8: three attempts per page or call, then the job fails with a reason
+} as const;

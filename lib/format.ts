@@ -133,3 +133,25 @@ export function formatMinorUnits(amountMinor: number, currency: string): string 
   const unit = 10 ** fraction;
   return `${sign}${Math.floor(abs / unit)}.${String(abs % unit).padStart(fraction, "0")}`;
 }
+
+/* ---------------- Appended (screen 45): sub-cent money and calendar days in a zone ---------------- */
+
+/**
+ * Money below a cent, e.g. an AI cost per page ("USD 0.0335"). `amountMinor` may be fractional (0.335 cents). Always shows the
+ * currency's own decimals and up to `maxFractionDigits`. Prices and receipts keep formatMoney; this is for internal costs.
+ */
+export function formatMoneyFine(amountMinor: number, currency: string, locale: Locale, maxFractionDigits = 4): string {
+  const fraction = THREE_DECIMAL.has(currency) ? 3 : 2;
+  return new Intl.NumberFormat(tag(locale), {
+    style: "currency",
+    currency,
+    currencyDisplay: "code",
+    minimumFractionDigits: fraction,
+    maximumFractionDigits: Math.max(fraction, maxFractionDigits),
+  }).format(amountMinor / 10 ** fraction);
+}
+
+/** The calendar day an instant falls on in a zone, as "2026-11-09", for grouping by day (daily totals, "today"). */
+export function dayKeyInZone(instant: Date, timeZone: string): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(instant);
+}

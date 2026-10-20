@@ -1195,3 +1195,48 @@ export function Notice({
     </div>
   );
 }
+
+/* ---------------- Notice ---------------- */
+/**
+ * The one notice box (PLAYBOOK §9): a short title, a line or two of body and an optional action, with the tone carried by a
+ * bar on the start edge and by the words, never by colour alone. danger: something stopped and needs a fix (rule L4: say the
+ * problem and the fix); warning: needs attention soon; success: what just happened; info: worth knowing. `live` makes it a
+ * live region: "polite" for a status that just changed, "assertive" only for an error the user must act on.
+ */
+export type NoticeTone = "info" | "success" | "warning" | "danger";
+const noticeBars: Record<NoticeTone, string> = {
+  info: "border-s-sea-500",
+  success: "border-s-success",
+  warning: "border-s-warning",
+  danger: "border-s-danger",
+};
+export function Notice({
+  tone = "info",
+  title,
+  body,
+  action,
+  live,
+  id,
+  className,
+}: {
+  tone?: NoticeTone;
+  title: string;
+  body?: ReactNode;
+  action?: ReactNode;
+  live?: "polite" | "assertive";
+  id?: string;
+  className?: string;
+}) {
+  return (
+    <section
+      id={id}
+      role={live === "assertive" ? "alert" : live === "polite" ? "status" : undefined}
+      aria-label={live ? undefined : title}
+      className={cx("rounded-[var(--radius-field)] border border-sand-300 border-s-4 bg-white p-4", noticeBars[tone], className)}
+    >
+      <p className="font-bold text-ink-900">{title}</p>
+      {body ? <div className="mt-1 text-ink-700">{body}</div> : null}
+      {action ? <div className="mt-3 flex flex-wrap items-center gap-2">{action}</div> : null}
+    </section>
+  );
+}

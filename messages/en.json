@@ -5807,5 +5807,270 @@
       "dismiss": "Close",
       "failed": "That did not go through. Nothing was changed. Try again."
     }
+  },
+  "adminAiJobs": {
+    "metaTitle": "AI jobs and costs",
+    "metaDescription": "Records summary jobs, the tokens and cost each one used, and the price the patient paid.",
+    "title": "AI jobs and costs",
+    "lead": "Every records summary job: where it is now, the tokens and cost it used, and the price the patient paid for it.",
+    "zoneLine": "Times in <z>{zone}</z>",
+    "loading": "Loading AI jobs and costs",
+    "spend": {
+      "title": "AI spend",
+      "today": "Today",
+      "week": "Last 7 days",
+      "month": "Last 30 days",
+      "chargedShare": "{pct} of {amount} charged",
+      "nothingCharged": "Nothing charged yet",
+      "pending": "{amount} more when running jobs finish",
+      "alert": "Daily alert",
+      "alertBadge": "Passed",
+      "alertPassed": "Passed today at {time}",
+      "alertToday": "Today is at {pct} of it",
+      "alertLast": "Last passed on {date}",
+      "alertNever": "Not passed in 30 days"
+    },
+    "chart": {
+      "title": "AI cost per day, last {label} days",
+      "loadingTitle": "AI cost per day",
+      "legend": "The dashed line is the daily alert, {amount}. Days over it show in amber.",
+      "bar": "{date}: {amount}",
+      "over": "(over the alert)",
+      "today": "Today"
+    },
+    "jobs": {
+      "title": "Jobs",
+      "caption": "Records summary jobs, newest first",
+      "count": "Showing {label} of {all} jobs, newest first"
+    },
+    "config": {
+      "model": "Model",
+      "vendor": "vendor",
+      "notSet": "not set",
+      "source": "From {model} and {vendor} in the server settings. Every job runs on this one pinned model."
+    },
+    "filters": {
+      "label": "Filter jobs by status",
+      "all": "All",
+      "inProgress": "In progress",
+      "failed": "Failed",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "status": {
+      "queued": "Queued",
+      "processing": "Running",
+      "failed": "Failed",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "retryQueued": "Retry queued"
+    },
+    "stepLine": {
+      "queued": "Paid, waiting to start: {pages}",
+      "processing": "{step}: {done} of {total} pages done",
+      "failed": "Stopped at {step}, page {page} of {total}",
+      "retryQueued": "Starts again at page {page} of {total}",
+      "cancelled": "Stopped at {step} after {done} of {total} pages",
+      "done": "All {steps} steps done in {duration}"
+    },
+    "steps": {
+      "validate": "Checking files",
+      "quote": "Setting the price",
+      "pay": "Payment",
+      "extract": "Reading each page",
+      "dedupe": "Joining repeated reports",
+      "summarise": "Writing the summary and timeline",
+      "flag": "Marking what is missing or unclear",
+      "store": "Saving it securely",
+      "notify": "Telling the patient"
+    },
+    "columns": {
+      "job": "Job",
+      "status": "Status",
+      "pages": "Pages",
+      "tokens": "Tokens",
+      "tokensPages": "Tokens, pages",
+      "cost": "AI cost",
+      "price": "Price",
+      "times": "Started, finished",
+      "retries": "Retries"
+    },
+    "row": {
+      "started": "Started {when}",
+      "finished": "finished {when}",
+      "perPage": "{amount} a page",
+      "notFinished": "Not finished",
+      "openLabel": "Open job {job}"
+    },
+    "price": {
+      "taken": "paid",
+      "pending": "taken when done",
+      "notTaken": "not taken"
+    },
+    "retry": {
+      "button": "Retry",
+      "pending": "Queuing retry…",
+      "label": "Retry job {job}",
+      "error": {
+        "notFound": "This job is no longer in the list. Reload the page.",
+        "state": "This job is not failed any more, so there is nothing to retry. Reload to see where it is.",
+        "unavailable": "The retry did not queue. Try again in a minute.",
+        "notAllowed": "Your admin session has ended. Sign in again, then retry."
+      }
+    },
+    "cancel": {
+      "button": "Stop job",
+      "title": "Stop this job?",
+      "body": "The pages read so far are thrown away and the patient is not charged. They see the set as stopped and can start it again.",
+      "stop": "Stop job",
+      "stopping": "Stopping…",
+      "keep": "Keep it running",
+      "error": {
+        "notFound": "This job is no longer in the list. Reload the page.",
+        "state": "This job has already finished or stopped. Reload to see where it is.",
+        "unavailable": "The job did not stop. Try again in a minute.",
+        "notAllowed": "Your admin session has ended. Sign in again, then stop the job."
+      }
+    },
+    "notices": {
+      "alert": {
+        "title": "Today's AI cost passed the daily alert",
+        "body": "It reached {amount} at {time}, over the {threshold} alert, and an email went to {email}. The biggest job today is {job} at {cost}.",
+        "action": "Open {job}"
+      },
+      "retryQueued": {
+        "title": "Retry queued for {job}",
+        "body": "Attempt {attempt} starts again from page {page} of {total} with the same quote. Nothing new is charged, and the patient sees the set waiting to start."
+      }
+    },
+    "empty": {
+      "title": "No AI jobs yet",
+      "body": "A job starts when a patient pays for a records summary. It reads every page, writes the summary and logs its tokens and cost here.",
+      "action": "See records payments"
+    },
+    "emptyFilter": {
+      "action": "Show all jobs",
+      "all": {
+        "title": "No jobs",
+        "body": "Jobs show here once a patient pays for a records summary."
+      },
+      "inProgress": {
+        "title": "Nothing in progress",
+        "body": "Queued and running jobs show here, and so does a retry until it starts."
+      },
+      "failed": {
+        "title": "No failed jobs",
+        "body": "A job fails when a page or call still fails after {attemptsLabel} tries. It shows here with Retry."
+      },
+      "done": {
+        "title": "No finished jobs",
+        "body": "A job shows here once the summary is saved and the patient is told."
+      },
+      "cancelled": {
+        "title": "No cancelled jobs",
+        "body": "Jobs a patient or an admin stopped show here. Nobody is charged for them."
+      }
+    },
+    "error": {
+      "title": "The job list did not load",
+      "body": "Only this page failed: jobs keep running and nothing about them has changed. Try again in a minute.",
+      "action": "Try again"
+    },
+    "duration": {
+      "s": "{s} s",
+      "ms": "{m} min {s} s",
+      "m": "{m} min",
+      "hm": "{h} h {m} min"
+    },
+    "counts": {
+      "files": "{count, plural, one {{label} file} other {{label} files}}",
+      "pages": "{count, plural, one {{label} page} other {{label} pages}}",
+      "calls": "{count, plural, one {{label} call} other {{label} calls}}",
+      "retries": "{count, plural, =0 {no retries} one {{label} retry} other {{label} retries}}"
+    },
+    "detail": {
+      "metaTitle": "AI job {job}",
+      "breadcrumbs": "Breadcrumbs",
+      "loading": "Loading the job",
+      "title": "Job",
+      "lead": "Record set {set} for {name}: {files}, {pages}, {size} MB.",
+      "notFound": {
+        "crumb": "Not found",
+        "title": "No job with this id",
+        "body": "The link may be mistyped, or the job was removed with the patient's records. Every job is in the list.",
+        "action": "Back to AI jobs"
+      },
+      "facts": {
+        "title": "Job facts",
+        "started": "Started",
+        "finished": "Finished",
+        "took": "Took {duration}",
+        "stoppedNow": "Stopped just now",
+        "pages": "Pages",
+        "pagesValue": "{done} of {total} done",
+        "tokens": "Tokens",
+        "tokensNote": "{input} in, {output} out; {pct} of the {cap} job cap",
+        "cost": "AI cost",
+        "price": "Price",
+        "share": "AI cost is {pct} of it",
+        "retries": "Retries",
+        "attempt": "Attempt {attempt}; up to {max} tries a page",
+        "model": "Model",
+        "vendorNote": "Vendor {vendor}, from {env}"
+      },
+      "failure": {
+        "title": "Stopped at page {page} of {total} after {attempts} tries",
+        "reason": {
+          "damaged": "Page {filePage} of {file} could not be opened. The patient was asked to upload that file again.",
+          "unavailable": "The reading service did not answer. Retry once it is back."
+        },
+        "charge": "Nothing was charged. Retry starts again from that page with the same quote."
+      },
+      "cancelled": {
+        "title": "Job stopped",
+        "body": "The patient is not charged and sees the set as stopped. They can start it again from their records page."
+      },
+      "steps": {
+        "title": "Steps and timings",
+        "lead": "The nine fixed steps, in order. The patient sees the same step on their progress page.",
+        "running": "Running",
+        "queueWait": "Waited {duration} for a free slot",
+        "usageLine": "{calls}, {tokens} tokens, {cost}, {retries}",
+        "noAi": "No AI call",
+        "state": {
+          "done": "Done",
+          "current": "Running",
+          "queuedHere": "Waiting to start",
+          "waiting": "Not started",
+          "failed": "Failed",
+          "stopped": "Stopped"
+        },
+        "columns": {
+          "step": "Step",
+          "started": "Started",
+          "took": "Took",
+          "calls": "Calls",
+          "tokens": "Tokens",
+          "cost": "AI cost",
+          "retries": "Retries"
+        }
+      },
+      "files": {
+        "title": "Cost per file",
+        "lead": "File names and sizes only. What a page says never shows here.",
+        "size": "{size} MB",
+        "unreadable": "{count, plural, one {{label} page unreadable} other {{label} pages unreadable}}",
+        "usageLine": "{tokens} tokens, {cost} ({perPage} a page), {retries}",
+        "columns": {
+          "file": "File",
+          "size": "Size",
+          "pages": "Pages",
+          "tokens": "Tokens",
+          "cost": "AI cost",
+          "perPage": "A page",
+          "retries": "Retries"
+        }
+      }
+    }
   }
 }
