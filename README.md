@@ -120,6 +120,22 @@ local Supabase project: API `http://127.0.0.1:55321`, Postgres `127.0.0.1:55322`
   `output/cms_join_report.md`). The shortlist and the CMS files are not in the repo. Python 3.10+,
   `pip install -r scripts/requirements-seed.txt`.
 
+## AI client and the extraction spike (lane L3, task 1.9)
+
+- `lib/ai` is the only way to a model: `extractPage(page, locale, { jobId })` and `summarise(items, locale, { jobId })`,
+  both `{ ok, data } | { ok, error }`. Vendor and model come from `AI_VENDOR` and `AI_MODEL` (`.env.example`); the
+  Anthropic and Bedrock SDKs are each imported in one adapter under `lib/ai/vendors/`. No tools, no Batch or Files API, no
+  prompt caching (ADR-3, ADR-4). Output is validated with zod (`lib/ai/schemas.ts`); invalid output is retried once, then
+  the call fails.
+- Every call writes one `ai_calls` row (service role only; the trigger adds its tokens and cost to the job's `ai_jobs`
+  totals). The per-job token cap is `aiLimits.jobTokenCap`; timeouts, the retry, the circuit and effort are `aiClient`,
+  and per-model prices `aiPricing`, all in `config/business.ts`.
+- Fixtures: synthetic documents in `fixtures/` (`node fixtures/generate.mjs` rebuilds them), hand-written expected items
+  in `fixtures/expected/`. Spike: `node --env-file=.env scripts/spike_extraction.ts` writes `output/spike_report.md`;
+  `node scripts/spike_extraction.ts --check` checks everything short of calling the model.
+- Unit tests: `npx vitest run --config tests/unit/ai/vitest.config.ts` (no key, no database). `tests/rls/ai-calls.rls.ts`
+  runs with `npm run test:rls`.
+
 ## Known notes
 
 - `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.

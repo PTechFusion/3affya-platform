@@ -1,0 +1,24 @@
+{
+  "id": "scan-lowres",
+  "title": "Clinic visit note, Arabic, low-resolution noisy scan (JPEG, about 70 dpi)",
+  "kind": "image",
+  "locale": "ar",
+  "source": "source/scan-lowres.html",
+  "file": "documents/scan-lowres.jpg",
+  "pages": [
+    {
+      "page": 1,
+      "input": "documents/scan-lowres.jpg",
+      "unreadable": false,
+      "items": [
+        { "type": "vital", "label": "ضغط الدم", "aliases": ["Blood pressure", "BP"], "value": "142/90", "unit": "ملم زئبق", "date": "2026-10-05" },
+        { "type": "vital", "label": "النبض", "aliases": ["Pulse", "Heart rate"], "value": "78", "unit": "نبضة/دقيقة", "date": "2026-10-05" },
+        { "type": "vital", "label": "الوزن", "aliases": ["Weight"], "value": "86", "unit": "كغ", "date": "2026-10-05" },
+        { "type": "result", "label": "السكر التراكمي (HbA1c)", "aliases": ["HbA1c", "السكر التراكمي"], "value": "7.9", "unit": "%", "date": "2026-10-01" },
+        { "type": "condition", "label": "ارتفاع ضغط الدم", "aliases": ["Hypertension"], "value": null, "unit": null, "date": null },
+        { "type": "medication", "label": "أملوديبين", "aliases": ["Amlodipine"], "value": "5", "unit": "ملغ", "date": null, "frequency": "مرة واحدة يومياً" }
+      ]
+    }
+  ],
+  "forbidden": []
+}

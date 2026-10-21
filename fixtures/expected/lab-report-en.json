@@ -1,0 +1,28 @@
+{
+  "id": "lab-report-en",
+  "title": "Typed laboratory report, English, one page",
+  "kind": "pdf",
+  "locale": "en",
+  "source": "source/lab-report-en.html",
+  "file": "documents/lab-report-en.pdf",
+  "pages": [
+    {
+      "page": 1,
+      "input": "documents/lab-report-en.pdf",
+      "unreadable": false,
+      "items": [
+        { "type": "result", "label": "Haemoglobin", "aliases": ["Hemoglobin", "Hb", "HGB"], "value": "13.1", "unit": "g/dL", "date": "2026-09-14", "ref_low": 12.0, "ref_high": 15.5 },
+        { "type": "result", "label": "White blood cell count", "aliases": ["WBC", "White blood cells", "White cell count", "Leukocytes"], "value": "7.8", "unit": "×10⁹/L", "date": "2026-09-14", "ref_low": 4.0, "ref_high": 11.0 },
+        { "type": "result", "label": "Platelet count", "aliases": ["Platelets", "PLT"], "value": "265", "unit": "×10⁹/L", "date": "2026-09-14", "ref_low": 150, "ref_high": 400 },
+        { "type": "result", "label": "HbA1c", "aliases": ["Haemoglobin A1c", "Hemoglobin A1c", "Glycated haemoglobin", "Glycated hemoglobin"], "value": "6.8", "unit": "%", "date": "2026-09-14", "ref_low": 4.0, "ref_high": 5.6 },
+        { "type": "result", "label": "Fasting glucose", "aliases": ["Glucose, fasting", "Fasting plasma glucose", "Fasting blood glucose"], "value": "7.4", "unit": "mmol/L", "date": "2026-09-14", "ref_low": 3.9, "ref_high": 5.5 },
+        { "type": "result", "label": "Creatinine", "aliases": ["Serum creatinine"], "value": "88", "unit": "µmol/L", "date": "2026-09-14", "ref_low": 45, "ref_high": 90 },
+        { "type": "result", "label": "LDL cholesterol", "aliases": ["LDL", "LDL-C", "LDL-cholesterol", "Low-density lipoprotein cholesterol"], "value": "3.6", "unit": "mmol/L", "date": "2026-09-14", "ref_low": null, "ref_high": 3.0 },
+        { "type": "result", "label": "Thyroid stimulating hormone (TSH)", "aliases": ["TSH", "Thyroid stimulating hormone", "Thyroid-stimulating hormone"], "value": "2.10", "unit": "mIU/L", "date": "2026-09-14", "ref_low": 0.40, "ref_high": 4.00 },
+        { "type": "result", "label": "25-hydroxy vitamin D", "aliases": ["Vitamin D", "25-OH vitamin D", "25(OH)D", "25-hydroxyvitamin D"], "value": "18", "unit": "ng/mL", "date": "2026-09-14", "ref_low": 30, "ref_high": 100 },
+        { "type": "result", "label": "Ferritin", "aliases": ["Serum ferritin"], "value": "45", "unit": "ng/mL", "date": "2026-09-14", "ref_low": 15, "ref_high": 150 }
+      ]
+    }
+  ],
+  "forbidden": []
+}
