@@ -124,9 +124,12 @@ local Supabase project: API `http://127.0.0.1:55321`, Postgres `127.0.0.1:55322`
 
 `POST /api/stripe/webhook` is the only place money state is written (ADR-6). It verifies the `Stripe-Signature` header
 against the raw body with `STRIPE_WEBHOOK_SECRET` (400 on failure), inserts the event into `stripe_events` before any
-handler runs (a known `event_id` answers 200 and stops), then calls the handler for the event's type from
+handler runs (a known, handled `event_id` answers 200 and stops), then calls the handler for the event's type from
 `lib/stripe/handlers.ts`. A handler error is recorded on the row and answered 500, so Stripe retries; the retry takes the
-failed row back and runs the handler again. Types with no handler are stored and acknowledged. The payload is never logged.
+failed row back and runs the handler again. An attempt that died without recording anything (process killed, database
+gone) is taken back by the first delivery five minutes after it started (`STALE_ATTEMPT_MS`); a delivery inside those five
+minutes answers 409, so Stripe tries again later. Types with no handler are stored and acknowledged. The payload is never
+logged.
 
 - `stripe_events` (`supabase/migrations/20261021000100_l2_stripe_events.sql`) is service role only: every privilege revoked
   from anon and authenticated, RLS on, and a restrictive deny policy; `tests/rls/stripe-events.rls.ts` proves it.
@@ -135,8 +138,8 @@ failed row back and runs the handler again. Types with no handler are stored and
 
 | Command | What it does |
 |---|---|
-| `npx vitest run --config tests/unit/stripe/vitest.config.ts` | Unit tests, database mocked (signature, duplicate, handler error, retry) |
-| `node scripts/stripe-webhook-replay.mjs` | Against a running local server: one signed event posted twice (one row), a bad signature (400), a retry after a failure. Needs `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BASE_URL` in the shell |
+| `npx vitest run --config tests/unit/stripe/vitest.config.ts` | Unit tests, database mocked (signature, duplicate, handler error, retry, an attempt still running or dead) |
+| `node scripts/stripe-webhook-replay.mjs` | Against a running local server: one signed event posted twice (one row), a bad signature (400), a retry after a failure, a delivery while an attempt runs (409), one after an attempt died. Needs `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BASE_URL` in the shell |
 | `bash scripts/stripe-trigger-twice.sh` | The same with the Stripe CLI and test keys: `stripe trigger payment_intent.succeeded` twice and a second delivery; one row per event id. Setup steps in the script header |
 
 ## Known notes

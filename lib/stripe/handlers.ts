@@ -4,8 +4,8 @@
 //
 // Rules for every handler (CLAUDE.md, architecture critical flow 4):
 //   * A pure function of the event payload plus database state. Money state is written here and nowhere else.
-//   * Idempotent: a handler can run again for the same event (the route takes back an event whose earlier attempt threw),
-//     so every write is keyed on something stored, e.g. the payment intent id.
+//   * Idempotent: a handler can run again for the same event (the route takes back an event whose earlier attempt threw,
+//     or died without recording anything), so every write is keyed on something stored, e.g. the payment intent id.
 //   * Throw to fail. The route records the error on the stripe_events row and answers 500, and Stripe retries.
 //   * Never log the event or anything from it except ids; it can carry customer details.
 //   * Writes go through `db`, the service client the route built for the "stripe-webhook" caller. System audit rows set

@@ -12,6 +12,7 @@ export type StripeEventRow = {
   type: string;
   created_at: string;
   received_at: string;
+  attempted_at: string;
   payload: Json;
   handled_at: string | null;
   error: string | null;
@@ -22,6 +23,7 @@ export type StripeEventInsert = {
   type: string;
   created_at: string;
   received_at?: string;
+  attempted_at?: string;
   payload: Json;
   handled_at?: string | null;
   error?: string | null;

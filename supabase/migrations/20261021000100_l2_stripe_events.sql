@@ -2,15 +2,21 @@
 --
 -- POST /api/stripe/webhook verifies the signature, then inserts the event here BEFORE any handler runs:
 --   insert ... on conflict (event_id) do nothing returning event_id
--- No row back means Stripe delivered an event already on file: the route answers 200 and stops, so a redelivery never
--- reaches a handler a second time. One exception keeps "return 500 so Stripe retries" meaningful: a row whose earlier
--- attempt recorded an `error` (and was never handled) is taken back for one more attempt by a single conditional update
--- (handled_at is null and error is not null), so two concurrent retries cannot both run the handler.
+-- No row back means Stripe delivered an event already on file. Handled (or of a type nothing handles): the route answers
+-- 200 and stops, so a redelivery never reaches a handler a second time. Never handled: the row is taken back for one more
+-- attempt when its last attempt is over, by a single conditional update
+--   handled_at is null and (error is not null or attempted_at < now - 5 minutes)
+-- that also moves attempted_at, so two concurrent retries cannot both run the handler. That keeps "return 500 so Stripe
+-- retries" meaningful (a recorded error), and it recovers an attempt that died without recording anything (process killed,
+-- the insert's response lost, the database gone when the error was written). An attempt younger than that is still
+-- running: the route answers 409 and Stripe retries later.
 --
 --   event_id     Stripe's event id (evt_...), the primary key the idempotency rests on.
 --   type         the event type, e.g. payment_intent.succeeded.
 --   created_at   when Stripe created the event (event.created), not when it reached us.
 --   received_at  the first delivery that reached the route.
+--   attempted_at when the latest attempt started: the first delivery, or the retry that took the row back. Set by the
+--                route (STALE_ATTEMPT_MS in lib/stripe/webhook.ts is the five minutes above).
 --   payload      the verified event as Stripe sent it. It can hold customer details: service role only (below), and the
 --                route never logs it. Kept so a later handler can replay an event without asking Stripe again.
 --   handled_at   when a handler for this type finished. Null for a type with no handler yet (stored and acknowledged),
@@ -28,6 +34,7 @@ create table public.stripe_events (
   type text not null check (char_length(type) between 1 and 255),
   created_at timestamptz not null,
   received_at timestamptz not null default now(),
+  attempted_at timestamptz not null default now(),
   payload jsonb not null check (jsonb_typeof(payload) = 'object'),
   handled_at timestamptz,
   error text check (char_length(error) <= 2000)
@@ -43,8 +50,8 @@ create index stripe_events_type_created_idx on public.stripe_events (type, creat
 alter table public.stripe_events enable row level security;
 
 revoke all on table public.stripe_events from public, anon, authenticated, service_role;
--- What the webhook uses (insert, the returning select, the handled/failed updates), plus delete for retention purges and
--- test cleanup. No truncate.
+-- What the webhook uses (insert, the handled check and the returning selects, the reclaim and the handled/failed
+-- updates), plus delete for retention purges and test cleanup. No truncate.
 grant select, insert, update, delete on table public.stripe_events to service_role;
 
 -- Service role only: anon and authenticated are denied everything, whatever permissive policy might be added later.

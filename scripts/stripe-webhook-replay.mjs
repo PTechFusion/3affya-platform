@@ -8,12 +8,15 @@
 // (`npx supabase status -o env` prints both), BASE_URL (default http://localhost:3000).
 //
 //   node scripts/stripe-webhook-replay.mjs               synthetic payment_intent.succeeded: posted twice (both 200,
-//                                                        one row, handled), a bad signature (400, no row), and a retry
-//                                                        after a recorded failure (taken back, handled)
+//                                                        one row, handled), a bad signature (400, no row), a retry
+//                                                        after a recorded failure (taken back, handled), a delivery
+//                                                        while an attempt is still running (409, untouched), and one
+//                                                        after an attempt that died (taken back, handled)
 //   node scripts/stripe-webhook-replay.mjs --event f.json [--times 2]
 //                                                        re-posts a real test-mode event (e.g. `stripe events retrieve`
 //                                                        output) and checks it still has exactly one row
-//   node scripts/stripe-webhook-replay.mjs --count evt_x exits 0 when evt_x has exactly one row
+//   node scripts/stripe-webhook-replay.mjs --count evt_x exits 0 when evt_x has exactly one row (add --handled to
+//                                                        also require handled_at)
 //   add --cleanup to delete the synthetic rows afterwards
 //
 // The payload is never printed; output names event ids, statuses and row counts only.
@@ -68,7 +71,9 @@ const rest = (path, init = {}) =>
   });
 
 async function rowsFor(eventId) {
-  const response = await rest(`stripe_events?event_id=eq.${encodeURIComponent(eventId)}&select=event_id,type,handled_at,error`);
+  const response = await rest(
+    `stripe_events?event_id=eq.${encodeURIComponent(eventId)}&select=event_id,type,attempted_at,handled_at,error`,
+  );
   if (!response.ok) throw new Error(`PostgREST answered ${response.status} reading stripe_events`);
   return response.json();
 }
@@ -102,6 +107,22 @@ function syntheticEvent(type = "payment_intent.succeeded") {
   };
 }
 
+/** Stores a row the way an earlier, unfinished or failed attempt left it (service key, synthetic event). */
+async function seedRow(event, fields) {
+  const seeded = await rest("stripe_events", {
+    method: "POST",
+    headers: { Prefer: "return=minimal" },
+    body: JSON.stringify({
+      event_id: event.id,
+      type: event.type,
+      created_at: new Date(event.created * 1000).toISOString(),
+      payload: event,
+      ...fields,
+    }),
+  });
+  if (!seeded.ok) fail(`could not seed ${event.id}: PostgREST ${seeded.status}`);
+}
+
 async function expectOneRow(eventId, { handled }) {
   const rows = await rowsFor(eventId);
   if (rows.length !== 1) return fail(`${eventId}: ${rows.length} stripe_events rows, expected exactly 1`);
@@ -131,7 +152,7 @@ const countId = option("--count");
 const eventFile = option("--event");
 
 if (countId) {
-  await expectOneRow(countId, { handled: false });
+  await expectOneRow(countId, { handled: flag("--handled") });
 } else {
   const secret = requireEnv("STRIPE_WEBHOOK_SECRET");
   if (eventFile) {
@@ -156,24 +177,31 @@ if (countId) {
 
     // 3. Stripe's retry after a recorded failure: the row is taken back, the handler runs, handled_at is stamped.
     const retried = syntheticEvent();
-    const seeded = await rest("stripe_events", {
-      method: "POST",
-      headers: { Prefer: "return=minimal" },
-      body: JSON.stringify({
-        event_id: retried.id,
-        type: retried.type,
-        created_at: new Date(retried.created * 1000).toISOString(),
-        payload: retried,
-        error: "Error: synthetic earlier failure (stripe-webhook-replay)",
-      }),
-    });
-    if (!seeded.ok) fail(`could not seed the failed row: PostgREST ${seeded.status}`);
+    await seedRow(retried, { error: "Error: synthetic earlier failure (stripe-webhook-replay)" });
     await postTimes(retried, secret, 1);
     const [after] = await rowsFor(retried.id);
     if (after?.handled_at && after.error === null) console.log(`ok   retry after a failure: ${retried.id} handled, error cleared`);
     else fail(`retry after a failure: handled_at ${after?.handled_at ?? "null"}, error ${after?.error ? "set" : "null"}`);
 
-    await cleanup([event.id, retried.id]);
+    // 4. A delivery while an earlier attempt is still running (unhandled, no error, attempt just started): 409, untouched.
+    const running = syntheticEvent();
+    await seedRow(running, { attempted_at: new Date().toISOString() });
+    const busy = await deliver(running, secret);
+    const [stillRunning] = await rowsFor(running.id);
+    if (busy.status === 409 && stillRunning && !stillRunning.handled_at) {
+      console.log(`ok   attempt still running: HTTP 409 ${JSON.stringify(busy.body)}; ${running.id} left unhandled`);
+    } else fail(`attempt still running: HTTP ${busy.status}, handled_at ${stillRunning?.handled_at ?? "null"}`);
+
+    // 5. An attempt that died ten minutes ago without recording anything: the next delivery takes it back and handles it.
+    const died = syntheticEvent();
+    await seedRow(died, { attempted_at: new Date(Date.now() - 10 * 60_000).toISOString() });
+    await postTimes(died, secret, 1);
+    const [revived] = await rowsFor(died.id);
+    if (revived?.handled_at && Date.parse(revived.attempted_at) > Date.now() - 60_000) {
+      console.log(`ok   attempt that died: ${died.id} taken back and handled; attempted_at moved to this delivery`);
+    } else fail(`attempt that died: handled_at ${revived?.handled_at ?? "null"}, attempted_at ${revived?.attempted_at ?? "?"}`);
+
+    await cleanup([event.id, retried.id, running.id, died.id]);
   }
 }
 

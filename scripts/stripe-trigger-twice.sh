@@ -33,10 +33,11 @@ ids=$(stripe get /v1/events -d type=payment_intent.succeeded -d limit=2 \
 read -r first second <<<"$ids"
 echo "Events: $first $second"
 
-# Wait for stripe listen to forward both (up to 30 s each).
+# Wait for stripe listen to forward both and for the handler to finish (up to 30 s each): a delivery that arrives while
+# an attempt is still running is answered 409, not 200.
 for id in $first $second; do
   for _ in $(seq 1 30); do
-    if node scripts/stripe-webhook-replay.mjs --count "$id" >/dev/null 2>&1; then break; fi
+    if node scripts/stripe-webhook-replay.mjs --count "$id" --handled >/dev/null 2>&1; then break; fi
     sleep 1
   done
 done

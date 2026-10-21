@@ -42,6 +42,7 @@ const row = {
   event_id: "evt_store1",
   type: "payment_intent.succeeded",
   created_at: "2026-10-21T09:30:00.000Z",
+  attempted_at: "2026-10-21T09:30:01.000Z",
   payload: { id: "evt_store1", object: "event" },
 };
 
@@ -66,22 +67,38 @@ describe("createStripeEventStore", () => {
     await expect(store.insert(row)).resolves.toBe("duplicate");
   });
 
-  it("reclaims only an unhandled row with an error, in one conditional update", async () => {
+  it("reclaims only an unhandled row whose attempt failed or went stale, in one conditional update", async () => {
     const { store, seen } = stubbedStore({ status: 200, body: [{ event_id: "evt_store1" }] });
+    const attemptAt = new Date("2026-10-21T10:00:00.000Z");
+    const staleBefore = new Date("2026-10-21T09:55:00.000Z");
 
-    await expect(store.reclaimFailed("evt_store1")).resolves.toBe(true);
+    await expect(store.reclaim("evt_store1", attemptAt, staleBefore)).resolves.toBe(true);
 
     const [request] = seen;
     expect(request?.method).toBe("PATCH");
     expect(request?.url.searchParams.get("event_id")).toBe("eq.evt_store1");
     expect(request?.url.searchParams.get("handled_at")).toBe("is.null");
-    expect(request?.url.searchParams.get("error")).toBe("not.is.null");
-    expect(request?.body).toEqual({ error: null });
+    expect(request?.url.searchParams.get("or")).toBe('(error.not.is.null,attempted_at.lt."2026-10-21T09:55:00.000Z")');
+    expect(request?.url.searchParams.get("select")).toBe("event_id");
+    expect(request?.body).toEqual({ error: null, attempted_at: "2026-10-21T10:00:00.000Z" });
   });
 
-  it("does not reclaim when the update matches nothing (handled, in flight, or never failed)", async () => {
+  it("does not reclaim when the update matches nothing (handled, still running, or taken by another delivery)", async () => {
     const { store } = stubbedStore({ status: 200, body: [] });
-    await expect(store.reclaimFailed("evt_store1")).resolves.toBe(false);
+    await expect(store.reclaim("evt_store1", new Date(), new Date())).resolves.toBe(false);
+  });
+
+  it("reads handled_at for the handled check", async () => {
+    const handled = stubbedStore({ status: 200, body: [{ handled_at: "2026-10-21T09:31:02+00:00" }] });
+    await expect(handled.store.isHandled("evt_store1")).resolves.toBe(true);
+    expect(handled.seen[0]?.method).toBe("GET");
+    expect(handled.seen[0]?.url.searchParams.get("select")).toBe("handled_at");
+    expect(handled.seen[0]?.url.searchParams.get("event_id")).toBe("eq.evt_store1");
+
+    const unhandled = stubbedStore({ status: 200, body: [{ handled_at: null }] });
+    await expect(unhandled.store.isHandled("evt_store1")).resolves.toBe(false);
+    const missing = stubbedStore({ status: 200, body: [] });
+    await expect(missing.store.isHandled("evt_store1")).resolves.toBe(false);
   });
 
   it("stamps handled_at in UTC and clears the error", async () => {

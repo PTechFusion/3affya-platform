@@ -1,14 +1,23 @@
 // POST /api/stripe/webhook end to end, with the database layer mocked (lane L2, task 1.8). Requests are signed the way
 // Stripe signs them (Stripe.webhooks.generateTestHeaderString) with a test-only secret; nothing leaves the process.
 // The in-memory store mirrors the migration's rules: event_id is the primary key, an insert of a known id is a duplicate,
-// and only a row with an error and no handled_at can be taken back.
+// and only an unhandled row whose attempt is over (an error recorded, or attempted_at older than the cut-off) can be
+// taken back. Like PostgREST (PGRST102, probed against the local stack), it refuses text holding half a surrogate pair.
 import Stripe from "stripe";
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from "vitest";
 import type { StripeEventInsert, StripeEventRow } from "@/lib/stripe/types";
+import { STALE_ATTEMPT_MS, STORED_ERROR_MAX_CHARS } from "@/lib/stripe/webhook";
 
 const memory = vi.hoisted(() => {
   const rows = new Map<string, StripeEventRow>();
-  const state = { failInserts: false, failMarks: false, writes: [] as string[] };
+  const state = {
+    failInserts: false,
+    /** The insert commits, then its response is lost (the request times out after the database wrote the row). */
+    loseInsertResponse: false,
+    failMarks: false,
+    failMarkFailed: false,
+    writes: [] as string[],
+  };
   const client = { label: "service client for the stripe-webhook caller" };
   const store = {
     async insert(row: StripeEventInsert) {
@@ -20,17 +29,24 @@ const memory = vi.hoisted(() => {
         type: row.type,
         created_at: row.created_at,
         received_at: new Date().toISOString(),
+        attempted_at: row.attempted_at ?? new Date().toISOString(),
         payload: row.payload,
         handled_at: null,
         error: null,
       });
+      if (state.loseInsertResponse) throw new Error("The operation was aborted due to timeout");
       return "inserted" as const;
     },
-    async reclaimFailed(eventId: string) {
+    async isHandled(eventId: string) {
+      state.writes.push(`read ${eventId}`);
+      return Boolean(rows.get(eventId)?.handled_at);
+    },
+    async reclaim(eventId: string, attemptAt: Date, staleBefore: Date) {
       state.writes.push(`reclaim ${eventId}`);
       const row = rows.get(eventId);
-      if (!row || row.handled_at !== null || row.error === null) return false;
-      row.error = null;
+      if (!row || row.handled_at !== null) return false;
+      if (row.error === null && Date.parse(row.attempted_at) >= staleBefore.getTime()) return false;
+      Object.assign(row, { error: null, attempted_at: attemptAt.toISOString() });
       return true;
     },
     async markHandled(eventId: string, handledAt: Date) {
@@ -41,6 +57,8 @@ const memory = vi.hoisted(() => {
     },
     async markFailed(eventId: string, error: string) {
       state.writes.push(`failed ${eventId}`);
+      if (state.failMarkFailed) throw new Error("connection refused");
+      if (!error.isWellFormed()) throw new Error("PGRST102 Empty or invalid json");
       const row = rows.get(eventId);
       if (row && row.handled_at === null) row.error = error;
     },
@@ -121,7 +139,9 @@ let handler: MockInstance;
 beforeEach(() => {
   memory.rows.clear();
   memory.state.failInserts = false;
+  memory.state.loseInsertResponse = false;
   memory.state.failMarks = false;
+  memory.state.failMarkFailed = false;
   memory.state.writes.length = 0;
   vi.mocked(createServiceClient).mockClear();
   vi.mocked(createStripeEventStore).mockClear();
@@ -133,7 +153,30 @@ afterEach(() => {
   handler.mockRestore();
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
+  vi.useRealTimers();
 });
+
+const T0 = Date.UTC(2026, 9, 21, 10, 0);
+
+/** Moves the clock the route, the signer and the signature check all read (Date only; timers stay real). */
+function clockAt(ms: number): void {
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(ms);
+}
+
+/** A row left by an earlier attempt that never finished: unhandled, no error, started at `attemptedAt`. */
+function seedUnfinished(evt: ReturnType<typeof event>, attemptedAt: number): void {
+  memory.rows.set(evt.id, {
+    event_id: evt.id,
+    type: evt.type,
+    created_at: new Date(evt.created * 1000).toISOString(),
+    received_at: new Date(attemptedAt).toISOString(),
+    attempted_at: new Date(attemptedAt).toISOString(),
+    payload: evt,
+    handled_at: null,
+    error: null,
+  });
+}
 
 describe("POST /api/stripe/webhook: signature", () => {
   it("accepts an event signed with STRIPE_WEBHOOK_SECRET, records it before the handler runs, then marks it handled", async () => {
@@ -239,6 +282,113 @@ describe("POST /api/stripe/webhook: idempotency", () => {
     expect(memory.rows.get(evt.id)).toMatchObject({ type: "customer.created", handled_at: null, error: null });
     expect(handler).not.toHaveBeenCalled();
   });
+
+  it("answers 200 to a redelivered event of a type with no handler, even long after, without touching the row", async () => {
+    clockAt(T0);
+    const evt = event("customer.created");
+    await send(signed(evt));
+    clockAt(T0 + STALE_ATTEMPT_MS * 3);
+    memory.state.writes.length = 0;
+
+    const { status, body } = await send(signed(evt));
+
+    expect(status).toBe(200);
+    expect(body).toEqual({ received: true, duplicate: true });
+    expect(memory.state.writes).toEqual([`insert ${evt.id}`]);
+  });
+
+  it("records attempted_at, in UTC, as the time the delivery arrived", async () => {
+    clockAt(T0);
+    const evt = event();
+
+    await send(signed(evt));
+
+    expect(memory.rows.get(evt.id)?.attempted_at).toBe("2026-10-21T10:00:00.000Z");
+  });
+});
+
+describe("POST /api/stripe/webhook: an attempt that never finished", () => {
+  it("answers 409 (so Stripe retries later) while an earlier attempt is still running, and runs no handler", async () => {
+    clockAt(T0);
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const evt = event();
+    seedUnfinished(evt, T0 - 30_000);
+
+    const { status, body } = await send(signed(evt));
+
+    expect(status).toBe(409);
+    expect(body).toEqual({ error: "inProgress" });
+    expect(handler).not.toHaveBeenCalled();
+    expect(memory.rows.get(evt.id)).toMatchObject({ handled_at: null, error: null, attempted_at: new Date(T0 - 30_000).toISOString() });
+  });
+
+  it("takes back an event whose attempt died (no error recorded, started more than STALE_ATTEMPT_MS ago) and handles it", async () => {
+    clockAt(T0);
+    const evt = event();
+    seedUnfinished(evt, T0 - STALE_ATTEMPT_MS - 1_000);
+
+    const { status, body } = await send(signed(evt));
+
+    expect(status).toBe(200);
+    expect(body).toEqual({ received: true, handled: true });
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(memory.rows.get(evt.id)).toMatchObject({ attempted_at: new Date(T0).toISOString(), error: null });
+    expect(memory.rows.get(evt.id)?.handled_at).not.toBeNull();
+  });
+
+  it("recovers when the handler fails and the error cannot be recorded either (database gone)", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    handler.mockRejectedValueOnce(new Error("connection refused"));
+    memory.state.failMarkFailed = true;
+    const evt = event();
+
+    clockAt(T0);
+    expect((await send(signed(evt))).status).toBe(500);
+    expect(memory.rows.get(evt.id)).toMatchObject({ handled_at: null, error: null });
+    memory.state.failMarkFailed = false;
+
+    clockAt(T0 + 60_000);
+    const early = await send(signed(evt));
+    clockAt(T0 + STALE_ATTEMPT_MS + 60_000);
+    const later = await send(signed(evt));
+
+    expect(early.status).toBe(409);
+    expect(later.status).toBe(200);
+    expect(later.body).toEqual({ received: true, handled: true });
+    expect(handler).toHaveBeenCalledTimes(2);
+    expect(memory.rows.get(evt.id)?.handled_at).not.toBeNull();
+  });
+
+  it("recovers when the insert committed but its response was lost", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    memory.state.loseInsertResponse = true;
+    const evt = event();
+
+    clockAt(T0);
+    const first = await send(signed(evt));
+    memory.state.loseInsertResponse = false;
+    clockAt(T0 + STALE_ATTEMPT_MS + 60_000);
+    const retry = await send(signed(evt));
+
+    expect(first).toMatchObject({ status: 500, body: { error: "storeFailed" } });
+    expect(memory.rows.size).toBe(1);
+    expect(retry.status).toBe(200);
+    expect(retry.body).toEqual({ received: true, handled: true });
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets only one of two concurrent retries take a failed event back", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    handler.mockRejectedValueOnce(new Error("temporary"));
+    const evt = event();
+    expect((await send(signed(evt))).status).toBe(500);
+
+    const both = await Promise.all([send(signed(evt)), send(signed(evt))]);
+
+    // One takes it back and handles it; the other finds it taken (409) or, if it looks later, already handled (200).
+    expect(both.filter((r) => r.body.handled === true)).toHaveLength(1);
+    expect(handler).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("POST /api/stripe/webhook: failures", () => {
@@ -295,6 +445,22 @@ describe("POST /api/stripe/webhook: failures", () => {
     expect(status).toBe(500);
     expect(memory.rows.get(evt.id)?.handled_at).toBeNull();
     expect(memory.rows.get(evt.id)?.error).toMatch(/stamping handled_at failed/);
+  });
+
+  it("records a long handler error cut whole (never half an emoji), so the retry can take the row back", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    // "Error: " plus 991 characters puts the emoji's first UTF-16 half at index 998, where a naive cut lands.
+    handler.mockRejectedValueOnce(new Error(`${"x".repeat(991)}\u{1F600} and more`));
+    const evt = event();
+
+    expect((await send(signed(evt))).status).toBe(500);
+    const stored = memory.rows.get(evt.id)?.error ?? "";
+    const retry = await send(signed(evt));
+
+    expect(stored.isWellFormed()).toBe(true);
+    expect(Array.from(stored)).toHaveLength(STORED_ERROR_MAX_CHARS);
+    expect(stored.endsWith("…")).toBe(true);
+    expect(retry.body).toEqual({ received: true, handled: true });
   });
 
   it("never logs the payload", async () => {
