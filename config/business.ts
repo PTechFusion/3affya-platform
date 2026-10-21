@@ -190,3 +190,15 @@ export const aiLimits = {
   jobTokenCap: 3_000_000, // (default until the M1 extraction spike measures tokens per page) per-job token cap, enforced in lib/ai (task 1.9)
   attemptsPerCall: 3, // task 3.8: three attempts per page or call, then the job fails with a reason
 } as const;
+
+/* ---------------- Transactional email (screen 49, task 2.9; lane L4) ---------------- */
+// Appended block. Resend sends from the mail.3affya.com subdomain so the 3affya.com root stays clean (architecture). EMAIL_FROM
+// and EMAIL_REPLY_TO in env override the sender and the reply address; replies go to the support inbox (business.supportEmail)
+// by default. The send timeout is the architecture's Resend budget (rigor review: Resend 10 s). (default until Dr Ayman
+// confirms the sender name and address)
+export const emailSettings = {
+  fromName: "3affya",
+  fromAddress: "hello@mail.3affya.com",
+  sendTimeoutMs: 10_000,
+  idempotencyKeyMaxChars: 256, // Resend refuses longer Idempotency-Key values and keeps each key for 24 hours
+} as const;
