@@ -11,3 +11,8 @@ next-env.d.ts
 .claude/worktrees/
 node_modules
 .netlify
+
+# Test output: Vitest coverage, Playwright results, traces and reports (lane L5)
+coverage/
+test-results/
+playwright-report/
