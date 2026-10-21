@@ -120,6 +120,25 @@ local Supabase project: API `http://127.0.0.1:55321`, Postgres `127.0.0.1:55322`
   `output/cms_join_report.md`). The shortlist and the CMS files are not in the repo. Python 3.10+,
   `pip install -r scripts/requirements-seed.txt`.
 
+## Stripe webhook (lane L2, task 1.8)
+
+`POST /api/stripe/webhook` is the only place money state is written (ADR-6). It verifies the `Stripe-Signature` header
+against the raw body with `STRIPE_WEBHOOK_SECRET` (400 on failure), inserts the event into `stripe_events` before any
+handler runs (a known `event_id` answers 200 and stops), then calls the handler for the event's type from
+`lib/stripe/handlers.ts`. A handler error is recorded on the row and answered 500, so Stripe retries; the retry takes the
+failed row back and runs the handler again. Types with no handler are stored and acknowledged. The payload is never logged.
+
+- `stripe_events` (`supabase/migrations/20261021000100_l2_stripe_events.sql`) is service role only: every privilege revoked
+  from anon and authenticated, RLS on, and a restrictive deny policy; `tests/rls/stripe-events.rls.ts` proves it.
+- `lib/stripe/client.ts` holds the one Stripe client: API version `2026-09-30.endive` pinned in code, 20 s timeout.
+- M3 adds a handler by adding one entry to `stripeHandlers`; the route does not change. Handlers must be idempotent.
+
+| Command | What it does |
+|---|---|
+| `npx vitest run --config tests/unit/stripe/vitest.config.ts` | Unit tests, database mocked (signature, duplicate, handler error, retry) |
+| `node scripts/stripe-webhook-replay.mjs` | Against a running local server: one signed event posted twice (one row), a bad signature (400), a retry after a failure. Needs `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BASE_URL` in the shell |
+| `bash scripts/stripe-trigger-twice.sh` | The same with the Stripe CLI and test keys: `stripe trigger payment_intent.succeeded` twice and a second delivery; one row per event id. Setup steps in the script header |
+
 ## Known notes
 
 - `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.
