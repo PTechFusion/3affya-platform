@@ -210,6 +210,22 @@ describe("extractPage", () => {
     expect(writer.rows).toHaveLength(0);
   });
 
+  it("treats output it cannot walk (JSON nested too deep) as invalid output, and never throws", async () => {
+    const deep = "[".repeat(50_000) + "]".repeat(50_000);
+    const { ai, rows } = setup([response(deep)]);
+    const result = await ai.extractPage(pdfPage(), "en", { jobId: JOB });
+    expect(result).toEqual({ ok: false, error: expect.objectContaining({ code: "invalid_output", retryable: true }) });
+    expect(rows.map((r) => r.failure_detail)).toEqual(["the response could not be read", "the response could not be read"]);
+  });
+
+  it("refuses a missing page as bad input instead of throwing", async () => {
+    const { ai, adapter, rows } = setup([response(pageAnswer())]);
+    const result = await ai.extractPage(null as never, "en", { jobId: JOB });
+    expect(result).toEqual({ ok: false, error: expect.objectContaining({ code: "bad_input" }) });
+    expect(adapter.requests).toHaveLength(0);
+    expect(rows[0]).toMatchObject({ failure_reason: "bad_input", page_ref: null });
+  });
+
   it("returns log_failed when the ai_calls row cannot be written, even after a good answer", async () => {
     const adapter = scriptedAdapter([response(pageAnswer())]);
     const ai = createAiClient({
@@ -320,6 +336,36 @@ describe("the circuit", () => {
     expect(ai.circuit.state()).toBe("open");
   });
 
+  it("frees the half-open trial when a first invalid answer's row cannot be written, so later calls are not refused for good", async () => {
+    const clock = manualClock();
+    let mode: "down" | "invalid" | "ok" = "down";
+    let writesFail = false;
+    const adapter = scriptedAdapter([
+      () => {
+        if (mode === "down") throw new VendorError("unavailable", "Anthropic API error 529 (InternalServerError)", 529);
+        return mode === "invalid" ? response("not JSON") : response(pageAnswer());
+      },
+    ]);
+    const writer = {
+      write: async () => {
+        if (writesFail) throw new Error("db down");
+      },
+    };
+    const ai = createAiClient({ writer, env: ENV, adapter, now: clock.now });
+    for (let i = 0; i < 5; i += 1) await ai.extractPage(pdfPage(), "en", { jobId: JOB });
+    clock.advance(60_000);
+    mode = "invalid";
+    writesFail = true;
+    const trial = await ai.extractPage(pdfPage(), "en", { jobId: JOB });
+    expect(trial.ok || trial.error.code).toBe("log_failed");
+    expect(adapter.requests).toHaveLength(6);
+    mode = "ok";
+    writesFail = false;
+    expect((await ai.extractPage(pdfPage(), "en", { jobId: JOB })).ok).toBe(true);
+    expect(adapter.requests).toHaveLength(7);
+    expect(ai.circuit.state()).toBe("closed");
+  });
+
   it("counts output that is still invalid after its retry as one failure, and a success resets the count", async () => {
     const { ai } = setup([response("nope"), response("nope"), response(pageAnswer())]);
     await ai.extractPage(pdfPage(), "en", { jobId: JOB });
@@ -406,6 +452,37 @@ describe("summarise", () => {
     });
     const { ai } = setup([response(bad)]);
     expect((await ai.summarise(items, "en", { jobId: JOB })).ok).toBe(false);
+  });
+
+  it("grounds a dose printed with a thousands separator and a negative result, and refuses a result whose sign was dropped", async () => {
+    const printed: RecordItem[] = [
+      {
+        ...(item({ type: "medication", label: "فيتامين د", value: "50,000", unit: "وحدة دولية", ref_low: null, ref_high: null, date: "2026-09-18" }) as Omit<RecordItem, "source_page_ref">),
+        source_page_ref: "d5:p1",
+      } as RecordItem,
+      {
+        ...(item({ type: "result", label: "T-score (lumbar spine)", value: "-2.5", unit: "SD", ref_low: null, ref_high: null, date: "2026-09-14" }) as Omit<RecordItem, "source_page_ref">),
+        source_page_ref: "d6:p1",
+      } as RecordItem,
+    ];
+    const summary = (tScore: number) =>
+      JSON.stringify({
+        conditions: [],
+        procedures: [],
+        medications: [{ nameEn: "Vitamin D", nameAr: "فيتامين د", dose: { amount: 50_000, decimals: 0, unit: "IU" }, frequency: null, sources: ["d5:p1"] }],
+        allergies: [],
+        results: [{ nameEn: "T-score (lumbar spine)", nameAr: "مؤشر T", value: tScore, decimals: 1, unit: "SD", low: null, high: null, takenOn: "2026-09-14", sources: ["d6:p1"] }],
+        flags: [],
+      });
+    // The page printed "٥٠٬٠٠٠"; extraction wrote it as printed in Western digits, "50,000". The summary's 50000 is that number.
+    const good = setup([response(summary(-2.5))]);
+    const result = await good.ai.summarise(printed, "en", { jobId: JOB });
+    expect(result.ok && result.data.sections.medications[0]!.dose).toEqual({ amount: 50_000, decimals: 0, unit: "IU" });
+    expect(result.ok && result.data.sections.results[0]!.value).toBe(-2.5);
+
+    const dropped = setup([response(summary(2.5))]);
+    expect((await dropped.ai.summarise(printed, "en", { jobId: JOB })).ok).toBe(false);
+    expect(dropped.rows[0]!.failure_detail).toBe("grounding: results.0.value is not printed on its source pages");
   });
 
   it("answers an empty summary without a call when no readable item is left", async () => {

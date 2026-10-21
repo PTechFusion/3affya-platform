@@ -19,6 +19,7 @@ import {
   scoreDocument,
   SPIKE_DOCUMENTS,
   unzip,
+  valueExact,
   type DocumentRun,
   type ExpectedDocument,
   type ExtractedLike,
@@ -94,6 +95,13 @@ describe("matchPage", () => {
     expect(match.pairs.map((p) => p.extracted.label)).toEqual(["Hb", "Metformin", "TSH"]);
     expect(match.missed).toEqual([]);
     expect(match.extra.map((x) => x.label)).toEqual(["Healthy"]);
+  });
+
+  it("matches a value written with a thousands separator, as valueExact counts it", () => {
+    const vitaminD = { type: "medication", label: "فيتامين د", aliases: ["Vitamin D"], value: "50000", unit: "وحدة دولية", date: null };
+    const written: ExtractedLike = { type: "medication", label: "Vitamin D", value: "50,000", unit: "IU", date: null };
+    expect(valueExact(vitaminD, written)).toBe(true);
+    expect(matchPage([vitaminD], [written]).pairs).toHaveLength(1);
   });
 
   it("does not match a wrong value, and does not let a near label steal an exact one", () => {

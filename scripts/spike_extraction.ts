@@ -164,7 +164,8 @@ function labelScore(expected: ExpectedItem, label: string): 0 | 1 | 2 {
 export function valueMatches(expected: ExpectedItem, extracted: ExtractedLike): boolean {
   if (expected.value === null) return true;
   const want = normValue(expected.value);
-  if (isNumber(want)) return numbersOf(extracted.value).some((n) => n === Number(want));
+  // normValue drops thousands separators on both sides, so "50,000" matches 50000 as valueExact says it does.
+  if (isNumber(want)) return numbersOf(normValue(extracted.value)).some((n) => n === Number(want));
   const got = normValue(extracted.value);
   return got === want || (want.length >= 2 && got.includes(want));
 }

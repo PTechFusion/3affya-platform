@@ -126,6 +126,7 @@ function startsWith(bytes: Uint8Array, signature: number[]): boolean {
 
 /** The page passes the client's own checks, or the reason it does not (nothing that fails them is ever sent). */
 export function checkPage(input: PageInput, locale: Locale): string | null {
+  if (!input || typeof input !== "object") return "there is no page";
   if (locale !== "ar" && locale !== "en") return "locale must be ar or en";
   if (typeof input.pageRef !== "string" || !PAGE_REF_PATTERN.test(input.pageRef)) return "pageRef must be <document id>:p<page>";
   if (!(input.bytes instanceof Uint8Array) || input.bytes.byteLength === 0) return "the page has no bytes";
@@ -400,8 +401,17 @@ export function createAiClient(deps: AiClientDeps): AiClient {
         const logged = await log(row(attempt, { ...usage, failure_reason: "refusal", failure_detail: detail }));
         return logged ? fail("refusal", detail, false) : fail("log_failed", `${detail}; and the ai_calls row could not be written`, true);
       }
-      const parsed: Parsed<T> =
-        response.stopReason === "max_tokens" ? { ok: false, detail: "the output was cut off at max_tokens" } : call.parse(response.text);
+      let parsed: Parsed<T>;
+      if (response.stopReason === "max_tokens") {
+        parsed = { ok: false, detail: "the output was cut off at max_tokens" };
+      } else {
+        try {
+          parsed = call.parse(response.text);
+        } catch {
+          // A reader that throws (JSON nested too deep to walk, say) is invalid output like any other: nothing throws to the caller.
+          parsed = { ok: false, detail: "the response could not be read" };
+        }
+      }
       if (parsed.ok) {
         circuit.success();
         const logged = await log(row(attempt, { ...usage, outcome: "ok" }));
@@ -411,7 +421,12 @@ export function createAiClient(deps: AiClientDeps): AiClient {
       const last = attempt === attempts;
       if (last) circuit.failure();
       const logged = await log(row(attempt, { ...usage, failure_reason: reason, failure_detail: parsed.detail.slice(0, 500) }));
-      if (!logged) return fail("log_failed", `${parsed.detail}; and the ai_calls row could not be written`, true);
+      if (!logged) {
+        // The call stops before its retry, with no verdict on the vendor (the row failed, not the model): free a half-open
+        // trial, or the circuit would refuse every later call in this process.
+        if (!last) circuit.release();
+        return fail("log_failed", `${parsed.detail}; and the ai_calls row could not be written`, true);
+      }
       if (last) return fail(reason, `the model's output was still invalid after ${attempts} attempts: ${parsed.detail}`, true);
     }
     // Unreachable: the loop returns on its last attempt.

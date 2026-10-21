@@ -147,6 +147,23 @@ describe("digits and numbers", () => {
       { amount: 90, decimals: 0 },
     ]);
   });
+
+  it("reads a leading sign and grouped thousands as printed, but not the dash of a range or a word", () => {
+    expect(numbersIn("-2.5")).toEqual([{ amount: -2.5, decimals: 1 }]);
+    expect(numbersIn("T-score −2.5")).toEqual([{ amount: -2.5, decimals: 1 }]);
+    expect(numbersIn("+2")).toEqual([{ amount: 2, decimals: 0 }]);
+    expect(numbersIn("4.0-11.0")).toEqual([
+      { amount: 4, decimals: 1 },
+      { amount: 11, decimals: 1 },
+    ]);
+    expect(numbersIn("50,000 IU")).toEqual([{ amount: 50_000, decimals: 0 }]);
+    expect(numbersIn("٥٠٬٠٠٠ وحدة")).toEqual([{ amount: 50_000, decimals: 0 }]);
+    expect(numbersIn("1,250,000.5")).toEqual([{ amount: 1_250_000.5, decimals: 1 }]);
+    expect(numbersIn("1,2")).toEqual([
+      { amount: 1, decimals: 0 },
+      { amount: 2, decimals: 0 },
+    ]);
+  });
 });
 
 describe("timelineOf", () => {

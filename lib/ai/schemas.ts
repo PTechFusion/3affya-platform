@@ -80,10 +80,17 @@ export function numericValue(value: string | null): { amount: number; decimals: 
   return { amount: Number(toWesternDigits(value).trim()), decimals: match[2]?.length ?? 0 };
 }
 
-/** Every plain number in a text ("500 mg twice daily" gives 500), with its printed decimals. */
+// A number as a value prints it: a sign only where it starts the number ("-2.5", "T-score −2.5"; not the "-" of a range such
+// as "4.0-11.0" or of a word), and thousands grouped with "," ("50,000", which is also what "٥٠٬٠٠٠" becomes).
+const PRINTED_NUMBER = /(?:(?<![\p{L}\p{N}.)])([-+−]))?(\d{1,3}(?:,\d{3})+(?!\d)|\d+)(?:\.(\d+))?/gu;
+
+/** Every plain number in a text ("500 mg twice daily" gives 500, "50,000 IU" 50000, "-2.5" -2.5), with its printed decimals. */
 export function numbersIn(text: string | null): Array<{ amount: number; decimals: number }> {
   if (text === null) return [];
-  return [...toWesternDigits(text).matchAll(/\d+(?:\.(\d+))?/g)].map((m) => ({ amount: Number(m[0]), decimals: m[1]?.length ?? 0 }));
+  return [...toWesternDigits(text).matchAll(PRINTED_NUMBER)].map((m) => {
+    const magnitude = Number(`${(m[2] ?? "").replace(/,/g, "")}${m[3] ? `.${m[3]}` : ""}`);
+    return { amount: m[1] === "-" || m[1] === "−" ? -magnitude : magnitude, decimals: m[3]?.length ?? 0 };
+  });
 }
 
 /* ---------------- shared fields ---------------- */
