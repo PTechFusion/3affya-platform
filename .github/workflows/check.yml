@@ -1,0 +1,97 @@
+# Lane L5 (task 4.3, started early): every pull request into dev and every push to dev and main runs the same gate.
+# Lint, types and i18n parity; unit tests; the production build; then the e2e journeys and axe scans against that build.
+# Any failing step fails the run. The RLS suite (tests/rls) needs a Supabase stack and is not part of this workflow yet.
+name: check
+
+on:
+  pull_request:
+    branches: [dev]
+  push:
+    branches: [dev, main]
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      # Node 22.19 matches the build machines; the unit tests pin exact Intl output (ICU) for both locales.
+      NODE_VERSION: "22.19.0"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # node_modules is cached on the lockfile; npm ci runs whenever the lockfile (or Node) changes.
+      - name: Cache node_modules
+        id: modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: modules-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
+
+      - name: npm ci
+        if: steps.modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: npm run check (lint, types, i18n)
+        run: npm run check
+
+      - name: npm run test:unit
+        run: npm run test:unit
+
+      - name: Cache the Next.js build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
+      # One build serves both the build check and the e2e run: the prototype's "Viewing as" bar is on, as the brief asks.
+      - name: npm run build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_DEV_ROLE_SWITCH: "1"
+
+      - name: Read the Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium
+
+      - name: Install Playwright Chromium
+        if: steps.browsers.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Chromium's system libraries
+        if: steps.browsers.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      # SITE_USERS stays unset, so the basic-auth gate in middleware.ts is off. E2E_SKIP_BUILD: serve the build above.
+      - name: npm run test:e2e
+        run: npm run test:e2e
+        env:
+          E2E_SKIP_BUILD: "1"
+
+      - name: Upload the e2e report, traces and a11y summary
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report
+          path: test-results/e2e/
+          retention-days: 14
+          if-no-files-found: ignore

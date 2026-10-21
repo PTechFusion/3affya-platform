@@ -88,6 +88,21 @@ scripts/                i18n-check, screenshots
 - Every page has a skeleton with real labels and an empty state with one action. No blank waits.
 - Prices and fees come from `config/business.ts`, never inline.
 
+## Tests and CI (lane L5, task 4.3)
+
+| Command | What it does |
+|---|---|
+| `npm run test` / `npm run test:unit` | Vitest, `tests/unit/**/*.test.ts(x)`: the pure `lib/` modules (Western digits, zone labels, money, the refund deadline and slots across the 1 Nov 2026 US DST change, fees, email and code checks, ICS). Add `-- --coverage` for `lib/` coverage |
+| `npm run test:e2e` | Playwright: builds with `NEXT_PUBLIC_DEV_ROLE_SWITCH=1`, serves on port 3150, then walks the patient, professional and admin journeys, renders every route of the route map and runs axe on each, in both locales at 390 and 1280 px |
+
+- Defects the runs found are in `ops/known_defects.md`; the suite skips or reports exactly those (ids in
+  `tests/e2e/support/known-defects.ts`) and fails on anything new. After a run, `test-results/e2e/a11y-summary.md` lists
+  every axe finding, and `test-results/e2e/report` is the HTML report.
+- `.github/workflows/check.yml` runs check, unit tests, build and e2e on every pull request into `dev` and every push to `dev`
+  and `main`. The RLS suite (`npm run test:rls`) needs the Supabase stack and is not in CI yet.
+- No Chromium for this Playwright version on the machine? The suite uses the newest Playwright Chromium it finds, or
+  `CHROME_PATH`; `npx playwright install chromium` gets the exact one.
+
 ## Known notes
 
 - `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.
