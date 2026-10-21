@@ -33,13 +33,15 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # node_modules is cached on the lockfile; npm ci runs whenever the lockfile (or Node) changes.
+      # node_modules is cached on package.json and the lockfile together; npm ci runs whenever either (or Node) changes. Both
+      # files are in the key so a package.json edit without its lockfile misses the cache and npm ci fails the run on the
+      # mismatch, instead of the step being skipped on a lockfile-only cache hit.
       - name: Cache node_modules
         id: modules
         uses: actions/cache@v5
         with:
           path: node_modules
-          key: modules-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
+          key: modules-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package.json', 'package-lock.json') }}
 
       - name: npm ci
         if: steps.modules.outputs.cache-hit != 'true'

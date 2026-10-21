@@ -23,7 +23,9 @@ describe("file sizes in MB", () => {
   });
 
   // KD-013 (ops/known_defects.md): a credential file under 0.05 MB (a small scan or photo) reads "0 MB". Marked as an expected
-  // failure, so the day the pages round small sizes up this turns red and the defect line can be closed.
+  // failure. It replays the pages' formula (oneDecimal above), so it turns red by itself only if the fix lands in toMb; a fix
+  // in the pages or in a new shared formatter must point oneDecimal at that code, and then this test turns red and the defect
+  // line can be closed.
   it.fails("KD-013: a non-empty file never reads 0 MB", () => {
     expect(oneDecimal(40_000)).not.toBe("0");
   });

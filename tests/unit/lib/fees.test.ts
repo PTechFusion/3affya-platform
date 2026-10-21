@@ -19,16 +19,20 @@ describe("feeLines", () => {
     expect(feeLines(2001).cardProcessingCents).toBe(100);
   });
 
-  it("the three lines sum to the total for every doctor fee from USD 0 to USD 2,000", () => {
-    for (let fee = 0; fee <= 200_000; fee += 37) {
+  it("the three lines sum to the total for every doctor fee from USD 0 to USD 2,000, cent by cent", () => {
+    // Every one of the 200,001 fees, not a sample: the problems are collected and compared once, so the loop stays fast.
+    const problems: string[] = [];
+    for (let fee = 0; fee <= 200_000; fee++) {
       const l = feeLines(fee);
-      expect(l.doctorFeeCents + l.platformFeeCents + l.cardProcessingCents).toBe(l.totalCents);
-      for (const v of Object.values(l)) expect(Number.isInteger(v)).toBe(true);
-      expect(l.doctorFeeCents).toBe(fee);
-      expect(l.platformFeeCents).toBe(Math.round((fee * business.firstVisitPlatformFeePct) / 100));
-      // Card processing never charges less than the rate on the doctor and platform lines.
-      expect(l.cardProcessingCents).toBeGreaterThanOrEqual(((fee + l.platformFeeCents) * business.cardProcessingPct) / 100 + business.cardProcessingFixedCents);
+      if (l.doctorFeeCents + l.platformFeeCents + l.cardProcessingCents !== l.totalCents) problems.push(`${fee}: lines do not sum`);
+      if (!Object.values(l).every(Number.isInteger)) problems.push(`${fee}: a line is not whole cents`);
+      if (l.doctorFeeCents !== fee) problems.push(`${fee}: doctor fee changed`);
+      if (l.platformFeeCents !== Math.round((fee * business.firstVisitPlatformFeePct) / 100)) problems.push(`${fee}: platform fee`);
+      // Card processing never charges less than the rate on the doctor and platform lines, nor more than one cent above it.
+      const exact = ((fee + l.platformFeeCents) * business.cardProcessingPct) / 100 + business.cardProcessingFixedCents;
+      if (l.cardProcessingCents < exact - 1e-9 || l.cardProcessingCents >= exact + 1) problems.push(`${fee}: card ${l.cardProcessingCents} vs ${exact}`);
     }
+    expect(problems.slice(0, 10)).toEqual([]);
   });
 
   it("charges only the fixed card amount on a zero fee", () => {
