@@ -198,3 +198,51 @@ export const aiLimits = {
 export const storageRules = {
   recordsSignedUrlSeconds: 600,
 } as const;
+
+/* ---------------- AI client, lane L3 (task 1.9) ---------------- */
+// Appended block. How lib/ai calls the model (ADR-3, ADR-4, architecture rigor review). The per-job token cap is
+// aiLimits.jobTokenCap above: one value, which lib/ai enforces and ai_jobs totals are checked against. Its 3,000,000 default
+// stays: at about 6,500 tokens a page (a PDF page about 2,500 input tokens, the fixed prompt and schema about 2,000, the JSON
+// and adaptive thinking about 2,000 output) it holds about 450 pages, the largest set in the sample data (rs_007), and it
+// bounds one job's spend at about USD 27 on Claude Opus 5.5 or USD 13 on Claude Sonnet 5.5 (prices below). The spike
+// (scripts/spike_extraction.ts) measures the real tokens a page and prints the pages the cap holds at that rate.
+export const aiClient = {
+  callTimeoutMs: 120_000, // one page call (architecture rigor review: AI 120 s per page)
+  summaryTimeoutMs: 300_000, // one summary call over a set's items (default until task 3.8 sizes summaries and chunks large sets)
+  invalidOutputRetries: 1, // task 1.9: one retry on output that is not JSON or fails the schema, then the call fails
+  circuitFailuresToOpen: 5, // architecture rigor review: circuit on AI after 5 consecutive failures
+  circuitCooldownMs: 60_000, // (default until the pipeline measures) an open circuit refuses every call this long, then lets one trial through
+  extractMaxOutputTokens: 16_000, // a page call's output, adaptive thinking included; also clamped to what the job's token cap leaves
+  summaryMaxOutputTokens: 32_000,
+  // (default until the spike compares low and medium) Claude 5 effort for both calls; medium is Claude Opus 5.5's own default.
+  effort: "medium" as "low" | "medium" | "high",
+  // (default until the BAA's eligible-feature list is confirmed, task 1.10) also send the output schema as output_config.format.
+  // The schema is in the prompt either way and the output is validated with zod either way (CLAUDE.md).
+  structuredOutputs: false as boolean,
+} as const;
+
+/** USD per million tokens. `longContext` is the higher rate a model charges when one request's input passes `aboveInputTokens`. */
+export type AiModelPrice = {
+  inputUsdPerMTok: number;
+  outputUsdPerMTok: number;
+  longContext?: { aboveInputTokens: number; inputUsdPerMTok: number; outputUsdPerMTok: number };
+};
+
+// Prices per vendor and model id (AI_MODEL). Anthropic first-party list prices from the claude-api skill's model table (cached
+// 2026-10-06, read 21 Oct 2026). No Batch discount and no prompt-caching rates: ADR-3's BAA excludes both. Claude on Bedrock is
+// partner-priced (aws.amazon.com/bedrock/pricing) and has no row yet: lib/ai refuses a model without a price, so whoever
+// switches AI_VENDOR to bedrock (ADR-3 fallback, 14 Nov) checks and adds the Bedrock prices first, and every ai_calls row
+// always carries a cost.
+export const aiPricing: { anthropic: Record<string, AiModelPrice>; bedrock: Record<string, AiModelPrice> } = {
+  anthropic: {
+    "claude-opus-5-5": { inputUsdPerMTok: 4, outputUsdPerMTok: 20 },
+    "claude-sonnet-5-5": { inputUsdPerMTok: 2, outputUsdPerMTok: 10 },
+    "claude-haiku-5-5": {
+      inputUsdPerMTok: 0.1,
+      outputUsdPerMTok: 0.5,
+      longContext: { aboveInputTokens: 100_000, inputUsdPerMTok: 0.5, outputUsdPerMTok: 2.5 },
+    },
+    "claude-fable-5-1": { inputUsdPerMTok: 10, outputUsdPerMTok: 50 },
+  },
+  bedrock: {},
+};
