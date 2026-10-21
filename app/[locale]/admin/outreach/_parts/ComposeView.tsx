@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import { business, outreach } from "@/config/business";
 import { formatDate, formatTimeInZone, type Locale } from "@/lib/format";
 import { outreachInvites, outreachIsLive, sampleDoctors, toDoctorCardData } from "@/lib/sample";
-import { claimEmailCopy } from "./email-copy";
+import { claimEmailCopy } from "@/lib/email-templates/claim-invite-copy";
 import { InviteComposer } from "./InviteComposer";
 import { dateAndTime, outreachHref, type OutreachQuery } from "./outreach";
 import { GATE_ID, GateNotice } from "./sections";
