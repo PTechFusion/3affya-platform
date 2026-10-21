@@ -38,12 +38,24 @@ export type ClaimEmailCopy = {
 /** Joins a date and a clock time: the Arabic comma in Arabic, a Latin comma in English (as screen 46's outreach.ts does). */
 const dateAndTime = (date: string, time: string, loc: Locale) => `${date}${loc === "ar" ? "، " : ", "}${time}`;
 
-export function claimEmailCopy(lang: Locale, doctor: SampleDoctor, expiresAt: Date): ClaimEmailCopy {
+/**
+ * Who sends the invite and where the doctor's clock is. The invite template (a real send) always passes both; screen 46's
+ * preview leaves them out and shows the prototype's sample admin and the doctor's zone from the sample data, as it always has.
+ */
+export type ClaimEmailContext = {
+  /** The admin who writes the personal line ("A note from ..."). */
+  admin?: { nameEn: string; nameAr: string };
+  /** The doctor's IANA zone, for when the link stops working (rule E2). */
+  timeZone?: string;
+};
+
+export function claimEmailCopy(lang: Locale, doctor: SampleDoctor, expiresAt: Date, context: ClaimEmailContext = {}): ClaimEmailCopy {
   const t = translator(lang, "adminOutreach.email");
   const tf = translator(lang, "footer");
   const ar = lang === "ar";
   const name = ar ? doctor.nameAr : doctor.nameEn;
-  const zone = doctorTimeZone(doctor);
+  const zone = context.timeZone ?? doctorTimeZone(doctor);
+  const admin = context.admin ?? sampleAdmin;
   const expires = dateAndTime(formatDate(expiresAt, zone, lang), formatTimeInZone(expiresAt, zone, lang), lang);
   return {
     lang,
@@ -51,7 +63,7 @@ export function claimEmailCopy(lang: Locale, doctor: SampleDoctor, expiresAt: Da
     subject: t("subject", { name }),
     preheader: t("preheader"),
     headline: t("headline", { name }),
-    noteFrom: t("noteFrom", { admin: ar ? sampleAdmin.nameAr : sampleAdmin.nameEn }),
+    noteFrom: t("noteFrom", { admin: ar ? admin.nameAr : admin.nameEn }),
     intro: t("intro"),
     factsTitle: t("factsTitle"),
     facts: [

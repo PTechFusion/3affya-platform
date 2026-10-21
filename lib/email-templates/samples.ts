@@ -88,8 +88,11 @@ function build(name: TemplateName, locale: Locale, v: string | undefined, now: D
   switch (name) {
     case "invite": {
       // doc_013 with the demo-valid token: the link opens the prototype's claim page for her (screen 9).
+      const d = doctor("doc_013");
       return {
-        doctor: doctor("doc_013"),
+        doctor: d,
+        timeZone: doctorTimeZone(d),
+        admin: { nameEn: sampleAdmin.nameEn, nameAr: sampleAdmin.nameAr },
         expiresAt: new Date(now.getTime() + outreach.inviteValidDays * 86_400_000),
         claimUrl: siteLink(locale, "/claim/demo-valid"),
         personalLine: v === "note" ? SAMPLE_NOTE[locale] : undefined,

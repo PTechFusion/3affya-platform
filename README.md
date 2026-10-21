@@ -103,5 +103,7 @@ scripts/                i18n-check, screenshots
 - Tests: `npx vitest run --config tests/unit/emails/vitest.config.ts`.
 - Test send (needs `RESEND_API_KEY`): `npx --yes tsx@4.23.15 scripts/email-test-send.ts you@example.com`; `--dry-run` renders
   all sixteen without a key.
+- The wordmark and links in an email come from `NEXT_PUBLIC_SITE_URL`: for a test send set it to a host Gmail and Outlook can
+  reach (not localhost); the script warns otherwise.
 
 ProgrammX · programmx.com · hello@programmx.com · Confidential

@@ -6166,6 +6166,7 @@
       "patient": {
         "subject": "{visitType, select, phone {زيارتك بالهاتف} other {زيارتك بالفيديو}} مع {name} مؤكدة: {when}",
         "preheader": "دُفع {total}. {gender, select, f {توقيت الطبيبة} other {توقيت الطبيب}}: {doctorWhen}. ألغِ قبل {deadline} لتسترد المبلغ كاملًا.",
+        "preheaderLate": "دُفع {total}. {gender, select, f {توقيت الطبيبة} other {توقيت الطبيب}}: {doctorWhen}. باقٍ على زيارتك أقل من {cutoff}، لذلك لا يُسترد المبلغ إذا ألغيتها.",
         "headline": "تم حجز زيارتك",
         "intro": "{visitType, select, phone {زيارتك بالهاتف} other {زيارتك بالفيديو}} مع {name}، {specialty}، مؤكدة ومدفوعة.",
         "cardTitle": "موعدك",

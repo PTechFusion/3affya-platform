@@ -1,6 +1,7 @@
 // Task 2.9 test send: every transactional email in both languages to one inbox, for the Gmail and Outlook check (right to left
 // correct, codes and numbers in order, no broken characters). Sample data only (lib/email-templates/samples.ts), so nothing
-// real leaves the machine. Run from the repo root with RESEND_API_KEY (and EMAIL_FROM on the verified domain) in .env:
+// real leaves the machine. Run from the repo root with RESEND_API_KEY (and EMAIL_FROM on the verified domain) in .env, and
+// NEXT_PUBLIC_SITE_URL set to a host the mail clients can reach (the wordmark and the links are built from it):
 //
 //   npx --yes tsx@4.23.15 scripts/email-test-send.ts you@gmail.com                 the eight templates x ar, en = 16 emails
 //   npx --yes tsx@4.23.15 scripts/email-test-send.ts you@outlook.com --all-variants  every sample the preview offers (28)
@@ -12,6 +13,7 @@ import { existsSync } from "node:fs";
 import { setTimeout as sleep } from "node:timers/promises";
 import type { Locale } from "@/lib/format";
 import { getTemplate, templateNames } from "@/lib/email-templates";
+import { defaultAssetsBaseUrl } from "@/lib/email-templates/layout";
 import { sampleEmailData, templateVariants } from "@/lib/email-templates/samples";
 import { sendEmail } from "@/lib/email-templates/send";
 
@@ -31,6 +33,12 @@ async function main(): Promise<number> {
   if (!dryRun && !process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY is not set (.env or the environment). Nothing was sent.");
     return 1;
+  }
+  // The wordmark and every link point at NEXT_PUBLIC_SITE_URL. .env.example sets it to localhost, which Gmail's image proxy
+  // and Outlook cannot reach: the inbox would show a broken logo and dead links, and the check would judge the wrong thing.
+  const base = defaultAssetsBaseUrl();
+  if (!dryRun && /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/i.test(base)) {
+    console.warn(`NEXT_PUBLIC_SITE_URL is ${base}: the wordmark and links will not load in Gmail or Outlook. Set it to the hosted site.`);
   }
 
   const runId = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14);

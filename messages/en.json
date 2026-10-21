@@ -6166,6 +6166,7 @@
       "patient": {
         "subject": "{visitType, select, phone {Your phone visit} other {Your video visit}} with {name} is confirmed: {when}",
         "preheader": "Paid {total}. Doctor's time: {doctorWhen}. Cancel before {deadline} for a full refund.",
+        "preheaderLate": "Paid {total}. Doctor's time: {doctorWhen}. Your visit is less than {cutoff} away, so cancelling it is not refunded.",
         "headline": "Your visit is booked",
         "intro": "{visitType, select, phone {Your phone visit} other {Your video visit}} with {name}, {specialty}, is confirmed and paid.",
         "cardTitle": "Your appointment",

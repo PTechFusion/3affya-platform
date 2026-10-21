@@ -32,9 +32,20 @@ describe("sendEmail", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
-  it("posts the rendered email with the key as Idempotency-Key and a timeout", async () => {
+  it("posts the rendered email with the key as Idempotency-Key and a 10 s timeout", async () => {
     const fetch = answer(200, { id: "email_123" });
-    const result = await sendEmail("otp", "ar", " noura@example.com ", otp, { idempotencyKey: "otp:abc", fetch, env });
+    // Review fix: the test only checked that some signal was passed; it now checks the signal is the 10 s Resend budget.
+    const timeout = vi.spyOn(AbortSignal, "timeout");
+    let result: Awaited<ReturnType<typeof sendEmail>>;
+    let signal: unknown;
+    try {
+      result = await sendEmail("otp", "ar", " noura@example.com ", otp, { idempotencyKey: "otp:abc", fetch, env });
+      expect(emailSettings.sendTimeoutMs).toBe(10_000);
+      expect(timeout).toHaveBeenCalledExactlyOnceWith(emailSettings.sendTimeoutMs);
+      signal = timeout.mock.results[0]?.value;
+    } finally {
+      timeout.mockRestore();
+    }
     expect(result).toEqual({ ok: true, id: "email_123" });
     expect(fetch).toHaveBeenCalledTimes(1);
     const [url, init] = fetch.mock.calls[0] ?? [];
@@ -43,7 +54,8 @@ describe("sendEmail", () => {
     const headers = init?.headers as Record<string, string>;
     expect(headers["Idempotency-Key"]).toBe("otp:abc");
     expect(headers.Authorization).toBe("Bearer test-key-not-real");
-    expect(init?.signal).toBeInstanceOf(AbortSignal);
+    expect(signal).toBeInstanceOf(AbortSignal);
+    expect(init?.signal).toBe(signal);
     const body = JSON.parse(String(init?.body));
     const t = getTemplate("otp");
     expect(body.from).toBe(`${emailSettings.fromName} <${emailSettings.fromAddress}>`);

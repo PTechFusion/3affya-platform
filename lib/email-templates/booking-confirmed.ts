@@ -8,7 +8,7 @@
 import { business } from "@/config/business";
 import { formatDate, formatMoney, formatNumber, type Locale } from "@/lib/format";
 import { toIcs } from "@/lib/ics";
-import { fullRefundDeadline } from "@/lib/refunds";
+import { fullRefundDeadline, refundsInFull } from "@/lib/refunds";
 import type { Block, EmailContent } from "./layout";
 import { translator } from "./messages";
 import {
@@ -72,8 +72,10 @@ function patientContent(locale: Locale, d: BookingPatientData): EmailContent {
   const gender = d.doctor.gender;
   const when = dayAndTime(d.startsAt, d.patientTimeZone, locale);
   const doctorWhen = dayAndTime(d.startsAt, d.doctorTimeZone, locale);
-  const deadlineAt = fullRefundDeadline(d.startsAt);
-  const deadline = dayAndTime(deadlineAt, d.patientTimeZone, locale);
+  const deadline = dayAndTime(fullRefundDeadline(d.startsAt), d.patientTimeZone, locale);
+  // Lead time (2 h by default) is shorter than the refund cutoff, so a visit can be booked after its full-refund deadline. The
+  // preheader and the body then both say so: neither promises a refund before a time that has already passed.
+  const refundable = refundsInFull(d.startsAt, d.receipt.paidAt);
   const total = formatMoney(d.receipt.totalCents, d.receipt.currency, locale);
   const cutoff = duration(locale, "hours", business.fullRefundCutoffHours);
   const video = d.visitType === "video" && d.joinUrl;
@@ -92,7 +94,7 @@ function patientContent(locale: Locale, d: BookingPatientData): EmailContent {
   return {
     locale,
     subject: t("subject", { visitType: d.visitType, name, when }),
-    preheader: t("preheader", { total, doctorWhen, deadline, gender }),
+    preheader: refundable ? t("preheader", { total, doctorWhen, deadline, gender }) : t("preheaderLate", { total, doctorWhen, cutoff, gender }),
     headline: t("headline"),
     blocks: [
       {
@@ -127,7 +129,7 @@ function patientContent(locale: Locale, d: BookingPatientData): EmailContent {
       { kind: "heading", text: t("changeTitle") },
       {
         kind: "p",
-        text: plain(deadlineAt.getTime() > d.receipt.paidAt.getTime() ? t("changeBefore", { deadline, total }) : t("changeLate", { cutoff })),
+        text: plain(refundable ? t("changeBefore", { deadline, total }) : t("changeLate", { cutoff })),
       },
       { kind: "p", text: plain(t("move")) },
       { kind: "p", text: rich(t, "manage", {}, { url: link(d.bookingUrl) }) },

@@ -1,13 +1,16 @@
 // Screen 49 / task 2.9: every template in both locales, the rules the emails carry (E1 to E4, T4, R3, N1), and that the claim
 // invite is the one copy screen 46 previews. Run: npx vitest run --config tests/unit/emails/vitest.config.ts
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import { business } from "@/config/business";
 import { formatMoney, formatZone, type Locale } from "@/lib/format";
+import { fullRefundDeadline } from "@/lib/refunds";
+import { sampleAdmin } from "@/lib/sample";
 import { getTemplate, templateNames, type TemplateName } from "@/lib/email-templates";
 import { claimEmailCopy } from "@/lib/email-templates/claim-invite-copy";
 import { renderEmail, type EmailContent } from "@/lib/email-templates/layout";
 import { translator } from "@/lib/email-templates/messages";
+import { dayAndTime, duration } from "@/lib/email-templates/parts";
 import { sampleEmailData, templateVariants } from "@/lib/email-templates/samples";
 import { emailColors, emailFont, emailRadius } from "@/lib/email-templates/theme";
 import ar from "@/messages/ar.json";
@@ -169,7 +172,32 @@ describe("booking confirmation (rules E2, P6, E3)", () => {
         expect(first.attachments).toHaveLength(1);
         expect(first.attachments[0]?.filename).toMatch(/\.ics$/);
         expect(first.attachments[0]?.content).toContain("BEGIN:VEVENT");
+        // A retried send renders the same data again: the file must be byte-identical (Resend refuses a reused key otherwise).
+        const again = getTemplate("bookingConfirmed").attachments(locale, first.data);
+        expect(again).toEqual(first.attachments);
       }
+    });
+
+    // Review fix: lead time (2 h by default) is shorter than the refund cutoff (24 h), so a visit can be booked after its
+    // full-refund deadline. The preheader then promised "Cancel before <a time already past> for a full refund" while the body
+    // said the visit is not refunded.
+    it(`a visit booked inside the refund cutoff promises no refund, in the preheader or the body (${locale})`, () => {
+      const data = sampleEmailData("bookingConfirmed", locale, "patient", NOW);
+      if (data.audience !== "patient") throw new Error("patient sample expected");
+      const t = getTemplate("bookingConfirmed");
+      const cutoff = duration(locale, "hours", business.fullRefundCutoffHours);
+      const late = { ...data, receipt: { ...data.receipt, paidAt: new Date(data.startsAt.getTime() - 3 * 3_600_000) } };
+      const lateDeadline = dayAndTime(fullRefundDeadline(late.startsAt), late.patientTimeZone, locale);
+      const latePreheader = t.preheader(locale, late);
+      const lateText = t.render(locale, late).text;
+      expect(latePreheader).not.toContain(lateDeadline);
+      expect(lateText).not.toContain(lateDeadline);
+      expect(latePreheader).toContain(cutoff);
+      expect(lateText).toContain(translator(locale, "email.bookingConfirmed.patient")("changeLate", { cutoff }));
+      // Booked well ahead: the deadline is promised in both places.
+      const earlyDeadline = dayAndTime(fullRefundDeadline(data.startsAt), data.patientTimeZone, locale);
+      expect(t.preheader(locale, data)).toContain(earlyDeadline);
+      expect(t.render(locale, data).text).toContain(earlyDeadline);
     });
   }
 });
@@ -240,6 +268,25 @@ describe("the claim invite is screen 46's copy (no second claim-invite email)", 
       for (const f of copy.facts) expect(r.text).toContain(`${f.label}: ${f.value}`);
     });
   }
+
+  // Review fix: the personal line was always attributed to the sample admin (lib/sample sampleAdmin) and the expiry was put in
+  // a zone looked up in sample data, whatever the caller passed; a real send could not name the admin who wrote the note.
+  it("names the admin who wrote the personal line, and puts the expiry in the zone the caller gives", () => {
+    for (const locale of locales) {
+      const data = sampleEmailData("invite", locale, "note", NOW);
+      const admin = { nameEn: "Test Admin Two", nameAr: "مشرف تجريبي" };
+      const r = getTemplate("invite").render(locale, { ...data, admin, timeZone: "Asia/Tokyo" });
+      expect(r.text).toContain(locale === "ar" ? admin.nameAr : admin.nameEn);
+      expect(r.text).not.toContain(locale === "ar" ? sampleAdmin.nameAr : sampleAdmin.nameEn);
+      expect(r.text).toContain(formatZone(data.expiresAt, "Asia/Tokyo"));
+    }
+  });
+
+  it("the outreach screen reads this copy: one claim-invite email in the codebase", () => {
+    const compose = readFileSync(new URL("../../../app/[locale]/admin/outreach/_parts/ComposeView.tsx", import.meta.url), "utf8");
+    expect(compose).toContain('from "@/lib/email-templates/claim-invite-copy"');
+    expect(existsSync(new URL("../../../app/[locale]/admin/outreach/_parts/email-copy.ts", import.meta.url))).toBe(false);
+  });
 
   it("shows the admin's personal line as written, escaped", () => {
     const data = sampleEmailData("invite", "en", "plain", NOW);

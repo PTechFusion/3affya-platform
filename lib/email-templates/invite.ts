@@ -14,12 +14,16 @@ export type InviteData = {
   expiresAt: Date;
   /** The claim link with its one-time token. */
   claimUrl: string;
+  /** The doctor's IANA zone: the expiry line says when the link stops working on the doctor's own clock (rule E2). */
+  timeZone: string;
+  /** The admin sending the invite, named over the personal line ("A note from ..."). */
+  admin: { nameEn: string; nameAr: string };
   /** The admin's optional note at the top (outreach.personalLineMaxChars). */
   personalLine?: string;
 };
 
 export const inviteEmail = defineTemplate<InviteData>((locale, data) => {
-  const copy = claimEmailCopy(locale, data.doctor, data.expiresAt);
+  const copy = claimEmailCopy(locale, data.doctor, data.expiresAt, { admin: data.admin, timeZone: data.timeZone });
   const line = data.personalLine?.trim();
   const note: Block[] = line ? [{ kind: "quote", caption: copy.noteFrom, body: line }] : [];
   return {
