@@ -34,7 +34,7 @@ jobs:
       # node_modules is cached on the lockfile; npm ci runs whenever the lockfile (or Node) changes.
       - name: Cache node_modules
         id: modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: modules-${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('package-lock.json') }}
@@ -50,7 +50,7 @@ jobs:
         run: npm run test:unit
 
       - name: Cache the Next.js build cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .next/cache
           key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
@@ -68,7 +68,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-chromium
@@ -89,7 +89,7 @@ jobs:
 
       - name: Upload the e2e report, traces and a11y summary
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: e2e-report
           path: test-results/e2e/
