@@ -49,7 +49,7 @@ Ten decisions from the 19 Oct research are listed at the top of `docs/screen-rul
 - Logical CSS only: ms-, me-, ps-, pe-, start-, end-, text-start, text-end. ESLint fails the build on ml-, mr-, pl-, pr-, left-, right-, text-left, text-right.
 - All instants stored as timestamptz in UTC. Convert for display with the viewer's IANA timezone. Never store local times.
 - Every outbound network call has an explicit timeout. Every retried operation is idempotent on a key stored in the database.
-- Stripe webhook: insert into stripe_events (event_id PK) BEFORE handling; on conflict return 200 and stop.
+- Stripe webhook: insert into stripe_events (event_id PK) BEFORE handling. On conflict with a handled event, or a type with no handler, return 200 and stop. An unhandled event whose attempt failed or died (older than 5 minutes) is taken back by one conditional update and handled again; while an attempt is still running answer 409 so Stripe retries later. Handlers are idempotent on the Stripe object id (lib/stripe/webhook.ts).
 - Records pipeline is a fixed workflow (validate, quote, pay, extract per page, dedupe, summarise, flag, store, notify). Do NOT build an agent loop. Do NOT give the model tools during extraction.
 - Model output is validated against the zod schema in lib/ai/schemas before anything downstream reads it. Invalid output is a retry, then a failure, never a partial write.
 - Items the documents do not support are omitted or flagged, never invented. Unreadable pages are flagged "unreadable" with the page reference.

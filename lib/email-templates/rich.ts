@@ -66,7 +66,10 @@ export type Translate = (key: string, values?: Record<string, string | number>) 
  * rich(t, "support", {}, { email: ltr("hello@3affya.com") }).
  */
 export function rich(t: Translate, key: string, values: Record<string, string | number> = {}, parts: Record<string, Rich> = {}): Rich {
-  const marked: Record<string, string | number> = { ...values };
+  // A data value never carries the markers (they are private-use code points, never in copy or data), so strip them: a value
+  // could otherwise name one of the rich parts and be swapped for it.
+  const marked: Record<string, string | number> = {};
+  for (const [name, value] of Object.entries(values)) marked[name] = typeof value === "string" ? value.replaceAll(OPEN, "").replaceAll(CLOSE, "") : value;
   for (const name of Object.keys(parts)) marked[name] = `${OPEN}${name}${CLOSE}`;
   const formatted = t(key, marked);
   const fill = (s: string, pick: (r: Rich) => string) =>

@@ -63,7 +63,7 @@ the one missing `@rolldown/binding-<platform>` package at the version `node_modu
 
 ## Counts
 
-758 tests in 14 files, all passing on the local stack after a clean `npm run db:reset` with the ten migrations (20 Oct
+787 tests in 16 files (L2 and L3 each add the test for their own table), all passing on the local stack after a clean `npm run db:reset` with the ten migrations (20 Oct
 2026, about 40 s): `matrix.rls.ts` 353, `controls.rls.ts` 129, `audit-log.rls.ts` 46,
 `storage.rls.ts` 41, `introductions.rls.ts` 32, `listings.rls.ts` 29, `records.rls.ts` 26, `slot-holds.rls.ts` 21,
 `shares.rls.ts` 19, `bookings.rls.ts` 16, `guards.rls.ts` 16, `stamps.rls.ts` 12, `roles.rls.ts` 9, `busy-times.rls.ts` 9.

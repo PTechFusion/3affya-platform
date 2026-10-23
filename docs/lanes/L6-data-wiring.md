@@ -38,6 +38,28 @@ before `sampleProfessional`; the portals follow their blocks). The generated typ
   shows a field the schema does not have: then say so in the report and leave the field reading from a constant.
 - Query timeouts come from the client factory; do not add per-call timeouts.
 
+## Notes from the wave review (23 Oct 2026): do these first
+The L1 review found that a signed-in browser client can write a few rows directly through PostgREST with values server code
+would normally limit. Nothing can reach them before L7 ships sign-in, so they were merged as they are; L6's first migration
+(the same-transaction RPC migration L1 already owes) closes them:
+1. `audit_log`: drop the authenticated INSERT grant and the `audit_log_insert_self` policy; audit rows are written only by
+   the RPCs that make the change (at minimum revoke `verification`, `note`, `changes` from the authenticated column grant).
+2. `slot_holds`: hold creation becomes a security-definer RPC that takes the slot length from `professionals.slot_minutes`
+   and the hold length from `business.slotHoldMinutes`; revoke the direct INSERT.
+3. `record_shares.expires_at`: cap at the longest `shareLengthDaysOptions` inside the RPC; `introduction_requests.transcript`
+   written by server code only (revoke the authenticated column).
+4. Public reads of `professionals`: a column-restricted `professionals_public` view (or column grants) so anonymous pages
+   never see `user_id`, `reviewed_by`, `claimed_at`, `review_*`, `removed_at`; shared reads of `record_sets` and
+   `record_files` likewise hide `quote_cents`, `payment_intent_id`, `sha256`.
+Also: regenerate `lib/db/types.ts` after that migration (`npm run db:types`) and switch `lib/stripe/types.ts` and lib/ai's
+row types to the generated ones (their headers say how). Shape differences the review listed beyond `output/dev_seed_report.md`:
+`RecordSetStatus` gains `draft` (filter it out of "my sets"); the inbox is `introduction_requests` plus `bookings` with
+`IntroductionStatus` and `InboxStatus` derived; one `concern` plus `concern_locale`; receipts carry the total only (fee lines
+on the booking), `refund_status` adds `failed`, `cancelled_by` adds `platform`; `ShareStatus` derives from `viewed_at` and the
+summary's reviewer; `PayoutStatus` derives from `professional_private.stripe_*`; audit `request_id` is nullable and system
+actors are `actor_id null` plus `actor_system`; `InviteStatus` maps from `current_status(invites)`; `memberships` has one row
+per professional (status `none`); `specialties.doctorCount` is computed in the accessor.
+
 ## Notes from L1 (20 Oct 2026)
 - **Prerequisite (Yasir's decision 6).** Audit rows written in the same transaction as the change they record, and an
   atomic expertise-tag save and reorder, need RPC functions that do not exist yet. Before wiring those actions, list each

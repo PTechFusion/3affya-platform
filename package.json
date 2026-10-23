@@ -2,6 +2,9 @@
   "name": "3affya-platform",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "description": "3affya: US-trained Arabic-speaking doctors for patients in the Gulf. Launch build by ProgrammX.",
   "scripts": {
     "dev": "next dev",

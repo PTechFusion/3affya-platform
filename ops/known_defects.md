@@ -7,6 +7,11 @@ The suite recognises each line through `tests/e2e/support/known-defects.ts` (sam
 two lists disagree). After each run, `test-results/e2e/a11y-summary.md` lists every axe finding with its routes; a finding
 marked NEW there is not on this list.
 
+**Fixed on 23 Oct 2026 (wave review of lanes L1 to L5), lines removed below:** the how-it-works fee labels now read the keys
+the messages have, and the success, warning and danger text tokens are darker (5.2:1 or better on their tints and on white,
+one change in `app/globals.css`), which cleared the five badge and tone-text contrast findings. The suite checks those pages
+in full again.
+
 **Blocking defects: none.** Every step of the patient, professional and admin journeys passes in both locales at both widths,
 except the `/intake` step (KD-001), which is skipped; the intake chat itself opens from the home page (`/?chat=1`) and passes.
 
@@ -15,13 +20,7 @@ Severity: **major** visible to every visitor of the page; **serious** / **modera
 
 | ID | Severity | Screen | Route | Locale | Width | What | Found by |
 |---|---|---|---|---|---|---|---|
-| KD-015 | major | 3 | /how-it-works | ar, en | 390, 1280 | Fee breakdown prints raw keys as its three labels and hints (`howItWorks.fees.doctorFeeCents`, `...Hint`, `platformFeeCents`, `cardProcessingCents`): the page asks for `fees.<line>Cents`, messages have `fees.doctorFee`, `fees.platformFee`, `fees.cardProcessing`. The server logs MISSING_MESSAGE on every render. | routes.spec |
 | KD-001 | minor | 8 | /intake | ar, en | 390, 1280 | Answers 404. The route map lists `/intake` and `/?chat=1` for the intake chat; only `/?chat=1` exists. Patient journey step "intake chat at /intake" skipped. | patient journey |
-| KD-002 | serious | 7, 12, 22, 23, 24, 30, 32, 36, 38, 40, 42, 43, 45, 46, 48 | /doctors/doc_002, /for-professionals, /patient/bookings, /patient/receipts, /patient/receipts/bk_004, /patient/records, /professional/availability, /professional/inbox, /professional/inbox/int_003, /professional/shared, /admin/review, /admin/review/doc_009, /admin/specialties, /admin/members, /admin/payments, /admin/ai-jobs, /admin/outreach, /brand | ar, en | 390, 1280 | Success `Badge`: `text-success` #1F8A5B on #E4F4EC is 3.8:1 at 12.5 px (AA needs 4.5:1). One class pair in `components/ui` Badge (tone success), so one fix clears every page. | a11y.spec |
-| KD-003 | serious | 16, 26, 32, 36, 38, 39, 41, 42, 46, 48 | /privacy, /terms, /fees, /refunds, /patient/records/rs_001/summary, /professional/inbox, /professional/inbox/int_003, /professional/shared/sh_001, /admin/review, /admin/review/doc_009, /admin/listings, /admin/removals, /admin/removals/rm_001, /admin/members, /admin/outreach, /brand | ar, en | 390, 1280 | Warning `Badge`: `text-warning` #B7791F on `gold-100` #F8EBC4 is 3.06:1 at 12.5 px (the legal pages' "Draft" badge among them). | a11y.spec |
-| KD-004 | serious | 24, 38, 39, 41, 45, 46, 48 | /patient/records, /admin/review, /admin/review/doc_009, /admin/listings, /admin/removals, /admin/removals/rm_001, /admin/ai-jobs, /admin/outreach, /brand | ar, en | 390, 1280 | Danger `Badge`: `text-danger` #C4423A on #FBE9E7 is 4.27:1 at 12.5 px. | a11y.spec |
-| KD-005 | serious | 41, 48 | /admin/removals, /admin/removals/rm_001, /brand | en | 390, 1280 | `text-success` #1F8A5B as text: 4.33:1 on white (removal checks line "4 of 4 passed", brand page headings), 3.56:1 on `sea-100` #DCEBF7 (rm_001 at 1280). | a11y.spec |
-| KD-006 | serious | 41, 45 | /admin/removals, /admin/removals/rm_001, /admin/ai-jobs | ar, en | 390, 1280 | `text-warning` #B7791F as text on white is 3.64:1 (a removal request's unmatched-check line, the AI spend chart's alert line label "USD 10"). | a11y.spec |
 | KD-007 | serious | 6 | /doctors/doc_013 | ar, en | 390, 1280 | Unclaimed profile, registry source line ("Source: CMS Doctors and Clinicians file · updated ..."): `text-ink-500` #5E6A77 on `sand-200` #E2DCCE is 4.03:1. | a11y.spec |
 | KD-008 | serious | 21 to 47 (every portal page) | /patient/\*, /professional/\*, /admin/\* | en | 390, 1280 | Dev role bar ("Prototype, viewing as"): the other-portal links at `opacity-70` are #A58542 on #F8EBC4, 2.92:1. Prototype only: compiled out when `NEXT_PUBLIC_DEV_ROLE_SWITCH` is unset. | a11y.spec |
 | KD-009 | serious | 48 | /brand | en | 390 | The horizontally scrolling token table (`overflow-x-auto`) cannot be reached by keyboard: the scroll box has no `tabindex="0"` and nothing focusable inside. | a11y.spec |
@@ -38,7 +37,7 @@ Severity: **major** visible to every visitor of the page; **serious** / **modera
   findings above; Arabic-only colour choices would go unnoticed.
 - **DoctorCard faces.** axe measures a flip card's hidden face and reads the back face's gradient as the sand page behind it
   (white on teal scores about 1.1:1). Those nodes are dropped from the scan and counted in each test's annotations (KD-014).
-- **Server logs.** The e2e checks read the browser console. Server-side errors (such as KD-015's MISSING_MESSAGE) surface only
+- **Server logs.** The e2e checks read the browser console. Server-side errors (a MISSING_MESSAGE for a key a page asks for, say) surface only
   when they change the page; `npm run test:e2e` prints the server's stderr.
 
 ## Also noted (not defects, for Yasir)

@@ -9,6 +9,7 @@ import { sampleAdmin } from "@/lib/sample";
 import { getTemplate, templateNames, type TemplateName } from "@/lib/email-templates";
 import { claimEmailCopy } from "@/lib/email-templates/claim-invite-copy";
 import { renderEmail, type EmailContent } from "@/lib/email-templates/layout";
+import { ltr, rich, type Translate } from "@/lib/email-templates/rich";
 import { translator } from "@/lib/email-templates/messages";
 import { dayAndTime, duration } from "@/lib/email-templates/parts";
 import { sampleEmailData, templateVariants } from "@/lib/email-templates/samples";
@@ -294,6 +295,29 @@ describe("the claim invite is screen 46's copy (no second claim-invite email)", 
     expect(r.html).not.toContain("<script>");
     expect(r.html).toContain("&lt;script&gt;");
     expect(r.html).toContain('dir="auto"');
+  });
+
+  it("escapes the reviewer's reason, the requester's name and a doctor's name the same way", () => {
+    const script = '<script>alert("x")</script>';
+    const rejected = sampleEmailData("claimRejected", "en", "licence", NOW);
+    const r1 = getTemplate("claimRejected").render("en", { ...rejected, reasonEn: `Blurred ${script}`, reasonAr: `غير واضح ${script}` });
+    const removal = sampleEmailData("removalConfirmed", "en", "plain", NOW);
+    const r2 = getTemplate("removalConfirmed").render("en", { ...removal, requesterName: `Sam ${script}` });
+    const approved = sampleEmailData("claimApproved", "en", "plain", NOW);
+    const r3 = getTemplate("claimApproved").render("en", { ...approved, doctor: { ...approved.doctor, nameEn: `Dr ${script}` } });
+    for (const r of [r1, r2, r3]) {
+      expect(r.html).not.toContain("<script>");
+      expect(r.html).toContain("&lt;script&gt;");
+    }
+    const ar = getTemplate("claimRejected").render("ar", { ...rejected, reasonEn: "x", reasonAr: `غير واضح ${script}` });
+    expect(ar.html).not.toContain("<script>");
+  });
+
+  it("a data value cannot name a rich part", () => {
+    const t: Translate = (_key, values) => `Hello ${values?.name}, see ${values?.link}`;
+    const r = rich(t, "any", { name: "\uE000link\uE001" }, { link: ltr("https://example.com") });
+    expect(r.text).toBe("Hello link, see https://example.com");
+    expect(r.html).toContain("Hello link, see ");
   });
 });
 

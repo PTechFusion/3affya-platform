@@ -26,36 +26,6 @@ export const KNOWN_DEFECTS = [
     what: "/intake answers 404: the route map lists /intake and /?chat=1 for the intake chat, only /?chat=1 exists",
   },
   {
-    id: "KD-002",
-    screens: "7, 12, 22, 23, 24, 30, 32, 36, 38, 40, 42, 43, 45, 46, 48",
-    what: "success Badge: text-success #1F8A5B on #E4F4EC is 3.8:1 at 12.5px (AA needs 4.5:1)",
-    axe: { rules: ["color-contrast"], pairs: [["#1f8a5b", "#e4f4ec"]] },
-  },
-  {
-    id: "KD-003",
-    screens: "16, 26, 32, 36, 38, 39, 41, 42, 46, 48",
-    what: "warning Badge: text-warning #B7791F on gold-100 #F8EBC4 is 3.06:1 at 12.5px (AA needs 4.5:1)",
-    axe: { rules: ["color-contrast"], pairs: [["#b7791f", "#f8ebc4"]] },
-  },
-  {
-    id: "KD-004",
-    screens: "24, 38, 39, 41, 45, 46, 48",
-    what: "danger Badge: text-danger #C4423A on #FBE9E7 is 4.27:1 at 12.5px (AA needs 4.5:1)",
-    axe: { rules: ["color-contrast"], pairs: [["#c4423a", "#fbe9e7"]] },
-  },
-  {
-    id: "KD-005",
-    screens: "41, 48",
-    what: "text-success #1F8A5B as body text: 4.33:1 on white, 3.56:1 on sea-100 #DCEBF7 (removal checks line, brand page)",
-    axe: { rules: ["color-contrast"], pairs: [["#1f8a5b", "#ffffff"], ["#1f8a5b", "#dcebf7"]] },
-  },
-  {
-    id: "KD-006",
-    screens: "41, 45",
-    what: "text-warning #B7791F as text on white is 3.64:1 (AI spend chart alert label, a removal request's unmatched-check line)",
-    axe: { rules: ["color-contrast"], pairs: [["#b7791f", "#ffffff"]] },
-  },
-  {
     id: "KD-007",
     screens: "6",
     what: "unclaimed profile, registry source line: text-ink-500 #5E6A77 on sand-200 #E2DCCE is 4.03:1",
@@ -100,22 +70,6 @@ export const KNOWN_DEFECTS = [
     id: "KD-014",
     screens: "every DoctorCard back face (5, 7, 12, 31, 48 and the builder preview)",
     what: "axe cannot measure the back face (gradient behind a 3D flip). Computed from the gradient stops: text-white/75 labels are about 4.9:1 at the dark corner but about 3.9:1 at mid-card (#08708E), under 4.5:1 for the 12 to 13 px labels; check by eye",
-  },
-  {
-    id: "KD-015",
-    screens: "3",
-    what: "How it works, fee breakdown: the three line labels and hints print raw keys (howItWorks.fees.doctorFeeCents ...) in both locales; the page asks for fees.<line>Cents, messages have fees.doctorFee, fees.platformFee, fees.cardProcessing",
-    rawKeys: {
-      path: "/how-it-works",
-      keys: [
-        "howItWorks.fees.doctorFeeCents",
-        "howItWorks.fees.doctorFeeCentsHint",
-        "howItWorks.fees.platformFeeCents",
-        "howItWorks.fees.platformFeeCentsHint",
-        "howItWorks.fees.cardProcessingCents",
-        "howItWorks.fees.cardProcessingCentsHint",
-      ],
-    },
   },
 ] as const satisfies readonly KnownDefect[];
 

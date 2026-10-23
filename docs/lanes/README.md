@@ -25,6 +25,11 @@ section except `stripe_events` (L2) and `ai_calls` (L3): 27 tables, `introductio
 among them (delivered in PR #4, 20 Oct 2026). Each of those two lanes ships its own migration file. Migration file names are
 `supabase/migrations/<YYYYMMDDHHMMSS>_<lane>_<what>.sql` so they sort and never collide. L1's run from `20261020000100` to
 `20261020001000`; every other lane uses a later timestamp (a migration that references an L1 table must sort after it).
+A lane that ships a table also adds `tests/rls/<table>.rls.ts` (a new file in L1's folder; no L1 file changes), as CLAUDE.md
+requires.
+
+Review results: `BACKLOG.md` in this folder lists what the wave reviews found and left for later, by lane; the questions for
+Yasir, Dr Ayman and counsel are in `docs/open-questions/`.
 
 ## 2. Read, in this order
 

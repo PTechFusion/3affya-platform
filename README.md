@@ -171,12 +171,6 @@ logged.
 - No Chromium for this Playwright version on the machine? The suite uses the newest Playwright Chromium it finds, or
   `CHROME_PATH`; `npx playwright install chromium` gets the exact one.
 
-## Known notes
-
-- `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.
-- Readex Pro is self-hosted under `public/fonts/` (SIL OFL).
-- Next.js 16 uses `proxy.ts` where older docs say `middleware.ts`.
-
 ## Transactional email (lane L4, task 2.9)
 
 - Eight templates in `lib/email-templates/` (one layout, copy under `email.*`); flows send with
@@ -190,3 +184,9 @@ logged.
   reach (not localhost); the script warns otherwise.
 
 ProgrammX · programmx.com · hello@programmx.com · Confidential
+
+## Known notes
+
+- `npm audit` reports dev-only findings inside `eslint-config-next`'s tooling (braces/micromatch). They do not ship to the browser; revisit when `eslint-config-next` publishes a fix.
+- Readex Pro is self-hosted under `public/fonts/` (SIL OFL).
+- Next.js 16 uses `proxy.ts` where older docs say `middleware.ts`.

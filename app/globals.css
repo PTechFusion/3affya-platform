@@ -56,9 +56,10 @@
   --color-sky-500: #48a8d8;
   --color-sky-100: #e3f2fa;
 
-  --color-success: #1f8a5b;
-  --color-warning: #b7791f;
-  --color-danger: #c4423a;
+  /* Tone text: each is 5.2:1 or better on its tint (#E4F4EC, gold-100, #FBE9E7) and on white, so badges pass AA at 12.5 px. */
+  --color-success: #156a45;
+  --color-warning: #80530f;
+  --color-danger: #a83128;
 
   --radius-card: 22px;
   --radius-field: 12px;

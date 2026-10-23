@@ -5,7 +5,32 @@ export type Database = {
   
   "public": {
           Tables: {
-            "ai_jobs": {
+            "ai_calls": {
+                  Row: {
+                    "attempt": number,"cost_currency": string,"cost_micros": number,"created_at": string,"failure_detail": string | null,"failure_reason": string | null,"id": string,"input_tokens": number,"job_id": string,"latency_ms": number,"model": string,"outcome": string,"output_tokens": number,"page_id": string | null,"page_ref": string | null,"prompt_version": string,"request_id": string | null,"step": Database["public"]['Enums']["pipeline_step"],"stop_reason": string | null,"vendor": string
+                  }
+                  Insert: {
+                    "attempt"?: number,"cost_currency"?: string,"cost_micros"?: number,"created_at"?: string,"failure_detail"?: string | null,"failure_reason"?: string | null,"id": string,"input_tokens"?: number,"job_id": string,"latency_ms"?: number,"model": string,"outcome": string,"output_tokens"?: number,"page_id"?: string | null,"page_ref"?: string | null,"prompt_version": string,"request_id"?: string | null,"step": Database["public"]['Enums']["pipeline_step"],"stop_reason"?: string | null,"vendor": string
+                  }
+                  Update: {
+                    "attempt"?: number,"cost_currency"?: string,"cost_micros"?: number,"created_at"?: string,"failure_detail"?: string | null,"failure_reason"?: string | null,"id"?: string,"input_tokens"?: number,"job_id"?: string,"latency_ms"?: number,"model"?: string,"outcome"?: string,"output_tokens"?: number,"page_id"?: string | null,"page_ref"?: string | null,"prompt_version"?: string,"request_id"?: string | null,"step"?: Database["public"]['Enums']["pipeline_step"],"stop_reason"?: string | null,"vendor"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_calls_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "ai_jobs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_calls_page_id_fkey"
+      columns: ["page_id"]
+isOneToOne: false
+      referencedRelation: "record_pages"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"ai_jobs": {
                   Row: {
                     "attempt": number,"cancelled_at": string | null,"cost_currency": string,"cost_micros": number,"created_at": string,"failure_page_id": string | null,"failure_reason": string | null,"finished_at": string | null,"id": string,"idempotency_key": string,"inngest_run_id": string | null,"input_tokens": number,"kind": Database["public"]['Enums']["ai_job_kind"],"output_tokens": number,"set_id": string | null,"started_at": string | null,"status": Database["public"]['Enums']["ai_job_status"],"step": Database["public"]['Enums']["pipeline_step"] | null,"steps": NonNullable<Json>,"updated_at": string
                   }
@@ -682,6 +707,19 @@ isOneToOne: false
                   }
                   Update: {
                     "body_system"?: string | null,"created_at"?: string,"id"?: string,"name_ar"?: string,"name_en"?: string,"position"?: number,"shown"?: boolean,"slug"?: string,"synonyms_ar"?: (string)[],"synonyms_en"?: (string)[],"taxonomy_codes"?: (string)[],"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"stripe_events": {
+                  Row: {
+                    "attempted_at": string,"created_at": string,"error": string | null,"event_id": string,"handled_at": string | null,"payload": NonNullable<Json>,"received_at": string,"type": string
+                  }
+                  Insert: {
+                    "attempted_at"?: string,"created_at": string,"error"?: string | null,"event_id": string,"handled_at"?: string | null,"payload": NonNullable<Json>,"received_at"?: string,"type": string
+                  }
+                  Update: {
+                    "attempted_at"?: string,"created_at"?: string,"error"?: string | null,"event_id"?: string,"handled_at"?: string | null,"payload"?: NonNullable<Json>,"received_at"?: string,"type"?: string
                   }
                   Relationships: [
                     

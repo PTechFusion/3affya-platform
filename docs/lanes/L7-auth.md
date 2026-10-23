@@ -37,6 +37,14 @@ see its header), `components/brand/PortalShell.tsx` and the three portal layouts
 - Cookies: `httpOnly`, `secure` outside dev, `sameSite=lax`. Session refresh in `middleware.ts` only if Supabase SSR needs it;
   keep the locale routing exactly as it is.
 
+## Notes from the wave review (23 Oct 2026)
+- Keep `/api/stripe/webhook` out of the middleware matcher (it is today: `/api` is excluded). The basic-auth gate and the
+  locale router must never run for it.
+- Supabase Auth sends its own OTP emails; wire its Send Email hook to `sendEmail("otp", ...)` from `lib/email-templates/send.ts`
+  so the bilingual template is what patients and doctors receive.
+- Until L6's RPC migration lands, a signed-in client could insert `audit_log` and `slot_holds` rows directly (L6 notes, items
+  1 to 3). L7 ships sign-in, so L6's migration must be on `dev` before L7 merges, or L7 includes it.
+
 ## Notes from L1 (20 Oct 2026)
 - A claim sets `user_id` and status `claimed` in ONE statement (constraint `professionals_unclaimed_no_account`); the
   registry snapshot (`professional_private.registry_as_filed`) is taken then.

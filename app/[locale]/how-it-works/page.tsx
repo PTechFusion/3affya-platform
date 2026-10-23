@@ -53,17 +53,17 @@ export default async function HowItWorks({ params, searchParams }: Props) {
   const fees = exampleFee != null ? feeLines(exampleFee) : undefined;
   const feeRows = fees
     ? [
-        { key: "doctor", label: t("fees.doctorFeeCents"), hint: t("fees.doctorFeeCentsHint"), amount: fees.doctorFeeCents },
+        { key: "doctor", label: t("fees.doctorFee"), hint: t("fees.doctorFeeHint"), amount: fees.doctorFeeCents },
         {
           key: "platform",
-          label: t("fees.platformFeeCents"),
-          hint: t("fees.platformFeeCentsHint", { pct: percent(business.firstVisitPlatformFeePct) }),
+          label: t("fees.platformFee"),
+          hint: t("fees.platformFeeHint", { pct: percent(business.firstVisitPlatformFeePct) }),
           amount: fees.platformFeeCents,
         },
         {
           key: "card",
-          label: t("fees.cardProcessingCents"),
-          hint: t("fees.cardProcessingCentsHint", { pct: percent(business.cardProcessingPct), fixed: money(business.cardProcessingFixedCents) }),
+          label: t("fees.cardProcessing"),
+          hint: t("fees.cardProcessingHint", { pct: percent(business.cardProcessingPct), fixed: money(business.cardProcessingFixedCents) }),
           amount: fees.cardProcessingCents,
         },
       ]

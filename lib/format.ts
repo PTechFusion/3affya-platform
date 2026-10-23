@@ -50,7 +50,9 @@ function zoneLabel(instant: Date, timeZone: string): string {
   const city = timeZone.split("/").pop()?.replace(/_/g, "\u00A0") ?? timeZone;
   // A real minus sign (U+2212) for negative offsets: browsers may break a line after a hyphen-minus, which split "GMT-" from "5)".
   // No-break spaces keep "Los Angeles (GMT−8)" on one line wherever it is used.
-  return `${city}\u00A0(${zoneName.replace("-", "\u2212")})`;
+  // ICU versions differ on the zero offset ("GMT" on Node 22, "GMT+0" on Node 24): both read "GMT".
+  const offset = /^GMT[+\u2212-]0$/.test(zoneName) ? "GMT" : zoneName.replace("-", "\u2212");
+  return `${city}\u00A0(${offset})`;
 }
 
 /** Gregorian date, Western digits. Hijri display is optional and secondary (rule N3). */

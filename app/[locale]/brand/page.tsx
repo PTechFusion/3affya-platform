@@ -21,7 +21,7 @@ const HEX: Record<string, string> = {
   "gold-700": "#82590A", "gold-500": "#C8901E", "gold-300": "#F0CE6A", "gold-100": "#F8EBC4",
   "sand-50": "#F8F6F1", "sand-100": "#EFEBE2", "sand-200": "#E2DCCE", "sand-300": "#DBD3BF", "sand-400": "#C6BEAC",
   "ink-900": "#14202E", "ink-700": "#34404E", "ink-500": "#5E6A77", night: "#0A1622",
-  "sky-500": "#48A8D8", "sky-100": "#E3F2FA", success: "#1F8A5B", warning: "#B7791F", danger: "#C4423A",
+  "sky-500": "#48A8D8", "sky-100": "#E3F2FA", success: "#156A45", warning: "#80530F", danger: "#A83128",
 };
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
