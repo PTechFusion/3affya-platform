@@ -163,4 +163,16 @@ logged.
 - Readex Pro is self-hosted under `public/fonts/` (SIL OFL).
 - Next.js 16 uses `proxy.ts` where older docs say `middleware.ts`.
 
+## Transactional email (lane L4, task 2.9)
+
+- Eight templates in `lib/email-templates/` (one layout, copy under `email.*`); flows send with
+  `sendEmail(template, locale, to, data, { idempotencyKey })` from `lib/email-templates/send.ts`, never from a page.
+- Preview: `/ar/emails/<template>` and `/en/emails/<template>` (`?view=text`, `?variant=`), only in builds with
+  `NEXT_PUBLIC_DEV_ROLE_SWITCH=1`; other builds answer 404.
+- Tests: `npx vitest run --config tests/unit/emails/vitest.config.ts`.
+- Test send (needs `RESEND_API_KEY`): `npx --yes tsx@4.23.15 scripts/email-test-send.ts you@example.com`; `--dry-run` renders
+  all sixteen without a key.
+- The wordmark and links in an email come from `NEXT_PUBLIC_SITE_URL`: for a test send set it to a host Gmail and Outlook can
+  reach (not localhost); the script warns otherwise.
+
 ProgrammX · programmx.com · hello@programmx.com · Confidential

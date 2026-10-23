@@ -6071,5 +6071,198 @@
         }
       }
     }
+  },
+  "email": {
+    "layout": {
+      "wordmarkAlt": "3affya",
+      "support": "Questions? Write to us at {email}. We reply in Arabic or English."
+    },
+    "common": {
+      "visit": "Visit",
+      "length": "Length"
+    },
+    "otp": {
+      "subject": "{purpose, select, claim {Your code to claim your 3affya profile} admin {Your 3affya admin sign-in code} other {Your 3affya sign-in code}}",
+      "preheader": "Enter it on the page where you asked for it. It works once, until {time}.",
+      "headline": "{purpose, select, claim {Your code to claim your profile} admin {Your admin sign-in code} other {Your sign-in code}}",
+      "intro": "Enter this code on the 3affya page where you asked for it. Copying and pasting it works too.",
+      "codeLabel": "Your code",
+      "valid": "It works once, for {duration}: until {time}.",
+      "admin": "After this code, enter the code from your authenticator app to finish signing in.",
+      "notYou": "Did not ask for a code? You can ignore this email. Nobody can sign in without the code, and it stops working on its own.",
+      "never": "3affya never asks for this code by phone, WhatsApp or chat. Do not share it with anyone.",
+      "footer": "{purpose, select, claim {You received this because someone started to claim a profile on 3affya with this email address.} admin {You received this because someone started an admin sign-in on 3affya with this email address.} other {You received this because someone entered this email address on the 3affya sign-in page.}}"
+    },
+    "claimReceived": {
+      "subject": "We received your documents, {name}",
+      "preheader": "We check your licence and board with the bodies that issued them and email you our answer by {deadline}.",
+      "headline": "Your profile is in review",
+      "intro": "Thank you, {name}. We received your profile and the files below on {date}.",
+      "factsTitle": "What you sent",
+      "submitted": "Submitted",
+      "file": {
+        "licence": "Licence",
+        "board": "Board certificate",
+        "other": "Other file"
+      },
+      "answerBy": "Our answer by",
+      "how": "We check your licence and board with the bodies that issued them, then email you the result. You can keep editing your profile while you wait.",
+      "pending": "Until we approve it, your card tells patients that your credentials are pending verification.",
+      "button": "Open your profile",
+      "footer": "You received this because you submitted your profile on 3affya for review."
+    },
+    "claimApproved": {
+      "subject": "Approved: your 3affya profile is live, {name}",
+      "preheader": "Patients can find you in search now. Publish your weekly hours and set up payouts so they can book you.",
+      "headline": "Your profile is live",
+      "intro": "We checked your licence and board, and your profile is verified. Patients can find you in search now.",
+      "factsTitle": "Your verified profile",
+      "name": "Name",
+      "specialty": "Specialty",
+      "verifiedOn": "Verified on",
+      "nextCheck": "Next check",
+      "nextTitle": "Two steps before patients can book you",
+      "hours": {
+        "title": "Publish your weekly hours",
+        "body": "Patients see your open times in their own time zone."
+      },
+      "payouts": {
+        "title": "Set up payouts",
+        "body": "Stripe, our payment provider, pays your fees to your bank account. You set it up from your portal."
+      },
+      "button": "Publish your weekly hours",
+      "profile": "Your public profile: {url}",
+      "recheck": "A new licence or board that you add goes back to review first.",
+      "footer": "You received this because you claimed your profile on 3affya."
+    },
+    "claimRejected": {
+      "subject": "{fix, select, licence {Changes needed: we could not verify your licence} board {Changes needed: we could not verify your board certificate} other {Changes needed: we could not verify one of your files}}",
+      "preheader": "Our reviewer wrote what to send instead. Replace the file and submit again; everything else you entered is kept.",
+      "headline": "{fix, select, licence {We could not verify your licence} board {We could not verify your board certificate} other {We could not verify one of your files}}",
+      "intro": "{name}, we reviewed your profile on {date}. One file needs to change before we can approve it.",
+      "reviewer": "Our reviewer wrote",
+      "file": "File",
+      "reviewed": "Reviewed",
+      "next": "Replace the file, then submit again. Everything else you entered is kept, and we review the new file.",
+      "button": "Replace the file",
+      "footer": "You received this because you submitted your profile on 3affya for review."
+    },
+    "removalConfirmed": {
+      "subject": "Your profile on 3affya is removed",
+      "preheader": "As you asked, the page for {name} now says the doctor asked to be removed, and search engines are told it is gone.",
+      "headline": "Your profile is removed",
+      "intro": "{requester}, as you asked, we took down the profile we had built from the public NPI registry.",
+      "factsTitle": "What we removed",
+      "name": "Name",
+      "npi": "NPI",
+      "requested": "Requested",
+      "removed": "Removed",
+      "after": "Its link now says the doctor asked to be removed, and search engines are told the page is gone. We do not send invitations to claim it.",
+      "button": "See the page",
+      "notYou": "Did not ask for this? Write to us at the address below and a person on our team will look into it.",
+      "footer": "You received this because you asked 3affya to remove a profile and confirmed the request from this email address."
+    },
+    "bookingConfirmed": {
+      "patient": {
+        "subject": "{visitType, select, phone {Your phone visit} other {Your video visit}} with {name} is confirmed: {when}",
+        "preheader": "Paid {total}. Doctor's time: {doctorWhen}. Cancel before {deadline} for a full refund.",
+        "preheaderLate": "Paid {total}. Doctor's time: {doctorWhen}. Your visit is less than {cutoff} away, so cancelling it is not refunded.",
+        "headline": "Your visit is booked",
+        "intro": "{visitType, select, phone {Your phone visit} other {Your video visit}} with {name}, {specialty}, is confirmed and paid.",
+        "cardTitle": "Your appointment",
+        "joinButton": "Join the video visit",
+        "viewButton": "View your booking",
+        "calendar": "The attached calendar file adds the visit to your calendar at the right time.",
+        "receiptTitle": "Total paid",
+        "changeTitle": "Change or cancel",
+        "changeBefore": "Cancel before {deadline} to get the full {total} back. After that, the visit is not refunded.",
+        "changeLate": "Your visit is less than {cutoff} away, so cancelling it is not refunded.",
+        "move": "To move your visit, cancel it and book a new time.",
+        "manage": "Your booking: {url}",
+        "footer": "You received this because you booked a visit on 3affya."
+      },
+      "professional": {
+        "subject": "New booking: {patient}, {when}",
+        "preheader": "{visitType, select, phone {Phone visit} other {Video visit}}, {duration}, paid in full. Patient's time: {patientWhen}.",
+        "headline": "{visitType, select, phone {New phone visit with {patient}} other {New video visit with {patient}}}",
+        "intro": "The visit is paid in full. The reason for the visit, in the patient's words, and what they prepared are in your inbox.",
+        "cardTitle": "The appointment",
+        "join": "Your meeting link, the same one the patient has in their confirmation: {url}",
+        "phone": "Call the patient at this time on the phone number they gave at checkout. You find it in your inbox.",
+        "summaryTitle": "The patient shared a records summary with you",
+        "button": "Open in your inbox",
+        "footer": "You received this because a patient booked a visit with you on 3affya."
+      }
+    },
+    "refund": {
+      "subject": "{status, select, pending {Your refund of {amount} is on its way} other {Refunded: {amount} for your visit with {name}}}",
+      "preheader": "It goes back to {method}. Your bank decides when it shows on your statement.",
+      "headline": "{status, select, pending {{amount} is on its way back to you} other {We refunded {amount}}}",
+      "moneyTitle": "{status, select, pending {Refund on its way} other {Refunded}}",
+      "to": "To",
+      "date": "{status, select, pending {Started} other {Issued}}",
+      "linesCaption": "What comes back",
+      "linesTotal": "Total refunded",
+      "visitTitle": "The cancelled visit",
+      "cancelledOn": "Cancelled",
+      "button": "View receipt",
+      "rules": "Cancellation and refund rules: {url}",
+      "footer": "You received this because a visit you paid for on 3affya was cancelled."
+    },
+    "preview": {
+      "metaTitle": "Email templates (dev preview) | 3affya",
+      "title": "Email templates",
+      "lead": "A dev-only preview of the eight transactional emails, with sample data, in the language of this page. Production builds answer 404 here.",
+      "templates": "Templates",
+      "names": {
+        "invite": "Claim invite",
+        "otp": "Sign-in code",
+        "claimReceived": "Claim received",
+        "claimApproved": "Claim approved",
+        "claimRejected": "Claim rejected",
+        "removalConfirmed": "Removal confirmed",
+        "bookingConfirmed": "Booking confirmed",
+        "refund": "Refund"
+      },
+      "view": "View",
+      "html": "Email",
+      "text": "Plain text",
+      "variant": "Sample",
+      "variants": {
+        "invite": {
+          "plain": "No personal line",
+          "note": "With a personal line"
+        },
+        "otp": {
+          "signIn": "Sign-in",
+          "claim": "Claim",
+          "admin": "Admin"
+        },
+        "bookingConfirmed": {
+          "patient": "To the patient",
+          "professional": "To the doctor"
+        },
+        "claimRejected": {
+          "licence": "Licence",
+          "board": "Board"
+        },
+        "refund": {
+          "patientEarly": "Patient cancelled",
+          "doctor": "Doctor cancelled"
+        }
+      },
+      "envelope": {
+        "label": "Envelope",
+        "from": "From",
+        "replyTo": "Reply to",
+        "to": "To",
+        "subject": "Subject",
+        "preheader": "Preview text",
+        "attachment": "Attachment"
+      },
+      "frameTitle": "The {name} email as the reader sees it",
+      "textTitle": "The plain-text part of the {name} email",
+      "loading": "Loading the email preview"
+    }
   }
 }
