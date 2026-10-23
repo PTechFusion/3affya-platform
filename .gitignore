@@ -14,3 +14,8 @@ node_modules
 
 # Python bytecode from scripts/*.py (lane L1)
 __pycache__/
+
+# Test output: Vitest coverage, Playwright results, traces and reports (lane L5)
+coverage/
+test-results/
+playwright-report/

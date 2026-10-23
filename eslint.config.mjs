@@ -14,4 +14,6 @@ export default defineConfig([
     },
   },
   globalIgnores([".next/**", ".netlify/**", "node_modules/**", "out/**", "public/**", "docs/**", "scripts/screenshots/**"]),
+  // Generated test output (lane L5): coverage HTML and Playwright reports and traces.
+  globalIgnores(["coverage/**", "test-results/**", "playwright-report/**"]),
 ]);
