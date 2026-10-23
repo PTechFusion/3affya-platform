@@ -1,0 +1,25 @@
+{
+  "id": "prescription-ar",
+  "title": "Prescription, Arabic, Arabic-Indic digits, one page",
+  "kind": "pdf",
+  "locale": "ar",
+  "source": "source/prescription-ar.html",
+  "file": "documents/prescription-ar.pdf",
+  "pages": [
+    {
+      "page": 1,
+      "input": "documents/prescription-ar.pdf",
+      "unreadable": false,
+      "items": [
+        { "type": "condition", "label": "داء السكري من النوع الثاني", "aliases": ["Type 2 diabetes mellitus", "Type 2 diabetes", "السكري من النوع الثاني"], "value": null, "unit": null, "date": null },
+        { "type": "condition", "label": "ارتفاع الكوليسترول في الدم", "aliases": ["Hypercholesterolaemia", "Hypercholesterolemia", "High cholesterol", "ارتفاع الكوليسترول"], "value": null, "unit": null, "date": null },
+        { "type": "condition", "label": "نقص فيتامين د", "aliases": ["Vitamin D deficiency"], "value": null, "unit": null, "date": null },
+        { "type": "allergy", "label": "البنسلين", "aliases": ["Penicillin", "حساسية البنسلين"], "value": null, "unit": null, "date": null, "reaction": "طفح جلدي" },
+        { "type": "medication", "label": "ميتفورمين", "aliases": ["Metformin"], "value": "500", "unit": "ملغ", "date": "2026-09-18", "frequency": "مرتين يومياً" },
+        { "type": "medication", "label": "أتورفاستاتين", "aliases": ["Atorvastatin"], "value": "20", "unit": "ملغ", "date": "2026-09-18", "frequency": "مرة يومياً مساءً" },
+        { "type": "medication", "label": "فيتامين د", "aliases": ["Vitamin D", "Vitamin D3", "Cholecalciferol"], "value": "50000", "unit": "وحدة دولية", "date": "2026-09-18", "frequency": "أسبوعياً لمدة ٨ أسابيع" }
+      ]
+    }
+  ],
+  "forbidden": []
+}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<title>Laboratory report (synthetic fixture)</title>
+<style>
+  @page { size: A4; margin: 16mm 16mm 20mm; }
+  body { font-family: "Segoe UI", Arial, "Noto Sans", sans-serif; font-size: 10.5pt; color: #111; margin: 0; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid #1d4e89; padding-bottom: 6px; }
+  .lab { font-size: 13pt; font-weight: 700; color: #1d4e89; }
+  .small { font-size: 8.5pt; color: #444; }
+  .title { font-size: 14pt; font-weight: 700; letter-spacing: 0.5px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .meta td { padding: 3px 4px; font-size: 9.5pt; }
+  .results th { background: #e8eef6; font-size: 9pt; text-align: start; padding: 5px 6px; border-bottom: 1px solid #9ab; }
+  .results td { padding: 5px 6px; border-bottom: 1px solid #ddd; }
+  .num { font-variant-numeric: tabular-nums; }
+  .flag { font-weight: 700; }
+  h2 { font-size: 11pt; margin: 14px 0 0; color: #1d4e89; }
+  .foot { position: fixed; bottom: 0; inset-inline: 0; font-size: 8pt; color: #666; border-top: 1px solid #ccc; padding-top: 3px; }
+</style>
+</head>
+<body>
+<section class="page">
+  <div class="head">
+    <div>
+      <div class="lab">Westbay Diagnostic Laboratory</div>
+      <div class="small">Fictitious laboratory · 12 Harbour Road, Suite 4 · Tel 000 000 0000</div>
+    </div>
+    <div class="title">LABORATORY REPORT</div>
+  </div>
+
+  <table class="meta">
+    <tr><td><b>Patient:</b> Sample Patient A (synthetic)</td><td><b>MRN:</b> SYN-0001</td><td><b>Sex:</b> F</td></tr>
+    <tr><td><b>Collected:</b> 14/09/2026 08:10</td><td><b>Reported:</b> 14/09/2026 15:42</td><td><b>Specimen:</b> venous blood, fasting</td></tr>
+    <tr><td colspan="3"><b>Requested by:</b> Dr Example Clinician (synthetic)</td></tr>
+  </table>
+
+  <h2>Haematology</h2>
+  <table class="results">
+    <tr><th>Test</th><th>Result</th><th>Flag</th><th>Units</th><th>Reference range</th></tr>
+    <tr><td>Haemoglobin</td><td class="num">13.1</td><td></td><td>g/dL</td><td class="num">12.0 - 15.5</td></tr>
+    <tr><td>White blood cell count</td><td class="num">7.8</td><td></td><td>&times;10<sup>9</sup>/L</td><td class="num">4.0 - 11.0</td></tr>
+    <tr><td>Platelet count</td><td class="num">265</td><td></td><td>&times;10<sup>9</sup>/L</td><td class="num">150 - 400</td></tr>
+  </table>
+
+  <h2>Chemistry</h2>
+  <table class="results">
+    <tr><th>Test</th><th>Result</th><th>Flag</th><th>Units</th><th>Reference range</th></tr>
+    <tr><td>HbA1c</td><td class="num">6.8</td><td class="flag">H</td><td>%</td><td class="num">4.0 - 5.6</td></tr>
+    <tr><td>Fasting glucose</td><td class="num">7.4</td><td class="flag">H</td><td>mmol/L</td><td class="num">3.9 - 5.5</td></tr>
+    <tr><td>Creatinine</td><td class="num">88</td><td></td><td>&micro;mol/L</td><td class="num">45 - 90</td></tr>
+    <tr><td>LDL cholesterol</td><td class="num">3.6</td><td class="flag">H</td><td>mmol/L</td><td class="num">&lt; 3.0</td></tr>
+    <tr><td>Thyroid stimulating hormone (TSH)</td><td class="num">2.10</td><td></td><td>mIU/L</td><td class="num">0.40 - 4.00</td></tr>
+    <tr><td>25-hydroxy vitamin D</td><td class="num">18</td><td class="flag">L</td><td>ng/mL</td><td class="num">30 - 100</td></tr>
+    <tr><td>Ferritin</td><td class="num">45</td><td></td><td>ng/mL</td><td class="num">15 - 150</td></tr>
+  </table>
+
+  <p class="small" style="margin-top: 14px;">H = above reference range · L = below reference range · Validated by: Example Scientist (synthetic)</p>
+
+  <div class="foot">SYNTHETIC TEST DOCUMENT · not a real patient · 3affya extraction spike fixture · page 1 of 1</div>
+</section>
+</body>
+</html>

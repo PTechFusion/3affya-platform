@@ -1,0 +1,32 @@
+{
+  "note": "Synthetic. The content of fixtures/documents/referral-letter.docx, written by fixtures/generate.mjs. Not a real patient, practice or doctor.",
+  "body": [
+    { "p": "Northgate Family Practice", "bold": true },
+    { "p": "Fictitious practice · Referral letter" },
+    { "p": "Date: 12/10/2026" },
+    { "p": "To: Endocrinology Clinic" },
+    { "p": "Re: Sample Patient E (synthetic test record), MRN SYN-0005" },
+    { "p": "Dear colleague," },
+    {
+      "p": "I would be grateful if you could review this patient with type 2 diabetes mellitus, diagnosed in 2019, now with suboptimal control, and primary hypothyroidism."
+    },
+    { "p": "Current medications:", "bold": true },
+    { "p": "Metformin 1000 mg twice daily" },
+    { "p": "Insulin glargine 14 units at night" },
+    { "p": "Levothyroxine 75 mcg once daily" },
+    { "p": "Allergies: Penicillin (rash)" },
+    { "p": "Recent results (01/10/2026):", "bold": true },
+    {
+      "table": [
+        ["Test", "Result", "Reference range"],
+        ["HbA1c", "7.9 %", "4.0 - 5.6"],
+        ["TSH", "6.8 mIU/L", "0.4 - 4.0"],
+        ["eGFR", "82 mL/min/1.73m²", "> 60"]
+      ]
+    },
+    { "p": "ملاحظة: يفضل المريض التواصل باللغة العربية.", "rtl": true },
+    { "p": "Kind regards," },
+    { "p": "Dr Example Referrer (synthetic)" },
+    { "p": "SYNTHETIC TEST DOCUMENT · not a real patient · 3affya extraction spike fixture" }
+  ]
+}

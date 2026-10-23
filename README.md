@@ -141,6 +141,21 @@ logged.
 | `npx vitest run --config tests/unit/stripe/vitest.config.ts` | Unit tests, database mocked (signature, duplicate, handler error, retry, an attempt still running or dead) |
 | `node scripts/stripe-webhook-replay.mjs` | Against a running local server: one signed event posted twice (one row), a bad signature (400), a retry after a failure, a delivery while an attempt runs (409), one after an attempt died. Needs `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `BASE_URL` in the shell |
 | `bash scripts/stripe-trigger-twice.sh` | The same with the Stripe CLI and test keys: `stripe trigger payment_intent.succeeded` twice and a second delivery; one row per event id. Setup steps in the script header |
+## AI client and the extraction spike (lane L3, task 1.9)
+
+- `lib/ai` is the only way to a model: `extractPage(page, locale, { jobId })` and `summarise(items, locale, { jobId })`,
+  both `{ ok, data } | { ok, error }`. Vendor and model come from `AI_VENDOR` and `AI_MODEL` (`.env.example`); the
+  Anthropic and Bedrock SDKs are each imported in one adapter under `lib/ai/vendors/`. No tools, no Batch or Files API, no
+  prompt caching (ADR-3, ADR-4). Output is validated with zod (`lib/ai/schemas.ts`); invalid output is retried once, then
+  the call fails.
+- Every call writes one `ai_calls` row (service role only; the trigger adds its tokens and cost to the job's `ai_jobs`
+  totals). The per-job token cap is `aiLimits.jobTokenCap`; timeouts, the retry, the circuit and effort are `aiClient`,
+  and per-model prices `aiPricing`, all in `config/business.ts`.
+- Fixtures: synthetic documents in `fixtures/` (`node fixtures/generate.mjs` rebuilds them), hand-written expected items
+  in `fixtures/expected/`. Spike: `node --env-file=.env scripts/spike_extraction.ts` writes `output/spike_report.md`;
+  `node scripts/spike_extraction.ts --check` checks everything short of calling the model.
+- Unit tests: `npx vitest run --config tests/unit/ai/vitest.config.ts` (no key, no database). `tests/rls/ai-calls.rls.ts`
+  runs with `npm run test:rls`.
 
 ## Known notes
 

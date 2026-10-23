@@ -1,0 +1,39 @@
+{
+  "id": "discharge-note-mixed",
+  "title": "Discharge summary, Arabic and English mixed, two pages",
+  "kind": "pdf",
+  "locale": "ar",
+  "source": "source/discharge-note-mixed.html",
+  "file": "documents/discharge-note-mixed.pdf",
+  "pages": [
+    {
+      "page": 1,
+      "input": "documents/discharge-note-mixed.p1.pdf",
+      "unreadable": false,
+      "items": [
+        { "type": "condition", "label": "Community-acquired pneumonia", "aliases": ["التهاب رئوي مكتسب من المجتمع", "Pneumonia", "Community acquired pneumonia"], "value": null, "unit": null, "date": null },
+        { "type": "condition", "label": "Type 2 diabetes mellitus", "aliases": ["داء السكري من النوع الثاني", "Type 2 diabetes"], "value": null, "unit": null, "date": null },
+        { "type": "allergy", "label": "لا توجد حساسية معروفة للأدوية", "aliases": ["NKDA", "No known drug allergies", "No known allergies"], "value": null, "unit": null, "date": null },
+        { "type": "vital", "label": "Temperature", "aliases": ["Temp", "Body temperature", "درجة الحرارة"], "value": "38.6", "unit": "°C", "date": "2026-08-02" },
+        { "type": "vital", "label": "Blood pressure", "aliases": ["BP", "ضغط الدم"], "value": "128/82", "unit": "mmHg", "date": "2026-08-02" },
+        { "type": "vital", "label": "Oxygen saturation (SpO2)", "aliases": ["SpO2", "Oxygen saturation", "O2 saturation"], "value": "93", "unit": "%", "date": "2026-08-02" },
+        { "type": "procedure", "label": "Chest X-ray", "aliases": ["أشعة سينية للصدر", "CXR", "Chest radiograph"], "value": null, "unit": null, "date": "2026-08-02" },
+        { "type": "result", "label": "CRP", "aliases": ["C-reactive protein"], "value": "86", "unit": "mg/L", "date": "2026-08-02", "ref_low": 0, "ref_high": 5 },
+        { "type": "result", "label": "WBC", "aliases": ["White blood cell count", "White cell count", "White blood cells"], "value": "14.2", "unit": "×10⁹/L", "date": "2026-08-02", "ref_low": 4.0, "ref_high": 11.0 }
+      ]
+    },
+    {
+      "page": 2,
+      "input": "documents/discharge-note-mixed.p2.pdf",
+      "unreadable": false,
+      "items": [
+        { "type": "immunization", "label": "Influenza vaccine", "aliases": ["لقاح الإنفلونزا الموسمية", "Seasonal influenza vaccine", "Flu vaccine", "لقاح الإنفلونزا"], "value": null, "unit": null, "date": "2026-08-05" },
+        { "type": "medication", "label": "Amoxicillin-clavulanate", "aliases": ["أموكسيسيلين/كلافولانات", "Amoxicillin/clavulanate", "Co-amoxiclav", "Amoxicillin-clavulanic acid"], "value": "1", "unit": "g", "date": null, "frequency": "twice daily for 5 days" },
+        { "type": "medication", "label": "Paracetamol", "aliases": ["باراسيتامول", "Acetaminophen"], "value": "1", "unit": "g", "date": null, "frequency": "as needed for fever, up to 4 times daily" },
+        { "type": "medication", "label": "Metformin", "aliases": ["ميتفورمين"], "value": "500", "unit": "mg", "date": null, "frequency": "twice daily" },
+        { "type": "procedure", "label": "CT chest", "aliases": ["الأشعة المقطعية للصدر", "CT scan of the chest", "Chest CT"], "value": null, "unit": null, "date": "2026-07-20" }
+      ]
+    }
+  ],
+  "forbidden": []
+}
